@@ -1,0 +1,3 @@
+Read and follow `AGENTS.md` in the repository root before making any edit.
+It contains the load-bearing architecture rules for this codebase, including
+iframe sandbox invariants that must never be changed.

@@ -1,0 +1,240 @@
+/**
+ * Lesson intermediate representation.
+ *
+ * Authored content is compiled to this shape in CI and shipped as data.
+ * The application never evaluates MDX or any authored source at runtime.
+ * See PLAN.md sections 5 and 8.
+ */
+
+export type Register = "simple" | "standard";
+
+/** Text authored twice: once for a total beginner, once for someone with exposure. */
+export interface Copy {
+  simple: string;
+  standard: string;
+}
+
+/* ------------------------------------------------------------------ */
+/* Concepts                                                            */
+/*                                                                     */
+/* Every new idea is introduced in four forms at once. This is dual    */
+/* coding, not learning styles: the evidence does not support matching */
+/* instruction to a learner's stated preference, and does support      */
+/* giving everyone the same idea in several forms.                     */
+/* PLAN.md section 5.                                                  */
+/* ------------------------------------------------------------------ */
+
+/**
+ * A diagram, authored as data rather than as arbitrary SVG.
+ *
+ * The primitives are deliberately few. Anything the learner can actually see
+ * in the browser should be a live demo instead, because the browser is a
+ * better illustration than a drawing and it cannot go stale.
+ */
+export interface Diagram {
+  /** Rendered above the diagram for screen readers and when images are off. */
+  alt: Copy;
+  nodes: DiagramNode[];
+  arrows: DiagramArrow[];
+  /** Grid columns the nodes are laid out across. Keeps authoring simple. */
+  columns: number;
+}
+
+export interface DiagramNode {
+  id: string;
+  label: string;
+  /** `box` is neutral, `accent` is the thing being taught, `ghost` is context. */
+  tone?: "box" | "accent" | "ghost";
+  /** Optional monospace sub-label, e.g. a value or a tag name. */
+  note?: string;
+}
+
+export interface DiagramArrow {
+  from: string;
+  to: string;
+  label?: string;
+}
+
+/**
+ * The four representations of one idea. All four are required; a concept with
+ * a missing form is rejected by the authoring harness rather than shipped.
+ */
+export interface Concept {
+  id: string;
+  /** The word being introduced, e.g. "class", "variable", "request". */
+  term: string;
+  /** 1. What it is, in plain words. */
+  definition: Copy;
+  /** 2. Something from ordinary life that behaves the same way. */
+  analogy: Copy;
+  /**
+   * 3. The picture. Either a small authored diagram for things you cannot
+   * see, or a live demo for things you can. Live demos are preferred.
+   */
+  visual:
+    | { kind: "diagram"; diagram: Diagram }
+    | {
+        kind: "live-demo";
+        /** Rendered in an isolated frame beside the explanation. */
+        files: Record<string, string>;
+        caption: Copy;
+      };
+  /** 4. What the learner is about to do that proves it. One sentence. */
+  proof: Copy;
+}
+
+export type InputMode = "tap-to-build" | "fill-blank" | "guided" | "free";
+
+/**
+ * How a step is run and checked.
+ *
+ * `web` renders HTML and CSS and asserts against the resulting document.
+ * `js` executes the learner's script in an isolated frame and asserts against
+ * its console output, its declared values, and its source.
+ */
+export type StepKind = "web" | "js";
+
+/**
+ * Deterministic assertions. Each kind is a closed variant so a lesson can
+ * never smuggle executable code into the grader.
+ */
+export type TestSpec =
+  // --- Document assertions (web steps) ---
+  | { id: string; label: Copy; kind: "exists"; selector: string }
+  | { id: string; label: Copy; kind: "count"; selector: string; atLeast: number }
+  | { id: string; label: Copy; kind: "text-not-empty"; selector: string }
+  | { id: string; label: Copy; kind: "text-equals"; selector: string; value: string }
+  | { id: string; label: Copy; kind: "text-contains"; selector: string; value: string }
+  | {
+      id: string;
+      label: Copy;
+      kind: "style";
+      selector: string;
+      prop: string;
+      equals: string;
+      /** Shown to the learner instead of the raw CSS value. */
+      readable?: string;
+    }
+  | { id: string; label: Copy; kind: "attr"; selector: string; attr: string; nonEmpty: true }
+  | {
+      id: string;
+      label: Copy;
+      kind: "attr-equals";
+      selector: string;
+      attr: string;
+      value: string;
+    }
+
+  // --- Script assertions (js steps) ---
+  /** The learner's script printed these lines, in order, via console.log. */
+  | { id: string; label: Copy; kind: "js-logs"; values: string[] }
+  /** Evaluating this expression in the learner's scope yields `equals`. */
+  | { id: string; label: Copy; kind: "js-value"; expression: string; equals: unknown }
+  /** Calling this function with these arguments returns `equals`. */
+  | {
+      id: string;
+      label: Copy;
+      kind: "js-returns";
+      fn: string;
+      args: unknown[];
+      equals: unknown;
+    }
+  /** The script ran without throwing. */
+  | { id: string; label: Copy; kind: "js-runs" }
+
+  // --- Source assertions (either kind) ---
+  /**
+   * The source matches this pattern. Used for teaching syntax the result
+   * alone cannot prove, such as "use const" or "write a for loop".
+   * Stored as a string and compiled with `new RegExp` inside the grader only.
+   */
+  | {
+      id: string;
+      label: Copy;
+      kind: "source-matches";
+      file: string;
+      pattern: string;
+      flags?: string;
+      /** Explains the requirement without leaking the exact answer. */
+      because: Copy;
+    };
+
+export interface Hint {
+  level: number;
+  text: Copy;
+}
+
+export interface Step {
+  id: string;
+  /** 1-based position shown to the learner as "Step N of M". */
+  index: number;
+  task: Copy;
+  kind: StepKind;
+  inputMode: InputMode;
+  /** Starting code for this step, keyed by filename. */
+  files: Record<string, string>;
+  activeFile: string;
+  /** Lines the learner may not edit, 1-based. */
+  readonlyLines?: number[];
+  /** Substring in the active file to ring in Voltage as the thing to change. */
+  highlightToken?: string;
+  /** tap-to-build only: the tray contents and which one is correct. */
+  blocks?: string[];
+  correctBlock?: string;
+  /** tap-to-build only: the placeholder line the block lands on, 1-based. */
+  slotLine?: number;
+  tests: TestSpec[];
+  hints: Hint[];
+  xp: number;
+  /**
+   * Code that should make every test pass.
+   *
+   * Required for any drafted step. The harness uses it for the two checks
+   * that matter: the solution must pass, and the *starting* code must fail.
+   * A step whose tests already pass before the learner touches anything
+   * teaches nothing, and that is the single most common way a generated
+   * lesson is silently worthless.
+   */
+  solution?: Record<string, string>;
+  /**
+   * Concepts introduced for the first time by this step. Shown above the task
+   * before the learner is asked to do anything, so a new word is never used
+   * before it has been explained. Most steps introduce none.
+   */
+  concepts?: Concept[];
+  /** Authored estimate in minutes, used for pacing and for the harness. */
+  estimatedMinutes?: number;
+}
+
+/**
+ * A course is one project built across many small steps, the way
+ * freeCodeCamp structures its curriculum. The learner never starts from a
+ * blank file mid-course: each step begins where the last one ended.
+ */
+export interface Course {
+  id: string;
+  /** "Learn HTML by Building a Sari-Sari Store Page" */
+  title: string;
+  /** The thing being built, for the map: "Sari-Sari Store Page" */
+  project: string;
+  order: number;
+  summary: Copy;
+  /** Course ids that should be finished first. */
+  requires: string[];
+  kind: StepKind;
+  steps: Step[];
+}
+
+export interface Curriculum {
+  id: string;
+  title: string;
+  courses: Course[];
+}
+
+export function copy(c: Copy, register: Register): string {
+  return register === "simple" ? c.simple : c.standard;
+}
+
+export function totalXp(course: Course): number {
+  return course.steps.reduce((n, s) => n + s.xp, 0);
+}

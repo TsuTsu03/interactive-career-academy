@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+@theme {
+  /* Surfaces */
+  --color-void: #0a0c10;
+  --color-panel: #12161c;
+  --color-raised: #1a2029;
+  --color-hairline: #242c36;
+
+  /* Text */
+  --color-chalk: #f2f5f8;
+  --color-ash: #96a1af;
+
+  /* Energy */
+  --color-voltage: #ff6a1f;
+  --color-acid: #c6f24e;
+  --color-strike: #ff3b5c;
+  --color-plasma: #3de1ff;
+  --color-gold: #ffc93d;
+
+  --font-display: var(--font-display-loaded), "Clash Display", system-ui, sans-serif;
+  --font-sans: var(--font-sans-loaded), "Satoshi", system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-mono-loaded), ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html,
+body {
+  background: var(--color-void);
+  color: var(--color-chalk);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tabular figures everywhere a number changes, so counters never jitter. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ---------------------------------------------------------------
+   Juice. Everything here animates transform/opacity only.
+   The reference machine is a weak shared laptop; juice must be free.
+   --------------------------------------------------------------- */
+
+@keyframes punch {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+.animate-punch { animation: punch 260ms cubic-bezier(0.2, 1.4, 0.3, 1); }
+
+@keyframes rise-fade {
+  0% { transform: translateY(0) scale(0.8); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: translateY(-46px) scale(1); opacity: 0; }
+}
+.animate-rise { animation: rise-fade 900ms ease-out forwards; }
+
+@keyframes particle-out {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--px), var(--py)) scale(0.2); opacity: 0; }
+}
+.particle {
+  position: absolute;
+  border-radius: 9999px;
+  animation: particle-out var(--pdur, 700ms) cubic-bezier(0.15, 0.8, 0.3, 1) forwards;
+  animation-delay: var(--pdelay, 0ms);
+  pointer-events: none;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
+}
+.animate-shake { animation: shake 120ms ease-in-out; }
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.55; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+.animate-pulse-ring { animation: pulse-ring 1.6s ease-out infinite; }
+
+@keyframes slide-in-right {
+  0% { transform: translateX(120%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+.animate-toast { animation: slide-in-right 420ms cubic-bezier(0.2, 1.2, 0.3, 1); }
+
+@keyframes row-in {
+  0% { transform: translateY(8px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.animate-row-in { animation: row-in 220ms cubic-bezier(0.2, 1.2, 0.3, 1) backwards; }
+
+@keyframes flicker {
+  0%, 100% { transform: scale(1) rotate(-1deg); opacity: 1; }
+  50% { transform: scale(1.08) rotate(1deg); opacity: 0.88; }
+}
+.animate-flicker { animation: flicker 2.2s ease-in-out infinite; }
+
+/* Glow is a static box-shadow. Only opacity/spread animate; blur radius never does. */
+.glow-voltage { box-shadow: 0 0 24px 0 rgb(255 106 31 / 0.32); }
+.glow-acid { box-shadow: 0 0 24px 0 rgb(198 242 78 / 0.3); }
+.glow-strike { box-shadow: 0 0 24px 0 rgb(255 59 92 / 0.32); }
+.glow-plasma { box-shadow: 0 0 20px 0 rgb(61 225 255 / 0.28); }
+.glow-gold { box-shadow: 0 0 32px 0 rgb(255 201 61 / 0.35); }
+
+/* Accessibility: every celebration collapses to a crossfade.
+   The learner loses the animation, never the information. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .particle { display: none; }
+}
+
+/* Focus is never obscured and never removed. */
+:focus-visible {
+  outline: 2px solid var(--color-voltage);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: rgb(255 106 31 / 0.3);
+}

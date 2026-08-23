@@ -1,0 +1,11 @@
+# Claude Code local config — never published. See AGENTS.md section 7.
+.claude/
+**/.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
