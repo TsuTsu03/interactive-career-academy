@@ -174,6 +174,12 @@ Before you end a turn for any reason, check it against section 5b. If it appears
 
 ## 9. Repo hygiene
 
+- **Never edit `AGENTS.md` or `PLAN.md`.** They are the rules and the plan, not
+  your output. A previous run of this loop deleted `AGENTS.md` outright, which
+  is how the file it was told to obey stopped existing. If you believe either
+  document is wrong or out of date, say so in your `NEXT:` line and change
+  nothing. The driver script restores both from `HEAD` after every pass, so an
+  edit here is reverted, not kept.
 - Never commit `.claude/`.
 - Never add Claude, Codex, Anthropic, OpenAI, an AI assistant, or a bot as a git author, committer, `Co-Authored-By` trailer, or contributor. Human identities only.
 - Commit only when asked.
