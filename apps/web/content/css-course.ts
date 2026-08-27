@@ -210,6 +210,14 @@ const REFILL_STATION_HTML = `<section class="stall-grid">
 </section>`;
 const solvedRefillStation = (styles: string): Record<string, string> => ({ "index.html": REFILL_STATION_HTML, "styles.css": css(styles) });
 
+/* css-topic: responsive */
+const CLEAN_UP_HTML = `<article class="info-card">
+  <h2>Barangay Clean-Up Alert</h2>
+  <p>Join us for a cleaner neighborhood!</p>
+  <p class="info-detail">Help remove trash, plant trees</p>
+</article>`;
+const solvedCleanUp = (styles: string): Record<string, string> => ({ "index.html": CLEAN_UP_HTML, "styles.css": css(styles) });
+
 /** Authored proof for every step. Missing entries stop the course from loading. */
 const references = {
   "first-rule": {
@@ -440,6 +448,11 @@ const references = {
   "refill-station-gap": { estimatedMinutes: 4, solution: solvedRefillStation(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n}") },
   "refill-station-padding": { estimatedMinutes: 4, solution: solvedRefillStation(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n  padding: 12px;\n}") },
   "refill-station-background-color": { estimatedMinutes: 4, solution: solvedRefillStation(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n  padding: 12px;\n  background-color: #f1f5f9;\n}") },
+  "clean-up-max-width": { estimatedMinutes: 4, solution: solvedCleanUp(".info-card {\n  max-width: 480px;\n}") },
+  "clean-up-width": { estimatedMinutes: 4, solution: solvedCleanUp(".info-card {\n  max-width: 480px;\n  width: 100%;\n}") },
+  "clean-up-padding": { estimatedMinutes: 4, solution: solvedCleanUp(".info-card {\n  max-width: 480px;\n  width: 100%;\n  padding: 16px;\n}") },
+  "clean-up-font-size": { estimatedMinutes: 4, solution: solvedCleanUp(".info-card {\n  max-width: 480px;\n  width: 100%;\n  padding: 16px;\n  font-size: 16px;\n}") },
+  "clean-up-box-sizing": { estimatedMinutes: 4, solution: solvedCleanUp(".info-card {\n  max-width: 480px;\n  width: 100%;\n  padding: 16px;\n  font-size: 16px;\n  box-sizing: border-box;\n}") },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "jeepney-route-card";
@@ -473,6 +486,7 @@ const PROJECT_28_ID = "school-supply-list";
 const PROJECT_29_ID = "tricycle-fare-table";
 const PROJECT_30_ID = "bakery-order-slip";
 const PROJECT_31_ID = "water-refill-station";
+const PROJECT_32_ID = "barangay-clean-up";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -523,12 +537,14 @@ const s30 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const 
 
 const s31 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_31_ID }; };
 
+const s32 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_32_ID }; };
+
 export const cssCourse: Course = {
   id: "css-basics",
   order: 2,
   title: "Learn CSS by Building a Jeepney Route Card",
   project: "Jeepney Route Card",
-  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }, { id: PROJECT_23_ID, title: "Barangay Health Centre" }, { id: PROJECT_24_ID, title: "Jeepney Route Board" }, { id: PROJECT_25_ID, title: "Palengke Fish Stall" }, { id: PROJECT_26_ID, title: "Turo Turo Menu" }, { id: PROJECT_27_ID, title: "Barangay Basketball League" }, { id: PROJECT_28_ID, title: "School Supply List" }, { id: PROJECT_29_ID, title: "Tricycle Fare Table" }, { id: PROJECT_30_ID, title: "Bakery Order Slip" }, { id: PROJECT_31_ID, title: "Water Refill Station" }],
+  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }, { id: PROJECT_23_ID, title: "Barangay Health Centre" }, { id: PROJECT_24_ID, title: "Jeepney Route Board" }, { id: PROJECT_25_ID, title: "Palengke Fish Stall" }, { id: PROJECT_26_ID, title: "Turo Turo Menu" }, { id: PROJECT_27_ID, title: "Barangay Basketball League" }, { id: PROJECT_28_ID, title: "School Supply List" }, { id: PROJECT_29_ID, title: "Tricycle Fare Table" }, { id: PROJECT_30_ID, title: "Bakery Order Slip" }, { id: PROJECT_31_ID, title: "Water Refill Station" }, { id: PROJECT_32_ID, title: "Barangay Clean Up" }],
   kind: "web",
   requires: ["html-basics"],
   summary: "Now make it look good. Colours, spacing, fonts, and layout.",
@@ -1054,5 +1070,10 @@ export const cssCourse: Course = {
     s31({ id: "refill-station-gap", task: "Space the cells apart.", inputMode: "guided", files: solvedRefillStation(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: ;\n}"), activeFile: "styles.css", highlightToken: "gap: ;", tests: [{ id: "refill-station-gap-set", kind: "style", selector: ".stall-grid", prop: "row-gap", equals: "12px", readable: "12 pixels", label: "The grid keeps a gap of 12 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the gap." }, { level: 2, text: "Write 12px after the colon." }], xp: 45 }),
     s31({ id: "refill-station-padding", task: "Keep the cells clear of the outer edge.", inputMode: "guided", files: solvedRefillStation(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n  padding: ;\n}"), activeFile: "styles.css", highlightToken: "padding: ;", tests: [{ id: "refill-station-padding-set", kind: "style", selector: ".stall-grid", prop: "padding-top", equals: "12px", readable: "12 pixels", label: "The grid has room inside of 12 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the inside room." }, { level: 2, text: "Write 12px after the colon." }], xp: 45 }),
     s31({ id: "refill-station-background-color", task: "Tint the grid so the cells read as a set.", inputMode: "guided", files: solvedRefillStation(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n  padding: 12px;\n  background-color: ;\n}"), activeFile: "styles.css", highlightToken: "background-color: ;", tests: [{ id: "refill-station-background-color-set", kind: "style", selector: ".stall-grid", prop: "background-color", equals: "rgb(241, 245, 249)", readable: "light grey", label: "The grid has a background of light grey" }], hints: [{ level: 1, text: "Use the light grey code." }, { level: 2, text: "Write #f1f5f9 after the colon." }], xp: 45 }),
+    s32({ id: "clean-up-max-width", task: "Cap how wide the card can grow.", inputMode: "guided", files: solvedCleanUp(".info-card {\n  max-width: ;\n}"), activeFile: "styles.css", highlightToken: "max-width: ;", tests: [{ id: "clean-up-max-width-set", kind: "style", selector: ".info-card", prop: "max-width", equals: "480px", readable: "480 pixels", label: "The card stops growing past 480 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the widest it may get." }, { level: 2, text: "Write 480px after the colon." }], xp: 45 }),
+    s32({ id: "clean-up-width", task: "Let the card shrink to fit a narrow screen.", inputMode: "guided", files: solvedCleanUp(".info-card {\n  max-width: 480px;\n  width: ;\n}"), activeFile: "styles.css", highlightToken: "width: ;", tests: [{ id: "clean-up-width-set", kind: "source-matches", file: "styles.css", pattern: "width\s*:\s*100%", flags: "i", because: "A full-width value lets the card shrink on a narrow screen.", label: "The card takes up the full width available" }], hints: [{ level: 1, text: "Use a percentage of the space available." }, { level: 2, text: "Write 100% after the colon." }], xp: 55 }),
+    s32({ id: "clean-up-padding", task: "Give the card room inside.", inputMode: "guided", files: solvedCleanUp(".info-card {\n  max-width: 480px;\n  width: 100%;\n  padding: ;\n}"), activeFile: "styles.css", highlightToken: "padding: ;", tests: [{ id: "clean-up-padding-set", kind: "style", selector: ".info-card", prop: "padding-top", equals: "16px", readable: "16 pixels", label: "The card has room inside of 16 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the inside room." }, { level: 2, text: "Write 16px after the colon." }], xp: 45 }),
+    s32({ id: "clean-up-font-size", task: "Set a comfortable reading size.", inputMode: "guided", files: solvedCleanUp(".info-card {\n  max-width: 480px;\n  width: 100%;\n  padding: 16px;\n  font-size: ;\n}"), activeFile: "styles.css", highlightToken: "font-size: ;", tests: [{ id: "clean-up-font-size-set", kind: "style", selector: ".info-card", prop: "font-size", equals: "16px", readable: "16 pixels", label: "The card sets its text at 16 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the text size." }, { level: 2, text: "Write 16px after the colon." }], xp: 45 }),
+    s32({ id: "clean-up-box-sizing", task: "Count the padding inside the width, not on top of it.", inputMode: "guided", files: solvedCleanUp(".info-card {\n  max-width: 480px;\n  width: 100%;\n  padding: 16px;\n  font-size: 16px;\n  box-sizing: ;\n}"), activeFile: "styles.css", highlightToken: "box-sizing: ;", tests: [{ id: "clean-up-box-sizing-set", kind: "style", selector: ".info-card", prop: "box-sizing", equals: "border-box", readable: "border box", label: "The card measures itself as border box" }], hints: [{ level: 1, text: "Use the sizing value that includes padding and border." }, { level: 2, text: "Write border-box after the colon." }], xp: 45 }),
   ],
 };
