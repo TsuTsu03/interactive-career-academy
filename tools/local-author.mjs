@@ -234,8 +234,13 @@ function buildPrompt(state) {
   // from simplest to hardest and starting the cycle again in a new setting.
   if (open.length === 0) {
     const done = state.usedCompositions;
+    // Once every structure has been built once, cycle by project count rather
+    // than by how many are done - that number stops growing, so the old
+    // fallback handed back the same three-node notice card every pass.
+    // Later passes start from the harder end, since the easy ones are the
+    // ones already practised.
     const next = COMPOSITIONS.find((c) => !done.has(c.id))
-      ?? COMPOSITIONS[done.size % COMPOSITIONS.length];
+      ?? [...COMPOSITIONS].reverse()[usedProjectIds.size % COMPOSITIONS.length];
     return buildCombinationPrompt(next, setting, done);
   }
 
