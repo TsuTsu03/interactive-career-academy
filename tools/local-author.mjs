@@ -131,68 +131,93 @@ function readCourseState() {
  * think of an unused tag: a 7B asked for "an element you have not seen"
  * reaches for the same half-dozen every time.
  */
+/**
+ * Each element ships with the definition the lesson must teach, because the
+ * model cannot be trusted to supply it. Left to invent one, a 7B wrote that
+ * `<b>` means "bold for emphasis" and compared it to shouting - which is the
+ * definition of `<strong>`, and precisely the confusion `<b>` exists to avoid.
+ * Wrong content is worse than no content in a course, so the fact is fixed
+ * here and the model only writes the scene and the analogy around it.
+ *
+ * `what` is the definition, near enough to ship after the model rephrases
+ * nothing about it. `name` is what the lesson calls it in plain words.
+ */
 const TEACHABLE = [
-  // Everyday meaning a beginner can see the point of immediately.
-  "em", "span", "pre", "output", "section", "hgroup",
-  // Table structure, once plain tables are familiar.
-  "thead", "tbody", "tfoot", "colgroup",
-  // Emphasis and correction with narrower meaning than strong or em.
-  "b", "u", "s", "sub", "sup", "dfn", "var",
-  // Grouping and fallbacks.
-  "menu", "noscript",
-  // Narrow meaning; correct to teach, but only once the rest are done.
-  "bdi", "bdo", "ruby", "rt", "rp",
+  { tag: "em", name: "stressed word", what: "The em element marks a word said with stress, changing the meaning of the sentence." },
+  { tag: "span", name: "small piece of text", what: "The span element marks a small piece of text so it can be styled, without giving it any meaning." },
+  { tag: "pre", name: "preformatted text", what: "The pre element keeps the spaces and line breaks exactly as they were typed." },
+  { tag: "output", name: "calculated result", what: "The output element shows a result the page worked out." },
+  { tag: "section", name: "section of a page", what: "The section element groups a part of a page that has its own heading." },
+  { tag: "thead", name: "table head", what: "The thead element groups the header rows of a table." },
+  { tag: "tbody", name: "table body", what: "The tbody element groups the main rows of a table." },
+  { tag: "tfoot", name: "table footer", what: "The tfoot element groups the summary rows of a table, such as a total." },
+  { tag: "b", name: "keyword", what: "The b element draws attention to words without saying they are more important." },
+  { tag: "u", name: "marked word", what: "The u element marks a word that is spelled wrong or needs attention, shown underlined." },
+  { tag: "s", name: "no longer true", what: "The s element marks text that is no longer true or no longer available." },
+  { tag: "sub", name: "subscript", what: "The sub element lowers text below the line, used in chemical formulas like H2O." },
+  { tag: "sup", name: "superscript", what: "The sup element raises text above the line, used in things like 1st and footnote marks." },
+  { tag: "dfn", name: "term being defined", what: "The dfn element marks the word a sentence is defining." },
+  { tag: "var", name: "variable name", what: "The var element marks the name of a value that can change." },
+  { tag: "menu", name: "list of commands", what: "The menu element holds a list of buttons or commands." },
+  { tag: "bdi", name: "isolated name", what: "The bdi element keeps a name written in another writing direction from disturbing the text around it." },
 ];
 
 function buildPrompt({ taughtTags, conceptWords }) {
-  const open = TEACHABLE.filter((t) => !taughtTags.has(t) && !conceptWords.has(t));
+  const open = TEACHABLE.filter((e) => !taughtTags.has(e.tag) && !conceptWords.has(e.tag));
   if (open.length === 0) {
     throw new Error("every teachable element in the list is already covered; extend TEACHABLE");
   }
-  const offered = open.slice(0, 12);
-  const avoid = offered.join(", ");
+
+  // One element per pass rather than a menu. Choosing is a decision the list's
+  // order already made, and a model given twelve options spends its attention
+  // on picking instead of on writing.
+  const target = open[0];
 
   const system = [
-    "You design one small HTML lesson for absolute beginners in the Philippines.",
+    "You write one small HTML lesson for absolute beginners in the Philippines.",
     "You reply with one JSON object and nothing else. No markdown fence, no explanation.",
   ].join(" ");
 
-  const user = `Design a lesson that teaches ONE HTML element.
+  const user = `Write a lesson that teaches the HTML element named ${target.tag}.
 
-Pick the element from this list, and only this list: ${avoid}
+What it means: ${target.what}
 
-The lesson is set in everyday Filipino life: a barangay notice, a sari-sari store,
-a palengke stall, a jeepney route, a turo-turo menu, a health centre, a school.
+Do not change what the element means. That sentence is the truth you are
+teaching. Your job is to put it in a Filipino setting and explain it warmly.
+
+Set it in everyday Filipino life: a barangay notice, a sari-sari store, a
+palengke stall, a jeepney route, a turo-turo menu, a health centre, a school.
+Pick a setting where ${target.tag} is genuinely useful.
 
 Reply with exactly this JSON shape:
 
 {
-  "projectId": "barangay-something",
-  "projectTitle": "Barangay Something",
-  "slug": "something",
-  "heading": "Barangay Something",
-  "intro": "One short sentence about the page.",
-  "element": "kbd",
-  "elementName": "keyboard key",
-  "elementText": "The words that go inside the element.",
-  "distractors": ["<p></p>", "<span></span>", "<key></key>"],
-  "conceptTerm": "kbd element",
-  "conceptDefinition": "One sentence saying what the element does.",
-  "conceptAnalogy": "One sentence comparing it to something in ordinary life.",
-  "conceptProof": "You will mark ... .",
+  "projectId": "barangay-water-bill",
+  "projectTitle": "Barangay Water Bill",
+  "slug": "water-bill",
+  "heading": "Barangay Water Bill",
+  "intro": "One short sentence about what this page shows.",
+  "elementText": "The exact short words that go inside <${target.tag}>.",
+  "distractors": ["<p></p>", "<div></div>", "<note></note>"],
+  "conceptAnalogy": "Something from ordinary Filipino life that works the same way.",
+  "conceptProof": "You will mark the words ... on the ... .",
   "diagramAlt": "One sentence describing the picture for a screen reader."
 }
 
 Rules:
-- "projectId" is lowercase words joined by hyphens, and must not be one already taught.
-- "element" must be one of: ${avoid}
-- "element" is written lowercase with no angle brackets.
-- "distractors" are three WRONG options shown beside the right one. Each is a full
-  tag pair like "<p></p>". None may be the correct element.
+- "projectId" and "slug" are lowercase words joined by hyphens, and must be about
+  your chosen setting, not about the element.
+- "distractors" are three WRONG tag options shown beside the right one. Write each
+  as a full tag pair. None may be the ${target.tag} tag.
+- "conceptAnalogy" must be a real thing from ordinary life, not a restatement.
+  Do not repeat the sentence above in other words. Do not write any HTML in it.
+  Do not compare it to shouting or importance unless that is what it means.
+- "elementText" is short and is exactly what a beginner types inside the element.
 - Every sentence is plain English, under 20 words, no jargon.
-- "elementText" is short, and is what a beginner will type inside the element.`;
+- Never write < or > in any sentence. Write ${target.tag} as a plain word.
+- Write in English only.`;
 
-  return { system, user, offered };
+  return { system, user, target };
 }
 
 async function askModel(prompt, extraNote) {
@@ -253,22 +278,26 @@ const VOID_ELEMENTS = new Set(["area", "base", "br", "col", "embed", "hr", "img"
  * authoring harness or the type checker would catch later, moved earlier so a
  * bad reply costs a retry rather than a reverted pass.
  */
-function validateSpec(spec, state, offered) {
-  const need = ["projectId", "projectTitle", "slug", "heading", "intro", "element",
-    "elementName", "elementText", "distractors", "conceptTerm", "conceptDefinition",
-    "conceptAnalogy", "conceptProof", "diagramAlt"];
+function validateSpec(raw, state, target) {
+  // The element, its name, its definition, and the concept term come from the
+  // curated list, never from the reply. The model is only trusted with the
+  // setting, the wording, and the analogy.
+  const spec = {
+    ...raw,
+    element: target.tag,
+    elementName: target.name,
+    conceptTerm: `${target.tag} element`,
+    conceptDefinition: target.what,
+  };
+
+  const need = ["projectId", "projectTitle", "slug", "heading", "intro",
+    "elementText", "distractors", "conceptAnalogy", "conceptProof", "diagramAlt"];
   for (const k of need) {
     if (typeof spec[k] === "undefined" || spec[k] === null) throw new Error(`missing "${k}"`);
   }
 
   if (!/^[a-z][a-z0-9-]*$/.test(spec.projectId)) throw new Error('"projectId" must be lowercase-hyphenated');
-  if (!/^[a-z][a-z0-9]*$/.test(spec.element)) throw new Error('"element" must be a bare lowercase tag name');
   if (VOID_ELEMENTS.has(spec.element)) throw new Error(`"${spec.element}" is a void element and has no text content`);
-  if (offered && !offered.includes(spec.element)) {
-    throw new Error(`"${spec.element}" was not on the offered list: ${offered.join(", ")}`);
-  }
-  if (state.taughtTags.has(spec.element)) throw new Error(`"${spec.element}" already appears in the course`);
-  if (state.conceptWords.has(spec.element)) throw new Error(`"${spec.element}" is already explained by an existing concept`);
 
   const conceptId = `${spec.element}-element`;
   if (state.conceptIds.has(conceptId)) throw new Error(`concept "${conceptId}" already exists`);
@@ -299,6 +328,25 @@ function validateSpec(spec, state, offered) {
 
   const words = String(spec.intro).trim().split(/\s+/).length;
   if (words > 20) throw new Error(`"intro" is ${words} words; keep it under 20`);
+
+  // Learner-facing copy is prose, not markup. A raw tag here renders as
+  // literal text in the concept card, and the model reaches for one whenever
+  // it is asked to talk about an element.
+  for (const k of ["conceptAnalogy", "conceptProof", "intro", "elementText"]) {
+    if (/[<>]/.test(String(spec[k]))) throw new Error(`"${k}" contains a raw angle bracket`);
+  }
+
+  // An analogy that restates the definition teaches nothing twice. Compare on
+  // content words: heavy overlap means the model paraphrased instead of
+  // reaching for something from ordinary life.
+  const contentWords = (s) => new Set(String(s).toLowerCase().match(/[a-z]{4,}/g) || []);
+  const defWords = contentWords(spec.conceptDefinition);
+  const anaWords = contentWords(spec.conceptAnalogy);
+  if (anaWords.size === 0) throw new Error('"conceptAnalogy" has no content');
+  const shared = [...anaWords].filter((w) => defWords.has(w)).length;
+  if (shared / anaWords.size > 0.5) {
+    throw new Error('"conceptAnalogy" restates the definition; compare it to something in ordinary life instead');
+  }
 
   return { ...spec, conceptId };
 }
@@ -398,6 +446,23 @@ function insertBefore(src, anchor, text) {
 const REFERENCES_CLOSE = "} satisfies Record<string, StepReference>;";
 const COURSE_EXPORT = "export const htmlCourse: Course = {";
 
+/**
+ * Appends `entry` to the end of the named array inside the course object.
+ * Finds the array's own closing `],` rather than the first one after it, so a
+ * nested array in the last element cannot capture the insertion point.
+ */
+function appendToArray(src, name, entry) {
+  const open = new RegExp(`^  ${name}: \\[\\r?$`, "m").exec(src);
+  if (!open) throw new Error(`${name} array not found`);
+  const close = new RegExp(`^  \\],\\r?$`, "m");
+  close.lastIndex = 0;
+  const rest = src.slice(open.index + open[0].length);
+  const m = close.exec(rest);
+  if (!m) throw new Error(`${name} array close not found`);
+  const at = open.index + open[0].length + m.index;
+  return src.slice(0, at) + "\n" + entry.replace(/\n$/, "") + src.slice(at);
+}
+
 function apply(gen) {
   let src = readFileSync(COURSE, "utf8");
 
@@ -415,20 +480,14 @@ function apply(gen) {
   // Step factory, after the last one and before the course export.
   src = insertBefore(src, COURSE_EXPORT, gen.factory + "\n");
 
-  // Project entry, at the end of the projects array. The array is the only
-  // thing between `projects: [` and the next `  ],`.
-  const projOpen = src.indexOf("  projects: [\n");
-  if (projOpen === -1) throw new Error("projects array not found");
-  const projClose = src.indexOf("\n  ],", projOpen);
-  if (projClose === -1) throw new Error("projects array close not found");
-  src = src.slice(0, projClose + 1) + gen.projectEntry + src.slice(projClose + 1);
-
-  // Steps, at the end of the steps array, which is the last array in the file.
-  const stepsOpen = src.indexOf("  steps: [\n");
-  if (stepsOpen === -1) throw new Error("steps array not found");
-  const stepsClose = src.indexOf("\n  ],", stepsOpen);
-  if (stepsClose === -1) throw new Error("steps array close not found");
-  src = src.slice(0, stepsClose + 1) + gen.steps + src.slice(stepsClose + 1);
+  // Project entry, then steps, each at the end of its own array.
+  //
+  // These two anchors are matched with a regex rather than indexOf because the
+  // newline follows the text here instead of preceding it, and the file is
+  // checked out with CRLF endings on Windows. `"  projects: [\n"` does not
+  // occur in a file that actually contains `  projects: [\r\n`.
+  src = appendToArray(src, "projects", gen.projectEntry);
+  src = appendToArray(src, "steps", gen.steps);
 
   writeFileSync(COURSE, src, "utf8");
 
@@ -511,7 +570,7 @@ async function onePass(passNo) {
   for (let attempt = 1; attempt <= RETRIES; attempt++) {
     try {
       const reply = await askModel(prompt, note);
-      spec = validateSpec(extractJson(reply), state, prompt.offered);
+      spec = validateSpec(extractJson(reply), state, prompt.target);
       break;
     } catch (e) {
       note = e.message;
