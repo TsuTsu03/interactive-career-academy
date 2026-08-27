@@ -2342,6 +2342,14 @@ export const concepts: Record<string, Concept> = {
     visual: { kind: "diagram", diagram: { alt: "A table with a top row labeled 'Header Row'", columns: 3, nodes: [{ id: "words", label: "Header Row", note: "plain words", tone: "ghost" }, { id: "tag", label: "thead", note: "table head", tone: "accent" }, { id: "result", label: "Table head", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
     proof: "You will mark the words 'Header Row' on the table header section.",
   },
+  "tbody-element": {
+    id: "tbody-element",
+    term: "tbody element",
+    definition: "The tbody element groups the main rows of a table.",
+    analogy: "A list of chores, grouped by who does them, like mom's chores and dad's chores.",
+    visual: { kind: "diagram", diagram: { alt: "A table with two columns: 'Household Name' and 'Total Bill'.", columns: 3, nodes: [{ id: "words", label: "Water usage and charges per household.", note: "plain words", tone: "ghost" }, { id: "tag", label: "tbody", note: "table body", tone: "accent" }, { id: "result", label: "Table body", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
+    proof: "You will mark the words 'Water usage' and 'Charges' on the table rows.",
+  },
 };
 
 export function conceptById(id: string): Concept | undefined {

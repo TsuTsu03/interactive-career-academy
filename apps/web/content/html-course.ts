@@ -761,6 +761,14 @@ const STOCK_LIST_INTRO_BODY = `    <h2>Barangay Water Bill</h2>
 const STOCK_LIST_ELEMENT_SLOT = slotPage(`${STOCK_LIST_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
 const STOCK_LIST_ELEMENT_BODY = `${STOCK_LIST_INTRO_BODY}    <thead></thead>\n`;
 
+const ID_APPLICATION_TITLE_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const ID_APPLICATION_TITLE_BODY = `    <h2></h2>\n`;
+const ID_APPLICATION_HEADING_BODY = `    <h2>Barangay Water Bill</h2>\n`;
+const ID_APPLICATION_INTRO_BODY = `    <h2>Barangay Water Bill</h2>
+    <p>This page shows the water bill details for each household in our barangay.</p>\n`;
+const ID_APPLICATION_ELEMENT_SLOT = slotPage(`${ID_APPLICATION_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
+const ID_APPLICATION_ELEMENT_BODY = `${ID_APPLICATION_INTRO_BODY}    <tbody></tbody>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1272,6 +1280,11 @@ const references = {
   "stock-list-copy": { estimatedMinutes: 4, solution: solved(STOCK_LIST_INTRO_BODY) },
   "stock-list-thead": { estimatedMinutes: 5, solution: solvedSlot(STOCK_LIST_ELEMENT_SLOT, "<thead></thead>") },
   "stock-list-thead-text": { estimatedMinutes: 4, solution: solved(`${STOCK_LIST_INTRO_BODY}    <thead>Header Row</thead>\n`) },
+  "id-application-title": { estimatedMinutes: 4, solution: solvedSlot(ID_APPLICATION_TITLE_SLOT, "<h2></h2>") },
+  "id-application-heading": { estimatedMinutes: 4, solution: solved(ID_APPLICATION_HEADING_BODY) },
+  "id-application-copy": { estimatedMinutes: 4, solution: solved(ID_APPLICATION_INTRO_BODY) },
+  "id-application-tbody": { estimatedMinutes: 5, solution: solvedSlot(ID_APPLICATION_ELEMENT_SLOT, "<tbody></tbody>") },
+  "id-application-tbody-text": { estimatedMinutes: 4, solution: solved(`${ID_APPLICATION_INTRO_BODY}    <tbody>Water usage and charges per household.</tbody>\n`) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1308,6 +1321,7 @@ const PROJECT_30_ID = "barangay-sari-sari-store";
 const PROJECT_32_ID = "barangay-water-bill";
 const PROJECT_33_ID = "sari-sari-store-receipt";
 const PROJECT_34_ID = "pharmacy-stock-list";
+const PROJECT_35_ID = "barangay-id-application";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1515,6 +1529,11 @@ const s34 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_34_ID };
 };
 
+const s35 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_35_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1555,6 +1574,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_32_ID, title: "Barangay Water Bill" },
     { id: PROJECT_33_ID, title: "Sari-Sari Store Receipt" },
     { id: PROJECT_34_ID, title: "Barangay Water Bill" },
+    { id: PROJECT_35_ID, title: "Barangay Water Bill" },
   ],
   kind: "web",
   requires: [],
@@ -4458,5 +4478,10 @@ export const htmlCourse: Course = {
     s34({ id: "stock-list-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(STOCK_LIST_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "stock-list-copy-text", kind: "text-equals", selector: "p", value: "This page shows the header of a water bill for barangays.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write This page shows the header of a water bill for barangays." }], xp: 40 }),
     s34({ id: "stock-list-thead", task: "Add a place for the table head.", inputMode: "tap-to-build", files: { "index.html": STOCK_LIST_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: STOCK_LIST_ELEMENT_SLOT.slotLine, blocks: ["<thead></thead>","<p></p>","<div></div>","<note></note>"], correctBlock: "<thead></thead>", conceptIds: ["thead-element"], tests: [{ id: "stock-list-thead-exists", kind: "exists", selector: "thead", label: "The table head has a place" }], hints: [{ level: 1, text: "Add the element that marks a table head." }, { level: 2, text: "Use thead for the table head." }], xp: 50 }),
     s34({ id: "stock-list-thead-text", task: "Write Header Row inside it.", inputMode: "guided", files: solved(STOCK_LIST_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<thead></thead>", tests: [{ id: "stock-list-thead-text-set", kind: "text-equals", selector: "thead", value: "Header Row", label: "The table head shows its words" }], hints: [{ level: 1, text: "Write the words inside the thead tags." }, { level: 2, text: "Use Header Row exactly." }], xp: 40 }),
+    s35({ id: "id-application-title", task: "Start the barangay water bill with a smaller heading.", inputMode: "tap-to-build", files: { "index.html": ID_APPLICATION_TITLE_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: ID_APPLICATION_TITLE_SLOT.slotLine, blocks: ["<h2></h2>", "<p></p>", "<h1></h1>", "<tbody></tbody>"], correctBlock: "<h2></h2>", tests: [{ id: "id-application-title-exists", kind: "exists", selector: "h2", label: "The page has a heading" }], hints: [{ level: 1, text: "Add a level-two heading in the blank line." }, { level: 2, text: "Use h2 for this smaller heading." }], xp: 40 }),
+    s35({ id: "id-application-heading", task: "Name the heading Barangay Water Bill.", inputMode: "guided", files: solved(ID_APPLICATION_TITLE_BODY), activeFile: "index.html", highlightToken: "<h2></h2>", tests: [{ id: "id-application-heading-text", kind: "text-equals", selector: "h2", value: "Barangay Water Bill", label: "The page has its name" }], hints: [{ level: 1, text: "Write the page name between the heading tags." }, { level: 2, text: "Use Barangay Water Bill exactly." }], xp: 40 }),
+    s35({ id: "id-application-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(ID_APPLICATION_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "id-application-copy-text", kind: "text-equals", selector: "p", value: "This page shows the water bill details for each household in our barangay.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write This page shows the water bill details for each household in our barangay." }], xp: 40 }),
+    s35({ id: "id-application-tbody", task: "Add a place for the table body.", inputMode: "tap-to-build", files: { "index.html": ID_APPLICATION_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: ID_APPLICATION_ELEMENT_SLOT.slotLine, blocks: ["<tbody></tbody>","<p></p>","<div></div>","<note></note>"], correctBlock: "<tbody></tbody>", conceptIds: ["tbody-element"], tests: [{ id: "id-application-tbody-exists", kind: "exists", selector: "tbody", label: "The table body has a place" }], hints: [{ level: 1, text: "Add the element that marks a table body." }, { level: 2, text: "Use tbody for the table body." }], xp: 50 }),
+    s35({ id: "id-application-tbody-text", task: "Write Water usage and charges per household. inside it.", inputMode: "guided", files: solved(ID_APPLICATION_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<tbody></tbody>", tests: [{ id: "id-application-tbody-text-set", kind: "text-equals", selector: "tbody", value: "Water usage and charges per household.", label: "The table body shows its words" }], hints: [{ level: 1, text: "Write the words inside the tbody tags." }, { level: 2, text: "Use Water usage and charges per household. exactly." }], xp: 40 }),
   ],
 };
