@@ -218,6 +218,14 @@ const CLEAN_UP_HTML = `<article class="info-card">
 </article>`;
 const solvedCleanUp = (styles: string): Record<string, string> => ({ "index.html": CLEAN_UP_HTML, "styles.css": css(styles) });
 
+/* css-topic: shadow-depth */
+const SHOP_RATE_HTML = `<article class="info-card">
+  <h2>Lifted Card</h2>
+  <p>PHP 85/hr</p>
+  <p class="info-detail">Repair & Maintenance</p>
+</article>`;
+const solvedShopRate = (styles: string): Record<string, string> => ({ "index.html": SHOP_RATE_HTML, "styles.css": css(styles) });
+
 /** Authored proof for every step. Missing entries stop the course from loading. */
 const references = {
   "first-rule": {
@@ -453,6 +461,11 @@ const references = {
   "clean-up-padding": { estimatedMinutes: 4, solution: solvedCleanUp(".info-card {\n  max-width: 480px;\n  width: 100%;\n  padding: 16px;\n}") },
   "clean-up-font-size": { estimatedMinutes: 4, solution: solvedCleanUp(".info-card {\n  max-width: 480px;\n  width: 100%;\n  padding: 16px;\n  font-size: 16px;\n}") },
   "clean-up-box-sizing": { estimatedMinutes: 4, solution: solvedCleanUp(".info-card {\n  max-width: 480px;\n  width: 100%;\n  padding: 16px;\n  font-size: 16px;\n  box-sizing: border-box;\n}") },
+  "shop-rate-background-color": { estimatedMinutes: 4, solution: solvedShopRate(".info-card {\n  background-color: #ffffff;\n}") },
+  "shop-rate-border-radius": { estimatedMinutes: 4, solution: solvedShopRate(".info-card {\n  background-color: #ffffff;\n  border-radius: 10px;\n}") },
+  "shop-rate-box-shadow": { estimatedMinutes: 4, solution: solvedShopRate(".info-card {\n  background-color: #ffffff;\n  border-radius: 10px;\n  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);\n}") },
+  "shop-rate-padding": { estimatedMinutes: 4, solution: solvedShopRate(".info-card {\n  background-color: #ffffff;\n  border-radius: 10px;\n  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);\n  padding: 20px;\n}") },
+  "shop-rate-border": { estimatedMinutes: 4, solution: solvedShopRate(".info-card {\n  background-color: #ffffff;\n  border-radius: 10px;\n  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);\n  padding: 20px;\n  border: 1px solid #e2e8f0;\n}") },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "jeepney-route-card";
@@ -487,6 +500,7 @@ const PROJECT_29_ID = "tricycle-fare-table";
 const PROJECT_30_ID = "bakery-order-slip";
 const PROJECT_31_ID = "water-refill-station";
 const PROJECT_32_ID = "barangay-clean-up";
+const PROJECT_33_ID = "computer-shop-rate";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -539,12 +553,14 @@ const s31 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const 
 
 const s32 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_32_ID }; };
 
+const s33 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_33_ID }; };
+
 export const cssCourse: Course = {
   id: "css-basics",
   order: 2,
   title: "Learn CSS by Building a Jeepney Route Card",
   project: "Jeepney Route Card",
-  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }, { id: PROJECT_23_ID, title: "Barangay Health Centre" }, { id: PROJECT_24_ID, title: "Jeepney Route Board" }, { id: PROJECT_25_ID, title: "Palengke Fish Stall" }, { id: PROJECT_26_ID, title: "Turo Turo Menu" }, { id: PROJECT_27_ID, title: "Barangay Basketball League" }, { id: PROJECT_28_ID, title: "School Supply List" }, { id: PROJECT_29_ID, title: "Tricycle Fare Table" }, { id: PROJECT_30_ID, title: "Bakery Order Slip" }, { id: PROJECT_31_ID, title: "Water Refill Station" }, { id: PROJECT_32_ID, title: "Barangay Clean Up" }],
+  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }, { id: PROJECT_23_ID, title: "Barangay Health Centre" }, { id: PROJECT_24_ID, title: "Jeepney Route Board" }, { id: PROJECT_25_ID, title: "Palengke Fish Stall" }, { id: PROJECT_26_ID, title: "Turo Turo Menu" }, { id: PROJECT_27_ID, title: "Barangay Basketball League" }, { id: PROJECT_28_ID, title: "School Supply List" }, { id: PROJECT_29_ID, title: "Tricycle Fare Table" }, { id: PROJECT_30_ID, title: "Bakery Order Slip" }, { id: PROJECT_31_ID, title: "Water Refill Station" }, { id: PROJECT_32_ID, title: "Barangay Clean Up" }, { id: PROJECT_33_ID, title: "Computer Shop Rate" }],
   kind: "web",
   requires: ["html-basics"],
   summary: "Now make it look good. Colours, spacing, fonts, and layout.",
@@ -1075,5 +1091,10 @@ export const cssCourse: Course = {
     s32({ id: "clean-up-padding", task: "Give the card room inside.", inputMode: "guided", files: solvedCleanUp(".info-card {\n  max-width: 480px;\n  width: 100%;\n  padding: ;\n}"), activeFile: "styles.css", highlightToken: "padding: ;", tests: [{ id: "clean-up-padding-set", kind: "style", selector: ".info-card", prop: "padding-top", equals: "16px", readable: "16 pixels", label: "The card has room inside of 16 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the inside room." }, { level: 2, text: "Write 16px after the colon." }], xp: 45 }),
     s32({ id: "clean-up-font-size", task: "Set a comfortable reading size.", inputMode: "guided", files: solvedCleanUp(".info-card {\n  max-width: 480px;\n  width: 100%;\n  padding: 16px;\n  font-size: ;\n}"), activeFile: "styles.css", highlightToken: "font-size: ;", tests: [{ id: "clean-up-font-size-set", kind: "style", selector: ".info-card", prop: "font-size", equals: "16px", readable: "16 pixels", label: "The card sets its text at 16 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the text size." }, { level: 2, text: "Write 16px after the colon." }], xp: 45 }),
     s32({ id: "clean-up-box-sizing", task: "Count the padding inside the width, not on top of it.", inputMode: "guided", files: solvedCleanUp(".info-card {\n  max-width: 480px;\n  width: 100%;\n  padding: 16px;\n  font-size: 16px;\n  box-sizing: ;\n}"), activeFile: "styles.css", highlightToken: "box-sizing: ;", tests: [{ id: "clean-up-box-sizing-set", kind: "style", selector: ".info-card", prop: "box-sizing", equals: "border-box", readable: "border box", label: "The card measures itself as border box" }], hints: [{ level: 1, text: "Use the sizing value that includes padding and border." }, { level: 2, text: "Write border-box after the colon." }], xp: 45 }),
+    s33({ id: "shop-rate-background-color", task: "Make the card white so a shadow will show.", inputMode: "guided", files: solvedShopRate(".info-card {\n  background-color: ;\n}"), activeFile: "styles.css", highlightToken: "background-color: ;", tests: [{ id: "shop-rate-background-color-set", kind: "style", selector: ".info-card", prop: "background-color", equals: "rgb(255, 255, 255)", readable: "white", label: "The card has a background of white" }], hints: [{ level: 1, text: "Use the white colour code." }, { level: 2, text: "Write #ffffff after the colon." }], xp: 45 }),
+    s33({ id: "shop-rate-border-radius", task: "Round the card corners.", inputMode: "guided", files: solvedShopRate(".info-card {\n  background-color: #ffffff;\n  border-radius: ;\n}"), activeFile: "styles.css", highlightToken: "border-radius: ;", tests: [{ id: "shop-rate-border-radius-set", kind: "style", selector: ".info-card", prop: "border-top-left-radius", equals: "10px", readable: "10 pixels", label: "The card has corners curved by 10 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the corner curve." }, { level: 2, text: "Write 10px after the colon." }], xp: 45 }),
+    s33({ id: "shop-rate-box-shadow", task: "Lift the card slightly off the page.", inputMode: "guided", files: solvedShopRate(".info-card {\n  background-color: #ffffff;\n  border-radius: 10px;\n  box-shadow: ;\n}"), activeFile: "styles.css", highlightToken: "box-shadow: ;", tests: [{ id: "shop-rate-box-shadow-set", kind: "source-matches", file: "styles.css", pattern: "box-shadow\s*:\s*0\s+1px\s+3px", flags: "i", because: "The shadow needs an offset, a blur, and a colour.", label: "The card carries a soft shadow" }], hints: [{ level: 1, text: "A shadow needs a sideways offset, a downward offset, a blur, and a colour." }, { level: 2, text: "Write 0 1px 3px rgba(15, 23, 42, 0.2) after the colon." }], xp: 55 }),
+    s33({ id: "shop-rate-padding", task: "Give the lifted card room inside.", inputMode: "guided", files: solvedShopRate(".info-card {\n  background-color: #ffffff;\n  border-radius: 10px;\n  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);\n  padding: ;\n}"), activeFile: "styles.css", highlightToken: "padding: ;", tests: [{ id: "shop-rate-padding-set", kind: "style", selector: ".info-card", prop: "padding-top", equals: "20px", readable: "20 pixels", label: "The card has room inside of 20 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the inside room." }, { level: 2, text: "Write 20px after the colon." }], xp: 45 }),
+    s33({ id: "shop-rate-border", task: "Add a faint edge so the card reads on a white page.", inputMode: "guided", files: solvedShopRate(".info-card {\n  background-color: #ffffff;\n  border-radius: 10px;\n  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);\n  padding: 20px;\n  border: ;\n}"), activeFile: "styles.css", highlightToken: "border: ;", tests: [{ id: "shop-rate-border-set", kind: "style", selector: ".info-card", prop: "border-top-width", equals: "1px", readable: "a thin grey edge", label: "The card has an edge of a thin grey edge" }], hints: [{ level: 1, text: "A border needs a width, a style, and a colour." }, { level: 2, text: "Write 1px solid #e2e8f0 after the colon." }], xp: 45 }),
   ],
 };
