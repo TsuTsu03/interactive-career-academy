@@ -777,6 +777,14 @@ const STORE_PRICE_INTRO_BODY = `    <h2>Sari Sari Store Price</h2>
 const STORE_PRICE_ELEMENT_SLOT = slotPage(`${STORE_PRICE_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
 const STORE_PRICE_ELEMENT_BODY = `${STORE_PRICE_INTRO_BODY}    <tfoot></tfoot>\n`;
 
+const HEALTH_CENTRE_TITLE_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const HEALTH_CENTRE_TITLE_BODY = `    <h2></h2>\n`;
+const HEALTH_CENTRE_HEADING_BODY = `    <h2>Barangay Health Centre</h2>\n`;
+const HEALTH_CENTRE_INTRO_BODY = `    <h2>Barangay Health Centre</h2>
+    <p>Learn how to mark words that need attention in the health center notice.</p>\n`;
+const HEALTH_CENTRE_ELEMENT_SLOT = slotPage(`${HEALTH_CENTRE_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
+const HEALTH_CENTRE_ELEMENT_BODY = `${HEALTH_CENTRE_INTRO_BODY}    <u></u>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1298,6 +1306,11 @@ const references = {
   "store-price-copy": { estimatedMinutes: 4, solution: solved(STORE_PRICE_INTRO_BODY) },
   "store-price-tfoot": { estimatedMinutes: 5, solution: solvedSlot(STORE_PRICE_ELEMENT_SLOT, "<tfoot></tfoot>") },
   "store-price-tfoot-text": { estimatedMinutes: 4, solution: solved(`${STORE_PRICE_INTRO_BODY}    <tfoot>TOTAL: ₱100.00</tfoot>\n`) },
+  "health-centre-title": { estimatedMinutes: 4, solution: solvedSlot(HEALTH_CENTRE_TITLE_SLOT, "<h2></h2>") },
+  "health-centre-heading": { estimatedMinutes: 4, solution: solved(HEALTH_CENTRE_HEADING_BODY) },
+  "health-centre-copy": { estimatedMinutes: 4, solution: solved(HEALTH_CENTRE_INTRO_BODY) },
+  "health-centre-u": { estimatedMinutes: 5, solution: solvedSlot(HEALTH_CENTRE_ELEMENT_SLOT, "<u></u>") },
+  "health-centre-u-text": { estimatedMinutes: 4, solution: solved(`${HEALTH_CENTRE_INTRO_BODY}    <u>misspelled word or important note</u>\n`) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1336,6 +1349,7 @@ const PROJECT_33_ID = "sari-sari-store-receipt";
 const PROJECT_34_ID = "pharmacy-stock-list";
 const PROJECT_35_ID = "barangay-id-application";
 const PROJECT_36_ID = "sari-sari-store-price";
+const PROJECT_37_ID = "barangay-health-centre";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1553,6 +1567,11 @@ const s36 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_36_ID };
 };
 
+const s37 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_37_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1595,6 +1614,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_34_ID, title: "Pharmacy Stock List" },
     { id: PROJECT_35_ID, title: "Barangay ID Application" },
     { id: PROJECT_36_ID, title: "Sari Sari Store Price" },
+    { id: PROJECT_37_ID, title: "Barangay Health Centre" },
   ],
   kind: "web",
   requires: [],
@@ -4508,5 +4528,10 @@ export const htmlCourse: Course = {
     s36({ id: "store-price-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(STORE_PRICE_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "store-price-copy-text", kind: "text-equals", selector: "p", value: "Learn how to group total rows on your water bill.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write Learn how to group total rows on your water bill." }], xp: 40 }),
     s36({ id: "store-price-tfoot", task: "Add a place for the table footer.", inputMode: "tap-to-build", files: { "index.html": STORE_PRICE_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: STORE_PRICE_ELEMENT_SLOT.slotLine, blocks: ["<tfoot></tfoot>","<p></p>","<div></div>","<note></note>"], correctBlock: "<tfoot></tfoot>", conceptIds: ["tfoot-element"], tests: [{ id: "store-price-tfoot-exists", kind: "exists", selector: "tfoot", label: "The table footer has a place" }], hints: [{ level: 1, text: "Add the element that marks a table footer." }, { level: 2, text: "Use tfoot for the table footer." }], xp: 50 }),
     s36({ id: "store-price-tfoot-text", task: "Write TOTAL: ₱100.00 inside it.", inputMode: "guided", files: solved(STORE_PRICE_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<tfoot></tfoot>", tests: [{ id: "store-price-tfoot-text-set", kind: "text-equals", selector: "tfoot", value: "TOTAL: ₱100.00", label: "The table footer shows its words" }], hints: [{ level: 1, text: "Write the words inside the tfoot tags." }, { level: 2, text: "Use TOTAL: ₱100.00 exactly." }], xp: 40 }),
+    s37({ id: "health-centre-title", task: "Start the barangay health centre with a smaller heading.", inputMode: "tap-to-build", files: { "index.html": HEALTH_CENTRE_TITLE_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: HEALTH_CENTRE_TITLE_SLOT.slotLine, blocks: ["<h2></h2>", "<p></p>", "<h1></h1>", "<u></u>"], correctBlock: "<h2></h2>", tests: [{ id: "health-centre-title-exists", kind: "exists", selector: "h2", label: "The page has a heading" }], hints: [{ level: 1, text: "Add a level-two heading in the blank line." }, { level: 2, text: "Use h2 for this smaller heading." }], xp: 40 }),
+    s37({ id: "health-centre-heading", task: "Name the heading Barangay Health Centre.", inputMode: "guided", files: solved(HEALTH_CENTRE_TITLE_BODY), activeFile: "index.html", highlightToken: "<h2></h2>", tests: [{ id: "health-centre-heading-text", kind: "text-equals", selector: "h2", value: "Barangay Health Centre", label: "The page has its name" }], hints: [{ level: 1, text: "Write the page name between the heading tags." }, { level: 2, text: "Use Barangay Health Centre exactly." }], xp: 40 }),
+    s37({ id: "health-centre-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(HEALTH_CENTRE_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "health-centre-copy-text", kind: "text-equals", selector: "p", value: "Learn how to mark words that need attention in the health center notice.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write Learn how to mark words that need attention in the health center notice." }], xp: 40 }),
+    s37({ id: "health-centre-u", task: "Add a place for the marked word.", inputMode: "tap-to-build", files: { "index.html": HEALTH_CENTRE_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: HEALTH_CENTRE_ELEMENT_SLOT.slotLine, blocks: ["<u></u>","<p></p>","<div></div>","<note></note>"], correctBlock: "<u></u>", conceptIds: ["u-element"], tests: [{ id: "health-centre-u-exists", kind: "exists", selector: "u", label: "The marked word has a place" }], hints: [{ level: 1, text: "Add the element that marks a marked word." }, { level: 2, text: "Use u for the marked word." }], xp: 50 }),
+    s37({ id: "health-centre-u-text", task: "Write misspelled word or important note inside it.", inputMode: "guided", files: solved(HEALTH_CENTRE_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<u></u>", tests: [{ id: "health-centre-u-text-set", kind: "text-equals", selector: "u", value: "misspelled word or important note", label: "The marked word shows its words" }], hints: [{ level: 1, text: "Write the words inside the u tags." }, { level: 2, text: "Use misspelled word or important note exactly." }], xp: 40 }),
   ],
 };

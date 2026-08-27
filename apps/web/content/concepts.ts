@@ -2358,6 +2358,14 @@ export const concepts: Record<string, Concept> = {
     visual: { kind: "diagram", diagram: { alt: "A line at the bottom of a list showing a grand total.", columns: 3, nodes: [{ id: "words", label: "TOTAL: ₱100.00", note: "plain words", tone: "ghost" }, { id: "tag", label: "tfoot", note: "table footer", tone: "accent" }, { id: "result", label: "Table footer", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
     proof: "Mark 'TOTAL' on the right side of the page.",
   },
+  "u-element": {
+    id: "u-element",
+    term: "u element",
+    definition: "The u element marks a word that is spelled wrong or needs attention, shown underlined.",
+    analogy: "A red pen underlining a mistake in your homework.",
+    visual: { kind: "diagram", diagram: { alt: "An old health center sign with a red pen underlining a misspelled 'flu'.", columns: 3, nodes: [{ id: "words", label: "misspelled word or important note", note: "plain words", tone: "ghost" }, { id: "tag", label: "u", note: "marked word", tone: "accent" }, { id: "result", label: "Marked word", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
+    proof: "You will mark the misspelled word 'flu' on this notice.",
+  },
 };
 
 export function conceptById(id: string): Concept | undefined {
