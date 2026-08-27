@@ -801,6 +801,14 @@ const FISH_STALL_INTRO_BODY = `    <h2>Palengke Fish Stall</h2>
 const FISH_STALL_ELEMENT_SLOT = slotPage(`${FISH_STALL_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
 const FISH_STALL_ELEMENT_BODY = `${FISH_STALL_INTRO_BODY}    <dfn></dfn>\n`;
 
+const TURO_MENU_TITLE_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const TURO_MENU_TITLE_BODY = `    <h2></h2>\n`;
+const TURO_MENU_HEADING_BODY = `    <h2>Turo Turo Menu</h2>\n`;
+const TURO_MENU_INTRO_BODY = `    <h2>Turo Turo Menu</h2>
+    <p>A list of buttons for paying water bills.</p>\n`;
+const TURO_MENU_ELEMENT_SLOT = slotPage(`${TURO_MENU_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
+const TURO_MENU_ELEMENT_BODY = `${TURO_MENU_INTRO_BODY}    <menu></menu>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1337,6 +1345,11 @@ const references = {
   "fish-stall-copy": { estimatedMinutes: 4, solution: solved(FISH_STALL_INTRO_BODY) },
   "fish-stall-dfn": { estimatedMinutes: 5, solution: solvedSlot(FISH_STALL_ELEMENT_SLOT, "<dfn></dfn>") },
   "fish-stall-dfn-text": { estimatedMinutes: 4, solution: solved(`${FISH_STALL_INTRO_BODY}    <dfn>Tilapia</dfn>\n`) },
+  "turo-menu-title": { estimatedMinutes: 4, solution: solvedSlot(TURO_MENU_TITLE_SLOT, "<h2></h2>") },
+  "turo-menu-heading": { estimatedMinutes: 4, solution: solved(TURO_MENU_HEADING_BODY) },
+  "turo-menu-copy": { estimatedMinutes: 4, solution: solved(TURO_MENU_INTRO_BODY) },
+  "turo-menu-menu": { estimatedMinutes: 5, solution: solvedSlot(TURO_MENU_ELEMENT_SLOT, "<menu></menu>") },
+  "turo-menu-menu-text": { estimatedMinutes: 4, solution: solved(`${TURO_MENU_INTRO_BODY}    <menu>Pay, Cancel, Help</menu>\n`) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1378,6 +1391,7 @@ const PROJECT_36_ID = "sari-sari-store-price";
 const PROJECT_37_ID = "barangay-health-centre";
 const PROJECT_38_ID = "jeepney-route-board";
 const PROJECT_39_ID = "palengke-fish-stall";
+const PROJECT_40_ID = "turo-turo-menu";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1610,6 +1624,11 @@ const s39 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_39_ID };
 };
 
+const s40 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_40_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1655,6 +1674,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_37_ID, title: "Barangay Health Centre" },
     { id: PROJECT_38_ID, title: "Jeepney Route Board" },
     { id: PROJECT_39_ID, title: "Palengke Fish Stall" },
+    { id: PROJECT_40_ID, title: "Turo Turo Menu" },
   ],
   kind: "web",
   requires: [],
@@ -4583,5 +4603,10 @@ export const htmlCourse: Course = {
     s39({ id: "fish-stall-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(FISH_STALL_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "fish-stall-copy-text", kind: "text-equals", selector: "p", value: "Learn how to mark fish names at the market.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write Learn how to mark fish names at the market." }], xp: 40 }),
     s39({ id: "fish-stall-dfn", task: "Add a place for the term being defined.", inputMode: "tap-to-build", files: { "index.html": FISH_STALL_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: FISH_STALL_ELEMENT_SLOT.slotLine, blocks: ["<dfn></dfn>","<p></p>","<div></div>","<note></note>"], correctBlock: "<dfn></dfn>", conceptIds: ["dfn-element"], tests: [{ id: "fish-stall-dfn-exists", kind: "exists", selector: "dfn", label: "The term being defined has a place" }], hints: [{ level: 1, text: "Add the element that marks a term being defined." }, { level: 2, text: "Use dfn for the term being defined." }], xp: 50 }),
     s39({ id: "fish-stall-dfn-text", task: "Write Tilapia inside it.", inputMode: "guided", files: solved(FISH_STALL_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<dfn></dfn>", tests: [{ id: "fish-stall-dfn-text-set", kind: "text-equals", selector: "dfn", value: "Tilapia", label: "The term being defined shows its words" }], hints: [{ level: 1, text: "Write the words inside the dfn tags." }, { level: 2, text: "Use Tilapia exactly." }], xp: 40 }),
+    s40({ id: "turo-menu-title", task: "Start the turo turo menu with a smaller heading.", inputMode: "tap-to-build", files: { "index.html": TURO_MENU_TITLE_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: TURO_MENU_TITLE_SLOT.slotLine, blocks: ["<h2></h2>", "<p></p>", "<h1></h1>", "<menu></menu>"], correctBlock: "<h2></h2>", tests: [{ id: "turo-menu-title-exists", kind: "exists", selector: "h2", label: "The page has a heading" }], hints: [{ level: 1, text: "Add a level-two heading in the blank line." }, { level: 2, text: "Use h2 for this smaller heading." }], xp: 40 }),
+    s40({ id: "turo-menu-heading", task: "Name the heading Turo Turo Menu.", inputMode: "guided", files: solved(TURO_MENU_TITLE_BODY), activeFile: "index.html", highlightToken: "<h2></h2>", tests: [{ id: "turo-menu-heading-text", kind: "text-equals", selector: "h2", value: "Turo Turo Menu", label: "The page has its name" }], hints: [{ level: 1, text: "Write the page name between the heading tags." }, { level: 2, text: "Use Turo Turo Menu exactly." }], xp: 40 }),
+    s40({ id: "turo-menu-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(TURO_MENU_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "turo-menu-copy-text", kind: "text-equals", selector: "p", value: "A list of buttons for paying water bills.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write A list of buttons for paying water bills." }], xp: 40 }),
+    s40({ id: "turo-menu-menu", task: "Add a place for the list of commands.", inputMode: "tap-to-build", files: { "index.html": TURO_MENU_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: TURO_MENU_ELEMENT_SLOT.slotLine, blocks: ["<menu></menu>","<p></p>","<div></div>","<note></note>"], correctBlock: "<menu></menu>", conceptIds: ["menu-element"], tests: [{ id: "turo-menu-menu-exists", kind: "exists", selector: "menu", label: "The list of commands has a place" }], hints: [{ level: 1, text: "Add the element that marks a list of commands." }, { level: 2, text: "Use menu for the list of commands." }], xp: 50 }),
+    s40({ id: "turo-menu-menu-text", task: "Write Pay, Cancel, Help inside it.", inputMode: "guided", files: solved(TURO_MENU_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<menu></menu>", tests: [{ id: "turo-menu-menu-text-set", kind: "text-equals", selector: "menu", value: "Pay, Cancel, Help", label: "The list of commands shows its words" }], hints: [{ level: 1, text: "Write the words inside the menu tags." }, { level: 2, text: "Use Pay, Cancel, Help exactly." }], xp: 40 }),
   ],
 };

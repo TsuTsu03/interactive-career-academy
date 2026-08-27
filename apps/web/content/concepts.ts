@@ -2382,6 +2382,14 @@ export const concepts: Record<string, Concept> = {
     visual: { kind: "diagram", diagram: { alt: "A picture of a tilapia fish with its name 'Tilapia' written below it.", columns: 3, nodes: [{ id: "words", label: "Tilapia", note: "plain words", tone: "ghost" }, { id: "tag", label: "dfn", note: "term being defined", tone: "accent" }, { id: "result", label: "Term being defined", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
     proof: "You will mark 'Tilapia' on the fish stall sign.",
   },
+  "menu-element": {
+    id: "menu-element",
+    term: "menu element",
+    definition: "The menu element holds a list of buttons or commands.",
+    analogy: "Buttons on a TV remote control.",
+    visual: { kind: "diagram", diagram: { alt: "Image of a turo-turo menu with 'Pay', 'Cancel', and 'Help' options.", columns: 3, nodes: [{ id: "words", label: "Pay, Cancel, Help", note: "plain words", tone: "ghost" }, { id: "tag", label: "menu", note: "list of commands", tone: "accent" }, { id: "result", label: "List of commands", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
+    proof: "You will mark the words 'Pay' and 'Cancel' on the menu buttons.",
+  },
 };
 
 export function conceptById(id: string): Concept | undefined {
