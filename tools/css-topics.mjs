@@ -170,7 +170,12 @@ export const CSS_TOPICS = [
       { prop: "border-radius", decl: "10px", readProp: "border-top-left-radius", computed: "10px", readable: "10 pixels", task: "Round the card corners.", hint1: "Use a pixel value for the corner curve.", hint2: "Write 10px after the colon." },
       { prop: "box-shadow", decl: "0 1px 3px rgba(15, 23, 42, 0.2)", computed: null, check: "source", pattern: "box-shadow\\s*:\\s*0\\s+1px\\s+3px", because: "The shadow needs an offset, a blur, and a colour.", readable: "a soft shadow", task: "Lift the card slightly off the page.", hint1: "A shadow needs a sideways offset, a downward offset, a blur, and a colour.", hint2: "Write 0 1px 3px rgba(15, 23, 42, 0.2) after the colon." },
       { prop: "padding", decl: "20px", readProp: "padding-top", computed: "20px", readable: "20 pixels", task: "Give the lifted card room inside.", hint1: "Use a pixel value for the inside room.", hint2: "Write 20px after the colon." },
-      { prop: "border", decl: "1px solid #e2e8f0", readProp: "border-top-width", computed: "1px", readable: "a thin grey edge", task: "Add a faint edge so the card reads on a white page.", hint1: "A border needs a width, a style, and a colour.", hint2: "Write 1px solid #e2e8f0 after the colon." },
+      // Checked against the source, not the computed value. A 1px border reads
+      // back as 0.8px on a display whose device pixel ratio is not 1, so a
+      // computed-style check on it fails on exactly the hardware this course
+      // is written for. This is the same trap the file header warns about, and
+      // it caught the author of this file too.
+      { prop: "border", decl: "1px solid #e2e8f0", check: "source", pattern: "border\\s*:\\s*1px\\s+solid\\s+#e2e8f0", because: "A border needs a width, a line style, and a colour, in that order.", readable: "a thin grey edge", task: "Add a faint edge so the card reads on a white page.", hint1: "A border needs a width, a style, and a colour.", hint2: "Write 1px solid #e2e8f0 after the colon." },
     ],
   },
   {

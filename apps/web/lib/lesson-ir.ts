@@ -199,6 +199,65 @@ export type TestSpec =
       selector: string;
     }
 
+  // --- Page assertions: the document *after* the learner's script ran ---
+  /**
+   * These differ from the plain `exists` / `text-equals` family above, which
+   * describe the markup the learner wrote and are checked in a frame where
+   * nothing executes. A lesson about `addEventListener` cannot be graded
+   * there, because the script never runs. These are checked in the page
+   * runner instead: an `allow-scripts` frame that loads the markup, runs
+   * `script.js`, and only then asserts. See `lib/page-runner.ts`.
+   *
+   * Every variant is plain data, exactly as rule 1.7 requires. Nothing here
+   * carries a function or a string that gets evaluated.
+   */
+  | { id: string; label: Copy; kind: "page-exists"; selector: string }
+  | { id: string; label: Copy; kind: "page-text-equals"; selector: string; value: string }
+  | {
+      id: string;
+      label: Copy;
+      kind: "page-attr-equals";
+      selector: string;
+      attr: string;
+      value: string;
+    }
+  | { id: string; label: Copy; kind: "page-class-contains"; selector: string; value: string }
+  /** Clicks `clickSelector`, then reads `selector`. Proves a handler ran. */
+  | {
+      id: string;
+      label: Copy;
+      kind: "page-click-text-equals";
+      clickSelector: string;
+      selector: string;
+      value: string;
+    }
+  | {
+      id: string;
+      label: Copy;
+      kind: "page-click-attr-equals";
+      clickSelector: string;
+      selector: string;
+      attr: string;
+      value: string;
+    }
+  | {
+      id: string;
+      label: Copy;
+      kind: "page-click-class-contains";
+      clickSelector: string;
+      selector: string;
+      value: string;
+    }
+  /** Types into `selector`, fires input and change, then reads it back. */
+  | {
+      id: string;
+      label: Copy;
+      kind: "page-input-text-equals";
+      selector: string;
+      type: string;
+      value: string;
+    }
+
   // --- Source assertions (either kind) ---
   /**
    * The source matches this pattern. Used for teaching syntax the result

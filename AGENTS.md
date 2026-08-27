@@ -24,7 +24,7 @@ These are ranked. The first one is the one that gets people hurt.
 
 ### 1.1 The iframe sandboxes — NEVER change these
 
-There are exactly six iframe roles. Each has one correct sandbox value.
+There are exactly seven iframe roles. Each has one correct sandbox value.
 
 | Where | File | Sandbox | Why |
 |---|---|---|---|
@@ -34,6 +34,7 @@ There are exactly six iframe roles. Each has one correct sandbox value.
 | Concept demo | `components/concept-card.tsx` | `allow-scripts` | Authored demo, same rule, no exceptions |
 | React preview | `components/preview.tsx` | `allow-scripts` | Real React runs with an opaque origin; postMessage only |
 | React grading | `lib/react-runner.ts` | `allow-scripts` | Disposable opaque frame returns plain assertion results |
+| Page grading | `lib/page-runner.ts` | `allow-scripts` | Runs `script.js` against the markup so DOM lessons can be checked at all. Same rule: opaque origin, postMessage only |
 
 **`allow-scripts` and `allow-same-origin` must never appear together on any iframe in this repo.** Together they let sandboxed content remove its own sandbox and reach the parent page. This is not a style preference. It is the entire security model.
 
@@ -83,6 +84,15 @@ Refresh must never lose unsaved code.
 **Never** add a variant that carries a function, a callback, or a string that gets `eval`'d or passed to `new Function`. If a new check is needed, add a new named kind with plain data fields, and implement it in `lib/grading.ts`.
 
 `source-matches` carries a regex *string* and compiles it inside the grader with a try/catch. That is the maximum permitted flexibility.
+
+**Two families of document assertion exist, and they are not interchangeable.**
+`exists` / `text-equals` / `style` and the rest describe the markup the learner
+wrote, and run in the `allow-same-origin` grading frame where nothing executes.
+The `page-*` family describes the document *after* `script.js` has run, and
+runs in `lib/page-runner.ts`. A lesson about `addEventListener` can only use
+the second: in the first, the script never runs, so the assertion would
+describe the starting HTML and pass or fail for reasons unrelated to what the
+learner did.
 
 ### 1.8 Content must pass the harness
 

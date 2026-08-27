@@ -5,6 +5,7 @@ import {
   type ReactRunResult,
   type ReactTestSpec,
 } from "./react-runner";
+import { runLearnerPage, type PageRunResult, type PageTestSpec } from "./page-runner";
 
 export type TestStatus = "waiting" | "passed" | "failed";
 
@@ -462,6 +463,16 @@ const REACT_KINDS = new Set([
   "react-document-title-equals",
   "react-click-focus-equals",
 ]);
+const PAGE_KINDS = new Set([
+  "page-exists",
+  "page-text-equals",
+  "page-attr-equals",
+  "page-class-contains",
+  "page-click-text-equals",
+  "page-click-attr-equals",
+  "page-click-class-contains",
+  "page-input-text-equals",
+]);
 const DOM_KINDS = new Set([
   "exists",
   "count",
@@ -472,6 +483,78 @@ const DOM_KINDS = new Set([
   "attr-equals",
   "style",
 ]);
+
+/**
+ * Reports one page assertion - a check made after the learner's script ran.
+ *
+ * The failure messages name the click or the typing where there was one,
+ * because "the heading still says Hello" is confusing on its own when the
+ * point of the step was that clicking should have changed it.
+ */
+function runPageTest(spec: PageTestSpec, run: PageRunResult): TestResult {
+  if (!run.ok) {
+    return {
+      id: spec.id,
+      label: spec.label,
+      status: "failed",
+      message: run.timedOut
+        ? "Your script kept running and the checker had to stop it. Check for a loop that never ends, fix that one part, then press Run again."
+        : `Your script stopped with an error: ${run.error ?? "unknown error"}. Read the message, look at the line it names, and make one correction before running the check again.`,
+    };
+  }
+
+  const result = run.checks.find((candidate) => candidate.id === spec.id);
+  if (result?.passed) return { id: spec.id, label: spec.label, status: "passed" };
+
+  const actual = result?.actual ?? "nothing";
+
+  if (spec.kind === "page-exists") {
+    return {
+      id: spec.id,
+      label: spec.label,
+      status: "failed",
+      actual,
+      message: `The page does not have a ${describe(spec.selector)} after your script ran. Check that the element is in the HTML, or that your script adds it, then press Run again.`,
+    };
+  }
+
+  const after =
+    spec.kind === "page-click-text-equals" ||
+    spec.kind === "page-click-attr-equals" ||
+    spec.kind === "page-click-class-contains"
+      ? ` after the ${describe(spec.clickSelector)} was clicked`
+      : spec.kind === "page-input-text-equals"
+        ? ` after ${spec.type} was typed into it`
+        : "";
+
+  if (spec.kind === "page-class-contains" || spec.kind === "page-click-class-contains") {
+    return {
+      id: spec.id,
+      label: spec.label,
+      status: "failed",
+      actual,
+      message: `The ${describe(spec.selector)} does not carry the class ${spec.value}${after}. Its classes are ${actual}. Check the line that changes them, then press Run again.`,
+    };
+  }
+
+  if (spec.kind === "page-attr-equals" || spec.kind === "page-click-attr-equals") {
+    return {
+      id: spec.id,
+      label: spec.label,
+      status: "failed",
+      actual,
+      message: `The ${describe(spec.selector)} has ${spec.attr} set to ${actual}${after}, and the check is looking for ${spec.value}. Compare the two and change the line that sets it.`,
+    };
+  }
+
+  return {
+    id: spec.id,
+    label: spec.label,
+    status: "failed",
+    actual,
+    message: `The ${describe(spec.selector)} reads ${actual}${after}, and the check is looking for ${spec.value}. Compare the two, then change the line that sets the text and press Run again.`,
+  };
+}
 
 function runReactTest(spec: ReactTestSpec, run: ReactRunResult): TestResult {
   if (!run.ok) {
@@ -565,6 +648,12 @@ export async function gradeStep(
       ? await runLearnerReact(files["app.js"] ?? "", reactTests)
       : null;
 
+  const pageTests = step.tests.filter((test): test is PageTestSpec =>
+    PAGE_KINDS.has(test.kind),
+  );
+  const pageRun: PageRunResult | null =
+    pageTests.length > 0 ? await runLearnerPage(files, pageTests) : null;
+
   let doc: Document | null = null;
   let win: Window | null = null;
   let frame: HTMLIFrameElement | null = null;
@@ -608,6 +697,10 @@ export async function gradeStep(
 
       if (REACT_KINDS.has(spec.kind) && reactRun) {
         return runReactTest(spec as ReactTestSpec, reactRun);
+      }
+
+      if (PAGE_KINDS.has(spec.kind) && pageRun) {
+        return runPageTest(spec as PageTestSpec, pageRun);
       }
 
       if (doc && win) {
