@@ -888,6 +888,12 @@ const RETAILER_PRICE_B1 = `    <section></section>\n`;
 const RETAILER_PRICE_B2 = `    <section>\n      <h2>Rice Prices</h2>\n    </section>\n`;
 const RETAILER_PRICE_B3 = `    <section>\n      <h2>Rice Prices</h2>\n      <p>Today's best deals on local rice varieties</p>\n    </section>\n`;
 
+/* composition: notice-card */
+const SHOP_RECEIPT_ROOT_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const SHOP_RECEIPT_B1 = `    <section></section>\n`;
+const SHOP_RECEIPT_B2 = `    <section>\n      <h2>Washing Laundry Notice</h2>\n    </section>\n`;
+const SHOP_RECEIPT_B3 = `    <section>\n      <h2>Washing Laundry Notice</h2>\n      <p>All items must be clean before returning.</p>\n    </section>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1481,6 +1487,9 @@ const references = {
   "retailer-price-root": { estimatedMinutes: 4, solution: solvedSlot(RETAILER_PRICE_ROOT_SLOT, "<section></section>") },
   "retailer-price-h2-1": { estimatedMinutes: 4, solution: solved(RETAILER_PRICE_B2) },
   "retailer-price-p-2": { estimatedMinutes: 4, solution: solved(RETAILER_PRICE_B3) },
+  "shop-receipt-root": { estimatedMinutes: 4, solution: solvedSlot(SHOP_RECEIPT_ROOT_SLOT, "<section></section>") },
+  "shop-receipt-h2-1": { estimatedMinutes: 4, solution: solved(SHOP_RECEIPT_B2) },
+  "shop-receipt-p-2": { estimatedMinutes: 4, solution: solved(SHOP_RECEIPT_B3) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1532,6 +1541,7 @@ const PROJECT_46_ID = "barangay-clean-up";
 const PROJECT_47_ID = "computer-shop-rate";
 const PROJECT_48_ID = "fiesta-programme-described";
 const PROJECT_49_ID = "rice-retailer-price";
+const PROJECT_50_ID = "laundry-shop-receipt";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1814,6 +1824,11 @@ const s49 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_49_ID };
 };
 
+const s50 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_50_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1869,6 +1884,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_47_ID, title: "Computer Shop Rate" },
     { id: PROJECT_48_ID, title: "Fiesta Programme Described" },
     { id: PROJECT_49_ID, title: "Rice Retailer Price" },
+    { id: PROJECT_50_ID, title: "Laundry Shop Receipt" },
   ],
   kind: "web",
   requires: [],
@@ -4854,5 +4870,8 @@ export const htmlCourse: Course = {
     s49({ id: "retailer-price-root", task: "Start the notice card. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": RETAILER_PRICE_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: RETAILER_PRICE_ROOT_SLOT.slotLine, blocks: ["<section></section>","<div></div>","<p></p>","<span></span>"], correctBlock: "<section></section>", tests: [{ id: "retailer-price-root-exists", kind: "exists", selector: "section", label: "The notice card has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this notice card." }, { level: 2, text: "Use section tags for the outer box." }], xp: 40 }),
     s49({ id: "retailer-price-h2-1", task: "Add the heading inside the section, and write Rice Prices in it.", inputMode: "guided", files: solved(RETAILER_PRICE_B1), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "retailer-price-h2-1-text", kind: "text-equals", selector: "section h2", value: "Rice Prices", label: "The heading shows the card heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Rice Prices between them." }], xp: 45 }),
     s49({ id: "retailer-price-p-2", task: "Add the paragraph inside the section, and write Today's best deals on local rice varieties in it.", inputMode: "guided", files: solved(RETAILER_PRICE_B2), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "retailer-price-p-2-text", kind: "text-equals", selector: "section p", value: "Today's best deals on local rice varieties", label: "The paragraph shows one sentence of detail" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use p tags, and write Today's best deals on local rice varieties between them." }], xp: 45 }),
+    s50({ id: "shop-receipt-root", task: "Start the notice card. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": SHOP_RECEIPT_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: SHOP_RECEIPT_ROOT_SLOT.slotLine, blocks: ["<section></section>","<div></div>","<p></p>","<span></span>"], correctBlock: "<section></section>", tests: [{ id: "shop-receipt-root-exists", kind: "exists", selector: "section", label: "The notice card has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this notice card." }, { level: 2, text: "Use section tags for the outer box." }], xp: 40 }),
+    s50({ id: "shop-receipt-h2-1", task: "Add the heading inside the section, and write Washing Laundry Notice in it.", inputMode: "guided", files: solved(SHOP_RECEIPT_B1), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "shop-receipt-h2-1-text", kind: "text-equals", selector: "section h2", value: "Washing Laundry Notice", label: "The heading shows the card heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Washing Laundry Notice between them." }], xp: 45 }),
+    s50({ id: "shop-receipt-p-2", task: "Add the paragraph inside the section, and write All items must be clean before returning. in it.", inputMode: "guided", files: solved(SHOP_RECEIPT_B2), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "shop-receipt-p-2-text", kind: "text-equals", selector: "section p", value: "All items must be clean before returning.", label: "The paragraph shows one sentence of detail" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use p tags, and write All items must be clean before returning. between them." }], xp: 45 }),
   ],
 };
