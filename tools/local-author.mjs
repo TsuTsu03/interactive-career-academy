@@ -459,8 +459,13 @@ function appendToArray(src, name, entry) {
   const rest = src.slice(open.index + open[0].length);
   const m = close.exec(rest);
   if (!m) throw new Error(`${name} array close not found`);
+  // `entry` already ends with a newline, and `at` sits at the start of the
+  // closing line. Stripping that newline once ran the last entry and the `],`
+  // onto one line, which still compiled but left the closing anchor
+  // unmatchable, so the following pass could not find the array at all.
   const at = open.index + open[0].length + m.index;
-  return src.slice(0, at) + "\n" + entry.replace(/\n$/, "") + src.slice(at);
+  if (!entry.endsWith("\n")) throw new Error("array entry must end with a newline");
+  return src.slice(0, at) + entry + src.slice(at);
 }
 
 function apply(gen) {
