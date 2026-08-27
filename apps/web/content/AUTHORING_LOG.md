@@ -2460,3 +2460,13 @@ added to catch mechanically instead of by review.
 **How:** `tools/js-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. Expressions and expected results are generated together from the same values in `tools/js-topics.mjs`, so a step's code and its check cannot disagree - the failure mode JavaScript adds over HTML and CSS. The model supplied only the strings inside quotes.
 
 **Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 480 steps.
+
+---
+
+## 2026-08-27 - JavaScript course, project 95 (local model)
+
+**What got made:** Jeepney Terminal, five steps teaching refusing a value that makes no sense.
+
+**How:** `tools/js-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. Expressions and expected results are generated together from the same values in `tools/js-topics.mjs`, so a step's code and its check cannot disagree - the failure mode JavaScript adds over HTML and CSS. The model supplied only the strings inside quotes.
+
+**Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 485 steps.
