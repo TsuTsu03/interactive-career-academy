@@ -861,6 +861,17 @@ const CLEAN_UP_B8 = `    <table>\n      <caption>barangay cleanup details</capti
 const CLEAN_UP_B9 = `    <table>\n      <caption>barangay cleanup details</caption>\n      <thead>\n        <tr>\n          <th>Date</th>\n          <th>Time</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td>Saturday</td>\n        </tr>\n      </tbody>\n    </table>\n`;
 const CLEAN_UP_B10 = `    <table>\n      <caption>barangay cleanup details</caption>\n      <thead>\n        <tr>\n          <th>Date</th>\n          <th>Time</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td>Saturday</td>\n          <td>2:00 PM</td>\n        </tr>\n      </tbody>\n    </table>\n`;
 
+/* composition: nested-sections */
+const SHOP_RATE_ROOT_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const SHOP_RATE_B1 = `    <main></main>\n`;
+const SHOP_RATE_B2 = `    <main>\n      <h1>Computer Repair Rates</h1>\n    </main>\n`;
+const SHOP_RATE_B3 = `    <main>\n      <h1>Computer Repair Rates</h1>\n      <section></section>\n    </main>\n`;
+const SHOP_RATE_B4 = `    <main>\n      <h1>Computer Repair Rates</h1>\n      <section>\n        <h2>Parts Replacement</h2>\n      </section>\n    </main>\n`;
+const SHOP_RATE_B5 = `    <main>\n      <h1>Computer Repair Rates</h1>\n      <section>\n        <h2>Parts Replacement</h2>\n        <p>Average price per part varies based on model.</p>\n      </section>\n    </main>\n`;
+const SHOP_RATE_B6 = `    <main>\n      <h1>Computer Repair Rates</h1>\n      <section>\n        <h2>Parts Replacement</h2>\n        <p>Average price per part varies based on model.</p>\n      </section>\n      <section></section>\n    </main>\n`;
+const SHOP_RATE_B7 = `    <main>\n      <h1>Computer Repair Rates</h1>\n      <section>\n        <h2>Parts Replacement</h2>\n        <p>Average price per part varies based on model.</p>\n      </section>\n      <section>\n        <h2>Labor Cost</h2>\n      </section>\n    </main>\n`;
+const SHOP_RATE_B8 = `    <main>\n      <h1>Computer Repair Rates</h1>\n      <section>\n        <h2>Parts Replacement</h2>\n        <p>Average price per part varies based on model.</p>\n      </section>\n      <section>\n        <h2>Labor Cost</h2>\n        <p>Hourly rate for repairs and diagnostics.</p>\n      </section>\n    </main>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1436,6 +1447,14 @@ const references = {
   "clean-up-tr-7": { estimatedMinutes: 4, solution: solved(CLEAN_UP_B8) },
   "clean-up-td-8": { estimatedMinutes: 4, solution: solved(CLEAN_UP_B9) },
   "clean-up-td-9": { estimatedMinutes: 4, solution: solved(CLEAN_UP_B10) },
+  "shop-rate-root": { estimatedMinutes: 4, solution: solvedSlot(SHOP_RATE_ROOT_SLOT, "<main></main>") },
+  "shop-rate-h1-1": { estimatedMinutes: 4, solution: solved(SHOP_RATE_B2) },
+  "shop-rate-section-2": { estimatedMinutes: 4, solution: solved(SHOP_RATE_B3) },
+  "shop-rate-h2-3": { estimatedMinutes: 4, solution: solved(SHOP_RATE_B4) },
+  "shop-rate-p-4": { estimatedMinutes: 4, solution: solved(SHOP_RATE_B5) },
+  "shop-rate-section-5": { estimatedMinutes: 4, solution: solved(SHOP_RATE_B6) },
+  "shop-rate-h2-6": { estimatedMinutes: 4, solution: solved(SHOP_RATE_B7) },
+  "shop-rate-p-7": { estimatedMinutes: 4, solution: solved(SHOP_RATE_B8) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1484,6 +1503,7 @@ const PROJECT_43_ID = "tricycle-fare-table";
 const PROJECT_44_ID = "bakery-order-slip";
 const PROJECT_45_ID = "water-refill-station";
 const PROJECT_46_ID = "barangay-clean-up";
+const PROJECT_47_ID = "computer-shop-rate";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1751,6 +1771,11 @@ const s46 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_46_ID };
 };
 
+const s47 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_47_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1803,6 +1828,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_44_ID, title: "Bakery Order Slip" },
     { id: PROJECT_45_ID, title: "Water Refill Station" },
     { id: PROJECT_46_ID, title: "Barangay Clean Up" },
+    { id: PROJECT_47_ID, title: "Computer Shop Rate" },
   ],
   kind: "web",
   requires: [],
@@ -4770,5 +4796,13 @@ export const htmlCourse: Course = {
     s46({ id: "clean-up-tr-7", task: "Add the row inside the main rows.", inputMode: "guided", files: solved(CLEAN_UP_B7), activeFile: "index.html", highlightToken: "<tbody>", tests: [{ id: "clean-up-tr-7-exists", kind: "exists", selector: "table tbody tr", label: "The row sits inside the main rows" }], hints: [{ level: 1, text: "Find the main rows you already added, and work inside the main rows." }, { level: 2, text: "Use tr tags, and put them inside the main rows rather than beside it." }], xp: 40 }),
     s46({ id: "clean-up-td-8", task: "Add the value inside the row, and write Saturday in it.", inputMode: "guided", files: solved(CLEAN_UP_B8), activeFile: "index.html", highlightToken: "<tr>", tests: [{ id: "clean-up-td-8-text", kind: "text-equals", selector: "table tbody tr td", value: "Saturday", label: "The value shows the first value" }], hints: [{ level: 1, text: "Find the row you already added, and work inside the row." }, { level: 2, text: "Use td tags, and write Saturday between them." }], xp: 45 }),
     s46({ id: "clean-up-td-9", task: "Add the value inside the row, and write 2:00 PM in it.", inputMode: "guided", files: solved(CLEAN_UP_B9), activeFile: "index.html", highlightToken: "<tr>", tests: [{ id: "clean-up-td-9-text", kind: "text-equals", selector: "table tbody tr td:nth-of-type(2)", value: "2:00 PM", label: "The value shows the second value" }], hints: [{ level: 1, text: "Find the row you already added, and work inside the row." }, { level: 2, text: "Use td tags, and write 2:00 PM between them." }], xp: 45 }),
+    s47({ id: "shop-rate-root", task: "Start the page with two sections. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": SHOP_RATE_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: SHOP_RATE_ROOT_SLOT.slotLine, blocks: ["<main></main>","<div></div>","<p></p>","<span></span>"], correctBlock: "<main></main>", tests: [{ id: "shop-rate-root-exists", kind: "exists", selector: "main", label: "The page with two sections has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this page with two sections." }, { level: 2, text: "Use main tags for the outer box." }], xp: 40 }),
+    s47({ id: "shop-rate-h1-1", task: "Add the page title inside the page body, and write Computer Repair Rates in it.", inputMode: "guided", files: solved(SHOP_RATE_B1), activeFile: "index.html", highlightToken: "<main>", tests: [{ id: "shop-rate-h1-1-text", kind: "text-equals", selector: "main h1", value: "Computer Repair Rates", label: "The page title shows the page name" }], hints: [{ level: 1, text: "Find the page body you already added, and work inside the page body." }, { level: 2, text: "Use h1 tags, and write Computer Repair Rates between them." }], xp: 45 }),
+    s47({ id: "shop-rate-section-2", task: "Add the section inside the page body.", inputMode: "guided", files: solved(SHOP_RATE_B2), activeFile: "index.html", highlightToken: "<main>", tests: [{ id: "shop-rate-section-2-exists", kind: "exists", selector: "main section", label: "The section sits inside the page body" }], hints: [{ level: 1, text: "Find the page body you already added, and work inside the page body." }, { level: 2, text: "Use section tags, and put them inside the page body rather than beside it." }], xp: 40 }),
+    s47({ id: "shop-rate-h2-3", task: "Add the heading inside the section, and write Parts Replacement in it.", inputMode: "guided", files: solved(SHOP_RATE_B3), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "shop-rate-h2-3-text", kind: "text-equals", selector: "main section h2", value: "Parts Replacement", label: "The heading shows the first section heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Parts Replacement between them." }], xp: 45 }),
+    s47({ id: "shop-rate-p-4", task: "Add the paragraph inside the section, and write Average price per part varies based on model. in it.", inputMode: "guided", files: solved(SHOP_RATE_B4), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "shop-rate-p-4-text", kind: "text-equals", selector: "main section p", value: "Average price per part varies based on model.", label: "The paragraph shows one sentence for the first section" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use p tags, and write Average price per part varies based on model. between them." }], xp: 45 }),
+    s47({ id: "shop-rate-section-5", task: "Add the section inside the page body.", inputMode: "guided", files: solved(SHOP_RATE_B5), activeFile: "index.html", highlightToken: "<main>", tests: [{ id: "shop-rate-section-5-exists", kind: "exists", selector: "main section:nth-of-type(2)", label: "The section sits inside the page body" }], hints: [{ level: 1, text: "Find the page body you already added, and work inside the page body." }, { level: 2, text: "Use section tags, and put them inside the page body rather than beside it." }], xp: 40 }),
+    s47({ id: "shop-rate-h2-6", task: "Add the heading inside the section, and write Labor Cost in it.", inputMode: "guided", files: solved(SHOP_RATE_B6), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "shop-rate-h2-6-text", kind: "text-equals", selector: "main section:nth-of-type(2) h2", value: "Labor Cost", label: "The heading shows the second section heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Labor Cost between them." }], xp: 45 }),
+    s47({ id: "shop-rate-p-7", task: "Add the paragraph inside the section, and write Hourly rate for repairs and diagnostics. in it.", inputMode: "guided", files: solved(SHOP_RATE_B7), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "shop-rate-p-7-text", kind: "text-equals", selector: "main section:nth-of-type(2) p", value: "Hourly rate for repairs and diagnostics.", label: "The paragraph shows one sentence for the second section" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use p tags, and write Hourly rate for repairs and diagnostics. between them." }], xp: 45 }),
   ],
 };
