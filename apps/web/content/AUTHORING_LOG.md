@@ -1420,13 +1420,3 @@ added to catch mechanically instead of by review.
 **How:** `tools/local-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. The model supplied the scene, the element, and the wording as JSON; the step structure, tests, hints, and concept entry were generated from a template, so the shape cannot drift.
 
 **Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 233 steps.
-
----
-
-## 2026-08-27 - HTML course, project 34 (local model)
-
-**What got made:** Barangay Water Bill, five steps teaching the `thead` element, plus the `thead-element` concept with all four representations.
-
-**How:** `tools/local-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. The model supplied the scene, the element, and the wording as JSON; the step structure, tests, hints, and concept entry were generated from a template, so the shape cannot drift.
-
-**Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 238 steps.
