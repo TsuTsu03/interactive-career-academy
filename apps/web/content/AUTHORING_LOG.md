@@ -2770,3 +2770,13 @@ added to catch mechanically instead of by review.
 **How:** `tools/js-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. Expressions and expected results are generated together from the same values in `tools/js-topics.mjs`, so a step's code and its check cannot disagree - the failure mode JavaScript adds over HTML and CSS. The model supplied only the strings inside quotes.
 
 **Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 635 steps.
+
+---
+
+## 2026-08-27 - JavaScript course, project 126 (local model)
+
+**What got made:** Barangay ID Desk Class Basics, five steps teaching a blueprint for records of the same shape.
+
+**How:** `tools/js-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. Expressions and expected results are generated together from the same values in `tools/js-topics.mjs`, so a step's code and its check cannot disagree - the failure mode JavaScript adds over HTML and CSS. The model supplied only the strings inside quotes.
+
+**Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 640 steps.
