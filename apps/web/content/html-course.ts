@@ -936,6 +936,12 @@ const MENU_NOTICE_B1 = `    <section></section>\n`;
 const MENU_NOTICE_B2 = `    <section>\n      <h2>Notice Card</h2>\n    </section>\n`;
 const MENU_NOTICE_B3 = `    <section>\n      <h2>Notice Card</h2>\n      <p>Special offer today! Up to 50% off selected items.</p>\n    </section>\n`;
 
+/* composition: notice-card */
+const LEAGUE_SCHEDULE_ROOT_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const LEAGUE_SCHEDULE_B1 = `    <section></section>\n`;
+const LEAGUE_SCHEDULE_B2 = `    <section>\n      <h2>Barangay Basketball League</h2>\n    </section>\n`;
+const LEAGUE_SCHEDULE_B3 = `    <section>\n      <h2>Barangay Basketball League</h2>\n      <p>Upcoming games: April 15th and 22nd at the local playground.</p>\n    </section>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1553,6 +1559,9 @@ const references = {
   "menu-notice-root": { estimatedMinutes: 4, solution: solvedSlot(MENU_NOTICE_ROOT_SLOT, "<section></section>") },
   "menu-notice-h2-1": { estimatedMinutes: 4, solution: solved(MENU_NOTICE_B2) },
   "menu-notice-p-2": { estimatedMinutes: 4, solution: solved(MENU_NOTICE_B3) },
+  "league-schedule-root": { estimatedMinutes: 4, solution: solvedSlot(LEAGUE_SCHEDULE_ROOT_SLOT, "<section></section>") },
+  "league-schedule-h2-1": { estimatedMinutes: 4, solution: solved(LEAGUE_SCHEDULE_B2) },
+  "league-schedule-p-2": { estimatedMinutes: 4, solution: solved(LEAGUE_SCHEDULE_B3) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1612,6 +1621,7 @@ const PROJECT_54_ID = "barangay-health-centre-notice";
 const PROJECT_55_ID = "jeepney-route-board-notice";
 const PROJECT_56_ID = "palengke-fish-stall-sign";
 const PROJECT_57_ID = "turo-turo-menu-notice";
+const PROJECT_58_ID = "barangay-basketball-league-schedule";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1934,6 +1944,11 @@ const s57 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_57_ID };
 };
 
+const s58 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_58_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1997,6 +2012,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_55_ID, title: "Jeepney Route Board Notice" },
     { id: PROJECT_56_ID, title: "Palengke Fish Stall Sign" },
     { id: PROJECT_57_ID, title: "Turo Turo Menu Notice" },
+    { id: PROJECT_58_ID, title: "Barangay Basketball League Schedule" },
   ],
   kind: "web",
   requires: [],
@@ -5006,5 +5022,8 @@ export const htmlCourse: Course = {
     s57({ id: "menu-notice-root", task: "Start the notice card. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": MENU_NOTICE_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: MENU_NOTICE_ROOT_SLOT.slotLine, blocks: ["<section></section>","<div></div>","<p></p>","<span></span>"], correctBlock: "<section></section>", tests: [{ id: "menu-notice-root-exists", kind: "exists", selector: "section", label: "The notice card has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this notice card." }, { level: 2, text: "Use section tags for the outer box." }], xp: 40 }),
     s57({ id: "menu-notice-h2-1", task: "Add the heading inside the section, and write Notice Card in it.", inputMode: "guided", files: solved(MENU_NOTICE_B1), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "menu-notice-h2-1-text", kind: "text-equals", selector: "section h2", value: "Notice Card", label: "The heading shows the card heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Notice Card between them." }], xp: 45 }),
     s57({ id: "menu-notice-p-2", task: "Add the paragraph inside the section, and write Special offer today! Up to 50% off selected items. in it.", inputMode: "guided", files: solved(MENU_NOTICE_B2), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "menu-notice-p-2-text", kind: "text-equals", selector: "section p", value: "Special offer today! Up to 50% off selected items.", label: "The paragraph shows one sentence of detail" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use p tags, and write Special offer today! Up to 50% off selected items. between them." }], xp: 45 }),
+    s58({ id: "league-schedule-root", task: "Start the notice card. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": LEAGUE_SCHEDULE_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: LEAGUE_SCHEDULE_ROOT_SLOT.slotLine, blocks: ["<section></section>","<div></div>","<p></p>","<span></span>"], correctBlock: "<section></section>", tests: [{ id: "league-schedule-root-exists", kind: "exists", selector: "section", label: "The notice card has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this notice card." }, { level: 2, text: "Use section tags for the outer box." }], xp: 40 }),
+    s58({ id: "league-schedule-h2-1", task: "Add the heading inside the section, and write Barangay Basketball League in it.", inputMode: "guided", files: solved(LEAGUE_SCHEDULE_B1), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "league-schedule-h2-1-text", kind: "text-equals", selector: "section h2", value: "Barangay Basketball League", label: "The heading shows the card heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Barangay Basketball League between them." }], xp: 45 }),
+    s58({ id: "league-schedule-p-2", task: "Add the paragraph inside the section, and write Upcoming games: April 15th and 22nd at the local playground. in it.", inputMode: "guided", files: solved(LEAGUE_SCHEDULE_B2), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "league-schedule-p-2-text", kind: "text-equals", selector: "section p", value: "Upcoming games: April 15th and 22nd at the local playground.", label: "The paragraph shows one sentence of detail" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use p tags, and write Upcoming games: April 15th and 22nd at the local playground. between them." }], xp: 45 }),
   ],
 };
