@@ -2350,14 +2350,6 @@ export const concepts: Record<string, Concept> = {
     visual: { kind: "diagram", diagram: { alt: "A list of items with prices, grouped together.", columns: 3, nodes: [{ id: "words", label: "Water usage per month", note: "plain words", tone: "ghost" }, { id: "tag", label: "tbody", note: "table body", tone: "accent" }, { id: "result", label: "Table body", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
     proof: "You will mark the words 'Water usage per month' on the water bill.",
   },
-  "tfoot-element": {
-    id: "tfoot-element",
-    term: "tfoot element",
-    definition: "The tfoot element groups the summary rows of a table, such as a total.",
-    analogy: "A section at the bottom of a receipt that shows the total amount.",
-    visual: { kind: "diagram", diagram: { alt: "Price list with 'Total: ₱1,200.00' at the bottom.", columns: 3, nodes: [{ id: "words", label: "Total: ₱1,200.00", note: "plain words", tone: "ghost" }, { id: "tag", label: "tfoot", note: "table footer", tone: "accent" }, { id: "result", label: "Table footer", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
-    proof: "You will mark the words 'Total' on the price list.",
-  },
 };
 
 export function conceptById(id: string): Concept | undefined {
