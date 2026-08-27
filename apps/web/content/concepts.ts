@@ -2326,6 +2326,14 @@ export const concepts: Record<string, Concept> = {
     visual: { kind: "diagram", diagram: { alt: "A sample water bill with 'Metered Amount' underlined.", columns: 3, nodes: [{ id: "words", label: "Metered Amount", note: "plain words", tone: "ghost" }, { id: "tag", label: "span", note: "small piece of text", tone: "accent" }, { id: "result", label: "Small piece of text", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
     proof: "Mark the words 'Metered Amount' on your water bill.",
   },
+  "pre-element": {
+    id: "pre-element",
+    term: "pre element",
+    definition: "The pre element keeps the spaces and line breaks exactly as they were typed.",
+    analogy: "Like when you write a letter, you keep your lines straight and spaces even.",
+    visual: { kind: "diagram", diagram: { alt: "Laundry shop receipt with neatly spaced and broken lines.", columns: 3, nodes: [{ id: "words", label: "Pre keeps it just like that.", note: "plain words", tone: "ghost" }, { id: "tag", label: "pre", note: "preformatted text", tone: "accent" }, { id: "result", label: "Preformatted text", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
+    proof: "You will mark the words 'Pre keeps it just like that.' on the receipt.",
+  },
 };
 
 export function conceptById(id: string): Concept | undefined {

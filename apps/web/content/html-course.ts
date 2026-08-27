@@ -745,6 +745,14 @@ const WATER_BILL_INTRO_BODY = `    <h2>Barangay Water Bill</h2>
 const WATER_BILL_ELEMENT_SLOT = slotPage(`${WATER_BILL_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
 const WATER_BILL_ELEMENT_BODY = `${WATER_BILL_INTRO_BODY}    <span></span>\n`;
 
+const STORE_RECEIPT_TITLE_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const STORE_RECEIPT_TITLE_BODY = `    <h2></h2>\n`;
+const STORE_RECEIPT_HEADING_BODY = `    <h2>Sari-Sari Store Receipt</h2>\n`;
+const STORE_RECEIPT_INTRO_BODY = `    <h2>Sari-Sari Store Receipt</h2>
+    <p>See how pre keeps the spaces and line breaks in this laundry shop receipt.</p>\n`;
+const STORE_RECEIPT_ELEMENT_SLOT = slotPage(`${STORE_RECEIPT_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
+const STORE_RECEIPT_ELEMENT_BODY = `${STORE_RECEIPT_INTRO_BODY}    <pre></pre>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1246,6 +1254,11 @@ const references = {
   "water-bill-copy": { estimatedMinutes: 4, solution: solved(WATER_BILL_INTRO_BODY) },
   "water-bill-span": { estimatedMinutes: 5, solution: solvedSlot(WATER_BILL_ELEMENT_SLOT, "<span></span>") },
   "water-bill-span-text": { estimatedMinutes: 4, solution: solved(`${WATER_BILL_INTRO_BODY}    <span>Metered Amount</span>\n`) },
+  "store-receipt-title": { estimatedMinutes: 4, solution: solvedSlot(STORE_RECEIPT_TITLE_SLOT, "<h2></h2>") },
+  "store-receipt-heading": { estimatedMinutes: 4, solution: solved(STORE_RECEIPT_HEADING_BODY) },
+  "store-receipt-copy": { estimatedMinutes: 4, solution: solved(STORE_RECEIPT_INTRO_BODY) },
+  "store-receipt-pre": { estimatedMinutes: 5, solution: solvedSlot(STORE_RECEIPT_ELEMENT_SLOT, "<pre></pre>") },
+  "store-receipt-pre-text": { estimatedMinutes: 4, solution: solved(`${STORE_RECEIPT_INTRO_BODY}    <pre>Pre keeps it just like that.</pre>\n`) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1280,6 +1293,7 @@ const PROJECT_29_ID = "barangay-jeepney-route";
 const PROJECT_30_ID = "barangay-sari-sari-store";
 const PROJECT_31_ID = "sari-sari-store";
 const PROJECT_32_ID = "barangay-water-bill";
+const PROJECT_33_ID = "sari-sari-store-receipt";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1477,6 +1491,11 @@ const s32 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_32_ID };
 };
 
+const s33 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_33_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1515,6 +1534,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_30_ID, title: "Barangay Sari-Sari Store" },
     { id: PROJECT_31_ID, title: "Sari-Sari Store Prices" },
     { id: PROJECT_32_ID, title: "Barangay Water Bill" },
+    { id: PROJECT_33_ID, title: "Sari-Sari Store Receipt" },
   ],
   kind: "web",
   requires: [],
@@ -4408,5 +4428,10 @@ export const htmlCourse: Course = {
     s32({ id: "water-bill-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(WATER_BILL_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "water-bill-copy-text", kind: "text-equals", selector: "p", value: "Learn how to highlight text on a water bill for easier reading.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write Learn how to highlight text on a water bill for easier reading." }], xp: 40 }),
     s32({ id: "water-bill-span", task: "Add a place for the small piece of text.", inputMode: "tap-to-build", files: { "index.html": WATER_BILL_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: WATER_BILL_ELEMENT_SLOT.slotLine, blocks: ["<span></span>","<p></p>","<div></div>","<note></note>"], correctBlock: "<span></span>", conceptIds: ["span-element"], tests: [{ id: "water-bill-span-exists", kind: "exists", selector: "span", label: "The small piece of text has a place" }], hints: [{ level: 1, text: "Add the element that marks a small piece of text." }, { level: 2, text: "Use span for the small piece of text." }], xp: 50 }),
     s32({ id: "water-bill-span-text", task: "Write Metered Amount inside it.", inputMode: "guided", files: solved(WATER_BILL_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<span></span>", tests: [{ id: "water-bill-span-text-set", kind: "text-equals", selector: "span", value: "Metered Amount", label: "The small piece of text shows its words" }], hints: [{ level: 1, text: "Write the words inside the span tags." }, { level: 2, text: "Use Metered Amount exactly." }], xp: 40 }),
+    s33({ id: "store-receipt-title", task: "Start the sari-sari store receipt with a smaller heading.", inputMode: "tap-to-build", files: { "index.html": STORE_RECEIPT_TITLE_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: STORE_RECEIPT_TITLE_SLOT.slotLine, blocks: ["<h2></h2>", "<p></p>", "<h1></h1>", "<pre></pre>"], correctBlock: "<h2></h2>", tests: [{ id: "store-receipt-title-exists", kind: "exists", selector: "h2", label: "The page has a heading" }], hints: [{ level: 1, text: "Add a level-two heading in the blank line." }, { level: 2, text: "Use h2 for this smaller heading." }], xp: 40 }),
+    s33({ id: "store-receipt-heading", task: "Name the heading Sari-Sari Store Receipt.", inputMode: "guided", files: solved(STORE_RECEIPT_TITLE_BODY), activeFile: "index.html", highlightToken: "<h2></h2>", tests: [{ id: "store-receipt-heading-text", kind: "text-equals", selector: "h2", value: "Sari-Sari Store Receipt", label: "The page has its name" }], hints: [{ level: 1, text: "Write the page name between the heading tags." }, { level: 2, text: "Use Sari-Sari Store Receipt exactly." }], xp: 40 }),
+    s33({ id: "store-receipt-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(STORE_RECEIPT_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "store-receipt-copy-text", kind: "text-equals", selector: "p", value: "See how pre keeps the spaces and line breaks in this laundry shop receipt.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write See how pre keeps the spaces and line breaks in this laundry shop receipt." }], xp: 40 }),
+    s33({ id: "store-receipt-pre", task: "Add a place for the preformatted text.", inputMode: "tap-to-build", files: { "index.html": STORE_RECEIPT_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: STORE_RECEIPT_ELEMENT_SLOT.slotLine, blocks: ["<pre></pre>","<p></p>","<div></div>","<note></note>"], correctBlock: "<pre></pre>", conceptIds: ["pre-element"], tests: [{ id: "store-receipt-pre-exists", kind: "exists", selector: "pre", label: "The preformatted text has a place" }], hints: [{ level: 1, text: "Add the element that marks a preformatted text." }, { level: 2, text: "Use pre for the preformatted text." }], xp: 50 }),
+    s33({ id: "store-receipt-pre-text", task: "Write Pre keeps it just like that. inside it.", inputMode: "guided", files: solved(STORE_RECEIPT_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<pre></pre>", tests: [{ id: "store-receipt-pre-text-set", kind: "text-equals", selector: "pre", value: "Pre keeps it just like that.", label: "The preformatted text shows its words" }], hints: [{ level: 1, text: "Write the words inside the pre tags." }, { level: 2, text: "Use Pre keeps it just like that. exactly." }], xp: 40 }),
   ],
 };
