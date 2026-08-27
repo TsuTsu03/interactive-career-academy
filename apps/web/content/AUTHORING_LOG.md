@@ -2540,3 +2540,13 @@ added to catch mechanically instead of by review.
 **How:** `tools/js-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. Expressions and expected results are generated together from the same values in `tools/js-topics.mjs`, so a step's code and its check cannot disagree - the failure mode JavaScript adds over HTML and CSS. The model supplied only the strings inside quotes.
 
 **Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 520 steps.
+
+---
+
+## 2026-08-27 - JavaScript course, project 103 (local model)
+
+**What got made:** Computer Shop Default Parameters, five steps teaching a value used when none is given.
+
+**How:** `tools/js-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. Expressions and expected results are generated together from the same values in `tools/js-topics.mjs`, so a step's code and its check cannot disagree - the failure mode JavaScript adds over HTML and CSS. The model supplied only the strings inside quotes.
+
+**Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 525 steps.
