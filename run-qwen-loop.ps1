@@ -106,9 +106,17 @@ if ((git status --porcelain).Length -gt 0) {
   exit 1
 }
 
+# The `qwen` profile lives at $CODEX_HOME\qwen.config.toml and strips out every
+# plugin, MCP server, and memory injection. Without it the system prompt alone
+# is ~32,000 tokens, which does not fit in a locally served model's context:
+#
+#   request (32395 tokens) exceeds the available context size (16384 tokens)
+#
+# The profile is additive - it does not modify the base config.
 $common = @(
   "--oss",
   "--local-provider", "lmstudio",
+  "--profile", "qwen",
   "-m", $Model,
   "-c", 'sandbox_mode="workspace-write"',
   "-c", 'approval_policy="never"'
