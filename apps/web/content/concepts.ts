@@ -2302,6 +2302,14 @@ export const concepts: Record<string, Concept> = {
     visual: { kind: "diagram", diagram: { alt: "A picture of a jeepney with routes written in bold letters.", columns: 3, nodes: [{ id: "words", label: "Important words", note: "plain words", tone: "ghost" }, { id: "tag", label: "b", note: "bold", tone: "accent" }, { id: "result", label: "Bold", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
     proof: "You will mark the important words on the jeepney route notice.",
   },
+  "sub-element": {
+    id: "sub-element",
+    term: "sub element",
+    definition: "Makes small text for chemical formulas or numbers.",
+    analogy: "Think of it like a tiny print used in recipes.",
+    visual: { kind: "diagram", diagram: { alt: "A close-up view of the notice showing the small number.", columns: 3, nodes: [{ id: "words", label: "1/4", note: "plain words", tone: "ghost" }, { id: "tag", label: "sub", note: "subscript", tone: "accent" }, { id: "result", label: "Subscript", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
+    proof: "You will mark the correct way to write '1/4' as subscript.",
+  },
 };
 
 export function conceptById(id: string): Concept | undefined {
