@@ -882,6 +882,12 @@ const PROGRAMME_DESCRIBED_B5 = `    <section>\n      <h2>Bale na Fiesta Terms</h
 const PROGRAMME_DESCRIBED_B6 = `    <section>\n      <h2>Bale na Fiesta Terms</h2>\n      <dl>\n        <dt>Moros</dt>\n        <dd>Fiesta performers</dd>\n        <dt>Pandanghulugan</dt>\n      </dl>\n    </section>\n`;
 const PROGRAMME_DESCRIBED_B7 = `    <section>\n      <h2>Bale na Fiesta Terms</h2>\n      <dl>\n        <dt>Moros</dt>\n        <dd>Fiesta performers</dd>\n        <dt>Pandanghulugan</dt>\n        <dd>Meaning</dd>\n      </dl>\n    </section>\n`;
 
+/* composition: notice-card */
+const RETAILER_PRICE_ROOT_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const RETAILER_PRICE_B1 = `    <section></section>\n`;
+const RETAILER_PRICE_B2 = `    <section>\n      <h2>Rice Prices</h2>\n    </section>\n`;
+const RETAILER_PRICE_B3 = `    <section>\n      <h2>Rice Prices</h2>\n      <p>Today's best deals on local rice varieties</p>\n    </section>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1472,6 +1478,9 @@ const references = {
   "programme-described-dd-4": { estimatedMinutes: 4, solution: solved(PROGRAMME_DESCRIBED_B5) },
   "programme-described-dt-5": { estimatedMinutes: 4, solution: solved(PROGRAMME_DESCRIBED_B6) },
   "programme-described-dd-6": { estimatedMinutes: 4, solution: solved(PROGRAMME_DESCRIBED_B7) },
+  "retailer-price-root": { estimatedMinutes: 4, solution: solvedSlot(RETAILER_PRICE_ROOT_SLOT, "<section></section>") },
+  "retailer-price-h2-1": { estimatedMinutes: 4, solution: solved(RETAILER_PRICE_B2) },
+  "retailer-price-p-2": { estimatedMinutes: 4, solution: solved(RETAILER_PRICE_B3) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1522,6 +1531,7 @@ const PROJECT_45_ID = "water-refill-station";
 const PROJECT_46_ID = "barangay-clean-up";
 const PROJECT_47_ID = "computer-shop-rate";
 const PROJECT_48_ID = "fiesta-programme-described";
+const PROJECT_49_ID = "rice-retailer-price";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1799,6 +1809,11 @@ const s48 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_48_ID };
 };
 
+const s49 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_49_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1853,6 +1868,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_46_ID, title: "Barangay Clean Up" },
     { id: PROJECT_47_ID, title: "Computer Shop Rate" },
     { id: PROJECT_48_ID, title: "Fiesta Programme Described" },
+    { id: PROJECT_49_ID, title: "Rice Retailer Price" },
   ],
   kind: "web",
   requires: [],
@@ -4835,5 +4851,8 @@ export const htmlCourse: Course = {
     s48({ id: "programme-described-dd-4", task: "Add the meaning inside the list of terms, and write Fiesta performers in it.", inputMode: "guided", files: solved(PROGRAMME_DESCRIBED_B4), activeFile: "index.html", highlightToken: "<dl>", tests: [{ id: "programme-described-dd-4-text", kind: "text-equals", selector: "section dl dd", value: "Fiesta performers", label: "The meaning shows what the first term means" }], hints: [{ level: 1, text: "Find the list of terms you already added, and work inside the list of terms." }, { level: 2, text: "Use dd tags, and write Fiesta performers between them." }], xp: 45 }),
     s48({ id: "programme-described-dt-5", task: "Add the term inside the list of terms, and write Pandanghulugan in it.", inputMode: "guided", files: solved(PROGRAMME_DESCRIBED_B5), activeFile: "index.html", highlightToken: "<dl>", tests: [{ id: "programme-described-dt-5-text", kind: "text-equals", selector: "section dl dt:nth-of-type(2)", value: "Pandanghulugan", label: "The term shows the second term" }], hints: [{ level: 1, text: "Find the list of terms you already added, and work inside the list of terms." }, { level: 2, text: "Use dt tags, and write Pandanghulugan between them." }], xp: 45 }),
     s48({ id: "programme-described-dd-6", task: "Add the meaning inside the list of terms, and write Meaning in it.", inputMode: "guided", files: solved(PROGRAMME_DESCRIBED_B6), activeFile: "index.html", highlightToken: "<dl>", tests: [{ id: "programme-described-dd-6-text", kind: "text-equals", selector: "section dl dd:nth-of-type(2)", value: "Meaning", label: "The meaning shows what the second term means" }], hints: [{ level: 1, text: "Find the list of terms you already added, and work inside the list of terms." }, { level: 2, text: "Use dd tags, and write Meaning between them." }], xp: 45 }),
+    s49({ id: "retailer-price-root", task: "Start the notice card. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": RETAILER_PRICE_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: RETAILER_PRICE_ROOT_SLOT.slotLine, blocks: ["<section></section>","<div></div>","<p></p>","<span></span>"], correctBlock: "<section></section>", tests: [{ id: "retailer-price-root-exists", kind: "exists", selector: "section", label: "The notice card has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this notice card." }, { level: 2, text: "Use section tags for the outer box." }], xp: 40 }),
+    s49({ id: "retailer-price-h2-1", task: "Add the heading inside the section, and write Rice Prices in it.", inputMode: "guided", files: solved(RETAILER_PRICE_B1), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "retailer-price-h2-1-text", kind: "text-equals", selector: "section h2", value: "Rice Prices", label: "The heading shows the card heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Rice Prices between them." }], xp: 45 }),
+    s49({ id: "retailer-price-p-2", task: "Add the paragraph inside the section, and write Today's best deals on local rice varieties in it.", inputMode: "guided", files: solved(RETAILER_PRICE_B2), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "retailer-price-p-2-text", kind: "text-equals", selector: "section p", value: "Today's best deals on local rice varieties", label: "The paragraph shows one sentence of detail" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use p tags, and write Today's best deals on local rice varieties between them." }], xp: 45 }),
   ],
 };
