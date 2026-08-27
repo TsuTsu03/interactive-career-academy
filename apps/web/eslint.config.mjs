@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Generated from the installed React packages by tools/build-react-runtime.mjs.
+    "public/react-runtime.js",
   ]),
 ]);
 

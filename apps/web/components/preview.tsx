@@ -1,9 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/icon";
 import { buildConsoleDocument, buildDocument } from "@/lib/grading";
 import type { StepKind } from "@/lib/lesson-ir";
+import { reactRunnerDocument } from "@/lib/react-runner";
+
+const REACT_PREVIEW_TIMEOUT_MS = 4000;
+
+function previewRing(flash: "none" | "pass" | "fail") {
+  return flash === "pass"
+    ? "ring-2 ring-secondary"
+    : flash === "fail"
+      ? "ring-2 ring-error/60"
+      : "ring-1 ring-outline-variant";
+}
 
 /**
  * The learner's real output, updated as they type.
@@ -25,6 +36,19 @@ export function Preview({
   kind: StepKind;
   flash: "none" | "pass" | "fail";
 }) {
+  if (kind === "react") return <ReactPreview files={files} flash={flash} />;
+  return <DocumentPreview files={files} kind={kind} flash={flash} />;
+}
+
+function DocumentPreview({
+  files,
+  kind,
+  flash,
+}: {
+  files: Record<string, string>;
+  kind: Exclude<StepKind, "react">;
+  flash: "none" | "pass" | "fail";
+}) {
   const build = () =>
     kind === "js" ? buildConsoleDocument(files["script.js"] ?? "") : buildDocument(files);
 
@@ -42,12 +66,7 @@ export function Preview({
     return () => clearTimeout(t);
   }, [files, kind]);
 
-  const ring =
-    flash === "pass"
-      ? "ring-2 ring-secondary"
-      : flash === "fail"
-        ? "ring-2 ring-error/60"
-        : "ring-1 ring-outline-variant";
+  const ring = previewRing(flash);
 
   return (
     <section
@@ -74,6 +93,94 @@ export function Preview({
           sandbox="allow-scripts"
           srcDoc={srcDoc}
           className={`h-full w-full bg-white transition-shadow duration-300 ${ring}`}
+        />
+      </div>
+    </section>
+  );
+}
+
+function ReactPreview({
+  files,
+  flash,
+}: {
+  files: Record<string, string>;
+  flash: "none" | "pass" | "fail";
+}) {
+  const frameRef = useRef<HTMLIFrameElement>(null);
+  const readyRef = useRef(false);
+  const requestRef = useRef(0);
+  const watchdogRef = useRef<number | null>(null);
+  const [runtimeKey, setRuntimeKey] = useState(0);
+  const codeRef = useRef(files["app.js"] ?? "");
+
+  const send = () => {
+    if (!readyRef.current) return;
+    requestRef.current += 1;
+    const requestId = `preview-${requestRef.current}`;
+    if (watchdogRef.current !== null) window.clearTimeout(watchdogRef.current);
+    watchdogRef.current = window.setTimeout(() => {
+      readyRef.current = false;
+      watchdogRef.current = null;
+      setRuntimeKey((key) => key + 1);
+    }, REACT_PREVIEW_TIMEOUT_MS);
+    frameRef.current?.contentWindow?.postMessage(
+      {
+        __academy: "react-run",
+        requestId,
+        code: codeRef.current,
+        checks: [],
+      },
+      "*",
+    );
+  };
+
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      if (event.source !== frameRef.current?.contentWindow) return;
+      const data = event.data as Record<string, unknown> | null;
+      if (data?.__academy === "react-ready") {
+        readyRef.current = true;
+        send();
+        return;
+      }
+      if (
+        data?.__academy === "react-result" &&
+        data.requestId === `preview-${requestRef.current}`
+      ) {
+        if (watchdogRef.current !== null) window.clearTimeout(watchdogRef.current);
+        watchdogRef.current = null;
+      }
+    };
+    window.addEventListener("message", onMessage);
+    return () => {
+      window.removeEventListener("message", onMessage);
+      if (watchdogRef.current !== null) window.clearTimeout(watchdogRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    codeRef.current = files["app.js"] ?? "";
+    const timer = window.setTimeout(send, 260);
+    return () => window.clearTimeout(timer);
+  }, [files]);
+
+  const ring = previewRing(flash);
+
+  return (
+    <section className="flex min-h-0 flex-1 flex-col bg-surface" aria-label="Live preview">
+      <div className="flex h-10 shrink-0 items-center border-b border-outline-variant bg-surface-container px-4">
+        <span className="text-label-caps uppercase tracking-widest text-on-surface-variant">
+          Live Preview
+        </span>
+      </div>
+      <div className="min-h-0 flex-1 bg-surface p-3 sm:p-5">
+        <iframe
+          key={runtimeKey}
+          ref={frameRef}
+          title="Your React component preview"
+          sandbox="allow-scripts"
+          srcDoc={reactRunnerDocument()}
+          className={`h-full w-full bg-white ${ring}`}
         />
       </div>
     </section>

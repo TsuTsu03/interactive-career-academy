@@ -24,7 +24,7 @@ These are ranked. The first one is the one that gets people hurt.
 
 ### 1.1 The iframe sandboxes — NEVER change these
 
-There are exactly three frames. Each has one correct sandbox value.
+There are exactly six iframe roles. Each has one correct sandbox value.
 
 | Where | File | Sandbox | Why |
 |---|---|---|---|
@@ -32,6 +32,8 @@ There are exactly three frames. Each has one correct sandbox value.
 | Grading | `lib/grading.ts` | `allow-same-origin` | Parent reads computed styles; **nothing executes** |
 | Script runner | `lib/js-runner.ts` | `allow-scripts` | Opaque origin, postMessage only |
 | Concept demo | `components/concept-card.tsx` | `allow-scripts` | Authored demo, same rule, no exceptions |
+| React preview | `components/preview.tsx` | `allow-scripts` | Real React runs with an opaque origin; postMessage only |
+| React grading | `lib/react-runner.ts` | `allow-scripts` | Disposable opaque frame returns plain assertion results |
 
 **`allow-scripts` and `allow-same-origin` must never appear together on any iframe in this repo.** Together they let sandboxed content remove its own sandbox and reach the parent page. This is not a style preference. It is the entire security model.
 
@@ -52,11 +54,11 @@ See `settle()` in `lib/grading.ts` and the `guard` timeout in `CountUp` in `comp
 
 Pure decoration may use rAF alone. Anything the learner reads may not.
 
-### 1.3 Copy is rendered, never baked
+### 1.3 Copy uses one patient voice
 
-Every learner-facing string exists in two registers, `simple` and `standard`, in a `Copy` object. It is translated **at render time** with `copy(value, register)`.
+Every learner-facing string uses the single patient, plain-English voice settled in `PLAN.md` decision 29. `Copy` remains a semantic string alias; there is no Simple/Standard toggle and no duplicate register to resolve at render time.
 
-**Never** store a resolved string in state. A learner who switches to Simple because they did not understand an error must not be left staring at the Standard wording of it. This was a real bug; `TestResult.message` is a `Copy` for exactly this reason.
+Keep instructions, explanations, hints, and checker feedback clear and practical. Do not reintroduce reading-level state or store alternate wording in session state.
 
 ### 1.4 Status is never colour alone
 
@@ -149,7 +151,7 @@ Weaker models reliably try to "helpfully" restore these. They were decided delib
 
 ## 5. Content authoring rules
 
-- Every course is **one project across many small steps**, freeCodeCamp style. Each step begins where the last ended and changes **one** thing
+- Every course contains many small projects, each built across many small steps. Within a project, each step begins where the last ended and changes **one** thing
 - The `Simple` register: short sentences, common words, one idea per sentence. The harness warns above 14 words
 - **No jargon before it is shown.** A word gets a `Concept` with all four representations the first time it appears
 - Prefer a **live demo** over a diagram. The browser is a better illustration than a drawing and cannot go stale. Diagrams are for things you cannot see

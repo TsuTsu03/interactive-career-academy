@@ -4,6 +4,42 @@ Browser-only checks deferred under the owner ruling of 2026-08-24. Static
 checks still run for every authoring batch. This file must be empty before the
 front-end freeze in PLAN.md build-order step 9.
 
+## Full authoring-harness audit — 2026-08-28
+
+A fresh real-Chrome `/harness` run checked all 1,640 current steps twice: every
+starting state had to fail and every authored solution had to pass. Result: 0
+errors and 13 reviewed granularity warnings. React contributed 60 steps with
+zero errors and zero warnings. This supersedes every older entry
+below that lists the harness, starting-code failure, or solution-pass check as
+outstanding. Those automated checks are now complete.
+
+The same run found no browser console errors or horizontal overflow at 1440px
+and 375px on the public pages, course gate, HTML workspace, and newly unlocked
+React workspace. The older project-specific visual, hover, tap-placement, and
+late-step workspace checks below remain queued unless their entry says they
+were inspected; the harness result does not pretend those manual checks ran.
+
+The owner approved the separate React preview and grading iframe roles on
+2026-08-28. Both remain `allow-scripts` only and are now recorded in `AGENTS.md`
+and `apps/web/README.md`; no frame combines script and same-origin permission.
+
+## React authoring gate — JSX transform
+
+React authoring pauses at the verified 60-step `React.createElement`
+checkpoint. The installed Next.js Babel internals failed a browser-bundle
+experiment because they require Node-only modules, and the app has no direct
+browser JSX transformer. Do not add more React lessons until the owner approves
+a specific dependency or another safe approach after its browser transfer size
+is measured against the 3 Mbps reference connection. Current measurements:
+
+- `@babel/standalone` 8.0.4: 2,458,024 bytes raw and 567,084 bytes gzip for
+  `babel.min.js`; rejected as too large.
+- `sucrase` 3.35.1 bundled with the current React runtime: 478,514 bytes raw
+  and 120,992 bytes gzip total, an increase of 285,292 raw and 60,257 gzip.
+  This is the recommended candidate, but it still violates the literal
+  no-runtime-cost dependency criterion in `AGENTS.md` section 3. Require an
+  explicit narrow exception before adding it as a development dependency.
+
 ## Authoring pause — 2026-08-25
 
 The owner removed the browser-QA backlog cap. Continue curriculum authoring

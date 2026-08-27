@@ -1,6 +1,6 @@
 # CodeDaddy web app
 
-CodeDaddy is a browser-based, project-led front-end learning platform. The current v1 frontend teaches HTML, CSS, JavaScript, and Tailwind CSS through small steps and practical projects rooted in everyday Filipino life.
+CodeDaddy is a browser-based, project-led front-end learning platform. The current v1 frontend teaches HTML, CSS, Tailwind CSS, JavaScript, and React through small steps and practical projects rooted in everyday Filipino life.
 
 ```bash
 npm --prefix apps/web run dev
@@ -31,6 +31,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `lib/lesson-ir.ts` | Closed lesson and test data types |
 | `lib/grading.ts` | Deterministic browser-side assertions |
 | `lib/js-runner.ts` | Sandboxed JavaScript execution |
+| `lib/react-runner.ts` | Sandboxed React grading and fixed runtime document |
 | `lib/harness.ts` | Curriculum integrity checks |
 | `components/workspace.tsx` | Lesson state, instructions, editor, preview, and run loop |
 | `components/learner-home.tsx` | Local-progress dashboard |
@@ -43,9 +44,12 @@ The iframe sandboxes are the security boundary and must stay separate.
 
 | Frame | Sandbox | Reason |
 |---|---|---|
-| Preview and concept demo | `allow-scripts` | Learner or authored code can run without same-origin access |
+| HTML/CSS/Tailwind preview | `allow-scripts` | Learner code runs without same-origin access |
 | Grader | `allow-same-origin` | The parent can inspect output while script execution remains off |
 | JavaScript runner | `allow-scripts` | Code runs in an opaque origin and communicates through `postMessage` |
+| Concept demo | `allow-scripts` | Authored demos run without same-origin access |
+| React preview | `allow-scripts` | Real React and learner code run in an opaque origin |
+| React grader | `allow-scripts` | Disposable opaque frame returns plain assertion results |
 
 Never combine `allow-scripts` and `allow-same-origin` on one iframe.
 

@@ -106,7 +106,7 @@ export const CSS_TOPICS = [
   {
     id: "borders", noun: "notice", fixture: "banner", label: "a bordered notice",
     steps: [
-      { prop: "border-left-width", decl: "4px", computed: "4px", readable: "4 pixels", task: "Give the notice a thick stripe down its left side.", hint1: "Use a pixel value for the stripe width.", hint2: "Write 4px after the colon." },
+      { prop: "border-left-width", decl: "4px", computed: null, check: "source", pattern: "border-left-width\\s*:\\s*4px", because: "The stripe width must be written even before its line style makes it visible.", readable: "4 pixels", task: "Give the notice a thick stripe down its left side.", hint1: "Use a pixel value for the stripe width.", hint2: "Write 4px after the colon." },
       { prop: "border-left-style", decl: "solid", computed: "solid", readable: "a solid line", task: "Make the left stripe a solid line.", hint1: "Use the plain unbroken line style.", hint2: "Write solid after the colon." },
       { prop: "border-left-color", decl: "#b45309", computed: "rgb(180, 83, 9)", readable: "amber", task: "Colour the stripe amber so it reads as a warning.", hint1: "Use the amber colour code named in the task.", hint2: "Write #b45309 after the colon." },
       { prop: "background-color", decl: "#fffbeb", computed: "rgb(255, 251, 235)", readable: "pale amber", task: "Tint the notice background to match the stripe.", hint1: "Use the pale amber code.", hint2: "Write #fffbeb after the colon." },
@@ -159,7 +159,7 @@ export const CSS_TOPICS = [
       { prop: "max-width", decl: "480px", computed: "480px", readable: "480 pixels", task: "Cap how wide the card can grow.", hint1: "Use a pixel value for the widest it may get.", hint2: "Write 480px after the colon." },
       { prop: "width", decl: "100%", computed: null, check: "source", pattern: "width\\s*:\\s*100%", because: "A full-width value lets the card shrink on a narrow screen.", readable: "the full width available", task: "Let the card shrink to fit a narrow screen.", hint1: "Use a percentage of the space available.", hint2: "Write 100% after the colon." },
       { prop: "padding", decl: "16px", readProp: "padding-top", computed: "16px", readable: "16 pixels", task: "Give the card room inside.", hint1: "Use a pixel value for the inside room.", hint2: "Write 16px after the colon." },
-      { prop: "font-size", decl: "16px", computed: "16px", readable: "16 pixels", task: "Set a comfortable reading size.", hint1: "Use a pixel value for the text size.", hint2: "Write 16px after the colon." },
+      { prop: "font-size", decl: "16px", computed: null, check: "source", pattern: "font-size\\s*:\\s*16px", because: "The declaration must be written even though 16 pixels matches the browser default.", readable: "16 pixels", task: "Set a comfortable reading size.", hint1: "Use a pixel value for the text size.", hint2: "Write 16px after the colon." },
       { prop: "box-sizing", decl: "border-box", computed: "border-box", readable: "border box", task: "Count the padding inside the width, not on top of it.", hint1: "Use the sizing value that includes padding and border.", hint2: "Write border-box after the colon." },
     ],
   },
@@ -216,7 +216,7 @@ export const CSS_TOPICS = [
   {
     id: "units", noun: "card", fixture: "card", label: "sizes that scale",
     steps: [
-      { prop: "font-size", decl: "1rem", computed: "16px", readable: "one root size", task: "Size the card text from the page setting instead of a fixed number.", hint1: "Use the unit that means one root font size.", hint2: "Write 1rem after the colon." },
+      { prop: "font-size", decl: "1rem", computed: null, check: "source", pattern: "font-size\\s*:\\s*1rem", because: "The written rem unit is the lesson; its computed value matches the browser default size.", readable: "one root size", task: "Size the card text from the page setting instead of a fixed number.", hint1: "Use the unit that means one root font size.", hint2: "Write 1rem after the colon." },
       { prop: "padding", decl: "1.25rem", readProp: "padding-top", computed: "20px", readable: "1.25 root sizes", task: "Set the inside room in the same scaling unit.", hint1: "Use a rem value a little over one.", hint2: "Write 1.25rem after the colon." },
       { prop: "max-width", decl: "30rem", computed: "480px", readable: "30 root sizes", task: "Cap the card width in the same unit.", hint1: "Use a rem value for the widest it may get.", hint2: "Write 30rem after the colon." },
       { prop: "line-height", decl: "1.5", computed: "24px", readable: "1.5 times the text size", task: "Space the lines relative to the text size.", hint1: "Use a number with no unit.", hint2: "Write 1.5 after the colon." },
@@ -224,7 +224,7 @@ export const CSS_TOPICS = [
     ],
   },
   {
-    id: "list-styling", noun: "list", fixture: "list", label: "a tidy list",
+    id: "list-styling", noun: "list", fixture: "list", selector: ".item-list ul", label: "a tidy list",
     steps: [
       { prop: "list-style-type", decl: "none", computed: "none", readable: "no bullets", task: "Take the bullets off the list.", hint1: "Use the value that means no marker at all.", hint2: "Write none after the colon." },
       { prop: "padding-left", decl: "0px", computed: "0px", readable: "no left indent", task: "Remove the indent the bullets left behind.", hint1: "Use zero pixels.", hint2: "Write 0px after the colon." },
@@ -267,7 +267,7 @@ export const CSS_TOPICS = [
     id: "text-detail", noun: "card text", fixture: "card", label: "text with fine control",
     steps: [
       { prop: "text-transform", decl: "uppercase", computed: "uppercase", readable: "capital letters", task: "Put the card text in capitals.", hint1: "Use the value that makes every letter a capital.", hint2: "Write uppercase after the colon." },
-      { prop: "font-style", decl: "normal", computed: "normal", readable: "upright", task: "Keep the text upright rather than slanted.", hint1: "Use the value that means not italic.", hint2: "Write normal after the colon." },
+      { prop: "font-style", decl: "normal", computed: null, check: "source", pattern: "font-style\\s*:\\s*normal", because: "The declaration must be present even though upright text is the browser default.", readable: "upright", task: "Keep the text upright rather than slanted.", hint1: "Use the value that means not italic.", hint2: "Write normal after the colon." },
       { prop: "text-decoration-line", decl: "underline", computed: "underline", readable: "underlined", task: "Underline the card text.", hint1: "Use the value that draws a line under the words.", hint2: "Write underline after the colon." },
       { prop: "text-indent", decl: "8px", computed: "8px", readable: "8 pixels of indent", task: "Indent the first line.", hint1: "Use a pixel value for the first-line indent.", hint2: "Write 8px after the colon." },
       { prop: "word-spacing", decl: "1px", computed: "1px", readable: "1 pixel between words", task: "Loosen the gaps between words slightly.", hint1: "Use a small pixel value.", hint2: "Write 1px after the colon." },

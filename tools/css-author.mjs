@@ -255,7 +255,7 @@ const CONST = (slug, suffix) => `${slug.toUpperCase().replace(/-/g, "_")}_${suff
  * which is not CSS at all: the harness would have shipped a step whose check
  * could never pass and whose starting code was invalid.
  */
-function ruleText(root, steps, upTo, blankLast) {
+function ruleText(baseSelector, steps, upTo, blankLast) {
   const blocks = new Map([["", []]]);
 
   steps.slice(0, upTo).forEach((s, i) => {
@@ -268,7 +268,7 @@ function ruleText(root, steps, upTo, blankLast) {
   const out = [];
   for (const [sel, lines] of blocks) {
     if (lines.length === 0) continue;
-    out.push(`.${root}${sel} {\n${lines.join("\n")}\n}`);
+    out.push(`${baseSelector}${sel} {\n${lines.join("\n")}\n}`);
   }
   return out.join("\n\n");
 }
@@ -281,6 +281,7 @@ function generate(spec, num, topic, fixture) {
   const P = `PROJECT_${num}_ID`;
   const S = `s${num}`;
   const root = fixture.root;
+  const selector = topic.selector ?? `.${root}`;
   const HTML = CONST(slug, "HTML");
   const SOLVED = `solved${slug.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join("")}`;
 
@@ -300,8 +301,8 @@ const ${SOLVED} = (styles: string): Record<string, string> => ({ "index.html": $
     // set the same property on the element and on its `::before`.
     const selPart = st.sel ? `-${st.sel.replace(/[^a-z]/g, "")}` : "";
     const id = `${slug}-${st.prop.replace(/^--/, "var-")}${selPart}`;
-    const start = ruleText(root, topic.steps, i + 1, true);
-    const done = ruleText(root, topic.steps, i + 1, false);
+    const start = ruleText(selector, topic.steps, i + 1, true);
+    const done = ruleText(selector, topic.steps, i + 1, false);
 
     // A property the grading frame cannot read back is asserted against the
     // stylesheet text instead. That proves the rule was written, not that it
@@ -313,8 +314,8 @@ const ${SOLVED} = (styles: string): Record<string, string> => ({ "index.html": $
     const label = `The ${topic.noun} ${VERBS[st.prop] ?? "is set to"} ${st.readable}`;
 
     const test = st.check === "source"
-      ? `{ id: "${id}-set", kind: "source-matches", file: "styles.css", pattern: "${st.pattern}", flags: "i", because: "${st.because}", label: "${label}" }`
-      : `{ id: "${id}-set", kind: "style", selector: ".${root}", prop: "${st.readProp ?? st.prop}", equals: "${st.computed}", readable: "${st.readable}", label: "${label}" }`;
+      ? `{ id: "${id}-set", kind: "source-matches", file: "styles.css", pattern: "${q(st.pattern)}", flags: "i", because: "${q(st.because)}", label: "${q(label)}" }`
+      : `{ id: "${id}-set", kind: "style", selector: "${q(selector)}", prop: "${st.readProp ?? st.prop}", equals: "${st.computed}", readable: "${st.readable}", label: "${q(label)}" }`;
 
     stepLines.push(`    ${S}({ id: "${id}", task: "${st.task}", inputMode: "guided", files: ${SOLVED}("${q(start)}"), activeFile: "styles.css", highlightToken: "${st.prop}: ;", tests: [${test}], hints: [{ level: 1, text: "${st.hint1}" }, { level: 2, text: "${st.hint2}" }], xp: ${st.check === "source" ? 55 : 45} }),`);
     refLines.push(`  "${id}": { estimatedMinutes: 4, solution: ${SOLVED}("${q(done)}") },`);

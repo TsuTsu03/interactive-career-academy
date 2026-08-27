@@ -100,12 +100,20 @@ function checkShape(step: Step): Finding[] {
 function lineDiffCount(a: string, b: string): number {
   const linesA = a.split("\n");
   const linesB = b.split("\n");
-  const max = Math.max(linesA.length, linesB.length);
-  let diff = 0;
-  for (let i = 0; i < max; i++) {
-    if (linesA[i] !== linesB[i]) diff++;
+  const previous = Array.from({ length: linesB.length + 1 }, (_, index) => index);
+
+  for (let row = 1; row <= linesA.length; row++) {
+    const current = [row];
+    for (let column = 1; column <= linesB.length; column++) {
+      const substitution = previous[column - 1] + (linesA[row - 1] === linesB[column - 1] ? 0 : 1);
+      const deletion = previous[column] + 1;
+      const insertion = current[column - 1] + 1;
+      current[column] = Math.min(substitution, deletion, insertion);
+    }
+    previous.splice(0, previous.length, ...current);
   }
-  return diff;
+
+  return previous[linesB.length];
 }
 
 function solutionDiffLines(step: Step): number {

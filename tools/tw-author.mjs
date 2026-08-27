@@ -199,6 +199,7 @@ function generate(spec, num, topic, fixture) {
     const done = markup(fixture, topic, i + 1, slots);
     const prev = i === 0 ? fixture.tag : topic.steps[i - 1].cls;
     const label = `The ${topic.fixture} has ${st.readable}`;
+    const stylesheet = topic.steps.slice(0, i + 1).map((step) => step.rule).join("\n\n");
 
     // A utility whose effect the static frame cannot read back - one that
     // expands to several properties, or a state variant - is matched against
@@ -207,10 +208,10 @@ function generate(spec, num, topic, fixture) {
       ? `{ id: "${id}-class", kind: "source-matches", file: "index.html", pattern: "class=\\\\\\"[^\\\\\\"]*\\\\b${st.cls}\\\\b", flags: "i", because: "Add ${st.cls} to the class list.", label: "${label}" }`
       : `{ id: "${id}-style", kind: "style", selector: ".${st.cls}", prop: "${st.prop}", equals: "${st.computed}", readable: "${st.readable}", label: "${label}" }`;
 
-    const hint = i === 0 ? st.hint : `${st.hint} It goes after ${prev}.`;
+    const hint = i === 0 ? st.hint : `${st.hint} Add it at the end of the class list.`;
 
-    stepLines.push(`    ${S}({ id: "${id}", task: "${q(st.task)}", inputMode: "guided", files: { "index.html": "${q(start)}", "styles.css": "${q(st.rule)}" }, activeFile: "index.html", highlightToken: "${q(prev)}", tests: [${test}], hints: [{ level: 1, text: "${q(hint)}" }, { level: 2, text: "Add ${st.cls} to the class list." }], xp: 40 }),`);
-    refLines.push(`  "${id}": { estimatedMinutes: 4, solution: { "index.html": "${q(done)}", "styles.css": "${q(st.rule)}" } },`);
+    stepLines.push(`    ${S}({ id: "${id}", task: "${q(st.task)}", inputMode: "guided", files: { "index.html": "${q(start)}", "styles.css": "${q(stylesheet)}" }, activeFile: "index.html", highlightToken: "${q(prev)}", tests: [${test}], hints: [{ level: 1, text: "${q(hint)}" }, { level: 2, text: "Add ${st.cls} to the class list." }], xp: 40 }),`);
+    refLines.push(`  "${id}": { estimatedMinutes: 4, solution: { "index.html": "${q(done)}", "styles.css": "${q(stylesheet)}" } },`);
   });
 
   return {

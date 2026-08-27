@@ -2960,3 +2960,19 @@ added to catch mechanically instead of by review.
 **How:** `tools/tw-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. This course ships the hand-written CSS rule each utility compiles to, so the class, the rule, and the expected computed value are all curated in `tools/tw-topics.mjs`. A guessed rule would teach the wrong CSS under the right class name. The model supplied only the words on the page.
 
 **Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 128 steps.
+
+---
+
+## 2026-08-28 - React course, projects 1-9
+
+**What got made:** Sixty cumulative React steps across Barangay Help Desk Heading, Barangay Service Card, Barangay Notice List, Barangay Office Status, Barangay Queue Counter, Barangay Visitor Name, Barangay Attendance Toggle, Barangay Page Title, and Barangay Search Focus.
+
+**What they teach:** Components, elements, props, composition, nesting, list rendering, keys, conditional rendering, state, event handlers, functional state updates, controlled inputs, effects, dependency arrays, refs, form labels, toggle semantics, and real focus management. The first sequence deliberately uses `React.createElement`. Further React authoring pauses here: the installed Next.js Babel internals failed to bundle for the browser because of Node-only modules, and adding a browser JSX transformer requires owner approval plus a measured transfer-size review.
+
+**Runtime and grading:** The owner approved separate `allow-scripts`-only React preview and grading frame roles. Closed plain-data assertions now cover rendered elements, text, attributes, click results, typed-input results, document titles, and focus movement. Learner code stays inside opaque-origin frames.
+
+**Verification performed:** TypeScript and ESLint passed throughout. Targeted real-Chrome React harness: 60 steps, 0 errors, 0 warnings. Full real-Chrome harness: 1,640 steps, 0 errors, 13 reviewed foundation granularity warnings, no console errors, and no horizontal overflow at 1440px or 375px on checked pages.
+
+**Review corrections:** Reconciled the obsolete dual-copy and one-project rules with canonical `PLAN.md`, replaced visible React concept diagrams with live demos where the browser can show the idea, narrowed the dependency-array claim to what the step proves, added a dynamic accessible queue-button name with an interaction assertion, and added a watchdog that remounts an unresponsive React preview.
+
+**JSX gate measurement:** Babel standalone 8.0.4 measured 567,084 bytes gzip and was rejected. Sucrase 3.35.1 raises the combined React runtime from 60,735 to 120,992 bytes gzip, a 60,257-byte increase. No dependency was added because this needs an explicit owner-approved exception to the repository's no-runtime-cost rule.

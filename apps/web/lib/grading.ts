@@ -1,5 +1,10 @@
 import type { Copy, Step, TestSpec } from "./lesson-ir";
 import { runLearnerScript, type JsRunResult } from "./js-runner";
+import {
+  runLearnerReact,
+  type ReactRunResult,
+  type ReactTestSpec,
+} from "./react-runner";
 
 export type TestStatus = "waiting" | "passed" | "failed";
 
@@ -447,6 +452,16 @@ function settle(): Promise<void> {
 }
 
 const JS_KINDS = new Set(["js-runs", "js-logs", "js-value", "js-returns"]);
+const REACT_KINDS = new Set([
+  "react-exists",
+  "react-text-equals",
+  "react-attr-equals",
+  "react-click-text-equals",
+  "react-click-attr-equals",
+  "react-input-text-equals",
+  "react-document-title-equals",
+  "react-click-focus-equals",
+]);
 const DOM_KINDS = new Set([
   "exists",
   "count",
@@ -458,6 +473,68 @@ const DOM_KINDS = new Set([
   "style",
 ]);
 
+function runReactTest(spec: ReactTestSpec, run: ReactRunResult): TestResult {
+  if (!run.ok) {
+    return {
+      id: spec.id,
+      label: spec.label,
+      status: "failed",
+      message: run.timedOut
+        ? "Your component kept working and the checker had to stop it. Check for a loop or a state update that repeats during render, fix that one part, then press Run again."
+        : `React could not show your component yet: ${run.error ?? "unknown error"}. Read the message, inspect the App function, and make one correction before running the check again.`,
+    };
+  }
+
+  const result = run.checks.find((candidate) => candidate.id === spec.id);
+  if (result?.passed) return { id: spec.id, label: spec.label, status: "passed" };
+
+  if (spec.kind === "react-exists") {
+    return {
+      id: spec.id,
+      label: spec.label,
+      status: "failed",
+      actual: result?.actual ?? "not found",
+      message: `React rendered the App component, but it does not show a ${describe(spec.selector)} yet. Check the element returned by App, then press Run again.`,
+    };
+  }
+
+  if (spec.kind === "react-document-title-equals") {
+    return {
+      id: spec.id,
+      label: spec.label,
+      status: "failed",
+      expected: spec.value,
+      actual: result?.actual || "(empty)",
+      message: `The document title should read "${spec.value}". Check the effect that updates document.title, then run the check again.`,
+    };
+  }
+
+  if (spec.kind === "react-click-focus-equals") {
+    return {
+      id: spec.id,
+      label: spec.label,
+      status: "failed",
+      actual: result?.actual ?? "not focused",
+      message: `Clicking the ${describe(spec.clickSelector)} should move focus to the ${describe(spec.selector)}. Check the ref and click handler, then run the check again.`,
+    };
+  }
+
+  const expected = spec.value;
+  return {
+    id: spec.id,
+    label: spec.label,
+    status: "failed",
+    expected,
+    actual: result?.actual || "(empty)",
+    message:
+      spec.kind === "react-text-equals" ||
+      spec.kind === "react-click-text-equals" ||
+      spec.kind === "react-input-text-equals"
+        ? `The ${describe(spec.selector)} is present, but its text should read "${expected}". Update only that text, then run the check again.`
+        : `The ${describe(spec.selector)} needs ${spec.attr}="${expected}". Check the props object passed to React.createElement, then run the check again.`,
+  };
+}
+
 /**
  * Runs every assertion for a step. Returns results in authored order so the UI
  * can resolve them one at a time.
@@ -467,6 +544,9 @@ export async function gradeStep(
   files: Record<string, string>,
 ): Promise<TestResult[]> {
   const needsJs = step.tests.some((t) => JS_KINDS.has(t.kind));
+  const reactTests = step.tests.filter((test): test is ReactTestSpec =>
+    REACT_KINDS.has(test.kind),
+  );
   const needsDom = step.tests.some((t) => DOM_KINDS.has(t.kind));
 
   let jsRun: JsRunResult | null = null;
@@ -479,6 +559,11 @@ export async function gradeStep(
     }
     jsRun = await runLearnerScript(files["script.js"] ?? "", { expressions, calls });
   }
+
+  const reactRun =
+    reactTests.length > 0
+      ? await runLearnerReact(files["app.js"] ?? "", reactTests)
+      : null;
 
   let doc: Document | null = null;
   let win: Window | null = null;
@@ -519,6 +604,10 @@ export async function gradeStep(
         if (spec.kind === "js-returns") idx.call++;
         const r = runJsTest(spec, jsRun, here);
         if (r) return r;
+      }
+
+      if (REACT_KINDS.has(spec.kind) && reactRun) {
+        return runReactTest(spec as ReactTestSpec, reactRun);
       }
 
       if (doc && win) {

@@ -89,8 +89,10 @@ export type InputMode = "tap-to-build" | "fill-blank" | "guided" | "free";
  * `web` renders HTML and CSS and asserts against the resulting document.
  * `js` executes the learner's script in an isolated frame and asserts against
  * its console output, its declared values, and its source.
+ * `react` renders a learner component inside a disposable opaque-origin frame
+ * and checks the DOM snapshot inside that frame through typed messages.
  */
-export type StepKind = "web" | "js";
+export type StepKind = "web" | "js" | "react";
 
 /**
  * Deterministic assertions. Each kind is a closed variant so a lesson can
@@ -139,6 +141,63 @@ export type TestSpec =
     }
   /** The script ran without throwing. */
   | { id: string; label: Copy; kind: "js-runs" }
+
+  // --- React assertions (react steps) ---
+  | { id: string; label: Copy; kind: "react-exists"; selector: string }
+  | {
+      id: string;
+      label: Copy;
+      kind: "react-text-equals";
+      selector: string;
+      value: string;
+    }
+  | {
+      id: string;
+      label: Copy;
+      kind: "react-attr-equals";
+      selector: string;
+      attr: string;
+      value: string;
+    }
+  | {
+      id: string;
+      label: Copy;
+      kind: "react-click-text-equals";
+      clickSelector: string;
+      selector: string;
+      value: string;
+    }
+  | {
+      id: string;
+      label: Copy;
+      kind: "react-click-attr-equals";
+      clickSelector: string;
+      selector: string;
+      attr: string;
+      value: string;
+    }
+  | {
+      id: string;
+      label: Copy;
+      kind: "react-input-text-equals";
+      inputSelector: string;
+      inputValue: string;
+      selector: string;
+      value: string;
+    }
+  | {
+      id: string;
+      label: Copy;
+      kind: "react-document-title-equals";
+      value: string;
+    }
+  | {
+      id: string;
+      label: Copy;
+      kind: "react-click-focus-equals";
+      clickSelector: string;
+      selector: string;
+    }
 
   // --- Source assertions (either kind) ---
   /**

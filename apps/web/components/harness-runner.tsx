@@ -20,7 +20,27 @@ export function HarnessRunner() {
     setRunning(true);
     setReports(null);
     const all: StepReport[] = [];
-    for (const course of curriculum.courses) {
+    const requestedCourse = new URLSearchParams(window.location.search).get("course");
+    const courses = requestedCourse
+      ? curriculum.courses.filter((course) => course.id === requestedCourse)
+      : curriculum.courses;
+    if (requestedCourse && courses.length === 0) {
+      const invalidFilter: StepReport = {
+        courseId: requestedCourse,
+        stepId: "invalid-course-filter",
+        index: 0,
+        findings: [
+          {
+            severity: "error",
+            rule: "course-filter",
+            message: `No course has the id ${requestedCourse}.`,
+          },
+        ],
+      };
+      all.push(invalidFilter);
+      (window as unknown as { __harness?: StepReport[] }).__harness = all;
+    }
+    for (const course of courses) {
       setProgress(`Checking ${course.title}…`);
       // Parked on window as each step finishes, so the result survives a
       // starved renderer and so a hang is visible at the step that caused it.

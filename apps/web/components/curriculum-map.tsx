@@ -60,8 +60,10 @@ function dueReviewCopy(count: number): Copy {
   return `${count} ${count === 1 ? "concept" : "concepts"} ready for review`;
 }
 
-function technology(courseId: string, kind: "web" | "js"): string {
+function technology(courseId: string, kind: "web" | "js" | "react"): string {
+  if (kind === "react") return "React";
   if (kind === "js") return "JavaScript";
+  if (courseId.startsWith("tailwind")) return "Tailwind CSS";
   return courseId.startsWith("css") ? "CSS" : "HTML";
 }
 

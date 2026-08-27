@@ -163,7 +163,7 @@ HTML  →  CSS  →  Tailwind  →  JavaScript  →  React  →  Database  →  
 └─────────────── v1 launch ───────────────┘  └──── after launch ────┘
 ```
 
-A course is many small projects built across many small steps, freeCodeCamp style (decision 23) — not one project stretched across the whole course. The learner never starts from a blank file mid-project: each step begins where the last one ended, but that continuity is scoped to the project, not the whole course. Learn HTML uses this split across eighteen projects; CSS and JavaScript across thirteen each; Tailwind across seven. `Course.projects[]` names each one; `Step.projectId` says which project a step belongs to. Finishing a project is a named milestone with a shareable artifact — not a gate, and not itself a certificate (decision 24).
+A course is many small projects built across many small steps, freeCodeCamp style (decision 23) — not one project stretched across the whole course. The learner never starts from a blank file mid-project: each step begins where the last one ended, but that continuity is scoped to the project, not the whole course. Learn HTML uses this split across 58 projects; CSS across 87; Tailwind across 24; JavaScript across 129; and React currently across 9. `Course.projects[]` names each one; `Step.projectId` says which project a step belongs to. Finishing a project is a named milestone with a shareable artifact — not a gate, and not itself a certificate (decision 24).
 
 ### Course naming
 
@@ -174,21 +174,30 @@ old decision 19 figures are kept in the last column so the change is visible.
 
 | Course | Project | Steps now | Target | Was (decision 19) |
 |---|---|---|---|---|
-| Learn HTML | Sari-Sari Store Page + 40 more | 273 (41 projects) | ~350 | ~640 |
-| Learn CSS | Jeepney Route Card + 17 more | 105 (18 projects) | ~450 | ~2,470 |
-| Learn JavaScript | Palengke Price Counter + 83 more | 430 (84 projects) | ~650 | ~2,640 |
-| Learn Tailwind CSS | Turo-Turo Menu Card + 8 more | 53 (9 projects) | ~130 | ~190 |
-| Learn React | not started | 0 | ~550 | ~370 |
+| Learn HTML | Sari-Sari Store Page + 57 more | 347 (58 projects) | ~350 | ~640 |
+| Learn CSS | Jeepney Route Card + 86 more | 450 (87 projects) | ~450 | ~2,470 |
+| Learn Tailwind CSS | Turo-Turo Menu Card + 23 more | 128 (24 projects) | ~130 | ~190 |
+| Learn JavaScript | Palengke Price Counter + 128 more | 655 (129 projects) | ~650 | ~2,640 |
+| Learn React | Barangay Help Desk Heading + 8 more | 60 (9 projects) | ~550 | ~370 |
 
-**HTML is close to done.** Its 41 projects have taught 79 elements, which is
-every element this audience needs; what remains is combination work — a whole
-form end to end, semantic page structure at scale, accessibility patterns —
-at increasing difficulty, not more elements. **CSS is the largest real gap:**
-105 steps with the box model, flexbox, grid, positioning, and responsive
-design barely touched. **React is the largest target** because it is the
-closest thing here to employable work.
+HTML, CSS, Tailwind, and JavaScript have reached their coverage targets and
+passed the complete browser authoring harness on 2026-08-28. React now has 60
+steps covering components, nested elements, props, list rendering, keys,
+conditional output, state, events, controlled inputs, effects, and refs with a
+real bundled React 19 runtime. The owner approved its separate opaque-origin
+preview and grading frame roles on 2026-08-28; both remain `allow-scripts` only.
+Further React lesson authoring pauses at this verified 60-step checkpoint until
+the JSX transform is resolved. The installed Next.js Babel internals could not
+produce a browser bundle without Node-only modules, and no browser JSX
+transformer is installed. Adding one requires the dependency approval and
+transfer-size review required by `AGENTS.md` section 3. The measured candidate
+is Sucrase 3.35.1: bundling it with the current runtime raises the asset from
+60,735 to 120,992 bytes gzip, a 60,257-byte increase. That is a narrow runtime-
+cost exception to section 3 and therefore still needs an explicit owner call.
+**React is now the largest remaining target** because it is the closest thing
+here to employable work.
 
-861 steps total, across four courses, as of 2026-08-27: 41 HTML projects, 18 CSS, 84 JavaScript, and 9 Tailwind. Under decision 38 the remaining work is roughly 1,240 steps, most of it in CSS and React rather than spread evenly.
+1,640 steps total, across five courses, as of 2026-08-28: 58 HTML projects, 87 CSS, 24 Tailwind, 129 JavaScript, and 9 React. The full browser harness reports 0 errors; its 13 remaining warnings are reviewed structural exceptions where one coherent step necessarily changes more than three lines. Under decision 38, the remaining guided-curriculum work is now principally the React course rather than more padding in completed foundations.
 
 Decision 19 set these targets by doubling freeCodeCamp's real step count, verified live at freecodecamp.org on 2026-08-23. Decision 38 replaced that method on 2026-08-27: a course is sized by what it has to cover, and the old figures survive only as the last column above. The multiplier was never derived from what a learner needs, and authoring against it produced a finished-in-substance HTML course still ~370 steps short of its number, with nothing left to add but padding.
 
@@ -511,12 +520,12 @@ Not blocking. Decide when they become real.
 A working Next.js 16 app in `apps/web`.
 
 - Three-column step workspace: instructions, editor, live preview
-- Four courses (HTML, CSS, JavaScript, Tailwind CSS), 342 steps total, all harness-verified end to end. Learn HTML has eighteen finished projects; CSS and JavaScript have thirteen each; Tailwind has seven.
+- Five courses (HTML, CSS, Tailwind CSS, JavaScript, React), 1,640 steps total, all harness-verified end to end. React has 60 steps across nine practical projects.
 - A global concept registry (`content/concepts.ts`) and global, cross-course spaced review — a concept learned in one course still resurfaces while the learner spends months inside the next one
-- A `Course.projects[]` / `Step.projectId` layer now used by eighteen small HTML projects and ready for the other courses to split as they grow
+- A `Course.projects[]` / `Step.projectId` layer used by every course and all 307 current projects
 - An authoring harness (`lib/harness.ts`, at `/harness`) that checks learner copy, hints, concepts, accessibility, and — as of 2026-08-23 — step granularity, mechanically
-- Deterministic grading for markup, computed styles, source patterns, and JavaScript behaviour
-- Safe JavaScript execution with a timeout that survives `while (true)`
+- Deterministic grading for markup, computed styles, source patterns, JavaScript behaviour, and React-rendered output
+- Safe JavaScript grading in a disposable frame with a hard timeout; React grading is disposable, while its opaque-origin live preview has a watchdog that remounts an unresponsive runtime. The React browser runtime is built from the installed React packages with no new dependency
 - Tap-to-build blocks, guided typing, progressive hints
 - One patient, plain-English teaching voice across the product
 - XP, combo, streak, ranks, rank-up celebration
