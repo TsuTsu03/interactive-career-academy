@@ -136,6 +136,17 @@ const STORE_PRICE_HTML = `<div class="price-row">
 </div>`;
 const solvedStorePrice = (styles: string): Record<string, string> => ({ "index.html": STORE_PRICE_HTML, "styles.css": css(styles) });
 
+/* css-topic: flex-column */
+const HEALTH_CENTRE_HTML = `<section class="item-list">
+  <h2>Health Tips</h2>
+  <ul>
+    <li>Vaccines Available</li>
+    <li>Free Consultation</li>
+    <li>Healthy Eating</li>
+  </ul>
+</section>`;
+const solvedHealthCentre = (styles: string): Record<string, string> => ({ "index.html": HEALTH_CENTRE_HTML, "styles.css": css(styles) });
+
 /** Authored proof for every step. Missing entries stop the course from loading. */
 const references = {
   "first-rule": {
@@ -321,6 +332,11 @@ const references = {
   "store-price-align-items": { estimatedMinutes: 4, solution: solvedStorePrice(".price-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}") },
   "store-price-gap": { estimatedMinutes: 4, solution: solvedStorePrice(".price-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 12px;\n}") },
   "store-price-padding": { estimatedMinutes: 4, solution: solvedStorePrice(".price-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 12px;\n  padding: 12px;\n}") },
+  "health-centre-display": { estimatedMinutes: 4, solution: solvedHealthCentre(".item-list {\n  display: flex;\n}") },
+  "health-centre-flex-direction": { estimatedMinutes: 4, solution: solvedHealthCentre(".item-list {\n  display: flex;\n  flex-direction: column;\n}") },
+  "health-centre-gap": { estimatedMinutes: 4, solution: solvedHealthCentre(".item-list {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}") },
+  "health-centre-background-color": { estimatedMinutes: 4, solution: solvedHealthCentre(".item-list {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  background-color: #f8fafc;\n}") },
+  "health-centre-padding": { estimatedMinutes: 4, solution: solvedHealthCentre(".item-list {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  background-color: #f8fafc;\n  padding: 16px;\n}") },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "jeepney-route-card";
@@ -345,6 +361,7 @@ const PROJECT_18_ID = "barangay-night-notice";
 const PROJECT_20_ID = "barangay-curfew-notice";
 const PROJECT_21_ID = "jeepney-terminal-timetable";
 const PROJECT_22_ID = "sari-sari-store-price";
+const PROJECT_23_ID = "barangay-health-centre";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -377,12 +394,14 @@ const s21 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const 
 
 const s22 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_22_ID }; };
 
+const s23 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_23_ID }; };
+
 export const cssCourse: Course = {
   id: "css-basics",
   order: 2,
   title: "Learn CSS by Building a Jeepney Route Card",
   project: "Jeepney Route Card",
-  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }],
+  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }, { id: PROJECT_23_ID, title: "Barangay Health Centre" }],
   kind: "web",
   requires: ["html-basics"],
   summary: "Now make it look good. Colours, spacing, fonts, and layout.",
@@ -863,5 +882,10 @@ export const cssCourse: Course = {
     s22({ id: "store-price-align-items", task: "Line the two up through their middles.", inputMode: "guided", files: solvedStorePrice(".price-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: ;\n}"), activeFile: "styles.css", highlightToken: "align-items: ;", tests: [{ id: "store-price-align-items-set", kind: "style", selector: ".price-row", prop: "align-items", equals: "center", readable: "centred across", label: "The row lines its children up centred across" }], hints: [{ level: 1, text: "Use the value that centres children across the row." }, { level: 2, text: "Write center after the colon." }], xp: 45 }),
     s22({ id: "store-price-gap", task: "Keep a minimum gap between the two.", inputMode: "guided", files: solvedStorePrice(".price-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: ;\n}"), activeFile: "styles.css", highlightToken: "gap: ;", tests: [{ id: "store-price-gap-set", kind: "style", selector: ".price-row", prop: "column-gap", equals: "12px", readable: "12 pixels", label: "The row keeps a gap of 12 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the gap." }, { level: 2, text: "Write 12px after the colon." }], xp: 45 }),
     s22({ id: "store-price-padding", task: "Give the row room inside.", inputMode: "guided", files: solvedStorePrice(".price-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 12px;\n  padding: ;\n}"), activeFile: "styles.css", highlightToken: "padding: ;", tests: [{ id: "store-price-padding-set", kind: "style", selector: ".price-row", prop: "padding-top", equals: "12px", readable: "12 pixels", label: "The row has room inside of 12 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the inside room." }, { level: 2, text: "Write 12px after the colon." }], xp: 45 }),
+    s23({ id: "health-centre-display", task: "Take control of how the list stacks.", inputMode: "guided", files: solvedHealthCentre(".item-list {\n  display: ;\n}"), activeFile: "styles.css", highlightToken: "display: ;", tests: [{ id: "health-centre-display-set", kind: "style", selector: ".item-list", prop: "display", equals: "flex", readable: "a flex box", label: "The list is laid out as a flex box" }], hints: [{ level: 1, text: "Use the display value that lets you control direction and gaps." }, { level: 2, text: "Write flex after the colon." }], xp: 45 }),
+    s23({ id: "health-centre-flex-direction", task: "Stack the heading and the list top to bottom.", inputMode: "guided", files: solvedHealthCentre(".item-list {\n  display: flex;\n  flex-direction: ;\n}"), activeFile: "styles.css", highlightToken: "flex-direction: ;", tests: [{ id: "health-centre-flex-direction-set", kind: "style", selector: ".item-list", prop: "flex-direction", equals: "column", readable: "top to bottom", label: "The list runs top to bottom" }], hints: [{ level: 1, text: "Use the direction value that runs down the page." }, { level: 2, text: "Write column after the colon." }], xp: 45 }),
+    s23({ id: "health-centre-gap", task: "Space the stacked parts evenly.", inputMode: "guided", files: solvedHealthCentre(".item-list {\n  display: flex;\n  flex-direction: column;\n  gap: ;\n}"), activeFile: "styles.css", highlightToken: "gap: ;", tests: [{ id: "health-centre-gap-set", kind: "style", selector: ".item-list", prop: "row-gap", equals: "8px", readable: "8 pixels", label: "The list keeps a gap of 8 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the gap." }, { level: 2, text: "Write 8px after the colon." }], xp: 45 }),
+    s23({ id: "health-centre-background-color", task: "Tint the list so it reads as one block.", inputMode: "guided", files: solvedHealthCentre(".item-list {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  background-color: ;\n}"), activeFile: "styles.css", highlightToken: "background-color: ;", tests: [{ id: "health-centre-background-color-set", kind: "style", selector: ".item-list", prop: "background-color", equals: "rgb(248, 250, 252)", readable: "pale grey", label: "The list has a background of pale grey" }], hints: [{ level: 1, text: "Use the pale grey code." }, { level: 2, text: "Write #f8fafc after the colon." }], xp: 45 }),
+    s23({ id: "health-centre-padding", task: "Keep the list clear of its own edges.", inputMode: "guided", files: solvedHealthCentre(".item-list {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  background-color: #f8fafc;\n  padding: ;\n}"), activeFile: "styles.css", highlightToken: "padding: ;", tests: [{ id: "health-centre-padding-set", kind: "style", selector: ".item-list", prop: "padding-top", equals: "16px", readable: "16 pixels", label: "The list has room inside of 16 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the inside room." }, { level: 2, text: "Write 16px after the colon." }], xp: 45 }),
   ],
 };
