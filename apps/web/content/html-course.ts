@@ -906,6 +906,12 @@ const APPLICATION_NOTICE_B1 = `    <section></section>\n`;
 const APPLICATION_NOTICE_B2 = `    <section>\n      <h2>Notice</h2>\n    </section>\n`;
 const APPLICATION_NOTICE_B3 = `    <section>\n      <h2>Notice</h2>\n      <p>Complete your Barangay ID application by the deadline</p>\n    </section>\n`;
 
+/* composition: notice-card */
+const PRICE_LIST_ROOT_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const PRICE_LIST_B1 = `    <section></section>\n`;
+const PRICE_LIST_B2 = `    <section>\n      <h2>Notice Card</h2>\n    </section>\n`;
+const PRICE_LIST_B3 = `    <section>\n      <h2>Notice Card</h2>\n      <p>Price updates effective immediately.</p>\n    </section>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1508,6 +1514,9 @@ const references = {
   "application-notice-root": { estimatedMinutes: 4, solution: solvedSlot(APPLICATION_NOTICE_ROOT_SLOT, "<section></section>") },
   "application-notice-h2-1": { estimatedMinutes: 4, solution: solved(APPLICATION_NOTICE_B2) },
   "application-notice-p-2": { estimatedMinutes: 4, solution: solved(APPLICATION_NOTICE_B3) },
+  "price-list-root": { estimatedMinutes: 4, solution: solvedSlot(PRICE_LIST_ROOT_SLOT, "<section></section>") },
+  "price-list-h2-1": { estimatedMinutes: 4, solution: solved(PRICE_LIST_B2) },
+  "price-list-p-2": { estimatedMinutes: 4, solution: solved(PRICE_LIST_B3) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1562,6 +1571,7 @@ const PROJECT_49_ID = "rice-retailer-price";
 const PROJECT_50_ID = "laundry-shop-receipt";
 const PROJECT_51_ID = "pharmacy-stock-list-notice";
 const PROJECT_52_ID = "barangay-id-application-notice";
+const PROJECT_53_ID = "sari-sari-store-price-list";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1859,6 +1869,11 @@ const s52 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_52_ID };
 };
 
+const s53 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_53_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1917,6 +1932,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_50_ID, title: "Laundry Shop Receipt" },
     { id: PROJECT_51_ID, title: "Pharmacy Stock List Notice" },
     { id: PROJECT_52_ID, title: "Barangay ID Application Notice" },
+    { id: PROJECT_53_ID, title: "Sari Sari Store Price List" },
   ],
   kind: "web",
   requires: [],
@@ -4911,5 +4927,8 @@ export const htmlCourse: Course = {
     s52({ id: "application-notice-root", task: "Start the notice card. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": APPLICATION_NOTICE_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: APPLICATION_NOTICE_ROOT_SLOT.slotLine, blocks: ["<section></section>","<div></div>","<p></p>","<span></span>"], correctBlock: "<section></section>", tests: [{ id: "application-notice-root-exists", kind: "exists", selector: "section", label: "The notice card has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this notice card." }, { level: 2, text: "Use section tags for the outer box." }], xp: 40 }),
     s52({ id: "application-notice-h2-1", task: "Add the heading inside the section, and write Notice in it.", inputMode: "guided", files: solved(APPLICATION_NOTICE_B1), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "application-notice-h2-1-text", kind: "text-equals", selector: "section h2", value: "Notice", label: "The heading shows the card heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Notice between them." }], xp: 45 }),
     s52({ id: "application-notice-p-2", task: "Add the paragraph inside the section, and write Complete your Barangay ID application by the deadline in it.", inputMode: "guided", files: solved(APPLICATION_NOTICE_B2), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "application-notice-p-2-text", kind: "text-equals", selector: "section p", value: "Complete your Barangay ID application by the deadline", label: "The paragraph shows one sentence of detail" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use p tags, and write Complete your Barangay ID application by the deadline between them." }], xp: 45 }),
+    s53({ id: "price-list-root", task: "Start the notice card. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": PRICE_LIST_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: PRICE_LIST_ROOT_SLOT.slotLine, blocks: ["<section></section>","<div></div>","<p></p>","<span></span>"], correctBlock: "<section></section>", tests: [{ id: "price-list-root-exists", kind: "exists", selector: "section", label: "The notice card has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this notice card." }, { level: 2, text: "Use section tags for the outer box." }], xp: 40 }),
+    s53({ id: "price-list-h2-1", task: "Add the heading inside the section, and write Notice Card in it.", inputMode: "guided", files: solved(PRICE_LIST_B1), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "price-list-h2-1-text", kind: "text-equals", selector: "section h2", value: "Notice Card", label: "The heading shows the card heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Notice Card between them." }], xp: 45 }),
+    s53({ id: "price-list-p-2", task: "Add the paragraph inside the section, and write Price updates effective immediately. in it.", inputMode: "guided", files: solved(PRICE_LIST_B2), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "price-list-p-2-text", kind: "text-equals", selector: "section p", value: "Price updates effective immediately.", label: "The paragraph shows one sentence of detail" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use p tags, and write Price updates effective immediately. between them." }], xp: 45 }),
   ],
 };
