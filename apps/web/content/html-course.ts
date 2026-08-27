@@ -823,6 +823,14 @@ const SUPPLY_LIST_B1 = `    <section></section>\n`;
 const SUPPLY_LIST_B2 = `    <section>\n      <h2>Notice Card</h2>\n    </section>\n`;
 const SUPPLY_LIST_B3 = `    <section>\n      <h2>Notice Card</h2>\n      <p>Please pack your textbooks and notebooks.</p>\n    </section>\n`;
 
+/* composition: dated-notice */
+const FARE_TABLE_ROOT_SLOT = slotPage("    @@SLOT@@\\n", "@@SLOT@@");
+const FARE_TABLE_B1 = `    <article></article>\n`;
+const FARE_TABLE_B2 = `    <article>\n      <h2>Fare Notice</h2>\n    </article>\n`;
+const FARE_TABLE_B3 = `    <article>\n      <h2>Fare Notice</h2>\n      <p>Tricycles operate daily from 5 AM to 6 PM.</p>\n    </article>\n`;
+const FARE_TABLE_B4 = `    <article>\n      <h2>Fare Notice</h2>\n      <p>Tricycles operate daily from 5 AM to 6 PM.</p>\n      <footer></footer>\n    </article>\n`;
+const FARE_TABLE_B5 = `    <article>\n      <h2>Fare Notice</h2>\n      <p>Tricycles operate daily from 5 AM to 6 PM.</p>\n      <footer>\n        <small>City Transport Authority</small>\n      </footer>\n    </article>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1372,6 +1380,11 @@ const references = {
   "supply-list-root": { estimatedMinutes: 4, solution: solvedSlot(SUPPLY_LIST_ROOT_SLOT, "<section></section>") },
   "supply-list-h2-1": { estimatedMinutes: 4, solution: solved(SUPPLY_LIST_B2) },
   "supply-list-p-2": { estimatedMinutes: 4, solution: solved(SUPPLY_LIST_B3) },
+  "fare-table-root": { estimatedMinutes: 4, solution: solvedSlot(FARE_TABLE_ROOT_SLOT, "<article></article>") },
+  "fare-table-h2-1": { estimatedMinutes: 4, solution: solved(FARE_TABLE_B2) },
+  "fare-table-p-2": { estimatedMinutes: 4, solution: solved(FARE_TABLE_B3) },
+  "fare-table-footer-3": { estimatedMinutes: 4, solution: solved(FARE_TABLE_B4) },
+  "fare-table-small-4": { estimatedMinutes: 4, solution: solved(FARE_TABLE_B5) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1416,6 +1429,7 @@ const PROJECT_39_ID = "palengke-fish-stall";
 const PROJECT_40_ID = "turo-turo-menu";
 const PROJECT_41_ID = "barangay-basketball-league";
 const PROJECT_42_ID = "school-supply-list";
+const PROJECT_43_ID = "tricycle-fare-table";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1663,6 +1677,11 @@ const s42 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_42_ID };
 };
 
+const s43 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_43_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1711,6 +1730,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_40_ID, title: "Turo Turo Menu" },
     { id: PROJECT_41_ID, title: "Barangay Basketball League" },
     { id: PROJECT_42_ID, title: "School Supply List" },
+    { id: PROJECT_43_ID, title: "Tricycle Fare Table" },
   ],
   kind: "web",
   requires: [],
@@ -4652,5 +4672,10 @@ export const htmlCourse: Course = {
     s42({ id: "supply-list-root", task: "Start the notice card. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": SUPPLY_LIST_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: SUPPLY_LIST_ROOT_SLOT.slotLine, blocks: ["<section></section>","<div></div>","<p></p>","<span></span>"], correctBlock: "<section></section>", tests: [{ id: "supply-list-root-exists", kind: "exists", selector: "section", label: "The notice card has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this notice card." }, { level: 2, text: "Use section tags for the outer box." }], xp: 40 }),
     s42({ id: "supply-list-h2-1", task: "Add the heading inside the section, and write Notice Card in it.", inputMode: "guided", files: solved(SUPPLY_LIST_B1), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "supply-list-h2-1-text", kind: "text-equals", selector: "section h2", value: "Notice Card", label: "The heading shows the card heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Notice Card between them." }], xp: 45 }),
     s42({ id: "supply-list-p-2", task: "Add the paragraph inside the section, and write Please pack your textbooks and notebooks. in it.", inputMode: "guided", files: solved(SUPPLY_LIST_B2), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "supply-list-p-2-text", kind: "text-equals", selector: "section p", value: "Please pack your textbooks and notebooks.", label: "The paragraph shows one sentence of detail" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use p tags, and write Please pack your textbooks and notebooks. between them." }], xp: 45 }),
+    s43({ id: "fare-table-root", task: "Start the dated notice. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": FARE_TABLE_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: FARE_TABLE_ROOT_SLOT.slotLine, blocks: ["<article></article>","<div></div>","<p></p>","<span></span>"], correctBlock: "<article></article>", tests: [{ id: "fare-table-root-exists", kind: "exists", selector: "article", label: "The dated notice has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this dated notice." }, { level: 2, text: "Use article tags for the outer box." }], xp: 40 }),
+    s43({ id: "fare-table-h2-1", task: "Add the heading inside the notice, and write Fare Notice in it.", inputMode: "guided", files: solved(FARE_TABLE_B1), activeFile: "index.html", highlightToken: "<article>", tests: [{ id: "fare-table-h2-1-text", kind: "text-equals", selector: "article h2", value: "Fare Notice", label: "The heading shows the notice heading" }], hints: [{ level: 1, text: "Find the notice you already added, and work inside the notice." }, { level: 2, text: "Use h2 tags, and write Fare Notice between them." }], xp: 45 }),
+    s43({ id: "fare-table-p-2", task: "Add the paragraph inside the notice, and write Tricycles operate daily from 5 AM to 6 PM. in it.", inputMode: "guided", files: solved(FARE_TABLE_B2), activeFile: "index.html", highlightToken: "<article>", tests: [{ id: "fare-table-p-2-text", kind: "text-equals", selector: "article p", value: "Tricycles operate daily from 5 AM to 6 PM.", label: "The paragraph shows one sentence of detail" }], hints: [{ level: 1, text: "Find the notice you already added, and work inside the notice." }, { level: 2, text: "Use p tags, and write Tricycles operate daily from 5 AM to 6 PM. between them." }], xp: 45 }),
+    s43({ id: "fare-table-footer-3", task: "Add the footer inside the notice.", inputMode: "guided", files: solved(FARE_TABLE_B3), activeFile: "index.html", highlightToken: "<article>", tests: [{ id: "fare-table-footer-3-exists", kind: "exists", selector: "article footer", label: "The footer sits inside the notice" }], hints: [{ level: 1, text: "Find the notice you already added, and work inside the notice." }, { level: 2, text: "Use footer tags, and put them inside the notice rather than beside it." }], xp: 40 }),
+    s43({ id: "fare-table-small-4", task: "Add the small print inside the footer, and write City Transport Authority in it.", inputMode: "guided", files: solved(FARE_TABLE_B4), activeFile: "index.html", highlightToken: "<footer>", tests: [{ id: "fare-table-small-4-text", kind: "text-equals", selector: "article footer small", value: "City Transport Authority", label: "The small print shows who posted the notice" }], hints: [{ level: 1, text: "Find the footer you already added, and work inside the footer." }, { level: 2, text: "Use small tags, and write City Transport Authority between them." }], xp: 45 }),
   ],
 };
