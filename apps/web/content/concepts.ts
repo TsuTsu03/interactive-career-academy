@@ -2390,6 +2390,14 @@ export const concepts: Record<string, Concept> = {
     visual: { kind: "diagram", diagram: { alt: "Image of a turo-turo menu with 'Pay', 'Cancel', and 'Help' options.", columns: 3, nodes: [{ id: "words", label: "Pay, Cancel, Help", note: "plain words", tone: "ghost" }, { id: "tag", label: "menu", note: "list of commands", tone: "accent" }, { id: "result", label: "List of commands", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
     proof: "You will mark the words 'Pay' and 'Cancel' on the menu buttons.",
   },
+  "bdi-element": {
+    id: "bdi-element",
+    term: "bdi element",
+    definition: "The bdi element keeps a name written in another writing direction from disturbing the text around it.",
+    analogy: "Mixing rice and beans in a bowl - the bdi tag keeps them separate.",
+    visual: { kind: "diagram", diagram: { alt: "A picture of a water bill with names kept clearly apart.", columns: 3, nodes: [{ id: "words", label: "John Doe", note: "plain words", tone: "ghost" }, { id: "tag", label: "bdi", note: "isolated name", tone: "accent" }, { id: "result", label: "Isolated name", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
+    proof: "You will mark the words John Doe on the water bill.",
+  },
 };
 
 export function conceptById(id: string): Concept | undefined {
