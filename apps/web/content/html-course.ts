@@ -840,14 +840,6 @@ const ORDER_SLIP_B4 = `    <section>\n      <h2>Bakery Order Checklist</h2>\n   
 const ORDER_SLIP_B5 = `    <section>\n      <h2>Bakery Order Checklist</h2>\n      <ul>\n        <li>Name:______________________</li>\n        <li>Phone:______________________</li>\n      </ul>\n    </section>\n`;
 const ORDER_SLIP_B6 = `    <section>\n      <h2>Bakery Order Checklist</h2>\n      <ul>\n        <li>Name:______________________</li>\n        <li>Phone:______________________</li>\n        <li>Items Ordered:</li>\n      </ul>\n    </section>\n`;
 
-/* composition: captioned-figure */
-const REFILL_STATION_ROOT_SLOT = slotPage("    @@SLOT@@\\n", "@@SLOT@@");
-const REFILL_STATION_B1 = `    <section></section>\n`;
-const REFILL_STATION_B2 = `    <section>\n      <h2>Water Refill Station Notice</h2>\n    </section>\n`;
-const REFILL_STATION_B3 = `    <section>\n      <h2>Water Refill Station Notice</h2>\n      <figure></figure>\n    </section>\n`;
-const REFILL_STATION_B4 = `    <section>\n      <h2>Water Refill Station Notice</h2>\n      <figure>\n        <blockquote>Refill now before it's too late!</blockquote>\n      </figure>\n    </section>\n`;
-const REFILL_STATION_B5 = `    <section>\n      <h2>Water Refill Station Notice</h2>\n      <figure>\n        <blockquote>Refill now before it's too late!</blockquote>\n        <figcaption>Station Manager</figcaption>\n      </figure>\n    </section>\n`;
-
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1408,11 +1400,6 @@ const references = {
   "order-slip-li-3": { estimatedMinutes: 4, solution: solved(ORDER_SLIP_B4) },
   "order-slip-li-4": { estimatedMinutes: 4, solution: solved(ORDER_SLIP_B5) },
   "order-slip-li-5": { estimatedMinutes: 4, solution: solved(ORDER_SLIP_B6) },
-  "refill-station-root": { estimatedMinutes: 4, solution: solvedSlot(REFILL_STATION_ROOT_SLOT, "<section></section>") },
-  "refill-station-h2-1": { estimatedMinutes: 4, solution: solved(REFILL_STATION_B2) },
-  "refill-station-figure-2": { estimatedMinutes: 4, solution: solved(REFILL_STATION_B3) },
-  "refill-station-blockquote-3": { estimatedMinutes: 4, solution: solved(REFILL_STATION_B4) },
-  "refill-station-figcaption-4": { estimatedMinutes: 4, solution: solved(REFILL_STATION_B5) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1459,7 +1446,6 @@ const PROJECT_41_ID = "barangay-basketball-league";
 const PROJECT_42_ID = "school-supply-list";
 const PROJECT_43_ID = "tricycle-fare-table";
 const PROJECT_44_ID = "bakery-order-slip";
-const PROJECT_45_ID = "water-refill-station";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1717,11 +1703,6 @@ const s44 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_44_ID };
 };
 
-const s45 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
-  const reference = references[step.id as keyof typeof references];
-  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_45_ID };
-};
-
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1772,7 +1753,6 @@ export const htmlCourse: Course = {
     { id: PROJECT_42_ID, title: "School Supply List" },
     { id: PROJECT_43_ID, title: "Tricycle Fare Table" },
     { id: PROJECT_44_ID, title: "Bakery Order Slip" },
-    { id: PROJECT_45_ID, title: "Water Refill Station" },
   ],
   kind: "web",
   requires: [],
@@ -4725,10 +4705,5 @@ export const htmlCourse: Course = {
     s44({ id: "order-slip-li-3", task: "Add the list item inside the list, and write Name:______________________ in it.", inputMode: "guided", files: solved(ORDER_SLIP_B3), activeFile: "index.html", highlightToken: "<ul>", tests: [{ id: "order-slip-li-3-text", kind: "text-equals", selector: "section ul li", value: "Name:______________________", label: "The list item shows the first item" }], hints: [{ level: 1, text: "Find the list you already added, and work inside the list." }, { level: 2, text: "Use li tags, and write Name:______________________ between them." }], xp: 45 }),
     s44({ id: "order-slip-li-4", task: "Add the list item inside the list, and write Phone:______________________ in it.", inputMode: "guided", files: solved(ORDER_SLIP_B4), activeFile: "index.html", highlightToken: "<ul>", tests: [{ id: "order-slip-li-4-text", kind: "text-equals", selector: "section ul li:nth-of-type(2)", value: "Phone:______________________", label: "The list item shows the second item" }], hints: [{ level: 1, text: "Find the list you already added, and work inside the list." }, { level: 2, text: "Use li tags, and write Phone:______________________ between them." }], xp: 45 }),
     s44({ id: "order-slip-li-5", task: "Add the list item inside the list, and write Items Ordered: in it.", inputMode: "guided", files: solved(ORDER_SLIP_B5), activeFile: "index.html", highlightToken: "<ul>", tests: [{ id: "order-slip-li-5-text", kind: "text-equals", selector: "section ul li:nth-of-type(3)", value: "Items Ordered:", label: "The list item shows the third item" }], hints: [{ level: 1, text: "Find the list you already added, and work inside the list." }, { level: 2, text: "Use li tags, and write Items Ordered: between them." }], xp: 45 }),
-    s45({ id: "refill-station-root", task: "Start the captioned figure. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": REFILL_STATION_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: REFILL_STATION_ROOT_SLOT.slotLine, blocks: ["<section></section>","<div></div>","<p></p>","<span></span>"], correctBlock: "<section></section>", tests: [{ id: "refill-station-root-exists", kind: "exists", selector: "section", label: "The captioned figure has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this captioned figure." }, { level: 2, text: "Use section tags for the outer box." }], xp: 40 }),
-    s45({ id: "refill-station-h2-1", task: "Add the heading inside the section, and write Water Refill Station Notice in it.", inputMode: "guided", files: solved(REFILL_STATION_B1), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "refill-station-h2-1-text", kind: "text-equals", selector: "section h2", value: "Water Refill Station Notice", label: "The heading shows the section heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Water Refill Station Notice between them." }], xp: 45 }),
-    s45({ id: "refill-station-figure-2", task: "Add the figure inside the section.", inputMode: "guided", files: solved(REFILL_STATION_B2), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "refill-station-figure-2-exists", kind: "exists", selector: "section figure", label: "The figure sits inside the section" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use figure tags, and put them inside the section rather than beside it." }], xp: 40 }),
-    s45({ id: "refill-station-blockquote-3", task: "Add the quotation inside the figure, and write Refill now before it's too late! in it.", inputMode: "guided", files: solved(REFILL_STATION_B3), activeFile: "index.html", highlightToken: "<figure>", tests: [{ id: "refill-station-blockquote-3-text", kind: "text-equals", selector: "section figure blockquote", value: "Refill now before it's too late!", label: "The quotation shows something a person said" }], hints: [{ level: 1, text: "Find the figure you already added, and work inside the figure." }, { level: 2, text: "Use blockquote tags, and write Refill now before it's too late! between them." }], xp: 45 }),
-    s45({ id: "refill-station-figcaption-4", task: "Add the figure caption inside the figure, and write Station Manager in it.", inputMode: "guided", files: solved(REFILL_STATION_B4), activeFile: "index.html", highlightToken: "<figure>", tests: [{ id: "refill-station-figcaption-4-text", kind: "text-equals", selector: "section figure figcaption", value: "Station Manager", label: "The figure caption shows who said it" }], hints: [{ level: 1, text: "Find the figure you already added, and work inside the figure." }, { level: 2, text: "Use figcaption tags, and write Station Manager between them." }], xp: 45 }),
   ],
 };
