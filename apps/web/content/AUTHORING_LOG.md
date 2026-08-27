@@ -1930,3 +1930,13 @@ added to catch mechanically instead of by review.
 **How:** `tools/css-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. Properties, values, and assertions are curated in `tools/css-topics.mjs`; the model wrote only the words in the fixture. CSS is stricter than HTML about this because the tests compare against exactly what `getComputedStyle` returns, so an invented value produces a step whose test can never pass.
 
 **Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 235 steps.
+
+---
+
+## 2026-08-27 - CSS course, project 45 (local model)
+
+**What got made:** Palengke Fish Stall Sign, five steps teaching a card that lifts off the page.
+
+**How:** `tools/css-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. Properties, values, and assertions are curated in `tools/css-topics.mjs`; the model wrote only the words in the fixture. CSS is stricter than HTML about this because the tests compare against exactly what `getComputedStyle` returns, so an invented value produces a step whose test can never pass.
+
+**Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 240 steps.
