@@ -147,6 +147,15 @@ const HEALTH_CENTRE_HTML = `<section class="item-list">
 </section>`;
 const solvedHealthCentre = (styles: string): Record<string, string> => ({ "index.html": HEALTH_CENTRE_HTML, "styles.css": css(styles) });
 
+/* css-topic: grid */
+const ROUTE_BOARD_HTML = `<section class="stall-grid">
+  <article class="stall-cell">Bulacan</article>
+  <article class="stall-cell">Nueva Ecija</article>
+  <article class="stall-cell">Tarlac</article>
+  <article class="stall-cell">Pampanga</article>
+</section>`;
+const solvedRouteBoard = (styles: string): Record<string, string> => ({ "index.html": ROUTE_BOARD_HTML, "styles.css": css(styles) });
+
 /** Authored proof for every step. Missing entries stop the course from loading. */
 const references = {
   "first-rule": {
@@ -337,6 +346,11 @@ const references = {
   "health-centre-gap": { estimatedMinutes: 4, solution: solvedHealthCentre(".item-list {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}") },
   "health-centre-background-color": { estimatedMinutes: 4, solution: solvedHealthCentre(".item-list {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  background-color: #f8fafc;\n}") },
   "health-centre-padding": { estimatedMinutes: 4, solution: solvedHealthCentre(".item-list {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  background-color: #f8fafc;\n  padding: 16px;\n}") },
+  "route-board-display": { estimatedMinutes: 4, solution: solvedRouteBoard(".stall-grid {\n  display: grid;\n}") },
+  "route-board-grid-template-columns": { estimatedMinutes: 4, solution: solvedRouteBoard(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n}") },
+  "route-board-gap": { estimatedMinutes: 4, solution: solvedRouteBoard(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n}") },
+  "route-board-padding": { estimatedMinutes: 4, solution: solvedRouteBoard(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n  padding: 12px;\n}") },
+  "route-board-background-color": { estimatedMinutes: 4, solution: solvedRouteBoard(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n  padding: 12px;\n  background-color: #f1f5f9;\n}") },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "jeepney-route-card";
@@ -362,6 +376,7 @@ const PROJECT_20_ID = "barangay-curfew-notice";
 const PROJECT_21_ID = "jeepney-terminal-timetable";
 const PROJECT_22_ID = "sari-sari-store-price";
 const PROJECT_23_ID = "barangay-health-centre";
+const PROJECT_24_ID = "jeepney-route-board";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -396,12 +411,14 @@ const s22 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const 
 
 const s23 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_23_ID }; };
 
+const s24 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_24_ID }; };
+
 export const cssCourse: Course = {
   id: "css-basics",
   order: 2,
   title: "Learn CSS by Building a Jeepney Route Card",
   project: "Jeepney Route Card",
-  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }, { id: PROJECT_23_ID, title: "Barangay Health Centre" }],
+  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }, { id: PROJECT_23_ID, title: "Barangay Health Centre" }, { id: PROJECT_24_ID, title: "Jeepney Route Board" }],
   kind: "web",
   requires: ["html-basics"],
   summary: "Now make it look good. Colours, spacing, fonts, and layout.",
@@ -887,5 +904,10 @@ export const cssCourse: Course = {
     s23({ id: "health-centre-gap", task: "Space the stacked parts evenly.", inputMode: "guided", files: solvedHealthCentre(".item-list {\n  display: flex;\n  flex-direction: column;\n  gap: ;\n}"), activeFile: "styles.css", highlightToken: "gap: ;", tests: [{ id: "health-centre-gap-set", kind: "style", selector: ".item-list", prop: "row-gap", equals: "8px", readable: "8 pixels", label: "The list keeps a gap of 8 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the gap." }, { level: 2, text: "Write 8px after the colon." }], xp: 45 }),
     s23({ id: "health-centre-background-color", task: "Tint the list so it reads as one block.", inputMode: "guided", files: solvedHealthCentre(".item-list {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  background-color: ;\n}"), activeFile: "styles.css", highlightToken: "background-color: ;", tests: [{ id: "health-centre-background-color-set", kind: "style", selector: ".item-list", prop: "background-color", equals: "rgb(248, 250, 252)", readable: "pale grey", label: "The list has a background of pale grey" }], hints: [{ level: 1, text: "Use the pale grey code." }, { level: 2, text: "Write #f8fafc after the colon." }], xp: 45 }),
     s23({ id: "health-centre-padding", task: "Keep the list clear of its own edges.", inputMode: "guided", files: solvedHealthCentre(".item-list {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  background-color: #f8fafc;\n  padding: ;\n}"), activeFile: "styles.css", highlightToken: "padding: ;", tests: [{ id: "health-centre-padding-set", kind: "style", selector: ".item-list", prop: "padding-top", equals: "16px", readable: "16 pixels", label: "The list has room inside of 16 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the inside room." }, { level: 2, text: "Write 16px after the colon." }], xp: 45 }),
+    s24({ id: "route-board-display", task: "Lay the stalls out as a grid.", inputMode: "guided", files: solvedRouteBoard(".stall-grid {\n  display: ;\n}"), activeFile: "styles.css", highlightToken: "display: ;", tests: [{ id: "route-board-display-set", kind: "style", selector: ".stall-grid", prop: "display", equals: "grid", readable: "a grid", label: "The grid is laid out as a grid" }], hints: [{ level: 1, text: "Use the display value made for rows and columns together." }, { level: 2, text: "Write grid after the colon." }], xp: 45 }),
+    s24({ id: "route-board-grid-template-columns", task: "Give the grid two equal columns.", inputMode: "guided", files: solvedRouteBoard(".stall-grid {\n  display: grid;\n  grid-template-columns: ;\n}"), activeFile: "styles.css", highlightToken: "grid-template-columns: ;", tests: [{ id: "route-board-grid-template-columns-set", kind: "source-matches", file: "styles.css", pattern: "grid-template-columns\s*:\s*1fr\s+1fr", flags: "i", because: "Two equal column tracks are written as 1fr 1fr.", label: "The grid is divided into two equal columns" }], hints: [{ level: 1, text: "Name two equal fractions of the free space." }, { level: 2, text: "Write 1fr 1fr after the colon." }], xp: 55 }),
+    s24({ id: "route-board-gap", task: "Space the cells apart.", inputMode: "guided", files: solvedRouteBoard(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: ;\n}"), activeFile: "styles.css", highlightToken: "gap: ;", tests: [{ id: "route-board-gap-set", kind: "style", selector: ".stall-grid", prop: "row-gap", equals: "12px", readable: "12 pixels", label: "The grid keeps a gap of 12 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the gap." }, { level: 2, text: "Write 12px after the colon." }], xp: 45 }),
+    s24({ id: "route-board-padding", task: "Keep the cells clear of the outer edge.", inputMode: "guided", files: solvedRouteBoard(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n  padding: ;\n}"), activeFile: "styles.css", highlightToken: "padding: ;", tests: [{ id: "route-board-padding-set", kind: "style", selector: ".stall-grid", prop: "padding-top", equals: "12px", readable: "12 pixels", label: "The grid has room inside of 12 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the inside room." }, { level: 2, text: "Write 12px after the colon." }], xp: 45 }),
+    s24({ id: "route-board-background-color", task: "Tint the grid so the cells read as a set.", inputMode: "guided", files: solvedRouteBoard(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n  padding: 12px;\n  background-color: ;\n}"), activeFile: "styles.css", highlightToken: "background-color: ;", tests: [{ id: "route-board-background-color-set", kind: "style", selector: ".stall-grid", prop: "background-color", equals: "rgb(241, 245, 249)", readable: "light grey", label: "The grid has a background of light grey" }], hints: [{ level: 1, text: "Use the light grey code." }, { level: 2, text: "Write #f1f5f9 after the colon." }], xp: 45 }),
   ],
 };
