@@ -769,6 +769,14 @@ const ID_APPLICATION_INTRO_BODY = `    <h2>Barangay ID Application</h2>
 const ID_APPLICATION_ELEMENT_SLOT = slotPage(`${ID_APPLICATION_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
 const ID_APPLICATION_ELEMENT_BODY = `${ID_APPLICATION_INTRO_BODY}    <tbody></tbody>\n`;
 
+const STORE_PRICE_TITLE_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const STORE_PRICE_TITLE_BODY = `    <h2></h2>\n`;
+const STORE_PRICE_HEADING_BODY = `    <h2>Sari Sari Store Price</h2>\n`;
+const STORE_PRICE_INTRO_BODY = `    <h2>Sari Sari Store Price</h2>
+    <p>Learn how to group total rows on your water bill.</p>\n`;
+const STORE_PRICE_ELEMENT_SLOT = slotPage(`${STORE_PRICE_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
+const STORE_PRICE_ELEMENT_BODY = `${STORE_PRICE_INTRO_BODY}    <tfoot></tfoot>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1285,6 +1293,11 @@ const references = {
   "id-application-copy": { estimatedMinutes: 4, solution: solved(ID_APPLICATION_INTRO_BODY) },
   "id-application-tbody": { estimatedMinutes: 5, solution: solvedSlot(ID_APPLICATION_ELEMENT_SLOT, "<tbody></tbody>") },
   "id-application-tbody-text": { estimatedMinutes: 4, solution: solved(`${ID_APPLICATION_INTRO_BODY}    <tbody>Water usage per month</tbody>\n`) },
+  "store-price-title": { estimatedMinutes: 4, solution: solvedSlot(STORE_PRICE_TITLE_SLOT, "<h2></h2>") },
+  "store-price-heading": { estimatedMinutes: 4, solution: solved(STORE_PRICE_HEADING_BODY) },
+  "store-price-copy": { estimatedMinutes: 4, solution: solved(STORE_PRICE_INTRO_BODY) },
+  "store-price-tfoot": { estimatedMinutes: 5, solution: solvedSlot(STORE_PRICE_ELEMENT_SLOT, "<tfoot></tfoot>") },
+  "store-price-tfoot-text": { estimatedMinutes: 4, solution: solved(`${STORE_PRICE_INTRO_BODY}    <tfoot>TOTAL: ₱100.00</tfoot>\n`) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1322,6 +1335,7 @@ const PROJECT_32_ID = "barangay-water-bill";
 const PROJECT_33_ID = "sari-sari-store-receipt";
 const PROJECT_34_ID = "pharmacy-stock-list";
 const PROJECT_35_ID = "barangay-id-application";
+const PROJECT_36_ID = "sari-sari-store-price";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1534,6 +1548,11 @@ const s35 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_35_ID };
 };
 
+const s36 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_36_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1575,6 +1594,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_33_ID, title: "Sari-Sari Store Receipt" },
     { id: PROJECT_34_ID, title: "Pharmacy Stock List" },
     { id: PROJECT_35_ID, title: "Barangay ID Application" },
+    { id: PROJECT_36_ID, title: "Sari Sari Store Price" },
   ],
   kind: "web",
   requires: [],
@@ -4483,5 +4503,10 @@ export const htmlCourse: Course = {
     s35({ id: "id-application-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(ID_APPLICATION_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "id-application-copy-text", kind: "text-equals", selector: "p", value: "This notice shows the water bill details of each household.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write This notice shows the water bill details of each household." }], xp: 40 }),
     s35({ id: "id-application-tbody", task: "Add a place for the table body.", inputMode: "tap-to-build", files: { "index.html": ID_APPLICATION_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: ID_APPLICATION_ELEMENT_SLOT.slotLine, blocks: ["<tbody></tbody>","<p></p>","<div></div>","<note></note>"], correctBlock: "<tbody></tbody>", conceptIds: ["tbody-element"], tests: [{ id: "id-application-tbody-exists", kind: "exists", selector: "tbody", label: "The table body has a place" }], hints: [{ level: 1, text: "Add the element that marks a table body." }, { level: 2, text: "Use tbody for the table body." }], xp: 50 }),
     s35({ id: "id-application-tbody-text", task: "Write Water usage per month inside it.", inputMode: "guided", files: solved(ID_APPLICATION_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<tbody></tbody>", tests: [{ id: "id-application-tbody-text-set", kind: "text-equals", selector: "tbody", value: "Water usage per month", label: "The table body shows its words" }], hints: [{ level: 1, text: "Write the words inside the tbody tags." }, { level: 2, text: "Use Water usage per month exactly." }], xp: 40 }),
+    s36({ id: "store-price-title", task: "Start the sari sari store price with a smaller heading.", inputMode: "tap-to-build", files: { "index.html": STORE_PRICE_TITLE_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: STORE_PRICE_TITLE_SLOT.slotLine, blocks: ["<h2></h2>", "<p></p>", "<h1></h1>", "<tfoot></tfoot>"], correctBlock: "<h2></h2>", tests: [{ id: "store-price-title-exists", kind: "exists", selector: "h2", label: "The page has a heading" }], hints: [{ level: 1, text: "Add a level-two heading in the blank line." }, { level: 2, text: "Use h2 for this smaller heading." }], xp: 40 }),
+    s36({ id: "store-price-heading", task: "Name the heading Sari Sari Store Price.", inputMode: "guided", files: solved(STORE_PRICE_TITLE_BODY), activeFile: "index.html", highlightToken: "<h2></h2>", tests: [{ id: "store-price-heading-text", kind: "text-equals", selector: "h2", value: "Sari Sari Store Price", label: "The page has its name" }], hints: [{ level: 1, text: "Write the page name between the heading tags." }, { level: 2, text: "Use Sari Sari Store Price exactly." }], xp: 40 }),
+    s36({ id: "store-price-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(STORE_PRICE_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "store-price-copy-text", kind: "text-equals", selector: "p", value: "Learn how to group total rows on your water bill.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write Learn how to group total rows on your water bill." }], xp: 40 }),
+    s36({ id: "store-price-tfoot", task: "Add a place for the table footer.", inputMode: "tap-to-build", files: { "index.html": STORE_PRICE_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: STORE_PRICE_ELEMENT_SLOT.slotLine, blocks: ["<tfoot></tfoot>","<p></p>","<div></div>","<note></note>"], correctBlock: "<tfoot></tfoot>", conceptIds: ["tfoot-element"], tests: [{ id: "store-price-tfoot-exists", kind: "exists", selector: "tfoot", label: "The table footer has a place" }], hints: [{ level: 1, text: "Add the element that marks a table footer." }, { level: 2, text: "Use tfoot for the table footer." }], xp: 50 }),
+    s36({ id: "store-price-tfoot-text", task: "Write TOTAL: ₱100.00 inside it.", inputMode: "guided", files: solved(STORE_PRICE_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<tfoot></tfoot>", tests: [{ id: "store-price-tfoot-text-set", kind: "text-equals", selector: "tfoot", value: "TOTAL: ₱100.00", label: "The table footer shows its words" }], hints: [{ level: 1, text: "Write the words inside the tfoot tags." }, { level: 2, text: "Use TOTAL: ₱100.00 exactly." }], xp: 40 }),
   ],
 };
