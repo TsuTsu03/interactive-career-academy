@@ -173,6 +173,11 @@ const references = {
   "water-padding": { estimatedMinutes: 4, solution: { "index.html": '<aside class="max-w-md bg-cyan-50 p-4">Boil water before drinking.</aside>', "styles.css": ".p-4 {\n  padding: 1rem;\n}" } },
   "water-border-width": { estimatedMinutes: 4, solution: { "index.html": '<aside class="max-w-md bg-cyan-50 p-4 border-l-4">Boil water before drinking.</aside>', "styles.css": ".border-l-4 {\n  border-left-width: 4px;\n  border-left-style: solid;\n}" } },
   "water-border-colour": { estimatedMinutes: 4, solution: { "index.html": '<aside class="max-w-md bg-cyan-50 p-4 border-l-4 border-cyan-700">Boil water before drinking.</aside>', "styles.css": ".border-cyan-700 {\n  border-color: #0e7490;\n}" } },
+  "water-refill-max-w-sm": { estimatedMinutes: 4, solution: { "index.html": "<article class=\"max-w-sm\">Water Refill Station</article>", "styles.css": ".max-w-sm {\n  max-width: 24rem;\n}" } },
+  "water-refill-p-4": { estimatedMinutes: 4, solution: { "index.html": "<article class=\"max-w-sm p-4\">Water Refill Station</article>", "styles.css": ".p-4 {\n  padding: 1rem;\n}" } },
+  "water-refill-mb-6": { estimatedMinutes: 4, solution: { "index.html": "<article class=\"max-w-sm p-4 mb-6\">Water Refill Station</article>", "styles.css": ".mb-6 {\n  margin-bottom: 1.5rem;\n}" } },
+  "water-refill-mt-2": { estimatedMinutes: 4, solution: { "index.html": "<article class=\"max-w-sm p-4 mb-6 mt-2\">Water Refill Station</article>", "styles.css": ".mt-2 {\n  margin-top: 0.5rem;\n}" } },
+  "water-refill-px-6": { estimatedMinutes: 4, solution: { "index.html": "<article class=\"max-w-sm p-4 mb-6 mt-2 px-6\">Water Refill Station</article>", "styles.css": ".px-6 {\n  padding-left: 1.5rem;\n  padding-right: 1.5rem;\n}" } },
 } satisfies Record<string, { estimatedMinutes: number; solution: Record<string, string> }>;
 
 const PROJECT_ID = "turo-turo-menu-card";
@@ -184,6 +189,8 @@ const PROJECT_6_ID = "barangay-help-link";
 const PROJECT_7_ID = "palengke-price-row";
 const PROJECT_8_ID = "barangay-clinic-hours";
 const PROJECT_9_ID = "barangay-water-notice";
+/* tw-topic: spacing-size */
+const PROJECT_10_ID = "water-refill";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -231,12 +238,14 @@ const s9 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_9_ID };
 };
 
+const s10 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for Tailwind step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_10_ID }; };
+
 export const tailwindCourse: Course = {
   id: "tailwind-basics",
   order: 4,
   title: "Learn Tailwind CSS by Building a Turo-Turo Menu Card",
   project: "Turo-Turo Menu Card",
-  projects: [{ id: PROJECT_ID, title: "Turo-Turo Menu Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Status Badge" }, { id: PROJECT_3_ID, title: "Palengke Category Grid" }, { id: PROJECT_4_ID, title: "Jeepney Route Notice" }, { id: PROJECT_5_ID, title: "Barangay Event Card" }, { id: PROJECT_6_ID, title: "Barangay Help Link" }, { id: PROJECT_7_ID, title: "Palengke Price Row" }, { id: PROJECT_8_ID, title: "Barangay Clinic Hours" }, { id: PROJECT_9_ID, title: "Barangay Water Notice" }],
+  projects: [{ id: PROJECT_ID, title: "Turo-Turo Menu Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Status Badge" }, { id: PROJECT_3_ID, title: "Palengke Category Grid" }, { id: PROJECT_4_ID, title: "Jeepney Route Notice" }, { id: PROJECT_5_ID, title: "Barangay Event Card" }, { id: PROJECT_6_ID, title: "Barangay Help Link" }, { id: PROJECT_7_ID, title: "Palengke Price Row" }, { id: PROJECT_8_ID, title: "Barangay Clinic Hours" }, { id: PROJECT_9_ID, title: "Barangay Water Notice" }, { id: PROJECT_10_ID, title: "Water Refill" }],
   kind: "web",
   requires: ["css-basics"],
   summary: "You already know CSS. Now learn to write it as short class names instead of rules.",
@@ -708,5 +717,10 @@ export const tailwindCourse: Course = {
     s9({ id: "water-padding", task: "Give the water notice room inside.", inputMode: "guided", files: { "index.html": '<aside class="max-w-md bg-cyan-50">Boil water before drinking.</aside>', "styles.css": ".p-4 {\n  padding: 1rem;\n}" }, activeFile: "index.html", highlightToken: "bg-cyan-50", tests: [{ id: "water-padding-style", kind: "style", selector: ".p-4", prop: "padding-top", equals: "16px", readable: "16 pixels", label: "The water notice has inside room" }], hints: [{ level: 1, text: "Add the four-step padding utility after the surface class." }], xp: 40 }),
     s9({ id: "water-border-width", task: "Put a thick line on the water notice left side.", inputMode: "guided", files: { "index.html": '<aside class="max-w-md bg-cyan-50 p-4">Boil water before drinking.</aside>', "styles.css": ".border-l-4 {\n  border-left-width: 4px;\n  border-left-style: solid;\n}" }, activeFile: "index.html", highlightToken: "p-4", tests: [{ id: "water-border-width-class", kind: "source-matches", file: "index.html", pattern: "class=\\\"[^\\\"]*\\bborder-l-4\\b", flags: "i", because: "Add border-l-4 to the water notice class list.", label: "The water notice has a thick left line" }], hints: [{ level: 1, text: "Add the left-border width utility after the padding class." }], xp: 40 }),
     s9({ id: "water-border-colour", task: "Make the water notice left line dark blue.", inputMode: "guided", files: { "index.html": '<aside class="max-w-md bg-cyan-50 p-4 border-l-4">Boil water before drinking.</aside>', "styles.css": ".border-cyan-700 {\n  border-color: #0e7490;\n}" }, activeFile: "index.html", highlightToken: "border-l-4", tests: [{ id: "water-border-colour-style", kind: "style", selector: ".border-cyan-700", prop: "border-left-color", equals: "rgb(14, 116, 144)", readable: "dark blue", label: "The water notice left line is dark blue" }], hints: [{ level: 1, text: "Add the dark cyan border class after the border width." }], xp: 40 }),
+    s10({ id: "water-refill-max-w-sm", task: "Stop the card growing too wide to read.", inputMode: "guided", files: { "index.html": "<article>Water Refill Station</article>", "styles.css": ".max-w-sm {\n  max-width: 24rem;\n}" }, activeFile: "index.html", highlightToken: "article", tests: [{ id: "water-refill-max-w-sm-style", kind: "style", selector: ".max-w-sm", prop: "max-width", equals: "384px", readable: "384 pixels", label: "The card has 384 pixels" }], hints: [{ level: 1, text: "Add the small max-width utility." }, { level: 2, text: "Add max-w-sm to the class list." }], xp: 40 }),
+    s10({ id: "water-refill-p-4", task: "Give the card room inside.", inputMode: "guided", files: { "index.html": "<article class=\"max-w-sm\">Water Refill Station</article>", "styles.css": ".p-4 {\n  padding: 1rem;\n}" }, activeFile: "index.html", highlightToken: "max-w-sm", tests: [{ id: "water-refill-p-4-style", kind: "style", selector: ".p-4", prop: "padding-top", equals: "16px", readable: "16 pixels", label: "The card has 16 pixels" }], hints: [{ level: 1, text: "Add the four-step padding utility. It goes after max-w-sm." }, { level: 2, text: "Add p-4 to the class list." }], xp: 40 }),
+    s10({ id: "water-refill-mb-6", task: "Leave space below the card.", inputMode: "guided", files: { "index.html": "<article class=\"max-w-sm p-4\">Water Refill Station</article>", "styles.css": ".mb-6 {\n  margin-bottom: 1.5rem;\n}" }, activeFile: "index.html", highlightToken: "p-4", tests: [{ id: "water-refill-mb-6-style", kind: "style", selector: ".mb-6", prop: "margin-bottom", equals: "24px", readable: "24 pixels", label: "The card has 24 pixels" }], hints: [{ level: 1, text: "Add the six-step bottom-margin utility. It goes after p-4." }, { level: 2, text: "Add mb-6 to the class list." }], xp: 40 }),
+    s10({ id: "water-refill-mt-2", task: "Leave a small space above the card.", inputMode: "guided", files: { "index.html": "<article class=\"max-w-sm p-4 mb-6\">Water Refill Station</article>", "styles.css": ".mt-2 {\n  margin-top: 0.5rem;\n}" }, activeFile: "index.html", highlightToken: "mb-6", tests: [{ id: "water-refill-mt-2-style", kind: "style", selector: ".mt-2", prop: "margin-top", equals: "8px", readable: "8 pixels", label: "The card has 8 pixels" }], hints: [{ level: 1, text: "Add the two-step top-margin utility. It goes after mb-6." }, { level: 2, text: "Add mt-2 to the class list." }], xp: 40 }),
+    s10({ id: "water-refill-px-6", task: "Widen the room on the left and right only.", inputMode: "guided", files: { "index.html": "<article class=\"max-w-sm p-4 mb-6 mt-2\">Water Refill Station</article>", "styles.css": ".px-6 {\n  padding-left: 1.5rem;\n  padding-right: 1.5rem;\n}" }, activeFile: "index.html", highlightToken: "mt-2", tests: [{ id: "water-refill-px-6-class", kind: "source-matches", file: "index.html", pattern: "class=\\\"[^\\\"]*\\bpx-6\\b", flags: "i", because: "Add px-6 to the class list.", label: "The card has wider side padding" }], hints: [{ level: 1, text: "Add the six-step horizontal padding utility. It goes after mt-2." }, { level: 2, text: "Add px-6 to the class list." }], xp: 40 }),
   ],
 };
