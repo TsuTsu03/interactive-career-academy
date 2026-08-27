@@ -193,6 +193,14 @@ const FARE_TABLE_HTML = `<aside class="notice-banner">
 </aside>`;
 const solvedFareTable = (styles: string): Record<string, string> => ({ "index.html": FARE_TABLE_HTML, "styles.css": css(styles) });
 
+/* css-topic: custom-properties */
+const ORDER_SLIP_HTML = `<article class="info-card">
+  <h2>Bakery Order Slip</h2>
+  <p>Customer Name: John Doe</p>
+  <p class="info-detail">Order No.: #123456</p>
+</article>`;
+const solvedOrderSlip = (styles: string): Record<string, string> => ({ "index.html": ORDER_SLIP_HTML, "styles.css": css(styles) });
+
 /** Authored proof for every step. Missing entries stop the course from loading. */
 const references = {
   "first-rule": {
@@ -413,6 +421,11 @@ const references = {
   "fare-table-min-height": { estimatedMinutes: 4, solution: solvedFareTable(".notice-banner {\n  position: relative;\n  padding-top: 28px;\n  min-height: 80px;\n}") },
   "fare-table-background-color": { estimatedMinutes: 4, solution: solvedFareTable(".notice-banner {\n  position: relative;\n  padding-top: 28px;\n  min-height: 80px;\n  background-color: #eff6ff;\n}") },
   "fare-table-border-radius": { estimatedMinutes: 4, solution: solvedFareTable(".notice-banner {\n  position: relative;\n  padding-top: 28px;\n  min-height: 80px;\n  background-color: #eff6ff;\n  border-radius: 8px;\n}") },
+  "order-slip-var-card-ink": { estimatedMinutes: 4, solution: solvedOrderSlip(".info-card {\n  --card-ink: #0f172a;\n}") },
+  "order-slip-color": { estimatedMinutes: 4, solution: solvedOrderSlip(".info-card {\n  --card-ink: #0f172a;\n  color: var(--card-ink);\n}") },
+  "order-slip-var-card-pad": { estimatedMinutes: 4, solution: solvedOrderSlip(".info-card {\n  --card-ink: #0f172a;\n  color: var(--card-ink);\n  --card-pad: 18px;\n}") },
+  "order-slip-padding": { estimatedMinutes: 4, solution: solvedOrderSlip(".info-card {\n  --card-ink: #0f172a;\n  color: var(--card-ink);\n  --card-pad: 18px;\n  padding: var(--card-pad);\n}") },
+  "order-slip-border-radius": { estimatedMinutes: 4, solution: solvedOrderSlip(".info-card {\n  --card-ink: #0f172a;\n  color: var(--card-ink);\n  --card-pad: 18px;\n  padding: var(--card-pad);\n  border-radius: 10px;\n}") },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "jeepney-route-card";
@@ -444,6 +457,7 @@ const PROJECT_26_ID = "turo-turo-menu";
 const PROJECT_27_ID = "barangay-basketball-league";
 const PROJECT_28_ID = "school-supply-list";
 const PROJECT_29_ID = "tricycle-fare-table";
+const PROJECT_30_ID = "bakery-order-slip";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -490,12 +504,14 @@ const s28 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const 
 
 const s29 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_29_ID }; };
 
+const s30 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_30_ID }; };
+
 export const cssCourse: Course = {
   id: "css-basics",
   order: 2,
   title: "Learn CSS by Building a Jeepney Route Card",
   project: "Jeepney Route Card",
-  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }, { id: PROJECT_23_ID, title: "Barangay Health Centre" }, { id: PROJECT_24_ID, title: "Jeepney Route Board" }, { id: PROJECT_25_ID, title: "Palengke Fish Stall" }, { id: PROJECT_26_ID, title: "Turo Turo Menu" }, { id: PROJECT_27_ID, title: "Barangay Basketball League" }, { id: PROJECT_28_ID, title: "School Supply List" }, { id: PROJECT_29_ID, title: "Tricycle Fare Table" }],
+  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }, { id: PROJECT_23_ID, title: "Barangay Health Centre" }, { id: PROJECT_24_ID, title: "Jeepney Route Board" }, { id: PROJECT_25_ID, title: "Palengke Fish Stall" }, { id: PROJECT_26_ID, title: "Turo Turo Menu" }, { id: PROJECT_27_ID, title: "Barangay Basketball League" }, { id: PROJECT_28_ID, title: "School Supply List" }, { id: PROJECT_29_ID, title: "Tricycle Fare Table" }, { id: PROJECT_30_ID, title: "Bakery Order Slip" }],
   kind: "web",
   requires: ["html-basics"],
   summary: "Now make it look good. Colours, spacing, fonts, and layout.",
@@ -1011,5 +1027,10 @@ export const cssCourse: Course = {
     s29({ id: "fare-table-min-height", task: "Stop the notice collapsing when it is short.", inputMode: "guided", files: solvedFareTable(".notice-banner {\n  position: relative;\n  padding-top: 28px;\n  min-height: ;\n}"), activeFile: "styles.css", highlightToken: "min-height: ;", tests: [{ id: "fare-table-min-height-set", kind: "style", selector: ".notice-banner", prop: "min-height", equals: "80px", readable: "80 pixels", label: "The notice stays at least 80 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the shortest it may be." }, { level: 2, text: "Write 80px after the colon." }], xp: 45 }),
     s29({ id: "fare-table-background-color", task: "Tint the notice so the badge will stand out.", inputMode: "guided", files: solvedFareTable(".notice-banner {\n  position: relative;\n  padding-top: 28px;\n  min-height: 80px;\n  background-color: ;\n}"), activeFile: "styles.css", highlightToken: "background-color: ;", tests: [{ id: "fare-table-background-color-set", kind: "style", selector: ".notice-banner", prop: "background-color", equals: "rgb(239, 246, 255)", readable: "pale blue", label: "The notice has a background of pale blue" }], hints: [{ level: 1, text: "Use the pale blue code." }, { level: 2, text: "Write #eff6ff after the colon." }], xp: 45 }),
     s29({ id: "fare-table-border-radius", task: "Round the notice corners.", inputMode: "guided", files: solvedFareTable(".notice-banner {\n  position: relative;\n  padding-top: 28px;\n  min-height: 80px;\n  background-color: #eff6ff;\n  border-radius: ;\n}"), activeFile: "styles.css", highlightToken: "border-radius: ;", tests: [{ id: "fare-table-border-radius-set", kind: "style", selector: ".notice-banner", prop: "border-top-left-radius", equals: "8px", readable: "8 pixels", label: "The notice has corners curved by 8 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the corner curve." }, { level: 2, text: "Write 8px after the colon." }], xp: 45 }),
+    s30({ id: "order-slip-var-card-ink", task: "Store the card ink colour under a name you can reuse.", inputMode: "guided", files: solvedOrderSlip(".info-card {\n  --card-ink: ;\n}"), activeFile: "styles.css", highlightToken: "--card-ink: ;", tests: [{ id: "order-slip-var-card-ink-set", kind: "source-matches", file: "styles.css", pattern: "--card-ink\s*:\s*#0f172a", flags: "i", because: "A custom property starts with two dashes and holds a value for later.", label: "The card stores its ink colour as a stored colour" }], hints: [{ level: 1, text: "A name you invent starts with two dashes." }, { level: 2, text: "Write #0f172a after the colon." }], xp: 55 }),
+    s30({ id: "order-slip-color", task: "Use the stored colour for the card text.", inputMode: "guided", files: solvedOrderSlip(".info-card {\n  --card-ink: #0f172a;\n  color: ;\n}"), activeFile: "styles.css", highlightToken: "color: ;", tests: [{ id: "order-slip-color-set", kind: "style", selector: ".info-card", prop: "color", equals: "rgb(15, 23, 42)", readable: "the stored ink colour", label: "The card shows its words in the stored ink colour" }], hints: [{ level: 1, text: "Read a stored value with var and the name in brackets." }, { level: 2, text: "Write var(--card-ink) after the colon." }], xp: 45 }),
+    s30({ id: "order-slip-var-card-pad", task: "Store the card spacing under a name too.", inputMode: "guided", files: solvedOrderSlip(".info-card {\n  --card-ink: #0f172a;\n  color: var(--card-ink);\n  --card-pad: ;\n}"), activeFile: "styles.css", highlightToken: "--card-pad: ;", tests: [{ id: "order-slip-var-card-pad-set", kind: "source-matches", file: "styles.css", pattern: "--card-pad\s*:\s*18px", flags: "i", because: "Spacing can be stored under a name in the same way a colour can.", label: "The card stores its spacing as a stored size" }], hints: [{ level: 1, text: "Use two dashes, then a pixel value." }, { level: 2, text: "Write 18px after the colon." }], xp: 55 }),
+    s30({ id: "order-slip-padding", task: "Use the stored spacing for the card padding.", inputMode: "guided", files: solvedOrderSlip(".info-card {\n  --card-ink: #0f172a;\n  color: var(--card-ink);\n  --card-pad: 18px;\n  padding: ;\n}"), activeFile: "styles.css", highlightToken: "padding: ;", tests: [{ id: "order-slip-padding-set", kind: "style", selector: ".info-card", prop: "padding-top", equals: "18px", readable: "the stored spacing", label: "The card has room inside of the stored spacing" }], hints: [{ level: 1, text: "Read the stored value with var." }, { level: 2, text: "Write var(--card-pad) after the colon." }], xp: 45 }),
+    s30({ id: "order-slip-border-radius", task: "Round the card corners.", inputMode: "guided", files: solvedOrderSlip(".info-card {\n  --card-ink: #0f172a;\n  color: var(--card-ink);\n  --card-pad: 18px;\n  padding: var(--card-pad);\n  border-radius: ;\n}"), activeFile: "styles.css", highlightToken: "border-radius: ;", tests: [{ id: "order-slip-border-radius-set", kind: "style", selector: ".info-card", prop: "border-top-left-radius", equals: "10px", readable: "10 pixels", label: "The card has corners curved by 10 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the corner curve." }, { level: 2, text: "Write 10px after the colon." }], xp: 45 }),
   ],
 };
