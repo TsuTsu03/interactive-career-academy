@@ -1,5 +1,9 @@
 <#
-  run-qwen-loop.ps1 — local-model driver for the CodeDaddy autonomous build loop.
+  run-qwen-loop.ps1 - local-model driver for the CodeDaddy autonomous build loop.
+
+  ASCII ONLY. Windows PowerShell 5.1 reads this file as ANSI, so a non-ASCII
+  character (an em dash, a curly quote) breaks the string it sits in and every
+  line after it fails to parse.
 
   WHAT THIS IS
 
@@ -74,7 +78,7 @@ Write-Host ""
 Write-Host "CodeDaddy local-model build loop (Qwen via LM Studio)" -ForegroundColor Cyan
 Write-Host "Repo:        $repo"
 Write-Host "Model:       $Model"
-Write-Host "Endpoint:    $LmsUrl  (local — no credits, no API key)"
+Write-Host "Endpoint:    $LmsUrl  (local - no credits, no API key)"
 Write-Host "Max passes:  $MaxIterations"
 Write-Host "Commit every: $CommitEvery passes"
 Write-Host "Stop with:   New-Item -ItemType File STOP_LOOP"
