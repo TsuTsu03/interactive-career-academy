@@ -245,12 +245,32 @@ const VERBS = {
 const CONST = (slug, suffix) => `${slug.toUpperCase().replace(/-/g, "_")}_${suffix}`;
 
 /** The rule as it stands after `upTo` declarations, with the last one blank. */
+/**
+ * The stylesheet as it stands after `upTo` steps, with the last value blank
+ * when the learner is about to fill it in.
+ *
+ * A step may name a `sel` - a suffix such as `::before` or `:hover` - and its
+ * declaration then goes in its own rule rather than the main one. Without
+ * this, a pseudo-element step emitted `.notice { ::before-content: "x"; }`,
+ * which is not CSS at all: the harness would have shipped a step whose check
+ * could never pass and whose starting code was invalid.
+ */
 function ruleText(root, steps, upTo, blankLast) {
-  const lines = steps.slice(0, upTo).map((s, i) => {
+  const blocks = new Map([["", []]]);
+
+  steps.slice(0, upTo).forEach((s, i) => {
     const value = blankLast && i === upTo - 1 ? "" : s.decl;
-    return `  ${s.prop}: ${value};`;
+    const key = s.sel ?? "";
+    if (!blocks.has(key)) blocks.set(key, []);
+    blocks.get(key).push(`  ${s.prop}: ${value};`);
   });
-  return `.${root} {\n${lines.join("\n")}\n}`;
+
+  const out = [];
+  for (const [sel, lines] of blocks) {
+    if (lines.length === 0) continue;
+    out.push(`.${root}${sel} {\n${lines.join("\n")}\n}`);
+  }
+  return out.join("\n\n");
 }
 
 /** Escapes a CSS block for embedding in a double-quoted TypeScript string. */
@@ -276,7 +296,10 @@ const ${SOLVED} = (styles: string): Record<string, string> => ({ "index.html": $
   const refLines = [];
 
   topic.steps.forEach((st, i) => {
-    const id = `${slug}-${st.prop.replace(/^--/, "var-")}`;
+    // The selector suffix is part of the id, because a topic can legitimately
+    // set the same property on the element and on its `::before`.
+    const selPart = st.sel ? `-${st.sel.replace(/[^a-z]/g, "")}` : "";
+    const id = `${slug}-${st.prop.replace(/^--/, "var-")}${selPart}`;
     const start = ruleText(root, topic.steps, i + 1, true);
     const done = ruleText(root, topic.steps, i + 1, false);
 

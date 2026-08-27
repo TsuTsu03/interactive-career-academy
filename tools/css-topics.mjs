@@ -284,6 +284,36 @@ export const CSS_TOPICS = [
     ],
   },
   {
+    id: "pseudo-elements", noun: "notice", fixture: "banner", label: "a label added without markup",
+    steps: [
+      { prop: "position", decl: "relative", computed: "relative", readable: "positioned", task: "Make the notice the anchor for a label added by CSS.", hint1: "An added label is placed against a positioned element.", hint2: "Write relative after the colon." },
+      { prop: "padding-top", decl: "32px", computed: "32px", readable: "32 pixels", task: "Leave room at the top for a label that is not in the HTML.", hint1: "Use a pixel value for the space above.", hint2: "Write 32px after the colon." },
+      { prop: "content", sel: "::before", decl: "'Notice'", computed: null, check: "source", pattern: "::before\\s*\\{[^}]*content\\s*:\\s*'Notice'", because: "An added element needs content before the browser will draw it.", readable: "a label added by CSS", task: "Add the word Notice above the heading without touching the HTML.", hint1: "The added-element rule is open; give it something to say.", hint2: "Write 'Notice' after the colon, quotes included." },
+      { prop: "color", sel: "::before", decl: "#b45309", computed: null, check: "source", pattern: "::before\\s*\\{[^}]*color\\s*:\\s*#b45309", because: "The added label takes a colour of its own.", readable: "an amber label", task: "Colour the added label amber.", hint1: "Set the colour inside the added-element rule.", hint2: "Write #b45309 after the colon." },
+      { prop: "background-color", decl: "#fffbeb", computed: "rgb(255, 251, 235)", readable: "pale amber", task: "Tint the notice to match its label.", hint1: "Use the pale amber code.", hint2: "Write #fffbeb after the colon." },
+    ],
+  },
+  {
+    id: "flex-wrap", noun: "grid", fixture: "grid", label: "items that wrap on a narrow screen",
+    steps: [
+      { prop: "display", decl: "flex", computed: "flex", readable: "a flex box", task: "Lay the stalls out in a flexible row.", hint1: "Use the display value that lays children out in a row.", hint2: "Write flex after the colon." },
+      { prop: "flex-wrap", decl: "wrap", computed: "wrap", readable: "wrapping onto new lines", task: "Let the stalls drop to the next line instead of squeezing.", hint1: "Use the value that allows a new line.", hint2: "Write wrap after the colon." },
+      { prop: "gap", decl: "12px", readProp: "row-gap", computed: "12px", readable: "12 pixels", task: "Space the stalls apart in both directions.", hint1: "Use a pixel value for the gap.", hint2: "Write 12px after the colon." },
+      { prop: "justify-content", decl: "flex-start", computed: "flex-start", readable: "packed to the start", task: "Keep the stalls packed to the left of each line.", hint1: "Use the value that packs children at the start.", hint2: "Write flex-start after the colon." },
+      { prop: "align-content", decl: "flex-start", computed: "flex-start", readable: "lines packed to the top", task: "Keep the wrapped lines packed to the top.", hint1: "Use the value that packs the lines at the start.", hint2: "Write flex-start after the colon." },
+    ],
+  },
+  {
+    id: "fluid-sizing", noun: "card", fixture: "card", label: "sizes that adjust themselves",
+    steps: [
+      { prop: "width", decl: "min(100%, 480px)", computed: null, check: "source", pattern: "width\\s*:\\s*min\\(\\s*100%\\s*,\\s*480px\\s*\\)", because: "min takes whichever of the two is smaller, so the card fits a phone and stops at 480px on a laptop.", readable: "whichever is smaller", task: "Let the card fill a narrow screen but stop at 480 pixels on a wide one.", hint1: "Use the function that takes whichever value is smaller.", hint2: "Write min(100%, 480px) after the colon." },
+      { prop: "font-size", decl: "clamp(14px, 4vw, 18px)", computed: null, check: "source", pattern: "font-size\\s*:\\s*clamp\\(\\s*14px\\s*,\\s*4vw\\s*,\\s*18px\\s*\\)", because: "clamp names a smallest size, a size that follows the screen, and a largest.", readable: "text between 14 and 18 pixels", task: "Let the text grow with the screen but never below 14 or above 18 pixels.", hint1: "Name the smallest size, the one that follows the screen, and the largest.", hint2: "Write clamp(14px, 4vw, 18px) after the colon." },
+      { prop: "aspect-ratio", decl: "3 / 2", computed: null, check: "source", pattern: "aspect-ratio\\s*:\\s*3\\s*/\\s*2", because: "A ratio keeps the card's shape as its width changes.", readable: "a fixed shape", task: "Keep the card the same shape whatever width it takes.", hint1: "Write the width and height as a ratio with a slash.", hint2: "Write 3 / 2 after the colon." },
+      { prop: "padding", decl: "16px", readProp: "padding-top", computed: "16px", readable: "16 pixels", task: "Give the card room inside.", hint1: "Use a pixel value for the inside room.", hint2: "Write 16px after the colon." },
+      { prop: "box-sizing", decl: "border-box", computed: "border-box", readable: "border box", task: "Count the padding inside the width rather than on top of it.", hint1: "Use the sizing value that includes padding and border.", hint2: "Write border-box after the colon." },
+    ],
+  },
+  {
     id: "custom-properties", noun: "card", fixture: "card", label: "reusable colour names",
     steps: [
       { prop: "--card-ink", decl: "#0f172a", computed: null, check: "source", pattern: "--card-ink\\s*:\\s*#0f172a", because: "A custom property starts with two dashes and holds a value for later.", readable: "a stored colour", task: "Store the card ink colour under a name you can reuse.", hint1: "A name you invent starts with two dashes.", hint2: "Write #0f172a after the colon." },
