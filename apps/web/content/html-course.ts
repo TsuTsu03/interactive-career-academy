@@ -1494,8 +1494,8 @@ export const htmlCourse: Course = {
     { id: PROJECT_28_ID, title: "Barangay Health Center Notice" },
     { id: PROJECT_29_ID, title: "Jeepney Route Notice" },
     { id: PROJECT_30_ID, title: "Barangay Sari-Sari Store" },
-
-    { id: PROJECT_31_ID, title: "Sari-Sari Store Prices" },  ],
+    { id: PROJECT_31_ID, title: "Sari-Sari Store Prices" },
+  ],
   kind: "web",
   requires: [],
   summary: "Start here. Build a real web page from nothing, one piece at a time.",
