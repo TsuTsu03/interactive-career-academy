@@ -201,6 +201,15 @@ const ORDER_SLIP_HTML = `<article class="info-card">
 </article>`;
 const solvedOrderSlip = (styles: string): Record<string, string> => ({ "index.html": ORDER_SLIP_HTML, "styles.css": css(styles) });
 
+/* css-topic: grid */
+const REFILL_STATION_HTML = `<section class="stall-grid">
+  <article class="stall-cell">Water Refill Station</article>
+  <article class="stall-cell">Location: Main Bldg, Ground Floor</article>
+  <article class="stall-cell">Hours: 9 AM - 6 PM</article>
+  <article class="stall-cell">Prices: PHP 85 per gallon</article>
+</section>`;
+const solvedRefillStation = (styles: string): Record<string, string> => ({ "index.html": REFILL_STATION_HTML, "styles.css": css(styles) });
+
 /** Authored proof for every step. Missing entries stop the course from loading. */
 const references = {
   "first-rule": {
@@ -426,6 +435,11 @@ const references = {
   "order-slip-var-card-pad": { estimatedMinutes: 4, solution: solvedOrderSlip(".info-card {\n  --card-ink: #0f172a;\n  color: var(--card-ink);\n  --card-pad: 18px;\n}") },
   "order-slip-padding": { estimatedMinutes: 4, solution: solvedOrderSlip(".info-card {\n  --card-ink: #0f172a;\n  color: var(--card-ink);\n  --card-pad: 18px;\n  padding: var(--card-pad);\n}") },
   "order-slip-border-radius": { estimatedMinutes: 4, solution: solvedOrderSlip(".info-card {\n  --card-ink: #0f172a;\n  color: var(--card-ink);\n  --card-pad: 18px;\n  padding: var(--card-pad);\n  border-radius: 10px;\n}") },
+  "refill-station-display": { estimatedMinutes: 4, solution: solvedRefillStation(".stall-grid {\n  display: grid;\n}") },
+  "refill-station-grid-template-columns": { estimatedMinutes: 4, solution: solvedRefillStation(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n}") },
+  "refill-station-gap": { estimatedMinutes: 4, solution: solvedRefillStation(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n}") },
+  "refill-station-padding": { estimatedMinutes: 4, solution: solvedRefillStation(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n  padding: 12px;\n}") },
+  "refill-station-background-color": { estimatedMinutes: 4, solution: solvedRefillStation(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n  padding: 12px;\n  background-color: #f1f5f9;\n}") },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "jeepney-route-card";
@@ -458,6 +472,7 @@ const PROJECT_27_ID = "barangay-basketball-league";
 const PROJECT_28_ID = "school-supply-list";
 const PROJECT_29_ID = "tricycle-fare-table";
 const PROJECT_30_ID = "bakery-order-slip";
+const PROJECT_31_ID = "water-refill-station";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -506,12 +521,14 @@ const s29 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const 
 
 const s30 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_30_ID }; };
 
+const s31 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_31_ID }; };
+
 export const cssCourse: Course = {
   id: "css-basics",
   order: 2,
   title: "Learn CSS by Building a Jeepney Route Card",
   project: "Jeepney Route Card",
-  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }, { id: PROJECT_23_ID, title: "Barangay Health Centre" }, { id: PROJECT_24_ID, title: "Jeepney Route Board" }, { id: PROJECT_25_ID, title: "Palengke Fish Stall" }, { id: PROJECT_26_ID, title: "Turo Turo Menu" }, { id: PROJECT_27_ID, title: "Barangay Basketball League" }, { id: PROJECT_28_ID, title: "School Supply List" }, { id: PROJECT_29_ID, title: "Tricycle Fare Table" }, { id: PROJECT_30_ID, title: "Bakery Order Slip" }],
+  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }, { id: PROJECT_23_ID, title: "Barangay Health Centre" }, { id: PROJECT_24_ID, title: "Jeepney Route Board" }, { id: PROJECT_25_ID, title: "Palengke Fish Stall" }, { id: PROJECT_26_ID, title: "Turo Turo Menu" }, { id: PROJECT_27_ID, title: "Barangay Basketball League" }, { id: PROJECT_28_ID, title: "School Supply List" }, { id: PROJECT_29_ID, title: "Tricycle Fare Table" }, { id: PROJECT_30_ID, title: "Bakery Order Slip" }, { id: PROJECT_31_ID, title: "Water Refill Station" }],
   kind: "web",
   requires: ["html-basics"],
   summary: "Now make it look good. Colours, spacing, fonts, and layout.",
@@ -1032,5 +1049,10 @@ export const cssCourse: Course = {
     s30({ id: "order-slip-var-card-pad", task: "Store the card spacing under a name too.", inputMode: "guided", files: solvedOrderSlip(".info-card {\n  --card-ink: #0f172a;\n  color: var(--card-ink);\n  --card-pad: ;\n}"), activeFile: "styles.css", highlightToken: "--card-pad: ;", tests: [{ id: "order-slip-var-card-pad-set", kind: "source-matches", file: "styles.css", pattern: "--card-pad\s*:\s*18px", flags: "i", because: "Spacing can be stored under a name in the same way a colour can.", label: "The card stores its spacing as a stored size" }], hints: [{ level: 1, text: "Use two dashes, then a pixel value." }, { level: 2, text: "Write 18px after the colon." }], xp: 55 }),
     s30({ id: "order-slip-padding", task: "Use the stored spacing for the card padding.", inputMode: "guided", files: solvedOrderSlip(".info-card {\n  --card-ink: #0f172a;\n  color: var(--card-ink);\n  --card-pad: 18px;\n  padding: ;\n}"), activeFile: "styles.css", highlightToken: "padding: ;", tests: [{ id: "order-slip-padding-set", kind: "style", selector: ".info-card", prop: "padding-top", equals: "18px", readable: "the stored spacing", label: "The card has room inside of the stored spacing" }], hints: [{ level: 1, text: "Read the stored value with var." }, { level: 2, text: "Write var(--card-pad) after the colon." }], xp: 45 }),
     s30({ id: "order-slip-border-radius", task: "Round the card corners.", inputMode: "guided", files: solvedOrderSlip(".info-card {\n  --card-ink: #0f172a;\n  color: var(--card-ink);\n  --card-pad: 18px;\n  padding: var(--card-pad);\n  border-radius: ;\n}"), activeFile: "styles.css", highlightToken: "border-radius: ;", tests: [{ id: "order-slip-border-radius-set", kind: "style", selector: ".info-card", prop: "border-top-left-radius", equals: "10px", readable: "10 pixels", label: "The card has corners curved by 10 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the corner curve." }, { level: 2, text: "Write 10px after the colon." }], xp: 45 }),
+    s31({ id: "refill-station-display", task: "Lay the stalls out as a grid.", inputMode: "guided", files: solvedRefillStation(".stall-grid {\n  display: ;\n}"), activeFile: "styles.css", highlightToken: "display: ;", tests: [{ id: "refill-station-display-set", kind: "style", selector: ".stall-grid", prop: "display", equals: "grid", readable: "a grid", label: "The grid is laid out as a grid" }], hints: [{ level: 1, text: "Use the display value made for rows and columns together." }, { level: 2, text: "Write grid after the colon." }], xp: 45 }),
+    s31({ id: "refill-station-grid-template-columns", task: "Give the grid two equal columns.", inputMode: "guided", files: solvedRefillStation(".stall-grid {\n  display: grid;\n  grid-template-columns: ;\n}"), activeFile: "styles.css", highlightToken: "grid-template-columns: ;", tests: [{ id: "refill-station-grid-template-columns-set", kind: "source-matches", file: "styles.css", pattern: "grid-template-columns\s*:\s*1fr\s+1fr", flags: "i", because: "Two equal column tracks are written as 1fr 1fr.", label: "The grid is divided into two equal columns" }], hints: [{ level: 1, text: "Name two equal fractions of the free space." }, { level: 2, text: "Write 1fr 1fr after the colon." }], xp: 55 }),
+    s31({ id: "refill-station-gap", task: "Space the cells apart.", inputMode: "guided", files: solvedRefillStation(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: ;\n}"), activeFile: "styles.css", highlightToken: "gap: ;", tests: [{ id: "refill-station-gap-set", kind: "style", selector: ".stall-grid", prop: "row-gap", equals: "12px", readable: "12 pixels", label: "The grid keeps a gap of 12 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the gap." }, { level: 2, text: "Write 12px after the colon." }], xp: 45 }),
+    s31({ id: "refill-station-padding", task: "Keep the cells clear of the outer edge.", inputMode: "guided", files: solvedRefillStation(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n  padding: ;\n}"), activeFile: "styles.css", highlightToken: "padding: ;", tests: [{ id: "refill-station-padding-set", kind: "style", selector: ".stall-grid", prop: "padding-top", equals: "12px", readable: "12 pixels", label: "The grid has room inside of 12 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the inside room." }, { level: 2, text: "Write 12px after the colon." }], xp: 45 }),
+    s31({ id: "refill-station-background-color", task: "Tint the grid so the cells read as a set.", inputMode: "guided", files: solvedRefillStation(".stall-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n  padding: 12px;\n  background-color: ;\n}"), activeFile: "styles.css", highlightToken: "background-color: ;", tests: [{ id: "refill-station-background-color-set", kind: "style", selector: ".stall-grid", prop: "background-color", equals: "rgb(241, 245, 249)", readable: "light grey", label: "The grid has a background of light grey" }], hints: [{ level: 1, text: "Use the light grey code." }, { level: 2, text: "Write #f1f5f9 after the colon." }], xp: 45 }),
   ],
 };
