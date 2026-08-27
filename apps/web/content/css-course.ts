@@ -186,6 +186,13 @@ const SUPPLY_LIST_HTML = `<div class="price-row">
 </div>`;
 const solvedSupplyList = (styles: string): Record<string, string> => ({ "index.html": SUPPLY_LIST_HTML, "styles.css": css(styles) });
 
+/* css-topic: position */
+const FARE_TABLE_HTML = `<aside class="notice-banner">
+  <h2>Badge</h2>
+  <p>Pinned to corner</p>
+</aside>`;
+const solvedFareTable = (styles: string): Record<string, string> => ({ "index.html": FARE_TABLE_HTML, "styles.css": css(styles) });
+
 /** Authored proof for every step. Missing entries stop the course from loading. */
 const references = {
   "first-rule": {
@@ -401,6 +408,11 @@ const references = {
   "supply-list-white-space": { estimatedMinutes: 4, solution: solvedSupplyList(".price-row {\n  display: flex;\n  overflow: hidden;\n  white-space: nowrap;\n}") },
   "supply-list-text-overflow": { estimatedMinutes: 4, solution: solvedSupplyList(".price-row {\n  display: flex;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}") },
   "supply-list-gap": { estimatedMinutes: 4, solution: solvedSupplyList(".price-row {\n  display: flex;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  gap: 8px;\n}") },
+  "fare-table-position": { estimatedMinutes: 4, solution: solvedFareTable(".notice-banner {\n  position: relative;\n}") },
+  "fare-table-padding-top": { estimatedMinutes: 4, solution: solvedFareTable(".notice-banner {\n  position: relative;\n  padding-top: 28px;\n}") },
+  "fare-table-min-height": { estimatedMinutes: 4, solution: solvedFareTable(".notice-banner {\n  position: relative;\n  padding-top: 28px;\n  min-height: 80px;\n}") },
+  "fare-table-background-color": { estimatedMinutes: 4, solution: solvedFareTable(".notice-banner {\n  position: relative;\n  padding-top: 28px;\n  min-height: 80px;\n  background-color: #eff6ff;\n}") },
+  "fare-table-border-radius": { estimatedMinutes: 4, solution: solvedFareTable(".notice-banner {\n  position: relative;\n  padding-top: 28px;\n  min-height: 80px;\n  background-color: #eff6ff;\n  border-radius: 8px;\n}") },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "jeepney-route-card";
@@ -431,6 +443,7 @@ const PROJECT_25_ID = "palengke-fish-stall";
 const PROJECT_26_ID = "turo-turo-menu";
 const PROJECT_27_ID = "barangay-basketball-league";
 const PROJECT_28_ID = "school-supply-list";
+const PROJECT_29_ID = "tricycle-fare-table";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -475,12 +488,14 @@ const s27 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const 
 
 const s28 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_28_ID }; };
 
+const s29 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_29_ID }; };
+
 export const cssCourse: Course = {
   id: "css-basics",
   order: 2,
   title: "Learn CSS by Building a Jeepney Route Card",
   project: "Jeepney Route Card",
-  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }, { id: PROJECT_23_ID, title: "Barangay Health Centre" }, { id: PROJECT_24_ID, title: "Jeepney Route Board" }, { id: PROJECT_25_ID, title: "Palengke Fish Stall" }, { id: PROJECT_26_ID, title: "Turo Turo Menu" }, { id: PROJECT_27_ID, title: "Barangay Basketball League" }, { id: PROJECT_28_ID, title: "School Supply List" }],
+  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }, { id: PROJECT_23_ID, title: "Barangay Health Centre" }, { id: PROJECT_24_ID, title: "Jeepney Route Board" }, { id: PROJECT_25_ID, title: "Palengke Fish Stall" }, { id: PROJECT_26_ID, title: "Turo Turo Menu" }, { id: PROJECT_27_ID, title: "Barangay Basketball League" }, { id: PROJECT_28_ID, title: "School Supply List" }, { id: PROJECT_29_ID, title: "Tricycle Fare Table" }],
   kind: "web",
   requires: ["html-basics"],
   summary: "Now make it look good. Colours, spacing, fonts, and layout.",
@@ -991,5 +1006,10 @@ export const cssCourse: Course = {
     s28({ id: "supply-list-white-space", task: "Keep the row on a single line.", inputMode: "guided", files: solvedSupplyList(".price-row {\n  display: flex;\n  overflow: hidden;\n  white-space: ;\n}"), activeFile: "styles.css", highlightToken: "white-space: ;", tests: [{ id: "supply-list-white-space-set", kind: "style", selector: ".price-row", prop: "white-space", equals: "nowrap", readable: "kept on one line", label: "The row has its text kept on one line" }], hints: [{ level: 1, text: "Use the value that refuses to wrap." }, { level: 2, text: "Write nowrap after the colon." }], xp: 45 }),
     s28({ id: "supply-list-text-overflow", task: "Show three dots where the text is cut off.", inputMode: "guided", files: solvedSupplyList(".price-row {\n  display: flex;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ;\n}"), activeFile: "styles.css", highlightToken: "text-overflow: ;", tests: [{ id: "supply-list-text-overflow-set", kind: "style", selector: ".price-row", prop: "text-overflow", equals: "ellipsis", readable: "ends with dots", label: "The row shows clipped text that ends with dots" }], hints: [{ level: 1, text: "Use the value that ends clipped text with dots." }, { level: 2, text: "Write ellipsis after the colon." }], xp: 45 }),
     s28({ id: "supply-list-gap", task: "Keep a gap between the two parts.", inputMode: "guided", files: solvedSupplyList(".price-row {\n  display: flex;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  gap: ;\n}"), activeFile: "styles.css", highlightToken: "gap: ;", tests: [{ id: "supply-list-gap-set", kind: "style", selector: ".price-row", prop: "column-gap", equals: "8px", readable: "8 pixels", label: "The row keeps a gap of 8 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the gap." }, { level: 2, text: "Write 8px after the colon." }], xp: 45 }),
+    s29({ id: "fare-table-position", task: "Make the notice the anchor for anything pinned to it.", inputMode: "guided", files: solvedFareTable(".notice-banner {\n  position: ;\n}"), activeFile: "styles.css", highlightToken: "position: ;", tests: [{ id: "fare-table-position-set", kind: "style", selector: ".notice-banner", prop: "position", equals: "relative", readable: "positioned", label: "The notice is positioned" }], hints: [{ level: 1, text: "Use the position value that keeps an element in place but anchors its children." }, { level: 2, text: "Write relative after the colon." }], xp: 45 }),
+    s29({ id: "fare-table-padding-top", task: "Leave room at the top for a pinned badge.", inputMode: "guided", files: solvedFareTable(".notice-banner {\n  position: relative;\n  padding-top: ;\n}"), activeFile: "styles.css", highlightToken: "padding-top: ;", tests: [{ id: "fare-table-padding-top-set", kind: "style", selector: ".notice-banner", prop: "padding-top", equals: "28px", readable: "28 pixels", label: "The notice has room above of 28 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the space above." }, { level: 2, text: "Write 28px after the colon." }], xp: 45 }),
+    s29({ id: "fare-table-min-height", task: "Stop the notice collapsing when it is short.", inputMode: "guided", files: solvedFareTable(".notice-banner {\n  position: relative;\n  padding-top: 28px;\n  min-height: ;\n}"), activeFile: "styles.css", highlightToken: "min-height: ;", tests: [{ id: "fare-table-min-height-set", kind: "style", selector: ".notice-banner", prop: "min-height", equals: "80px", readable: "80 pixels", label: "The notice stays at least 80 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the shortest it may be." }, { level: 2, text: "Write 80px after the colon." }], xp: 45 }),
+    s29({ id: "fare-table-background-color", task: "Tint the notice so the badge will stand out.", inputMode: "guided", files: solvedFareTable(".notice-banner {\n  position: relative;\n  padding-top: 28px;\n  min-height: 80px;\n  background-color: ;\n}"), activeFile: "styles.css", highlightToken: "background-color: ;", tests: [{ id: "fare-table-background-color-set", kind: "style", selector: ".notice-banner", prop: "background-color", equals: "rgb(239, 246, 255)", readable: "pale blue", label: "The notice has a background of pale blue" }], hints: [{ level: 1, text: "Use the pale blue code." }, { level: 2, text: "Write #eff6ff after the colon." }], xp: 45 }),
+    s29({ id: "fare-table-border-radius", task: "Round the notice corners.", inputMode: "guided", files: solvedFareTable(".notice-banner {\n  position: relative;\n  padding-top: 28px;\n  min-height: 80px;\n  background-color: #eff6ff;\n  border-radius: ;\n}"), activeFile: "styles.css", highlightToken: "border-radius: ;", tests: [{ id: "fare-table-border-radius-set", kind: "style", selector: ".notice-banner", prop: "border-top-left-radius", equals: "8px", readable: "8 pixels", label: "The notice has corners curved by 8 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the corner curve." }, { level: 2, text: "Write 8px after the colon." }], xp: 45 }),
   ],
 };
