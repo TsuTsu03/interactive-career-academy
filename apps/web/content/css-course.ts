@@ -114,6 +114,13 @@ const SARI_STORE_HTML = `<article class="info-card">
 </article>`;
 const solvedSariStore = (styles: string): Record<string, string> => ({ "index.html": SARI_STORE_HTML, "styles.css": css(styles) });
 
+/* css-topic: borders */
+const CURFEW_NOTICE_HTML = `<aside class="notice-banner">
+  <h2>Notice</h2>
+  <p>Curfew Time: 7 PM - 6 AM</p>
+</aside>`;
+const solvedCurfewNotice = (styles: string): Record<string, string> => ({ "index.html": CURFEW_NOTICE_HTML, "styles.css": css(styles) });
+
 /** Authored proof for every step. Missing entries stop the course from loading. */
 const references = {
   "first-rule": {
@@ -284,6 +291,11 @@ const references = {
   "sari-store-border-radius": { estimatedMinutes: 4, solution: solvedSariStore(".info-card {\n  padding: 16px;\n  background-color: #ffffff;\n  border-radius: 12px;\n}") },
   "sari-store-margin-bottom": { estimatedMinutes: 4, solution: solvedSariStore(".info-card {\n  padding: 16px;\n  background-color: #ffffff;\n  border-radius: 12px;\n  margin-bottom: 24px;\n}") },
   "sari-store-max-width": { estimatedMinutes: 4, solution: solvedSariStore(".info-card {\n  padding: 16px;\n  background-color: #ffffff;\n  border-radius: 12px;\n  margin-bottom: 24px;\n  max-width: 400px;\n}") },
+  "curfew-notice-border-left-width": { estimatedMinutes: 4, solution: solvedCurfewNotice(".notice-banner {\n  border-left-width: 4px;\n}") },
+  "curfew-notice-border-left-style": { estimatedMinutes: 4, solution: solvedCurfewNotice(".notice-banner {\n  border-left-width: 4px;\n  border-left-style: solid;\n}") },
+  "curfew-notice-border-left-color": { estimatedMinutes: 4, solution: solvedCurfewNotice(".notice-banner {\n  border-left-width: 4px;\n  border-left-style: solid;\n  border-left-color: #b45309;\n}") },
+  "curfew-notice-background-color": { estimatedMinutes: 4, solution: solvedCurfewNotice(".notice-banner {\n  border-left-width: 4px;\n  border-left-style: solid;\n  border-left-color: #b45309;\n  background-color: #fffbeb;\n}") },
+  "curfew-notice-padding-left": { estimatedMinutes: 4, solution: solvedCurfewNotice(".notice-banner {\n  border-left-width: 4px;\n  border-left-style: solid;\n  border-left-color: #b45309;\n  background-color: #fffbeb;\n  padding-left: 16px;\n}") },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "jeepney-route-card";
@@ -305,6 +317,7 @@ const PROJECT_16_ID = "barangay-focus-link";
 const PROJECT_17_ID = "barangay-print-notice";
 const PROJECT_18_ID = "barangay-night-notice";
 const PROJECT_19_ID = "sari-sari-store";
+const PROJECT_20_ID = "barangay-curfew-notice";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -331,12 +344,14 @@ const s18 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const 
 
 const s19 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_19_ID }; };
 
+const s20 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_20_ID }; };
+
 export const cssCourse: Course = {
   id: "css-basics",
   order: 2,
   title: "Learn CSS by Building a Jeepney Route Card",
   project: "Jeepney Route Card",
-  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }],
+  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }],
   kind: "web",
   requires: ["html-basics"],
   summary: "Now make it look good. Colours, spacing, fonts, and layout.",
@@ -802,5 +817,10 @@ export const cssCourse: Course = {
     s19({ id: "sari-store-border-radius", task: "Soften the corners of the card.", inputMode: "guided", files: solvedSariStore(".info-card {\n  padding: 16px;\n  background-color: #ffffff;\n  border-radius: ;\n}"), activeFile: "styles.css", highlightToken: "border-radius: ;", tests: [{ id: "sari-store-border-radius-set", kind: "style", selector: ".info-card", prop: "border-top-left-radius", equals: "12px", readable: "12 pixels", label: "The card has corners curved by 12 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the corner curve." }, { level: 2, text: "Write 12px after the colon." }], xp: 45 }),
     s19({ id: "sari-store-margin-bottom", task: "Leave space below the card.", inputMode: "guided", files: solvedSariStore(".info-card {\n  padding: 16px;\n  background-color: #ffffff;\n  border-radius: 12px;\n  margin-bottom: ;\n}"), activeFile: "styles.css", highlightToken: "margin-bottom: ;", tests: [{ id: "sari-store-margin-bottom-set", kind: "style", selector: ".info-card", prop: "margin-bottom", equals: "24px", readable: "24 pixels", label: "The card leaves a gap below of 24 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the gap below." }, { level: 2, text: "Write 24px after the colon." }], xp: 45 }),
     s19({ id: "sari-store-max-width", task: "Stop the card growing too wide to read.", inputMode: "guided", files: solvedSariStore(".info-card {\n  padding: 16px;\n  background-color: #ffffff;\n  border-radius: 12px;\n  margin-bottom: 24px;\n  max-width: ;\n}"), activeFile: "styles.css", highlightToken: "max-width: ;", tests: [{ id: "sari-store-max-width-set", kind: "style", selector: ".info-card", prop: "max-width", equals: "400px", readable: "400 pixels", label: "The card stops growing past 400 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the widest it may get." }, { level: 2, text: "Write 400px after the colon." }], xp: 45 }),
+    s20({ id: "curfew-notice-border-left-width", task: "Give the notice a thick stripe down its left side.", inputMode: "guided", files: solvedCurfewNotice(".notice-banner {\n  border-left-width: ;\n}"), activeFile: "styles.css", highlightToken: "border-left-width: ;", tests: [{ id: "curfew-notice-border-left-width-set", kind: "style", selector: ".notice-banner", prop: "border-left-width", equals: "4px", readable: "4 pixels", label: "The notice has a left stripe of 4 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the stripe width." }, { level: 2, text: "Write 4px after the colon." }], xp: 45 }),
+    s20({ id: "curfew-notice-border-left-style", task: "Make the left stripe a solid line.", inputMode: "guided", files: solvedCurfewNotice(".notice-banner {\n  border-left-width: 4px;\n  border-left-style: ;\n}"), activeFile: "styles.css", highlightToken: "border-left-style: ;", tests: [{ id: "curfew-notice-border-left-style-set", kind: "style", selector: ".notice-banner", prop: "border-left-style", equals: "solid", readable: "a solid line", label: "The notice draws its stripe as a solid line" }], hints: [{ level: 1, text: "Use the plain unbroken line style." }, { level: 2, text: "Write solid after the colon." }], xp: 45 }),
+    s20({ id: "curfew-notice-border-left-color", task: "Colour the stripe amber so it reads as a warning.", inputMode: "guided", files: solvedCurfewNotice(".notice-banner {\n  border-left-width: 4px;\n  border-left-style: solid;\n  border-left-color: ;\n}"), activeFile: "styles.css", highlightToken: "border-left-color: ;", tests: [{ id: "curfew-notice-border-left-color-set", kind: "style", selector: ".notice-banner", prop: "border-left-color", equals: "rgb(180, 83, 9)", readable: "amber", label: "The notice has a stripe coloured amber" }], hints: [{ level: 1, text: "Use the amber colour code named in the task." }, { level: 2, text: "Write #b45309 after the colon." }], xp: 45 }),
+    s20({ id: "curfew-notice-background-color", task: "Tint the notice background to match the stripe.", inputMode: "guided", files: solvedCurfewNotice(".notice-banner {\n  border-left-width: 4px;\n  border-left-style: solid;\n  border-left-color: #b45309;\n  background-color: ;\n}"), activeFile: "styles.css", highlightToken: "background-color: ;", tests: [{ id: "curfew-notice-background-color-set", kind: "style", selector: ".notice-banner", prop: "background-color", equals: "rgb(255, 251, 235)", readable: "pale amber", label: "The notice has a background of pale amber" }], hints: [{ level: 1, text: "Use the pale amber code." }, { level: 2, text: "Write #fffbeb after the colon." }], xp: 45 }),
+    s20({ id: "curfew-notice-padding-left", task: "Keep the words clear of the stripe.", inputMode: "guided", files: solvedCurfewNotice(".notice-banner {\n  border-left-width: 4px;\n  border-left-style: solid;\n  border-left-color: #b45309;\n  background-color: #fffbeb;\n  padding-left: ;\n}"), activeFile: "styles.css", highlightToken: "padding-left: ;", tests: [{ id: "curfew-notice-padding-left-set", kind: "style", selector: ".notice-banner", prop: "padding-left", equals: "16px", readable: "16 pixels", label: "The notice keeps its words clear by 16 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the space after the stripe." }, { level: 2, text: "Write 16px after the colon." }], xp: 45 }),
   ],
 };
