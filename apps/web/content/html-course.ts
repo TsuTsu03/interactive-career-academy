@@ -848,6 +848,19 @@ const REFILL_STATION_B3 = `    <section>\n      <h2>Water Refill Station</h2>\n 
 const REFILL_STATION_B4 = `    <section>\n      <h2>Water Refill Station</h2>\n      <figure>\n        <blockquote>Fill up your water bottle here.</blockquote>\n      </figure>\n    </section>\n`;
 const REFILL_STATION_B5 = `    <section>\n      <h2>Water Refill Station</h2>\n      <figure>\n        <blockquote>Fill up your water bottle here.</blockquote>\n        <figcaption>Station Notice</figcaption>\n      </figure>\n    </section>\n`;
 
+/* composition: summary-table */
+const CLEAN_UP_ROOT_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const CLEAN_UP_B1 = `    <table></table>\n`;
+const CLEAN_UP_B2 = `    <table>\n      <caption>barangay cleanup details</caption>\n    </table>\n`;
+const CLEAN_UP_B3 = `    <table>\n      <caption>barangay cleanup details</caption>\n      <thead></thead>\n    </table>\n`;
+const CLEAN_UP_B4 = `    <table>\n      <caption>barangay cleanup details</caption>\n      <thead>\n        <tr></tr>\n      </thead>\n    </table>\n`;
+const CLEAN_UP_B5 = `    <table>\n      <caption>barangay cleanup details</caption>\n      <thead>\n        <tr>\n          <th>Date</th>\n        </tr>\n      </thead>\n    </table>\n`;
+const CLEAN_UP_B6 = `    <table>\n      <caption>barangay cleanup details</caption>\n      <thead>\n        <tr>\n          <th>Date</th>\n          <th>Time</th>\n        </tr>\n      </thead>\n    </table>\n`;
+const CLEAN_UP_B7 = `    <table>\n      <caption>barangay cleanup details</caption>\n      <thead>\n        <tr>\n          <th>Date</th>\n          <th>Time</th>\n        </tr>\n      </thead>\n      <tbody></tbody>\n    </table>\n`;
+const CLEAN_UP_B8 = `    <table>\n      <caption>barangay cleanup details</caption>\n      <thead>\n        <tr>\n          <th>Date</th>\n          <th>Time</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr></tr>\n      </tbody>\n    </table>\n`;
+const CLEAN_UP_B9 = `    <table>\n      <caption>barangay cleanup details</caption>\n      <thead>\n        <tr>\n          <th>Date</th>\n          <th>Time</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td>Saturday</td>\n        </tr>\n      </tbody>\n    </table>\n`;
+const CLEAN_UP_B10 = `    <table>\n      <caption>barangay cleanup details</caption>\n      <thead>\n        <tr>\n          <th>Date</th>\n          <th>Time</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td>Saturday</td>\n          <td>2:00 PM</td>\n        </tr>\n      </tbody>\n    </table>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1413,6 +1426,16 @@ const references = {
   "refill-station-figure-2": { estimatedMinutes: 4, solution: solved(REFILL_STATION_B3) },
   "refill-station-blockquote-3": { estimatedMinutes: 4, solution: solved(REFILL_STATION_B4) },
   "refill-station-figcaption-4": { estimatedMinutes: 4, solution: solved(REFILL_STATION_B5) },
+  "clean-up-root": { estimatedMinutes: 4, solution: solvedSlot(CLEAN_UP_ROOT_SLOT, "<table></table>") },
+  "clean-up-caption-1": { estimatedMinutes: 4, solution: solved(CLEAN_UP_B2) },
+  "clean-up-thead-2": { estimatedMinutes: 4, solution: solved(CLEAN_UP_B3) },
+  "clean-up-tr-3": { estimatedMinutes: 4, solution: solved(CLEAN_UP_B4) },
+  "clean-up-th-4": { estimatedMinutes: 4, solution: solved(CLEAN_UP_B5) },
+  "clean-up-th-5": { estimatedMinutes: 4, solution: solved(CLEAN_UP_B6) },
+  "clean-up-tbody-6": { estimatedMinutes: 4, solution: solved(CLEAN_UP_B7) },
+  "clean-up-tr-7": { estimatedMinutes: 4, solution: solved(CLEAN_UP_B8) },
+  "clean-up-td-8": { estimatedMinutes: 4, solution: solved(CLEAN_UP_B9) },
+  "clean-up-td-9": { estimatedMinutes: 4, solution: solved(CLEAN_UP_B10) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1460,6 +1483,7 @@ const PROJECT_42_ID = "school-supply-list";
 const PROJECT_43_ID = "tricycle-fare-table";
 const PROJECT_44_ID = "bakery-order-slip";
 const PROJECT_45_ID = "water-refill-station";
+const PROJECT_46_ID = "barangay-clean-up";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1722,6 +1746,11 @@ const s45 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_45_ID };
 };
 
+const s46 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_46_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1773,6 +1802,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_43_ID, title: "Tricycle Fare Table" },
     { id: PROJECT_44_ID, title: "Bakery Order Slip" },
     { id: PROJECT_45_ID, title: "Water Refill Station" },
+    { id: PROJECT_46_ID, title: "Barangay Clean Up" },
   ],
   kind: "web",
   requires: [],
@@ -4730,5 +4760,15 @@ export const htmlCourse: Course = {
     s45({ id: "refill-station-figure-2", task: "Add the figure inside the section.", inputMode: "guided", files: solved(REFILL_STATION_B2), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "refill-station-figure-2-exists", kind: "exists", selector: "section figure", label: "The figure sits inside the section" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use figure tags, and put them inside the section rather than beside it." }], xp: 40 }),
     s45({ id: "refill-station-blockquote-3", task: "Add the quotation inside the figure, and write Fill up your water bottle here. in it.", inputMode: "guided", files: solved(REFILL_STATION_B3), activeFile: "index.html", highlightToken: "<figure>", tests: [{ id: "refill-station-blockquote-3-text", kind: "text-equals", selector: "section figure blockquote", value: "Fill up your water bottle here.", label: "The quotation shows something a person said" }], hints: [{ level: 1, text: "Find the figure you already added, and work inside the figure." }, { level: 2, text: "Use blockquote tags, and write Fill up your water bottle here. between them." }], xp: 45 }),
     s45({ id: "refill-station-figcaption-4", task: "Add the figure caption inside the figure, and write Station Notice in it.", inputMode: "guided", files: solved(REFILL_STATION_B4), activeFile: "index.html", highlightToken: "<figure>", tests: [{ id: "refill-station-figcaption-4-text", kind: "text-equals", selector: "section figure figcaption", value: "Station Notice", label: "The figure caption shows who said it" }], hints: [{ level: 1, text: "Find the figure you already added, and work inside the figure." }, { level: 2, text: "Use figcaption tags, and write Station Notice between them." }], xp: 45 }),
+    s46({ id: "clean-up-root", task: "Start the table with a summary row. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": CLEAN_UP_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: CLEAN_UP_ROOT_SLOT.slotLine, blocks: ["<table></table>","<div></div>","<p></p>","<span></span>"], correctBlock: "<table></table>", tests: [{ id: "clean-up-root-exists", kind: "exists", selector: "table", label: "The table with a summary row has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this table with a summary row." }, { level: 2, text: "Use table tags for the outer box." }], xp: 40 }),
+    s46({ id: "clean-up-caption-1", task: "Add the table title inside the table, and write barangay cleanup details in it.", inputMode: "guided", files: solved(CLEAN_UP_B1), activeFile: "index.html", highlightToken: "<table>", tests: [{ id: "clean-up-caption-1-text", kind: "text-equals", selector: "table caption", value: "barangay cleanup details", label: "The table title shows what the table lists" }], hints: [{ level: 1, text: "Find the table you already added, and work inside the table." }, { level: 2, text: "Use caption tags, and write barangay cleanup details between them." }], xp: 45 }),
+    s46({ id: "clean-up-thead-2", task: "Add the header rows inside the table.", inputMode: "guided", files: solved(CLEAN_UP_B2), activeFile: "index.html", highlightToken: "<table>", tests: [{ id: "clean-up-thead-2-exists", kind: "exists", selector: "table thead", label: "The header rows sits inside the table" }], hints: [{ level: 1, text: "Find the table you already added, and work inside the table." }, { level: 2, text: "Use thead tags, and put them inside the table rather than beside it." }], xp: 40 }),
+    s46({ id: "clean-up-tr-3", task: "Add the row inside the header rows.", inputMode: "guided", files: solved(CLEAN_UP_B3), activeFile: "index.html", highlightToken: "<thead>", tests: [{ id: "clean-up-tr-3-exists", kind: "exists", selector: "table thead tr", label: "The row sits inside the header rows" }], hints: [{ level: 1, text: "Find the header rows you already added, and work inside the header rows." }, { level: 2, text: "Use tr tags, and put them inside the header rows rather than beside it." }], xp: 40 }),
+    s46({ id: "clean-up-th-4", task: "Add the column name inside the row, and write Date in it.", inputMode: "guided", files: solved(CLEAN_UP_B4), activeFile: "index.html", highlightToken: "<tr>", tests: [{ id: "clean-up-th-4-text", kind: "text-equals", selector: "table thead tr th", value: "Date", label: "The column name shows the first column name" }], hints: [{ level: 1, text: "Find the row you already added, and work inside the row." }, { level: 2, text: "Use th tags, and write Date between them." }], xp: 45 }),
+    s46({ id: "clean-up-th-5", task: "Add the column name inside the row, and write Time in it.", inputMode: "guided", files: solved(CLEAN_UP_B5), activeFile: "index.html", highlightToken: "<tr>", tests: [{ id: "clean-up-th-5-text", kind: "text-equals", selector: "table thead tr th:nth-of-type(2)", value: "Time", label: "The column name shows the second column name" }], hints: [{ level: 1, text: "Find the row you already added, and work inside the row." }, { level: 2, text: "Use th tags, and write Time between them." }], xp: 45 }),
+    s46({ id: "clean-up-tbody-6", task: "Add the main rows inside the table.", inputMode: "guided", files: solved(CLEAN_UP_B6), activeFile: "index.html", highlightToken: "<table>", tests: [{ id: "clean-up-tbody-6-exists", kind: "exists", selector: "table tbody", label: "The main rows sits inside the table" }], hints: [{ level: 1, text: "Find the table you already added, and work inside the table." }, { level: 2, text: "Use tbody tags, and put them inside the table rather than beside it." }], xp: 40 }),
+    s46({ id: "clean-up-tr-7", task: "Add the row inside the main rows.", inputMode: "guided", files: solved(CLEAN_UP_B7), activeFile: "index.html", highlightToken: "<tbody>", tests: [{ id: "clean-up-tr-7-exists", kind: "exists", selector: "table tbody tr", label: "The row sits inside the main rows" }], hints: [{ level: 1, text: "Find the main rows you already added, and work inside the main rows." }, { level: 2, text: "Use tr tags, and put them inside the main rows rather than beside it." }], xp: 40 }),
+    s46({ id: "clean-up-td-8", task: "Add the value inside the row, and write Saturday in it.", inputMode: "guided", files: solved(CLEAN_UP_B8), activeFile: "index.html", highlightToken: "<tr>", tests: [{ id: "clean-up-td-8-text", kind: "text-equals", selector: "table tbody tr td", value: "Saturday", label: "The value shows the first value" }], hints: [{ level: 1, text: "Find the row you already added, and work inside the row." }, { level: 2, text: "Use td tags, and write Saturday between them." }], xp: 45 }),
+    s46({ id: "clean-up-td-9", task: "Add the value inside the row, and write 2:00 PM in it.", inputMode: "guided", files: solved(CLEAN_UP_B9), activeFile: "index.html", highlightToken: "<tr>", tests: [{ id: "clean-up-td-9-text", kind: "text-equals", selector: "table tbody tr td:nth-of-type(2)", value: "2:00 PM", label: "The value shows the second value" }], hints: [{ level: 1, text: "Find the row you already added, and work inside the row." }, { level: 2, text: "Use td tags, and write 2:00 PM between them." }], xp: 45 }),
   ],
 };
