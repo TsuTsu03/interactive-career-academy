@@ -48,6 +48,9 @@ const TURO_TURO_HTML = "<label for=\"who\">Name Box</label>\n<input id=\"who\" v
 /* dom-topic: create-element */
 const BARANGAY_HEALTH_HTML = "<h2 id=\"list-title\">Add Item</h2>\n<ul id=\"items\"></ul>\n<p id=\"count\"></p>";
 
+/* dom-topic: remove-element */
+const SCHOOL_REGISTRATION_HTML = "<button id=\"action\">Cancel</button>\n<p id=\"status\">Confirm registration</p>";
+
 /** Authored proof for every step. Missing entries stop the course from loading. */
 const references = {
   "barangay-help-1": { estimatedMinutes: 4, solution: page(BARANGAY_HELP_HTML, "const title = document.querySelector(\"#notice-title\");\n") },
@@ -80,6 +83,11 @@ const references = {
   "barangay-health-3": { estimatedMinutes: 4, solution: page(BARANGAY_HEALTH_HTML, "const list = document.querySelector(\"#items\");\nconst item = document.createElement(\"li\");\nitem.textContent = \"Name\";\n") },
   "barangay-health-4": { estimatedMinutes: 4, solution: page(BARANGAY_HEALTH_HTML, "const list = document.querySelector(\"#items\");\nconst item = document.createElement(\"li\");\nitem.textContent = \"Name\";\nlist.appendChild(item);\n") },
   "barangay-health-5": { estimatedMinutes: 4, solution: page(BARANGAY_HEALTH_HTML, "const list = document.querySelector(\"#items\");\nconst item = document.createElement(\"li\");\nitem.textContent = \"Name\";\nlist.appendChild(item);\ndocument.querySelector(\"#count\").textContent = list.children.length + \" item\";\n") },
+  "school-registration-1": { estimatedMinutes: 4, solution: page(SCHOOL_REGISTRATION_HTML, "const button = document.querySelector(\"#action\");\n") },
+  "school-registration-2": { estimatedMinutes: 4, solution: page(SCHOOL_REGISTRATION_HTML, "const button = document.querySelector(\"#action\");\nconst status = document.querySelector(\"#status\");\n") },
+  "school-registration-3": { estimatedMinutes: 4, solution: page(SCHOOL_REGISTRATION_HTML, "const button = document.querySelector(\"#action\");\nconst status = document.querySelector(\"#status\");\nstatus.classList.add(\"dismissible\");\n") },
+  "school-registration-4": { estimatedMinutes: 4, solution: page(SCHOOL_REGISTRATION_HTML, "const button = document.querySelector(\"#action\");\nconst status = document.querySelector(\"#status\");\nstatus.classList.add(\"dismissible\");\nbutton.addEventListener(\"click\", function () {\n  button.textContent = \"Dismissed\";\n});\n") },
+  "school-registration-5": { estimatedMinutes: 4, solution: page(SCHOOL_REGISTRATION_HTML, "const button = document.querySelector(\"#action\");\nconst status = document.querySelector(\"#status\");\nstatus.classList.add(\"dismissible\");\nbutton.addEventListener(\"click\", function () {\n  button.textContent = \"Dismissed\";\n});\nbutton.setAttribute(\"aria-label\", \"Dismiss this notice\");\n") },
 } satisfies Record<string, StepReference>;
 const PROJECT_1_ID = "barangay-help";
 const s1 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for DOM step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_1_ID }; };
@@ -99,13 +107,16 @@ const s5 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const r
 const PROJECT_6_ID = "barangay-health";
 const s6 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for DOM step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_6_ID }; };
 
+const PROJECT_7_ID = "school-registration";
+const s7 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for DOM step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_7_ID }; };
+
 
 export const domCourse: Course = {
   id: "dom-basics",
   order: 5,
   title: "Learn JavaScript on a Page by Building Barangay Screens",
   project: "Barangay Notice",
-  projects: [ { id: PROJECT_1_ID, title: "Barangay Help" }, { id: PROJECT_2_ID, title: "Sari Sari" }, { id: PROJECT_3_ID, title: "Palengke Stall" }, { id: PROJECT_4_ID, title: "Jeepney Terminal" }, { id: PROJECT_5_ID, title: "Turo Turo" }, { id: PROJECT_6_ID, title: "Barangay Health" } ],
+  projects: [ { id: PROJECT_1_ID, title: "Barangay Help" }, { id: PROJECT_2_ID, title: "Sari Sari" }, { id: PROJECT_3_ID, title: "Palengke Stall" }, { id: PROJECT_4_ID, title: "Jeepney Terminal" }, { id: PROJECT_5_ID, title: "Turo Turo" }, { id: PROJECT_6_ID, title: "Barangay Health" }, { id: PROJECT_7_ID, title: "School Registration" } ],
   kind: "web",
   requires: ["js-basics"],
   summary:
@@ -141,6 +152,11 @@ export const domCourse: Course = {
     s6({ id: "barangay-health-3", task: "Put the words into the new item.", inputMode: "guided", files: page(BARANGAY_HEALTH_HTML, "const list = document.querySelector(\"#items\");\nconst item = document.createElement(\"li\");\nitem.textContent = ;\n"), activeFile: "script.js", highlightToken: "item.textContent = ;", tests: [{ id: "barangay-health-3-check", label: "#items is on the page", kind: "page-exists", selector: "#items" }], hints: [{ level: 1, text: "Put the words in quotes." }, { level: 2, text: "Write \"Name\" after the equals sign." }], xp: 50 }),
     s6({ id: "barangay-health-4", task: "Put the new item onto the page, inside the list.", inputMode: "guided", files: page(BARANGAY_HEALTH_HTML, "const list = document.querySelector(\"#items\");\nconst item = document.createElement(\"li\");\nitem.textContent = \"Name\";\nlist.appendChild();\n"), activeFile: "script.js", highlightToken: "appendChild();", tests: [{ id: "barangay-health-4-check", label: "#items li reads Name", kind: "page-text-equals", selector: "#items li", value: "Name" }], hints: [{ level: 1, text: "Name the element you are adding." }, { level: 2, text: "Write item inside the brackets." }], xp: 50 }),
     s6({ id: "barangay-health-5", task: "Show how many items the list now holds.", inputMode: "guided", files: page(BARANGAY_HEALTH_HTML, "const list = document.querySelector(\"#items\");\nconst item = document.createElement(\"li\");\nitem.textContent = \"Name\";\nlist.appendChild(item);\ndocument.querySelector(\"#count\").textContent = ;\n"), activeFile: "script.js", highlightToken: "\"#count\").textContent = ;", tests: [{ id: "barangay-health-5-check", label: "#count reads 1 item", kind: "page-text-equals", selector: "#count", value: "1 item" }], hints: [{ level: 1, text: "A list reports how many children it has." }, { level: 2, text: "Write list.children.length + \" item\" after the equals sign." }], xp: 50 }),
+    s7({ id: "school-registration-1", task: "Find the button.", inputMode: "guided", files: page(SCHOOL_REGISTRATION_HTML, "const button = ;\n"), activeFile: "script.js", highlightToken: "const button = ;", tests: [{ id: "school-registration-1-check", label: "#action reads Cancel", kind: "page-text-equals", selector: "#action", value: "Cancel" }], hints: [{ level: 1, text: "Ask the document for the element with that id." }, { level: 2, text: "Write document.querySelector(\"#action\") after the equals sign." }], xp: 50 }),
+    s7({ id: "school-registration-2", task: "Find the line the page shows.", inputMode: "guided", files: page(SCHOOL_REGISTRATION_HTML, "const button = document.querySelector(\"#action\");\nconst status = ;\n"), activeFile: "script.js", highlightToken: "const status = ;", tests: [{ id: "school-registration-2-check", label: "#status reads Confirm registration", kind: "page-text-equals", selector: "#status", value: "Confirm registration" }], hints: [{ level: 1, text: "Ask the document for the element with that id." }, { level: 2, text: "Write document.querySelector(\"#status\") after the equals sign." }], xp: 50 }),
+    s7({ id: "school-registration-3", task: "Mark the line as one that can be dismissed.", inputMode: "guided", files: page(SCHOOL_REGISTRATION_HTML, "const button = document.querySelector(\"#action\");\nconst status = document.querySelector(\"#status\");\nstatus.classList.add();\n"), activeFile: "script.js", highlightToken: "classList.add();", tests: [{ id: "school-registration-3-check", label: "#status carries the class dismissible", kind: "page-class-contains", selector: "#status", value: "dismissible" }], hints: [{ level: 1, text: "The class name goes in quotes inside the brackets." }, { level: 2, text: "Write \"dismissible\" inside the brackets." }], xp: 50 }),
+    s7({ id: "school-registration-4", task: "Make the button say Dismissed once it has been pressed.", inputMode: "guided", files: page(SCHOOL_REGISTRATION_HTML, "const button = document.querySelector(\"#action\");\nconst status = document.querySelector(\"#status\");\nstatus.classList.add(\"dismissible\");\nbutton.addEventListener(\"click\", function () {\n  button.textContent = ;\n});\n"), activeFile: "script.js", highlightToken: "button.textContent = ;", tests: [{ id: "school-registration-4-check", label: "#action reads Dismissed after the click", kind: "page-click-text-equals", clickSelector: "#action", selector: "#action", value: "Dismissed" }], hints: [{ level: 1, text: "Put the new word in quotes." }, { level: 2, text: "Write \"Dismissed\" after the equals sign." }], xp: 50 }),
+    s7({ id: "school-registration-5", task: "Give the button a fuller name for screen readers.", inputMode: "guided", files: page(SCHOOL_REGISTRATION_HTML, "const button = document.querySelector(\"#action\");\nconst status = document.querySelector(\"#status\");\nstatus.classList.add(\"dismissible\");\nbutton.addEventListener(\"click\", function () {\n  button.textContent = \"Dismissed\";\n});\nbutton.setAttribute(\"aria-label\", );\n"), activeFile: "script.js", highlightToken: "setAttribute(\"aria-label\", );", tests: [{ id: "school-registration-5-check", label: "#action has aria-label set to Dismiss this notice", kind: "page-attr-equals", selector: "#action", attr: "aria-label", value: "Dismiss this notice" }], hints: [{ level: 1, text: "The fuller name goes in quotes as the second value." }, { level: 2, text: "Write \"Dismiss this notice\" as the second value." }], xp: 50 }),
   ],
 };
 
