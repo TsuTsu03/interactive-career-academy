@@ -729,14 +729,6 @@ const SARI_SARI_STORE_INTRO_BODY = `    <h2>Sari-Sari Store Notice</h2>
 const SARI_SARI_STORE_ELEMENT_SLOT = slotPage(`${SARI_SARI_STORE_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
 const SARI_SARI_STORE_ELEMENT_BODY = `${SARI_SARI_STORE_INTRO_BODY}    <sub></sub>\n`;
 
-const WATER_BILL_TITLE_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
-const WATER_BILL_TITLE_BODY = `    <h2></h2>\n`;
-const WATER_BILL_HEADING_BODY = `    <h2>Barangay Water Bill</h2>\n`;
-const WATER_BILL_INTRO_BODY = `    <h2>Barangay Water Bill</h2>
-    <p>This page shows the latest water bill for our barangay.</p>\n`;
-const WATER_BILL_ELEMENT_SLOT = slotPage(`${WATER_BILL_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
-const WATER_BILL_ELEMENT_BODY = `${WATER_BILL_INTRO_BODY}    <em></em>\n`;
-
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1228,11 +1220,6 @@ const references = {
   "sari-sari-store-copy": { estimatedMinutes: 4, solution: solved(SARI_SARI_STORE_INTRO_BODY) },
   "sari-sari-store-sub": { estimatedMinutes: 5, solution: solvedSlot(SARI_SARI_STORE_ELEMENT_SLOT, "<sub></sub>") },
   "sari-sari-store-sub-text": { estimatedMinutes: 4, solution: solved(`${SARI_SARI_STORE_INTRO_BODY}    <sub>1/4</sub>\n`) },
-  "water-bill-title": { estimatedMinutes: 4, solution: solvedSlot(WATER_BILL_TITLE_SLOT, "<h2></h2>") },
-  "water-bill-heading": { estimatedMinutes: 4, solution: solved(WATER_BILL_HEADING_BODY) },
-  "water-bill-copy": { estimatedMinutes: 4, solution: solved(WATER_BILL_INTRO_BODY) },
-  "water-bill-em": { estimatedMinutes: 5, solution: solvedSlot(WATER_BILL_ELEMENT_SLOT, "<em></em>") },
-  "water-bill-em-text": { estimatedMinutes: 4, solution: solved(`${WATER_BILL_INTRO_BODY}    <em>importante</em>\n`) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1265,7 +1252,6 @@ const PROJECT_27_ID = "barangay-reminder-quote";
 const PROJECT_28_ID = "barangay-health-center";
 const PROJECT_29_ID = "barangay-jeepney-route";
 const PROJECT_30_ID = "barangay-sari-sari-store";
-const PROJECT_31_ID = "barangay-water-bill";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1453,11 +1439,6 @@ const s30 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_30_ID };
 };
 
-const s31 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
-  const reference = references[step.id as keyof typeof references];
-  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_31_ID };
-};
-
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1494,7 +1475,6 @@ export const htmlCourse: Course = {
     { id: PROJECT_28_ID, title: "Barangay Health Center Notice" },
     { id: PROJECT_29_ID, title: "Jeepney Route Notice" },
     { id: PROJECT_30_ID, title: "Barangay Sari-Sari Store" },
-    { id: PROJECT_31_ID, title: "Barangay Water Bill" },
   ],
   kind: "web",
   requires: [],
@@ -4377,10 +4357,5 @@ export const htmlCourse: Course = {
     s30({ id: "sari-sari-store-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(SARI_SARI_STORE_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "sari-sari-store-copy-text", kind: "text-equals", selector: "p", value: "Read the notice at your barangay sari-sari store.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write Read the notice at your barangay sari-sari store." }], xp: 40 }),
     s30({ id: "sari-sari-store-sub", task: "Add a place for the subscript.", inputMode: "tap-to-build", files: { "index.html": SARI_SARI_STORE_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: SARI_SARI_STORE_ELEMENT_SLOT.slotLine, blocks: ["<sub></sub>","<p>1/4</p>","<span>1/4</span>","<key>1/4</key>"], correctBlock: "<sub></sub>", conceptIds: ["sub-element"], tests: [{ id: "sari-sari-store-sub-exists", kind: "exists", selector: "sub", label: "The subscript has a place" }], hints: [{ level: 1, text: "Add the element that marks a subscript." }, { level: 2, text: "Use sub for the subscript." }], xp: 50 }),
     s30({ id: "sari-sari-store-sub-text", task: "Write 1/4 inside it.", inputMode: "guided", files: solved(SARI_SARI_STORE_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<sub></sub>", tests: [{ id: "sari-sari-store-sub-text-set", kind: "text-equals", selector: "sub", value: "1/4", label: "The subscript shows its words" }], hints: [{ level: 1, text: "Write the words inside the sub tags." }, { level: 2, text: "Use 1/4 exactly." }], xp: 40 }),
-    s31({ id: "water-bill-title", task: "Start the barangay water bill with a smaller heading.", inputMode: "tap-to-build", files: { "index.html": WATER_BILL_TITLE_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: WATER_BILL_TITLE_SLOT.slotLine, blocks: ["<h2></h2>", "<p></p>", "<h1></h1>", "<em></em>"], correctBlock: "<h2></h2>", tests: [{ id: "water-bill-title-exists", kind: "exists", selector: "h2", label: "The page has a heading" }], hints: [{ level: 1, text: "Add a level-two heading in the blank line." }, { level: 2, text: "Use h2 for this smaller heading." }], xp: 40 }),
-    s31({ id: "water-bill-heading", task: "Name the heading Barangay Water Bill.", inputMode: "guided", files: solved(WATER_BILL_TITLE_BODY), activeFile: "index.html", highlightToken: "<h2></h2>", tests: [{ id: "water-bill-heading-text", kind: "text-equals", selector: "h2", value: "Barangay Water Bill", label: "The page has its name" }], hints: [{ level: 1, text: "Write the page name between the heading tags." }, { level: 2, text: "Use Barangay Water Bill exactly." }], xp: 40 }),
-    s31({ id: "water-bill-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(WATER_BILL_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "water-bill-copy-text", kind: "text-equals", selector: "p", value: "This page shows the latest water bill for our barangay.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write This page shows the latest water bill for our barangay." }], xp: 40 }),
-    s31({ id: "water-bill-em", task: "Add a place for the stressed word.", inputMode: "tap-to-build", files: { "index.html": WATER_BILL_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: WATER_BILL_ELEMENT_SLOT.slotLine, blocks: ["<em></em>","<p></p>","<div></div>","<note></note>"], correctBlock: "<em></em>", conceptIds: ["em-element"], tests: [{ id: "water-bill-em-exists", kind: "exists", selector: "em", label: "The stressed word has a place" }], hints: [{ level: 1, text: "Add the element that marks a stressed word." }, { level: 2, text: "Use em for the stressed word." }], xp: 50 }),
-    s31({ id: "water-bill-em-text", task: "Write importante inside it.", inputMode: "guided", files: solved(WATER_BILL_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<em></em>", tests: [{ id: "water-bill-em-text-set", kind: "text-equals", selector: "em", value: "importante", label: "The stressed word shows its words" }], hints: [{ level: 1, text: "Write the words inside the em tags." }, { level: 2, text: "Use importante exactly." }], xp: 40 }),
   ],
 };
