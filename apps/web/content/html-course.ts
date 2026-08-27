@@ -831,6 +831,15 @@ const FARE_TABLE_B3 = `    <article>\n      <h2>Tricycle Fare Update</h2>\n     
 const FARE_TABLE_B4 = `    <article>\n      <h2>Tricycle Fare Update</h2>\n      <p>Effective immediately, all rates increased by Php5.</p>\n      <footer></footer>\n    </article>\n`;
 const FARE_TABLE_B5 = `    <article>\n      <h2>Tricycle Fare Update</h2>\n      <p>Effective immediately, all rates increased by Php5.</p>\n      <footer>\n        <small>City Transport Authority</small>\n      </footer>\n    </article>\n`;
 
+/* composition: checklist */
+const ORDER_SLIP_ROOT_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const ORDER_SLIP_B1 = `    <section></section>\n`;
+const ORDER_SLIP_B2 = `    <section>\n      <h2>Bakery Order</h2>\n    </section>\n`;
+const ORDER_SLIP_B3 = `    <section>\n      <h2>Bakery Order</h2>\n      <ul></ul>\n    </section>\n`;
+const ORDER_SLIP_B4 = `    <section>\n      <h2>Bakery Order</h2>\n      <ul>\n        <li>Dozen Baguettes</li>\n      </ul>\n    </section>\n`;
+const ORDER_SLIP_B5 = `    <section>\n      <h2>Bakery Order</h2>\n      <ul>\n        <li>Dozen Baguettes</li>\n        <li>Sugar Cookies</li>\n      </ul>\n    </section>\n`;
+const ORDER_SLIP_B6 = `    <section>\n      <h2>Bakery Order</h2>\n      <ul>\n        <li>Dozen Baguettes</li>\n        <li>Sugar Cookies</li>\n        <li>Croissant</li>\n      </ul>\n    </section>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1385,6 +1394,12 @@ const references = {
   "fare-table-p-2": { estimatedMinutes: 4, solution: solved(FARE_TABLE_B3) },
   "fare-table-footer-3": { estimatedMinutes: 4, solution: solved(FARE_TABLE_B4) },
   "fare-table-small-4": { estimatedMinutes: 4, solution: solved(FARE_TABLE_B5) },
+  "order-slip-root": { estimatedMinutes: 4, solution: solvedSlot(ORDER_SLIP_ROOT_SLOT, "<section></section>") },
+  "order-slip-h2-1": { estimatedMinutes: 4, solution: solved(ORDER_SLIP_B2) },
+  "order-slip-ul-2": { estimatedMinutes: 4, solution: solved(ORDER_SLIP_B3) },
+  "order-slip-li-3": { estimatedMinutes: 4, solution: solved(ORDER_SLIP_B4) },
+  "order-slip-li-4": { estimatedMinutes: 4, solution: solved(ORDER_SLIP_B5) },
+  "order-slip-li-5": { estimatedMinutes: 4, solution: solved(ORDER_SLIP_B6) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1430,6 +1445,7 @@ const PROJECT_40_ID = "turo-turo-menu";
 const PROJECT_41_ID = "barangay-basketball-league";
 const PROJECT_42_ID = "school-supply-list";
 const PROJECT_43_ID = "tricycle-fare-table";
+const PROJECT_44_ID = "bakery-order-slip";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1682,6 +1698,11 @@ const s43 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_43_ID };
 };
 
+const s44 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_44_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1731,6 +1752,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_41_ID, title: "Barangay Basketball League" },
     { id: PROJECT_42_ID, title: "School Supply List" },
     { id: PROJECT_43_ID, title: "Tricycle Fare Table" },
+    { id: PROJECT_44_ID, title: "Bakery Order Slip" },
   ],
   kind: "web",
   requires: [],
@@ -4677,5 +4699,11 @@ export const htmlCourse: Course = {
     s43({ id: "fare-table-p-2", task: "Add the paragraph inside the notice, and write Effective immediately, all rates increased by Php5. in it.", inputMode: "guided", files: solved(FARE_TABLE_B2), activeFile: "index.html", highlightToken: "<article>", tests: [{ id: "fare-table-p-2-text", kind: "text-equals", selector: "article p", value: "Effective immediately, all rates increased by Php5.", label: "The paragraph shows one sentence of detail" }], hints: [{ level: 1, text: "Find the notice you already added, and work inside the notice." }, { level: 2, text: "Use p tags, and write Effective immediately, all rates increased by Php5. between them." }], xp: 45 }),
     s43({ id: "fare-table-footer-3", task: "Add the footer inside the notice.", inputMode: "guided", files: solved(FARE_TABLE_B3), activeFile: "index.html", highlightToken: "<article>", tests: [{ id: "fare-table-footer-3-exists", kind: "exists", selector: "article footer", label: "The footer sits inside the notice" }], hints: [{ level: 1, text: "Find the notice you already added, and work inside the notice." }, { level: 2, text: "Use footer tags, and put them inside the notice rather than beside it." }], xp: 40 }),
     s43({ id: "fare-table-small-4", task: "Add the small print inside the footer, and write City Transport Authority in it.", inputMode: "guided", files: solved(FARE_TABLE_B4), activeFile: "index.html", highlightToken: "<footer>", tests: [{ id: "fare-table-small-4-text", kind: "text-equals", selector: "article footer small", value: "City Transport Authority", label: "The small print shows who posted the notice" }], hints: [{ level: 1, text: "Find the footer you already added, and work inside the footer." }, { level: 2, text: "Use small tags, and write City Transport Authority between them." }], xp: 45 }),
+    s44({ id: "order-slip-root", task: "Start the checklist. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": ORDER_SLIP_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: ORDER_SLIP_ROOT_SLOT.slotLine, blocks: ["<section></section>","<div></div>","<p></p>","<span></span>"], correctBlock: "<section></section>", tests: [{ id: "order-slip-root-exists", kind: "exists", selector: "section", label: "The checklist has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this checklist." }, { level: 2, text: "Use section tags for the outer box." }], xp: 40 }),
+    s44({ id: "order-slip-h2-1", task: "Add the heading inside the section, and write Bakery Order in it.", inputMode: "guided", files: solved(ORDER_SLIP_B1), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "order-slip-h2-1-text", kind: "text-equals", selector: "section h2", value: "Bakery Order", label: "The heading shows the list heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Bakery Order between them." }], xp: 45 }),
+    s44({ id: "order-slip-ul-2", task: "Add the list inside the section.", inputMode: "guided", files: solved(ORDER_SLIP_B2), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "order-slip-ul-2-exists", kind: "exists", selector: "section ul", label: "The list sits inside the section" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use ul tags, and put them inside the section rather than beside it." }], xp: 40 }),
+    s44({ id: "order-slip-li-3", task: "Add the list item inside the list, and write Dozen Baguettes in it.", inputMode: "guided", files: solved(ORDER_SLIP_B3), activeFile: "index.html", highlightToken: "<ul>", tests: [{ id: "order-slip-li-3-text", kind: "text-equals", selector: "section ul li", value: "Dozen Baguettes", label: "The list item shows the first item" }], hints: [{ level: 1, text: "Find the list you already added, and work inside the list." }, { level: 2, text: "Use li tags, and write Dozen Baguettes between them." }], xp: 45 }),
+    s44({ id: "order-slip-li-4", task: "Add the list item inside the list, and write Sugar Cookies in it.", inputMode: "guided", files: solved(ORDER_SLIP_B4), activeFile: "index.html", highlightToken: "<ul>", tests: [{ id: "order-slip-li-4-text", kind: "text-equals", selector: "section ul li:nth-of-type(2)", value: "Sugar Cookies", label: "The list item shows the second item" }], hints: [{ level: 1, text: "Find the list you already added, and work inside the list." }, { level: 2, text: "Use li tags, and write Sugar Cookies between them." }], xp: 45 }),
+    s44({ id: "order-slip-li-5", task: "Add the list item inside the list, and write Croissant in it.", inputMode: "guided", files: solved(ORDER_SLIP_B5), activeFile: "index.html", highlightToken: "<ul>", tests: [{ id: "order-slip-li-5-text", kind: "text-equals", selector: "section ul li:nth-of-type(3)", value: "Croissant", label: "The list item shows the third item" }], hints: [{ level: 1, text: "Find the list you already added, and work inside the list." }, { level: 2, text: "Use li tags, and write Croissant between them." }], xp: 45 }),
   ],
 };
