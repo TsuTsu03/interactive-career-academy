@@ -2,7 +2,7 @@
 
 **This is the canonical document.** Start here. Working title through decision 31 was "Interactive Career Academy" — the product is renamed **CodeDaddy** as of decision 32. The repo folder, `apps/web`'s internal package name, and historical references below keep the old name; only the product's public-facing name changed.
 
-**Status:** Decided 2026-08-23, in an interview with the product owner. Amended the same day, in a second interview, with decisions 20 through 31, and a third time with decision 32. Amended 2026-08-26 with decisions 33 and 34, which define CodeDaddy's product differentiation and approved signature feature set, and again the same day with decisions 35 through 37, which add the access layer, the session and recovery tools, and the portfolio capstone that ends the free path. Amended 2026-08-27 with decision 38, which replaces decision 19's step-count target with coverage-based course sizes.
+**Status:** Decided 2026-08-23, in an interview with the product owner. Amended the same day, in a second interview, with decisions 20 through 31, and a third time with decision 32. Amended 2026-08-26 with decisions 33 and 34, which define CodeDaddy's product differentiation and approved signature feature set, and again the same day with decisions 35 through 37, which add the access layer, the session and recovery tools, and the portfolio capstone that ends the free path. Amended 2026-08-27 with decision 38, which replaces decision 19's step-count target with coverage-based course sizes, and 2026-08-28 with decision 39, which groups the courses into two programs and names the material a front-end developer needs that the curriculum did not have.
 **Supersedes:** `ARCHITECTURE_PLAN_V2.md`, most of which was written against the wrong assumptions. It is kept for history, not for guidance.
 
 ---
@@ -109,7 +109,7 @@ The workspace preview can remain on the landing page, but it follows this produc
 
 ## 3. The decisions
 
-Thirty-eight decisions, with the reasoning, so nobody relitigates them by accident. 1 through 19 were decided 2026-08-23 in the first interview; 20 through 31 in a second interview the same day, which grilled the first plan against the actual codebase and found the gaps below; decision 32 renamed the product; decisions 33 and 34 were approved 2026-08-26 after reviewing how CodeDaddy should remain inspired by freeCodeCamp without becoming its visual or product duplicate; decisions 35 through 37 were approved the same day, after asking what else could ship with v1 for that same reason.
+Thirty-nine decisions, with the reasoning, so nobody relitigates them by accident. 1 through 19 were decided 2026-08-23 in the first interview; 20 through 31 in a second interview the same day, which grilled the first plan against the actual codebase and found the gaps below; decision 32 renamed the product; decisions 33 and 34 were approved 2026-08-26 after reviewing how CodeDaddy should remain inspired by freeCodeCamp without becoming its visual or product duplicate; decisions 35 through 37 were approved the same day, after asking what else could ship with v1 for that same reason.
 
 | # | Decision | Choice | Why |
 |---|---|---|---|
@@ -151,6 +151,7 @@ Thirty-eight decisions, with the reasoning, so nobody relitigates them by accide
 | 36 | Session and recovery tools | **Progress Passport, Baon Mode, Character Guard, and the Tanong Card, all shipping with v1** | Four small tools against four real failures of this specific audience. Progress lives in `localStorage` and accounts are deferred behind decision 18, so a wiped shared computer erases everything — the Passport is the only answer available before the backend exists. Baon Mode costs almost nothing because decision 21 already requires a per-step estimate. Character Guard exists because decision 35's phone workspace makes smart quotes and wrong brackets the most common invisible failure. The Tanong Card teaches the learner to ask a good question without building the forum decision 11 refused |
 | 37 | The final project | **The learner's own portfolio site is the fifth capstone and the last thing they build on the free path, and the proof page feeds it** | Decision 30 named five capstones without saying what they are. The portfolio is the only project whose content is the other projects, so it can only be built last — built any earlier, it is an empty shelf. It is also the artifact that outlives the certificate: a certificate is a claim, a working site with live projects is the evidence. The proof page exists so the evidence on that site is generated from verified work rather than written from memory. Amends decision 30 by naming the fifth capstone; the certificate requirement itself is unchanged |
 | 38 | Course size | **Coverage, not a step count. Targets are ~350 HTML, ~450 CSS, ~650 JavaScript, ~130 Tailwind, ~550 React — about 2,100 for v1, replacing decision 19's ~6,300** | Decision 19's target was freeCodeCamp's real step count doubled. The multiplier was never derived from what a learner needs to know; it was picked to be more than fCC. Authoring against it showed why that fails: HTML reached 273 steps having taught 79 elements, which is every element a beginner course should cover, and the remaining ~370 steps to hit the old target could only be padding — the exact thing AGENTS.md section 5 and decision 27 exist to prevent. A course is finished when the material is covered and practised, not when a number is reached. The revised figures are what each subject actually needs: HTML is nearly done and needs combination work rather than more elements; CSS is the largest real gap at 105 steps with the box model, flexbox, grid, and responsive design barely touched; JavaScript has its basics and is missing functions in depth, the DOM, events, and async; Tailwind is a thin layer over CSS the learner already knows; React is the largest single course because it is the closest to employable work and the owner asked for it to be the most detailed. Cuts the calendar in section 7 from 16-38 months to roughly a third of that without removing anything a learner needs |
+| 39 | Curriculum shape | **Two programs above the existing courses. Program A, Web Design Basics: HTML, Design Foundations, CSS, JavaScript, JavaScript on a Page. Program B, Front-End Development: JavaScript for Real Apps, Tailwind, React, TypeScript for React, Testing and DevTools, the five capstones. Course ids are unchanged; the programs are a grouping layer.** | The owner asked whether a graduate would be a competitive front-end developer who also knows UI/UX. Audited rather than guessed, and the answer was no, for two reasons the step count hid. **The JavaScript course teaches the language, not the web:** across all 655 steps there is not one `document.`, `querySelector`, `addEventListener`, `fetch`, `async`, `Promise`, or `localStorage`. Every step ends in `console.log`, so a graduate has never attached a click handler or read an API. **UI/UX is absent:** zero occurrences of hierarchy, contrast ratio, design system, spacing scale, empty state, or wireframe anywhere in the content. The courses teach how to write CSS, never what to build or why - which is half of what the product promises. Design Foundations sits after HTML and before CSS so the learner meets the ideas before forming habits against them, and it belongs to Program A because that is the program named for design. DOM work is its own course rather than an extension, because the seam between the language and the browser is real and because existing saved progress stays untouched. Merging HTML, CSS, and JavaScript into one course id was considered and refused: progress is stored at `aca.progress.v2.<courseId>`, so a merge would strand every learner who has started. Raises the total from decision 38's ~2,100 to ~2,660, which is new material rather than padding. Git and the terminal are named here as **unsolved**: there is no shell in a sandboxed iframe, so they cannot be checked, and they wait for the backend of build-order step 11 or for an owner decision to teach them unchecked |
 
 ---
 
@@ -172,13 +173,33 @@ A course is many small projects built across many small steps, freeCodeCamp styl
 Targets below are decision 38's, set by what each subject needs covered. The
 old decision 19 figures are kept in the last column so the change is visible.
 
-| Course | Project | Steps now | Target | Was (decision 19) |
-|---|---|---|---|---|
-| Learn HTML | Sari-Sari Store Page + 57 more | 347 (58 projects) | ~350 | ~640 |
-| Learn CSS | Jeepney Route Card + 86 more | 450 (87 projects) | ~450 | ~2,470 |
-| Learn Tailwind CSS | Turo-Turo Menu Card + 23 more | 128 (24 projects) | ~130 | ~190 |
-| Learn JavaScript | Palengke Price Counter + 128 more | 655 (129 projects) | ~650 | ~2,640 |
-| Learn React | Barangay Help Desk Heading + 8 more | 60 (9 projects) | ~550 | ~370 |
+Decision 39 groups these into two programs. The course ids are unchanged — the
+programs are a layer above them, so no saved progress moves.
+
+**Program A — Web Design Basics**
+
+| Course | Project | Steps now | Target |
+|---|---|---|---|
+| Learn HTML | Sari-Sari Store Page + 57 more | 347 (58 projects) | ~350 |
+| **Design Foundations** | not started | 0 | ~180 |
+| Learn CSS | Jeepney Route Card + 86 more | 450 (87 projects) | ~450 |
+| Learn JavaScript | Palengke Price Counter + 128 more | 655 (129 projects) | ~650 |
+| **JavaScript on a Page** | not started | 0 | ~120 |
+
+**Program B — Front-End Development**
+
+| Course | Project | Steps now | Target |
+|---|---|---|---|
+| **JavaScript for Real Apps** | not started | 0 | ~130 |
+| Learn Tailwind CSS | Turo-Turo Menu Card + 23 more | 128 (24 projects) | ~130 |
+| Learn React | Barangay Help Desk Heading + 8 more | 60 (9 projects) | ~550 |
+| **TypeScript for React** | not started | 0 | ~120 |
+| **Testing and DevTools** | not started | 0 | ~80 |
+| The five capstones | not started | 0 | 5 projects |
+
+The five courses that existed before decision 39 are listed with their old
+decision 19 targets for history: HTML ~640, CSS ~2,470, JavaScript ~2,640,
+Tailwind ~190, React ~370.
 
 HTML, CSS, Tailwind, and JavaScript have reached their coverage targets and
 passed the complete browser authoring harness on 2026-08-28. React now has 60
