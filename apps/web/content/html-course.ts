@@ -817,6 +817,12 @@ const BASKETBALL_LEAGUE_INTRO_BODY = `    <h2>Barangay Basketball League</h2>
 const BASKETBALL_LEAGUE_ELEMENT_SLOT = slotPage(`${BASKETBALL_LEAGUE_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
 const BASKETBALL_LEAGUE_ELEMENT_BODY = `${BASKETBALL_LEAGUE_INTRO_BODY}    <bdi></bdi>\n`;
 
+/* composition: notice-card */
+const SUPPLY_LIST_ROOT_SLOT = slotPage("    @@SLOT@@\\n", "@@SLOT@@");
+const SUPPLY_LIST_B1 = `    <section></section>\n`;
+const SUPPLY_LIST_B2 = `    <section>\n      <h2>Notice Card</h2>\n    </section>\n`;
+const SUPPLY_LIST_B3 = `    <section>\n      <h2>Notice Card</h2>\n      <p>Please pack your textbooks and notebooks.</p>\n    </section>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1363,6 +1369,9 @@ const references = {
   "basketball-league-copy": { estimatedMinutes: 4, solution: solved(BASKETBALL_LEAGUE_INTRO_BODY) },
   "basketball-league-bdi": { estimatedMinutes: 5, solution: solvedSlot(BASKETBALL_LEAGUE_ELEMENT_SLOT, "<bdi></bdi>") },
   "basketball-league-bdi-text": { estimatedMinutes: 4, solution: solved(`${BASKETBALL_LEAGUE_INTRO_BODY}    <bdi>John Doe</bdi>\n`) },
+  "supply-list-root": { estimatedMinutes: 4, solution: solvedSlot(SUPPLY_LIST_ROOT_SLOT, "<section></section>") },
+  "supply-list-h2-1": { estimatedMinutes: 4, solution: solved(SUPPLY_LIST_B2) },
+  "supply-list-p-2": { estimatedMinutes: 4, solution: solved(SUPPLY_LIST_B3) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1406,6 +1415,7 @@ const PROJECT_38_ID = "jeepney-route-board";
 const PROJECT_39_ID = "palengke-fish-stall";
 const PROJECT_40_ID = "turo-turo-menu";
 const PROJECT_41_ID = "barangay-basketball-league";
+const PROJECT_42_ID = "school-supply-list";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1648,6 +1658,11 @@ const s41 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_41_ID };
 };
 
+const s42 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_42_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1695,6 +1710,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_39_ID, title: "Palengke Fish Stall" },
     { id: PROJECT_40_ID, title: "Turo Turo Menu" },
     { id: PROJECT_41_ID, title: "Barangay Basketball League" },
+    { id: PROJECT_42_ID, title: "School Supply List" },
   ],
   kind: "web",
   requires: [],
@@ -4633,5 +4649,8 @@ export const htmlCourse: Course = {
     s41({ id: "basketball-league-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(BASKETBALL_LEAGUE_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "basketball-league-copy-text", kind: "text-equals", selector: "p", value: "See how the bdi tag keeps names from mixing up.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write See how the bdi tag keeps names from mixing up." }], xp: 40 }),
     s41({ id: "basketball-league-bdi", task: "Add a place for the isolated name.", inputMode: "tap-to-build", files: { "index.html": BASKETBALL_LEAGUE_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: BASKETBALL_LEAGUE_ELEMENT_SLOT.slotLine, blocks: ["<bdi></bdi>","<p>John Doe</p>","<div>John Doe</div>","<note>John Doe</note>"], correctBlock: "<bdi></bdi>", conceptIds: ["bdi-element"], tests: [{ id: "basketball-league-bdi-exists", kind: "exists", selector: "bdi", label: "The isolated name has a place" }], hints: [{ level: 1, text: "Add the element that marks a isolated name." }, { level: 2, text: "Use bdi for the isolated name." }], xp: 50 }),
     s41({ id: "basketball-league-bdi-text", task: "Write John Doe inside it.", inputMode: "guided", files: solved(BASKETBALL_LEAGUE_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<bdi></bdi>", tests: [{ id: "basketball-league-bdi-text-set", kind: "text-equals", selector: "bdi", value: "John Doe", label: "The isolated name shows its words" }], hints: [{ level: 1, text: "Write the words inside the bdi tags." }, { level: 2, text: "Use John Doe exactly." }], xp: 40 }),
+    s42({ id: "supply-list-root", task: "Start the notice card. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": SUPPLY_LIST_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: SUPPLY_LIST_ROOT_SLOT.slotLine, blocks: ["<section></section>","<div></div>","<p></p>","<span></span>"], correctBlock: "<section></section>", tests: [{ id: "supply-list-root-exists", kind: "exists", selector: "section", label: "The notice card has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this notice card." }, { level: 2, text: "Use section tags for the outer box." }], xp: 40 }),
+    s42({ id: "supply-list-h2-1", task: "Add the heading inside the section, and write Notice Card in it.", inputMode: "guided", files: solved(SUPPLY_LIST_B1), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "supply-list-h2-1-text", kind: "text-equals", selector: "section h2", value: "Notice Card", label: "The heading shows the card heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Notice Card between them." }], xp: 45 }),
+    s42({ id: "supply-list-p-2", task: "Add the paragraph inside the section, and write Please pack your textbooks and notebooks. in it.", inputMode: "guided", files: solved(SUPPLY_LIST_B2), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "supply-list-p-2-text", kind: "text-equals", selector: "section p", value: "Please pack your textbooks and notebooks.", label: "The paragraph shows one sentence of detail" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use p tags, and write Please pack your textbooks and notebooks. between them." }], xp: 45 }),
   ],
 };
