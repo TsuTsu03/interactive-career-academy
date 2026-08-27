@@ -239,7 +239,7 @@ Rules:
 - Never write < or > in any sentence. Write ${target.tag} as a plain word.
 - Write in English only.`;
 
-  return { system, user, target };
+  return { system, user, target, setting };
 }
 
 async function askModel(prompt, extraNote) {
@@ -308,19 +308,53 @@ const TAGALOG = /\b(?:ang|mga|nang|iyong|ito|iyan|iyon|dito|diyan|doon|kayo|kami
  * authoring harness or the type checker would catch later, moved earlier so a
  * bad reply costs a retry rather than a reverted pass.
  */
-function validateSpec(raw, state, target) {
-  // The element, its name, its definition, and the concept term come from the
-  // curated list, never from the reply. The model is only trusted with the
-  // setting, the wording, and the analogy.
+/**
+ * Builds a free project id and slug from the setting it was given.
+ *
+ * The model was asked for these and told which were taken, and still proposed
+ * "barangay-water-bill" on pass after pass until the loop gave up. Identifiers
+ * are computable, so they are computed: nothing is gained by asking an
+ * unreliable component for something deterministic code can settle.
+ */
+function deriveIds(setting, element, used, src) {
+  const words = setting.toLowerCase().replace(/^(a|an|the) /, "").split(/[^a-z]+/).filter(Boolean);
+  // Try progressively more of the setting's own words before falling back to
+  // a number. Appending the tag name instead produced "Sari Sari Store Tfoot"
+  // as a project title, which puts jargon in front of the learner in the one
+  // place the course has to stay plain.
+  const candidates = [];
+  for (let take = 3; take <= words.length; take++) candidates.push(words.slice(0, take).join("-"));
+  for (let i = 2; i <= 20; i++) candidates.push(`${words.slice(0, 3).join("-")}-${i}`);
+
+  for (const candidate of candidates) {
+    const slug = candidate.split("-").slice(-2).join("-");
+    if (!used.has(candidate) && !src.includes(`id: "${slug}-title"`)) {
+      // The title comes from the setting too. Left to the model it kept
+      // answering "Barangay Water Bill" whatever setting it was handed, which
+      // produced a project called that under the id "pharmacy-stock-list".
+      const projectTitle = candidate.split("-").map((w) =>
+        w === "id" ? "ID" : w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+      return { projectId: candidate, slug, projectTitle, heading: projectTitle };
+    }
+  }
+  throw new Error(`could not derive a free id from "${setting}"`);
+}
+
+function validateSpec(raw, state, target, setting) {
+  // The element, its name, its definition, the concept term, and the
+  // identifiers all come from code, never from the reply. The model is trusted
+  // only with the wording and the analogy.
+  const ids = deriveIds(setting, target.tag, state.usedProjectIds, state.src);
   const spec = {
     ...raw,
+    ...ids,
     element: target.tag,
     elementName: target.name,
     conceptTerm: `${target.tag} element`,
     conceptDefinition: target.what,
   };
 
-  const need = ["projectId", "projectTitle", "slug", "heading", "intro",
+  const need = ["intro",
     "elementText", "distractors", "conceptAnalogy", "conceptProof", "diagramAlt"];
   for (const k of need) {
     if (typeof spec[k] === "undefined" || spec[k] === null) throw new Error(`missing "${k}"`);
@@ -364,8 +398,15 @@ function validateSpec(raw, state, target) {
   // it is asked to talk about an element.
   const learnerCopy = ["conceptAnalogy", "conceptProof", "intro", "elementText",
     "heading", "projectTitle"];
+
+  // The model writes `<em>` into prose no matter how the prompt is worded, and
+  // the JSON example it is shown has to contain tags for the distractor field,
+  // so it always has one in view. Rejecting this burned every retry on a
+  // mistake code can simply undo: strip the brackets and keep the sentence.
   for (const k of learnerCopy) {
-    if (/[<>]/.test(String(spec[k]))) throw new Error(`"${k}" contains a raw angle bracket`);
+    if (typeof spec[k] === "string") {
+      spec[k] = spec[k].replace(/<\/?([a-z][a-z0-9]*)\s*\/?>/gi, "$1").replace(/[<>]/g, "").trim();
+    }
   }
 
   // PLAN.md decision 10: English only. The Filipino setting is the subject
@@ -617,7 +658,7 @@ async function onePass(passNo) {
   for (let attempt = 1; attempt <= RETRIES; attempt++) {
     try {
       const reply = await askModel(prompt, note);
-      spec = validateSpec(extractJson(reply), state, prompt.target);
+      spec = validateSpec(extractJson(reply), state, prompt.target, prompt.setting);
       break;
     } catch (e) {
       note = e.message;
