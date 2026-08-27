@@ -2,7 +2,7 @@
 
 **This is the canonical document.** Start here. Working title through decision 31 was "Interactive Career Academy" — the product is renamed **CodeDaddy** as of decision 32. The repo folder, `apps/web`'s internal package name, and historical references below keep the old name; only the product's public-facing name changed.
 
-**Status:** Decided 2026-08-23, in an interview with the product owner. Amended the same day, in a second interview, with decisions 20 through 31, and a third time with decision 32. Amended 2026-08-26 with decisions 33 and 34, which define CodeDaddy's product differentiation and approved signature feature set, and again the same day with decisions 35 through 37, which add the access layer, the session and recovery tools, and the portfolio capstone that ends the free path.
+**Status:** Decided 2026-08-23, in an interview with the product owner. Amended the same day, in a second interview, with decisions 20 through 31, and a third time with decision 32. Amended 2026-08-26 with decisions 33 and 34, which define CodeDaddy's product differentiation and approved signature feature set, and again the same day with decisions 35 through 37, which add the access layer, the session and recovery tools, and the portfolio capstone that ends the free path. Amended 2026-08-27 with decision 38, which replaces decision 19's step-count target with coverage-based course sizes.
 **Supersedes:** `ARCHITECTURE_PLAN_V2.md`, most of which was written against the wrong assumptions. It is kept for history, not for guidance.
 
 ---
@@ -109,7 +109,7 @@ The workspace preview can remain on the landing page, but it follows this produc
 
 ## 3. The decisions
 
-Thirty-seven decisions, with the reasoning, so nobody relitigates them by accident. 1 through 19 were decided 2026-08-23 in the first interview; 20 through 31 in a second interview the same day, which grilled the first plan against the actual codebase and found the gaps below; decision 32 renamed the product; decisions 33 and 34 were approved 2026-08-26 after reviewing how CodeDaddy should remain inspired by freeCodeCamp without becoming its visual or product duplicate; decisions 35 through 37 were approved the same day, after asking what else could ship with v1 for that same reason.
+Thirty-eight decisions, with the reasoning, so nobody relitigates them by accident. 1 through 19 were decided 2026-08-23 in the first interview; 20 through 31 in a second interview the same day, which grilled the first plan against the actual codebase and found the gaps below; decision 32 renamed the product; decisions 33 and 34 were approved 2026-08-26 after reviewing how CodeDaddy should remain inspired by freeCodeCamp without becoming its visual or product duplicate; decisions 35 through 37 were approved the same day, after asking what else could ship with v1 for that same reason.
 
 | # | Decision | Choice | Why |
 |---|---|---|---|
@@ -131,7 +131,7 @@ Thirty-seven decisions, with the reasoning, so nobody relitigates them by accide
 | 16 | Teaching a concept | **Four representations, every time** | See section 5 |
 | 17 | Coming back | Streak, daily challenge, spaced review, opt-in email | Spaced review is the only mechanic that is both a hook and genuinely good teaching |
 | 18 | Development sequence | **Finish and verify the complete v1 frontend before backend integration** | Supabase, auth providers, databases, and APIs stay deferred until the frontend is locked |
-| 19 | Content depth | **2x freeCodeCamp's real step count** — ~6,300 for the v1 front-end | The first estimate (~400 total) was wrong by roughly 8x; real fCC alone is ~3,150 steps for this scope. Chosen knowingly at 16 to 38 months on the raised time budget. See section 7 |
+| 19 | Content depth | ~~**2x freeCodeCamp's real step count** — ~6,300~~ **Superseded by decision 38.** | The first estimate (~400 total) was wrong by roughly 8x; real fCC alone is ~3,150 steps for this scope. Chosen knowingly at 16 to 38 months on the raised time budget. See section 7 |
 | 20 | Launch gate | **Reaffirmed.** Decision 12 stands, a third time, with the 16-to-38-month cost stated plainly | Course-by-course launch was offered as an alternative and declined |
 | 21 | Learner time per step | **3 to 5 min for an easy step, 5 to 10 for a hard one.** Distinct from decision 19's authoring-minutes estimate — this is what the *learner* spends, not the author | Already the de facto shape of the shipped content; now a stated rule the harness enforces (≤10 min error, >8 min warning) |
 | 22 | Authoring rate | **Measure it, judge after.** No pre-committed threshold | The 20-to-30-min/step figure in section 7 was always a guess; §7 already called for a timed batch. This confirms doing it, without locking a trip-wire in advance |
@@ -150,6 +150,7 @@ Thirty-seven decisions, with the reasoning, so nobody relitigates them by accide
 | 35 | Access layer | **Offline course, phone-first workspace, and Mistake Museum, all shipping with v1** | Decisions 33 and 34 changed what the learner is taught. Neither changed who can reach the lesson at all. The learner of decision 25 usually owns a phone rather than a laptop and buys data by the load, so a course that dies without a connection, and an editor that cannot be worked by thumb, exclude the audience the product exists for. The Mistake Museum is the cheapest honest personalisation available without reopening AI help: the failed checks are already produced, already deterministic, and currently thrown away. All three are browser-only and need no npm dependency, no backend, and no crowd, so none of them contradicts decisions 11, 14, 18, or 28 |
 | 36 | Session and recovery tools | **Progress Passport, Baon Mode, Character Guard, and the Tanong Card, all shipping with v1** | Four small tools against four real failures of this specific audience. Progress lives in `localStorage` and accounts are deferred behind decision 18, so a wiped shared computer erases everything — the Passport is the only answer available before the backend exists. Baon Mode costs almost nothing because decision 21 already requires a per-step estimate. Character Guard exists because decision 35's phone workspace makes smart quotes and wrong brackets the most common invisible failure. The Tanong Card teaches the learner to ask a good question without building the forum decision 11 refused |
 | 37 | The final project | **The learner's own portfolio site is the fifth capstone and the last thing they build on the free path, and the proof page feeds it** | Decision 30 named five capstones without saying what they are. The portfolio is the only project whose content is the other projects, so it can only be built last — built any earlier, it is an empty shelf. It is also the artifact that outlives the certificate: a certificate is a claim, a working site with live projects is the evidence. The proof page exists so the evidence on that site is generated from verified work rather than written from memory. Amends decision 30 by naming the fifth capstone; the certificate requirement itself is unchanged |
+| 38 | Course size | **Coverage, not a step count. Targets are ~350 HTML, ~450 CSS, ~650 JavaScript, ~130 Tailwind, ~550 React — about 2,100 for v1, replacing decision 19's ~6,300** | Decision 19's target was freeCodeCamp's real step count doubled. The multiplier was never derived from what a learner needs to know; it was picked to be more than fCC. Authoring against it showed why that fails: HTML reached 273 steps having taught 79 elements, which is every element a beginner course should cover, and the remaining ~370 steps to hit the old target could only be padding — the exact thing AGENTS.md section 5 and decision 27 exist to prevent. A course is finished when the material is covered and practised, not when a number is reached. The revised figures are what each subject actually needs: HTML is nearly done and needs combination work rather than more elements; CSS is the largest real gap at 105 steps with the box model, flexbox, grid, and responsive design barely touched; JavaScript has its basics and is missing functions in depth, the DOM, events, and async; Tailwind is a thin layer over CSS the learner already knows; React is the largest single course because it is the closest to employable work and the owner asked for it to be the most detailed. Cuts the calendar in section 7 from 16-38 months to roughly a third of that without removing anything a learner needs |
 
 ---
 
@@ -168,17 +169,28 @@ A course is many small projects built across many small steps, freeCodeCamp styl
 
 "Learn X by Building Y." Currently built:
 
-| Course | Project | Steps now | Target | fCC's real count (this scope) |
+Targets below are decision 38's, set by what each subject needs covered. The
+old decision 19 figures are kept in the last column so the change is visible.
+
+| Course | Project | Steps now | Target | Was (decision 19) |
 |---|---|---|---|---|
-| Learn HTML | Sari-Sari Store Page + 17 more | 147 (18 projects done) | ~640 | 302 (+16 orientation) |
-| Learn CSS | Jeepney Route Card + 12 more | 77 (13 projects done) | ~2,470 | 1,234 |
-| Learn JavaScript | Palengke Price Counter + 12 more | 75 (13 projects done) | ~2,640 | 1,320 |
-| Learn Tailwind CSS | Turo-Turo Menu Card + 6 more | 43 (7 projects done) | ~190 | 93 (part of fCC's "CSS Libraries and Frameworks") |
-| Learn React | not started | 0 | ~370 | 183 (Fundamentals, State/Hooks/Routing, Performance, Testing) |
+| Learn HTML | Sari-Sari Store Page + 40 more | 273 (41 projects) | ~350 | ~640 |
+| Learn CSS | Jeepney Route Card + 17 more | 105 (18 projects) | ~450 | ~2,470 |
+| Learn JavaScript | Palengke Price Counter + 83 more | 430 (84 projects) | ~650 | ~2,640 |
+| Learn Tailwind CSS | Turo-Turo Menu Card + 8 more | 53 (9 projects) | ~130 | ~190 |
+| Learn React | not started | 0 | ~550 | ~370 |
 
-342 steps total, across four courses, as of 2026-08-24. Learn HTML has eighteen finished projects, including Palengke Price Label; Learn CSS has thirteen; JavaScript has thirteen; Tailwind has seven, most recently Palengke Price Row. The ~640 HTML, ~2,470 CSS, and ~2,640 JavaScript targets mean many more small projects still to come, per decision 23.
+**HTML is close to done.** Its 41 projects have taught 79 elements, which is
+every element this audience needs; what remains is combination work — a whole
+form end to end, semantic page structure at scale, accessibility patterns —
+at increasing difficulty, not more elements. **CSS is the largest real gap:**
+105 steps with the box model, flexbox, grid, positioning, and responsive
+design barely touched. **React is the largest target** because it is the
+closest thing here to employable work.
 
-Targets are decision 19's 2x multiplier applied to each course's real, current fCC step count (verified live at freecodecamp.org 2026-08-23), not an even split. fCC's own depth is wildly uneven per topic — CSS and JavaScript are each roughly four times HTML's size in their curriculum, and the targets follow that shape rather than flattening it.
+861 steps total, across four courses, as of 2026-08-27: 41 HTML projects, 18 CSS, 84 JavaScript, and 9 Tailwind. Under decision 38 the remaining work is roughly 1,240 steps, most of it in CSS and React rather than spread evenly.
+
+Decision 19 set these targets by doubling freeCodeCamp's real step count, verified live at freecodecamp.org on 2026-08-23. Decision 38 replaced that method on 2026-08-27: a course is sized by what it has to cover, and the old figures survive only as the last column above. The multiplier was never derived from what a learner needs, and authoring against it produced a finished-in-substance HTML course still ~370 steps short of its number, with nothing left to add but padding.
 
 Not "more of the same steps." The extra depth is meant to come from finer granularity (one idea per step, never two) and more concept cards on new terms, not padding or repeated busywork. Accessibility is folded into the HTML and CSS courses rather than split out as its own course, unlike fCC's structure.
 
@@ -318,17 +330,21 @@ XP, combos, and ranks carry the moment-to-moment feel. **No leagues** until ther
 
 The first version of this estimate said "~400 steps." That number was wrong by roughly 8x — an assumption, never checked against fCC's actual current curriculum. Checked live on 2026-08-23: fCC's Responsive Web Design, JavaScript, and Front-End Development Libraries certifications total **~3,150 steps** for the equivalent of this app's v1 front-end scope (HTML, CSS, a CSS-framework course, JavaScript, React). The corrected numbers below replace the original estimate everywhere in this document.
 
-| | |
-|---|---|
-| Real fCC step count, this scope (verified 2026-08-23) | ~3,150 |
-| Target: 2x that depth (decision 19) | **~6,300** |
-| Owner's time (decision 15, raised after this correction) | 20 to 30 hours per week |
-| Content authoring, at ~20 to 30 min per step reviewed | 2,050 to 3,150 hours |
-| Platform work: auth, certificates, projects, harness | 80 to 150 hours |
-| **Total** | **2,130 to 3,300 hours** |
-| **Calendar, at 20 to 30 hours per week** | **16 to 38 months before anyone sees it** |
+| | Decision 19 (superseded) | Decision 38 (current) |
+|---|---|---|
+| Real fCC step count, this scope (verified 2026-08-23) | ~3,150 | ~3,150 |
+| Target | ~6,300 (2x fCC) | **~2,100 (what each subject needs covered)** |
+| Written as of 2026-08-27 | 861 | 861 |
+| Remaining | ~5,450 | **~1,240** |
+| Owner's time (decision 15) | 20 to 30 hours per week | 20 to 30 hours per week |
+| Content authoring, at ~20 to 30 min per step reviewed | 2,050 to 3,150 hours | 410 to 620 hours |
+| Platform work: auth, certificates, projects, harness | 80 to 150 hours | 80 to 150 hours |
+| **Total** | 2,130 to 3,300 hours | **490 to 770 hours** |
+| **Calendar, at 20 to 30 hours per week** | 16 to 38 months | **4 to 9 months** |
 
-This was put to the owner directly, twice: once at the wrong 400-step baseline (accepted at 8 to 12 months), and again once the real ~3,150-step fCC baseline was verified and the 2x target produced 16 to 38 months even at a raised 20-to-30-hour weekly budget. **The decision, made with the corrected numbers in hand, is 2x fCC's real depth.** It is recorded here, with both the mistake and the correction, so the trade-off stays visible rather than being rediscovered in month twenty.
+The 2x figure was put to the owner twice and accepted twice, once at a wrong ~400-step baseline and again with the verified ~3,150 fCC count in hand. It was replaced on 2026-08-27 not because the cost was unacceptable but because authoring exposed the target as unfounded: HTML reached 273 steps having taught every element a beginner needs, and the ~370 steps still owed to the old number could only have been padding. Both estimates are kept above so the change is a visible decision rather than a quietly moved goalpost.
+
+Nothing was removed from what a learner is taught. The calendar fell because the target stopped being a multiple of somebody else's curriculum and started being a description of the material.
 
 **Where the ~20 to 30 min/step figure actually comes from — this is not an fCC number.** Checked directly: fCC publishes no per-step or per-challenge authoring time anywhere, not in their contributor guides, not in any blog post found. Their own "How to Work on Workshops" contributor documentation confirms why no such number would transfer here even if it existed — their curriculum is hand-authored by thousands of unpaid volunteer contributors across roughly ten years, coordinated through a challenge-editor tool, with zero AI drafting in their process. There is no meaningful "per-step time" to extract from that, and it would not describe this project's process (decision 6: AI drafts, one person plus the harness reviews) even if there were.
 
