@@ -110,7 +110,14 @@ function readCourseState() {
 
   const usedProjectIds = new Set(projectIds.map((m) => m[2]));
 
-  return { src, conceptSrc, nextNum: lastNum + 1, taughtTags, conceptIds, conceptWords, usedProjectIds };
+  // Which combination structures have already been built, so the loop moves
+  // through them in order instead of repeating the easiest one.
+  const usedCompositions = new Set();
+  for (const c of COMPOSITIONS) {
+    if (src.includes(`composition: ${c.id}`)) usedCompositions.add(c.id);
+  }
+
+  return { src, conceptSrc, nextNum: lastNum + 1, taughtTags, conceptIds, conceptWords, usedProjectIds, usedCompositions };
 }
 
 /* ------------------------------------------------------------------ */
@@ -179,21 +186,63 @@ const SETTINGS = [
   "a pharmacy stock list", "a barangay ID application notice",
 ];
 
-function buildPrompt({ taughtTags, conceptWords, usedProjectIds }) {
+/**
+ * Asks the model for the text a combination project needs, and nothing else.
+ * The structure comes from COMPOSITIONS; only the words are open.
+ */
+function buildCombinationPrompt(comp, setting, usedCompositions) {
+  const slots = comp.nodes
+    .map((n, i) => (n.text ? `  "t${i}": "${n.text}"` : null))
+    .filter(Boolean)
+    .join(",\n");
+
+  const system = [
+    "You write the words for one small HTML lesson for beginners in the Philippines.",
+    "You reply with one JSON object and nothing else. No markdown fence, no explanation.",
+  ].join(" ");
+
+  const user = `A page is being built: a ${comp.label}, set in ${setting}.
+
+Write the words that go in it. Reply with exactly this shape, replacing each
+description with real words for that setting:
+
+{
+${slots}
+}
+
+Rules:
+- Every value is short. A heading is a few words; a sentence is under 15 words.
+- Plain English only. No Tagalog. No HTML tags, no angle brackets.
+- Make the words fit ${setting} specifically, not a generic page.
+- Do not use a double quote or a backslash anywhere.`;
+
+  return { system, user, comp, setting, mode: "combination", usedCompositions };
+}
+
+function buildPrompt(state) {
+  const { taughtTags, conceptWords, usedProjectIds } = state;
   const open = TEACHABLE.filter((e) => !taughtTags.has(e.tag) && !conceptWords.has(e.tag));
+
+  // Rotate the setting by how many projects exist, so consecutive passes are
+  // pushed apart rather than left to the model's own narrow preferences.
+  const setting = SETTINGS[usedProjectIds.size % SETTINGS.length];
+  const takenNote = [...usedProjectIds].slice(-14).join(", ");
+
+  // Elements run out; combinations do not, because the same structure taught
+  // in a different setting is still practice. Once every element in TEACHABLE
+  // is covered the loop switches to assembling them, cycling the compositions
+  // from simplest to hardest and starting the cycle again in a new setting.
   if (open.length === 0) {
-    throw new Error("every teachable element in the list is already covered; extend TEACHABLE");
+    const done = state.usedCompositions;
+    const next = COMPOSITIONS.find((c) => !done.has(c.id))
+      ?? COMPOSITIONS[done.size % COMPOSITIONS.length];
+    return buildCombinationPrompt(next, setting, done);
   }
 
   // One element per pass rather than a menu. Choosing is a decision the list's
   // order already made, and a model given twelve options spends its attention
   // on picking instead of on writing.
   const target = open[0];
-
-  // Rotate the setting by how many projects exist, so consecutive passes are
-  // pushed apart rather than left to the model's own narrow preferences.
-  const setting = SETTINGS[usedProjectIds.size % SETTINGS.length];
-  const takenNote = [...usedProjectIds].slice(-14).join(", ");
 
   const system = [
     "You write one small HTML lesson for absolute beginners in the Philippines.",
@@ -239,7 +288,7 @@ Rules:
 - Never write < or > in any sentence. Write ${target.tag} as a plain word.
 - Write in English only.`;
 
-  return { system, user, target, setting };
+  return { system, user, target, setting, mode: "element" };
 }
 
 async function askModel(prompt, extraNote) {
@@ -338,6 +387,36 @@ function deriveIds(setting, element, used, src) {
     }
   }
   throw new Error(`could not derive a free id from "${setting}"`);
+}
+
+/**
+ * Checks the text a combination project needs. Only the words come from the
+ * model here - the structure, ids, and title are all computed - so this is
+ * shorter than validateSpec and mostly guards the strings themselves.
+ */
+function validateCombination(raw, state, prompt) {
+  const { comp, setting } = prompt;
+  const ids = deriveIds(`${setting} ${comp.id}`, comp.id, state.usedProjectIds, state.src);
+
+  const texts = [];
+  for (let i = 0; i < comp.nodes.length; i++) {
+    if (!comp.nodes[i].text) { texts.push(null); continue; }
+
+    let v = raw[`t${i}`];
+    if (typeof v !== "string" || !v.trim()) throw new Error(`missing text for "t${i}" (${comp.nodes[i].text})`);
+
+    // Same cleanup as the element path: strip markup rather than reject it.
+    v = v.replace(/<\/?([a-z][a-z0-9]*)\s*\/?>/gi, "$1").replace(/[<>]/g, "").trim();
+
+    if (/["\\`\n]/.test(v)) throw new Error(`"t${i}" contains a quote, backslash, or newline`);
+    const hit = v.match(TAGALOG);
+    if (hit) throw new Error(`"t${i}" contains Tagalog ("${hit[0]}"); write in English`);
+    if (v.split(/\s+/).length > 15) throw new Error(`"t${i}" is over 15 words`);
+
+    texts.push(v);
+  }
+
+  return { ...ids, texts, element: comp.nodes[0].tag };
 }
 
 function validateSpec(raw, state, target, setting) {
@@ -446,6 +525,251 @@ const CONST = (slug, suffix) => `${slug.toUpperCase().replace(/-/g, "_")}_${suff
  * through 27 use. Written as one function so the pieces cannot drift out of
  * agreement with each other.
  */
+/* ------------------------------------------------------------------ */
+/* Combination projects                                                */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Structures built from elements the course has already taught, ordered by how
+ * much the learner has to hold in their head at once.
+ *
+ * These exist because teaching one new element per project has an end: HTML has
+ * a finite number of elements and this course reached it at 79. Knowing what a
+ * `ul` is and being able to nest one inside a `section` under its own heading
+ * are different skills, and only the first was ever practised. Decision 38 sizes
+ * a course by coverage, and combination is the part of HTML coverage that the
+ * element-per-project shape could not reach.
+ *
+ * `parent` is an index into the same array, or -1 for the outermost node. Steps
+ * are generated in this order, one node each, so the order is also the
+ * difficulty curve.
+ */
+const COMPOSITIONS = [
+  {
+    id: "notice-card", label: "notice card",
+    nodes: [
+      { tag: "section", parent: -1 },
+      { tag: "h2", parent: 0, text: "the card heading" },
+      { tag: "p", parent: 0, text: "one sentence of detail" },
+    ],
+  },
+  {
+    id: "dated-notice", label: "dated notice",
+    nodes: [
+      { tag: "article", parent: -1 },
+      { tag: "h2", parent: 0, text: "the notice heading" },
+      { tag: "p", parent: 0, text: "one sentence of detail" },
+      { tag: "footer", parent: 0 },
+      { tag: "small", parent: 3, text: "who posted the notice" },
+    ],
+  },
+  {
+    id: "checklist", label: "checklist",
+    nodes: [
+      { tag: "section", parent: -1 },
+      { tag: "h2", parent: 0, text: "the list heading" },
+      { tag: "ul", parent: 0 },
+      { tag: "li", parent: 2, text: "the first item" },
+      { tag: "li", parent: 2, text: "the second item" },
+      { tag: "li", parent: 2, text: "the third item" },
+    ],
+  },
+  {
+    id: "captioned-figure", label: "captioned figure",
+    nodes: [
+      { tag: "section", parent: -1 },
+      { tag: "h2", parent: 0, text: "the section heading" },
+      { tag: "figure", parent: 0 },
+      { tag: "blockquote", parent: 2, text: "something a person said" },
+      { tag: "figcaption", parent: 2, text: "who said it" },
+    ],
+  },
+  {
+    id: "summary-table", label: "table with a summary row",
+    nodes: [
+      { tag: "table", parent: -1 },
+      { tag: "caption", parent: 0, text: "what the table lists" },
+      { tag: "thead", parent: 0 },
+      { tag: "tr", parent: 2 },
+      { tag: "th", parent: 3, text: "the first column name" },
+      { tag: "th", parent: 3, text: "the second column name" },
+      { tag: "tbody", parent: 0 },
+      { tag: "tr", parent: 6 },
+      { tag: "td", parent: 7, text: "the first value" },
+      { tag: "td", parent: 7, text: "the second value" },
+    ],
+  },
+  {
+    id: "nested-sections", label: "page with two sections",
+    nodes: [
+      { tag: "main", parent: -1 },
+      { tag: "h1", parent: 0, text: "the page name" },
+      { tag: "section", parent: 0 },
+      { tag: "h2", parent: 2, text: "the first section heading" },
+      { tag: "p", parent: 2, text: "one sentence for the first section" },
+      { tag: "section", parent: 0 },
+      { tag: "h2", parent: 5, text: "the second section heading" },
+      { tag: "p", parent: 5, text: "one sentence for the second section" },
+    ],
+  },
+  {
+    id: "described-list", label: "list of terms and meanings",
+    nodes: [
+      { tag: "section", parent: -1 },
+      { tag: "h2", parent: 0, text: "the list heading" },
+      { tag: "dl", parent: 0 },
+      { tag: "dt", parent: 2, text: "the first term" },
+      { tag: "dd", parent: 2, text: "what the first term means" },
+      { tag: "dt", parent: 2, text: "the second term" },
+      { tag: "dd", parent: 2, text: "what the second term means" },
+    ],
+  },
+];
+
+/**
+ * Plain words for the tags a combination project uses. The first draft wrote
+ * "Add a h2 inside the section", which is both ungrammatical and jargon in the
+ * one place the course promises not to use any - the hand-authored steps say
+ * "heading", not "h2". The tag name still appears in the level-2 hint, where
+ * the learner has already been told what to look for.
+ */
+const TAG_NAMES = {
+  section: "section", article: "notice", main: "page body", footer: "footer",
+  h1: "page title", h2: "heading", h3: "smaller heading",
+  p: "paragraph", small: "small print", ul: "list", ol: "numbered list",
+  li: "list item", dl: "list of terms", dt: "term", dd: "meaning",
+  table: "table", caption: "table title", thead: "header rows",
+  tbody: "main rows", tr: "row", th: "column name", td: "value",
+  figure: "figure", figcaption: "figure caption", blockquote: "quotation",
+};
+
+const plain = (tag) => TAG_NAMES[tag] ?? tag;
+
+/** Depth of a node, used only to indent the generated markup readably. */
+function depthOf(nodes, i) {
+  let d = 0;
+  for (let p = nodes[i].parent; p !== -1; p = nodes[p].parent) d++;
+  return d;
+}
+
+/**
+ * A CSS selector that reaches exactly one node. Siblings sharing a tag get an
+ * `:nth-of-type`, so the second `li` in a list is assertable on its own - the
+ * whole point of a combination step is that position carries meaning.
+ */
+function selectorFor(nodes, i) {
+  const chain = [];
+  for (let k = i; k !== -1; k = nodes[k].parent) {
+    const twins = nodes.filter((n, j) => j <= i && n.parent === nodes[k].parent && n.tag === nodes[k].tag);
+    const part = twins.length > 1 ? `${nodes[k].tag}:nth-of-type(${twins.indexOf(nodes[k]) + 1})` : nodes[k].tag;
+    chain.unshift(part);
+  }
+  return chain.join(" ");
+}
+
+/** Renders the markup with the first `upTo` nodes present. */
+function renderBody(nodes, upTo, texts, indent = "    ") {
+  const lines = [];
+  const emit = (i) => {
+    const pad = indent + "  ".repeat(depthOf(nodes, i));
+    const kids = nodes.map((n, j) => (n.parent === i && j < upTo ? j : -1)).filter((j) => j !== -1);
+    const text = nodes[i].text ? (texts[i] ?? "") : "";
+    if (kids.length === 0) {
+      lines.push(`${pad}<${nodes[i].tag}>${text}</${nodes[i].tag}>`);
+      return;
+    }
+    lines.push(`${pad}<${nodes[i].tag}>`);
+    if (text) lines.push(`${pad}  ${text}`);
+    for (const k of kids) emit(k);
+    lines.push(`${pad}</${nodes[i].tag}>`);
+  };
+  for (let i = 0; i < upTo; i++) if (nodes[i].parent === -1) emit(i);
+  return lines.join("\\n") + "\\n";
+}
+
+/**
+ * Builds a project that assembles a structure out of elements already taught.
+ *
+ * One step per node. The first is tap-to-build so the learner picks the
+ * container; the rest are guided, because by this point the question is not
+ * which tag to use but where it belongs.
+ */
+function generateCombination(spec, num, comp) {
+  const { slug } = spec;
+  const P = `PROJECT_${num}_ID`;
+  const S = `s${num}`;
+  const nodes = comp.nodes;
+  const texts = spec.texts;
+
+  const B = (i) => CONST(slug, `B${i}`);
+  const ROOT_SLOT = CONST(slug, "ROOT_SLOT");
+
+  // One body constant per node, each the page as it stands after that step.
+  // The marker is how readCourseState knows this structure has been built, so
+  // the next pass moves on to a harder one instead of repeating this.
+  const bodyLines = [
+    `/* composition: ${comp.id} */`,
+    `const ${ROOT_SLOT} = slotPage("    @@SLOT@@\\n", "@@SLOT@@");`,
+  ];
+  for (let i = 1; i <= nodes.length; i++) {
+    bodyLines.push(`const ${B(i)} = \`${renderBody(nodes, i, texts)}\`;`);
+  }
+  const bodies = "\n" + bodyLines.join("\n") + "\n";
+
+  const root = nodes[0].tag;
+  const distractors = ["<div></div>", "<p></p>", "<span></span>"].filter((d) => !d.includes(`<${root}>`));
+  const blocks = JSON.stringify([`<${root}></${root}>`, ...distractors.slice(0, 3)]);
+
+  const stepLines = [];
+  const refLines = [];
+
+  stepLines.push(`    ${S}({ id: "${slug}-root", task: "Start the ${comp.label}. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": ${ROOT_SLOT}.page, "styles.css": "" }, activeFile: "index.html", slotLine: ${ROOT_SLOT}.slotLine, blocks: ${blocks}, correctBlock: "<${root}></${root}>", tests: [{ id: "${slug}-root-exists", kind: "exists", selector: "${root}", label: "The ${comp.label} has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this ${comp.label}." }, { level: 2, text: "Use ${root} tags for the outer box." }], xp: 40 }),`);
+  refLines.push(`  "${slug}-root": { estimatedMinutes: 4, solution: solvedSlot(${ROOT_SLOT}, "<${root}></${root}>") },`);
+
+  for (let i = 1; i < nodes.length; i++) {
+    const n = nodes[i];
+    const sel = selectorFor(nodes, i);
+    const parentTag = nodes[n.parent].tag;
+    const id = `${slug}-${n.tag}-${i}`;
+    const me = plain(n.tag);
+    const parent = plain(parentTag);
+    const where = `inside the ${parent}`;
+
+    const tests = n.text
+      ? `[{ id: "${id}-text", kind: "text-equals", selector: "${sel}", value: "${texts[i]}", label: "The ${me} shows ${n.text}" }]`
+      : `[{ id: "${id}-exists", kind: "exists", selector: "${sel}", label: "The ${me} sits ${where}" }]`;
+
+    const task = n.text
+      ? `Add the ${me} ${where}, and write ${texts[i]} in it.`
+      : `Add the ${me} ${where}.`;
+
+    const hint2 = n.text
+      ? `Use ${n.tag} tags, and write ${texts[i]} between them.`
+      : `Use ${n.tag} tags, and put them ${where} rather than beside it.`;
+
+    stepLines.push(`    ${S}({ id: "${id}", task: "${task}", inputMode: "guided", files: solved(${B(i)}), activeFile: "index.html", highlightToken: "<${parentTag}>", tests: ${tests}, hints: [{ level: 1, text: "Find the ${parent} you already added, and work ${where}." }, { level: 2, text: "${hint2}" }], xp: ${n.text ? 45 : 40} }),`);
+    refLines.push(`  "${id}": { estimatedMinutes: 4, solution: solved(${B(i + 1)}) },`);
+  }
+
+  const factory = `const ${S} = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: ${P} };
+};
+`;
+
+  return {
+    bodies,
+    steps: stepLines.join("\n") + "\n",
+    references: refLines.join("\n") + "\n",
+    factory,
+    projectConst: `const ${P} = "${spec.projectId}";\n`,
+    projectEntry: `    { id: ${P}, title: "${spec.projectTitle}" },\n`,
+    concept: "",
+    num,
+    spec,
+  };
+}
+
 function generate(spec, num) {
   const { slug, element } = spec;
   const P = `PROJECT_${num}_ID`;
@@ -579,6 +903,10 @@ function apply(gen) {
 
   writeFileSync(COURSE, src, "utf8");
 
+  // Combination projects introduce no new word, so they add no concept. The
+  // registry is left untouched rather than given an empty entry.
+  if (!gen.concept) return;
+
   // The concept registry closes with the only `\n};\n` that is followed by the
   // helper functions, so anchor on the registry's own closing brace.
   let cs = readFileSync(CONCEPTS, "utf8");
@@ -620,9 +948,13 @@ function commit(gen, steps) {
   run("git", ["add", "apps/web/content"]);
   const msg = `Add Learn HTML project ${gen.num}: ${gen.spec.projectTitle}
 
-Teaches the ${gen.spec.element} element across five steps, with a concept
-entry carrying all four representations. Generated by tools/local-author.mjs
-from a locally served model; structure is templated, wording is not.
+${gen.concept
+    ? `Teaches the ${gen.spec.element} element across five steps, with a concept
+entry carrying all four representations.`
+    : `Assembles a structure from elements already taught, one node per step.
+No new element and no new concept: the skill practised is where things go.`}
+Generated by tools/local-author.mjs from a locally served model; structure is
+templated, wording is not.
 
 Course is now at ${steps} steps.
 
@@ -641,7 +973,7 @@ function stepCount() {
 }
 
 function logPass(gen, steps) {
-  const entry = `\n---\n\n## ${new Date().toISOString().slice(0, 10)} - HTML course, project ${gen.num} (local model)\n\n**What got made:** ${gen.spec.projectTitle}, five steps teaching the \`${gen.spec.element}\` element, plus the \`${gen.spec.conceptId}\` concept with all four representations.\n\n**How:** \`tools/local-author.mjs\` with \`${MODEL}\` served locally. The model supplied the scene, the element, and the wording as JSON; the step structure, tests, hints, and concept entry were generated from a template, so the shape cannot drift.\n\n**Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in \`PENDING_QA.md\` per the owner ruling of 2026-08-25. Course is at ${steps} steps.\n`;
+  const entry = `\n---\n\n## ${new Date().toISOString().slice(0, 10)} - HTML course, project ${gen.num} (local model)\n\n**What got made:** ${gen.spec.projectTitle}. ${gen.concept ? `Five steps teaching the \`${gen.spec.element}\` element, plus the \`${gen.spec.conceptId}\` concept with all four representations.` : `A combination project: it assembles a structure out of elements already taught, one node per step, and adds no new concept.`}\n\n**How:** \`tools/local-author.mjs\` with \`${MODEL}\` served locally. The model supplied the scene, the element, and the wording as JSON; the step structure, tests, hints, and concept entry were generated from a template, so the shape cannot drift.\n\n**Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in \`PENDING_QA.md\` per the owner ruling of 2026-08-25. Course is at ${steps} steps.\n`;
   writeFileSync(LOG, readFileSync(LOG, "utf8") + entry, "utf8");
 }
 
@@ -658,7 +990,9 @@ async function onePass(passNo) {
   for (let attempt = 1; attempt <= RETRIES; attempt++) {
     try {
       const reply = await askModel(prompt, note);
-      spec = validateSpec(extractJson(reply), state, prompt.target, prompt.setting);
+      spec = prompt.mode === "combination"
+        ? validateCombination(extractJson(reply), state, prompt)
+        : validateSpec(extractJson(reply), state, prompt.target, prompt.setting);
       break;
     } catch (e) {
       note = e.message;
@@ -668,8 +1002,11 @@ async function onePass(passNo) {
   }
   if (!spec) return { ok: false, reason: "the model did not produce a usable lesson" };
 
-  const gen = generate(spec, state.nextNum);
-  console.log(`  project ${gen.num}: ${spec.projectTitle} (<${spec.element}>)`);
+  const gen = prompt.mode === "combination"
+    ? generateCombination(spec, state.nextNum, prompt.comp)
+    : generate(spec, state.nextNum);
+  const what = prompt.mode === "combination" ? prompt.comp.label : `<${spec.element}>`;
+  console.log(`  project ${gen.num}: ${spec.projectTitle} (${what})`);
 
   if (DRY_RUN) {
     console.log(gen.steps);
