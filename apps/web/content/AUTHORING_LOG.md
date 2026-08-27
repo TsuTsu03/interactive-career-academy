@@ -1670,3 +1670,13 @@ added to catch mechanically instead of by review.
 **How:** `tools/local-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. The model supplied the scene, the element, and the wording as JSON; the step structure, tests, hints, and concept entry were generated from a template, so the shape cannot drift.
 
 **Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 347 steps.
+
+---
+
+## 2026-08-27 - CSS course, project 19 (local model)
+
+**What got made:** Sari Sari Store, five steps teaching spacing inside a card.
+
+**How:** `tools/css-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. Properties, values, and assertions are curated in `tools/css-topics.mjs`; the model wrote only the words in the fixture. CSS is stricter than HTML about this because the tests compare against exactly what `getComputedStyle` returns, so an invented value produces a step whose test can never pass.
+
+**Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 110 steps.

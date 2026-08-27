@@ -106,6 +106,14 @@ const solvedFocusLink = (styles: string): Record<string, string> => ({ "index.ht
 const solvedPrintNotice = (styles: string): Record<string, string> => ({ "index.html": PRINT_NOTICE_HTML, "styles.css": css(styles) });
 const solvedNightNotice = (styles: string): Record<string, string> => ({ "index.html": NIGHT_NOTICE_HTML, "styles.css": css(styles) });
 
+/* css-topic: box-spacing */
+const SARI_STORE_HTML = `<article class="info-card">
+  <h2>Sari-Sari Store Credit Reminder</h2>
+  <p>Your credit balance is low.</p>
+  <p class="info-detail">Please pay at your earliest convenience.</p>
+</article>`;
+const solvedSariStore = (styles: string): Record<string, string> => ({ "index.html": SARI_STORE_HTML, "styles.css": css(styles) });
+
 /** Authored proof for every step. Missing entries stop the course from loading. */
 const references = {
   "first-rule": {
@@ -271,6 +279,11 @@ const references = {
   "night-notice-dark-background": { estimatedMinutes: 5, solution: solvedNightNotice(".night-notice {\n  background-color: #f8fafc;\n  color: #111827;\n}\n\n@media (prefers-color-scheme: dark) {\n  .night-notice {\n    background-color: #111827;\n  }\n}") },
   "night-notice-dark-colour": { estimatedMinutes: 4, solution: solvedNightNotice(".night-notice {\n  background-color: #f8fafc;\n  color: #111827;\n}\n\n@media (prefers-color-scheme: dark) {\n  .night-notice {\n    background-color: #111827;\n    color: #f8fafc;\n  }\n}") },
   "night-notice-colour-scheme": { estimatedMinutes: 5, solution: solvedNightNotice(".night-notice {\n  background-color: #f8fafc;\n  color: #111827;\n}\n\n@media (prefers-color-scheme: dark) {\n  .night-notice {\n    background-color: #111827;\n    color: #f8fafc;\n    color-scheme: dark;\n  }\n}") },
+  "sari-store-padding": { estimatedMinutes: 4, solution: solvedSariStore(".info-card {\n  padding: 16px;\n}") },
+  "sari-store-background-color": { estimatedMinutes: 4, solution: solvedSariStore(".info-card {\n  padding: 16px;\n  background-color: #ffffff;\n}") },
+  "sari-store-border-radius": { estimatedMinutes: 4, solution: solvedSariStore(".info-card {\n  padding: 16px;\n  background-color: #ffffff;\n  border-radius: 12px;\n}") },
+  "sari-store-margin-bottom": { estimatedMinutes: 4, solution: solvedSariStore(".info-card {\n  padding: 16px;\n  background-color: #ffffff;\n  border-radius: 12px;\n  margin-bottom: 24px;\n}") },
+  "sari-store-max-width": { estimatedMinutes: 4, solution: solvedSariStore(".info-card {\n  padding: 16px;\n  background-color: #ffffff;\n  border-radius: 12px;\n  margin-bottom: 24px;\n  max-width: 400px;\n}") },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "jeepney-route-card";
@@ -291,6 +304,7 @@ const PROJECT_15_ID = "barangay-service-status";
 const PROJECT_16_ID = "barangay-focus-link";
 const PROJECT_17_ID = "barangay-print-notice";
 const PROJECT_18_ID = "barangay-night-notice";
+const PROJECT_19_ID = "sari-sari-store";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -315,12 +329,14 @@ const s16 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const 
 const s17 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_17_ID }; };
 const s18 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_18_ID }; };
 
+const s19 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_19_ID }; };
+
 export const cssCourse: Course = {
   id: "css-basics",
   order: 2,
   title: "Learn CSS by Building a Jeepney Route Card",
   project: "Jeepney Route Card",
-  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }],
+  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }],
   kind: "web",
   requires: ["html-basics"],
   summary: "Now make it look good. Colours, spacing, fonts, and layout.",
@@ -781,5 +797,10 @@ export const cssCourse: Course = {
     s18({ id: "night-notice-dark-background", task: "Use a dark background when the device asks for dark colours.", inputMode: "guided", files: solvedNightNotice(".night-notice {\n  background-color: #f8fafc;\n  color: #111827;\n}\n\n@media (prefers-color-scheme: dark) {\n  .night-notice {\n    background-color: ;\n  }\n}"), activeFile: "styles.css", highlightToken: "background-color: ;", conceptIds: ["prefers-color-scheme"], tests: [{ id: "night-notice-dark-background-set", kind: "source-matches", file: "styles.css", pattern: "prefers-color-scheme\\s*:\\s*dark[\\s\\S]*?background-color\\s*:\\s*#111827", flags: "is", because: "Use the dark-colour media rule and set the notice background to dark charcoal.", label: "The night notice respects dark-colour settings" }], hints: [{ level: 1, text: "Use the dark charcoal code inside the dark-colour rule." }, { level: 2, text: "Write #111827 after the colon." }], xp: 60 }),
     s18({ id: "night-notice-dark-colour", task: "Make the dark-mode notice words pale enough to read.", inputMode: "guided", files: solvedNightNotice(".night-notice {\n  background-color: #f8fafc;\n  color: #111827;\n}\n\n@media (prefers-color-scheme: dark) {\n  .night-notice {\n    background-color: #111827;\n    color: ;\n  }\n}"), activeFile: "styles.css", highlightToken: "color: ;", tests: [{ id: "night-notice-dark-colour-set", kind: "source-matches", file: "styles.css", pattern: "prefers-color-scheme\\s*:\\s*dark[\\s\\S]*?color\\s*:\\s*#f8fafc", flags: "is", because: "Use the pale grey colour inside the dark-colour rule.", label: "The dark-mode notice words are easy to read" }], hints: [{ level: 1, text: "Use the pale grey code inside the dark-colour rule." }, { level: 2, text: "Write #f8fafc after the colon." }], xp: 50 }),
     s18({ id: "night-notice-colour-scheme", task: "Tell the browser this notice uses a dark colour scheme in dark mode.", inputMode: "guided", files: solvedNightNotice(".night-notice {\n  background-color: #f8fafc;\n  color: #111827;\n}\n\n@media (prefers-color-scheme: dark) {\n  .night-notice {\n    background-color: #111827;\n    color: #f8fafc;\n    color-scheme: ;\n  }\n}"), activeFile: "styles.css", highlightToken: "color-scheme: ;", conceptIds: ["color-scheme"], tests: [{ id: "night-notice-colour-scheme-set", kind: "source-matches", file: "styles.css", pattern: "\\.night-notice\\s*\\{[^}]*color-scheme\\s*:\\s*dark", flags: "is", because: "Name the dark colour scheme inside the dark-mode rule.", label: "The browser knows the notice uses dark colours" }], hints: [{ level: 1, text: "Use the same word that names the device setting." }, { level: 2, text: "Write dark after the colon." }], xp: 60 }),
+    s19({ id: "sari-store-padding", task: "Give the card room inside its edges.", inputMode: "guided", files: solvedSariStore(".info-card {\n  padding: ;\n}"), activeFile: "styles.css", highlightToken: "padding: ;", tests: [{ id: "sari-store-padding-set", kind: "style", selector: ".info-card", prop: "padding-top", equals: "16px", readable: "16 pixels", label: "The card has room inside of 16 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the inside room." }, { level: 2, text: "Write 16px after the colon." }], xp: 45 }),
+    s19({ id: "sari-store-background-color", task: "Make the card stand out from the page.", inputMode: "guided", files: solvedSariStore(".info-card {\n  padding: 16px;\n  background-color: ;\n}"), activeFile: "styles.css", highlightToken: "background-color: ;", tests: [{ id: "sari-store-background-color-set", kind: "style", selector: ".info-card", prop: "background-color", equals: "rgb(255, 255, 255)", readable: "white", label: "The card has a background of white" }], hints: [{ level: 1, text: "Use the white colour code." }, { level: 2, text: "Write #ffffff after the colon." }], xp: 45 }),
+    s19({ id: "sari-store-border-radius", task: "Soften the corners of the card.", inputMode: "guided", files: solvedSariStore(".info-card {\n  padding: 16px;\n  background-color: #ffffff;\n  border-radius: ;\n}"), activeFile: "styles.css", highlightToken: "border-radius: ;", tests: [{ id: "sari-store-border-radius-set", kind: "style", selector: ".info-card", prop: "border-top-left-radius", equals: "12px", readable: "12 pixels", label: "The card has corners curved by 12 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the corner curve." }, { level: 2, text: "Write 12px after the colon." }], xp: 45 }),
+    s19({ id: "sari-store-margin-bottom", task: "Leave space below the card.", inputMode: "guided", files: solvedSariStore(".info-card {\n  padding: 16px;\n  background-color: #ffffff;\n  border-radius: 12px;\n  margin-bottom: ;\n}"), activeFile: "styles.css", highlightToken: "margin-bottom: ;", tests: [{ id: "sari-store-margin-bottom-set", kind: "style", selector: ".info-card", prop: "margin-bottom", equals: "24px", readable: "24 pixels", label: "The card leaves a gap below of 24 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the gap below." }, { level: 2, text: "Write 24px after the colon." }], xp: 45 }),
+    s19({ id: "sari-store-max-width", task: "Stop the card growing too wide to read.", inputMode: "guided", files: solvedSariStore(".info-card {\n  padding: 16px;\n  background-color: #ffffff;\n  border-radius: 12px;\n  margin-bottom: 24px;\n  max-width: ;\n}"), activeFile: "styles.css", highlightToken: "max-width: ;", tests: [{ id: "sari-store-max-width-set", kind: "style", selector: ".info-card", prop: "max-width", equals: "400px", readable: "400 pixels", label: "The card stops growing past 400 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the widest it may get." }, { level: 2, text: "Write 400px after the colon." }], xp: 45 }),
   ],
 };
