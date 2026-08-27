@@ -2310,6 +2310,14 @@ export const concepts: Record<string, Concept> = {
     visual: { kind: "diagram", diagram: { alt: "A close-up view of the notice showing the small number.", columns: 3, nodes: [{ id: "words", label: "1/4", note: "plain words", tone: "ghost" }, { id: "tag", label: "sub", note: "subscript", tone: "accent" }, { id: "result", label: "Subscript", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
     proof: "You will mark the correct way to write '1/4' as subscript.",
   },
+  "em-element": {
+    id: "em-element",
+    term: "em element",
+    definition: "The em element marks a word said with stress, changing the meaning of the sentence.",
+    analogy: "When you see a sale sign on a product, it means the price has changed.",
+    visual: { kind: "diagram", diagram: { alt: "A list of products with one item marked as 'Discounted!'", columns: 3, nodes: [{ id: "words", label: "Discounted!", note: "plain words", tone: "ghost" }, { id: "tag", label: "em", note: "stressed word", tone: "accent" }, { id: "result", label: "Stressed word", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
+    proof: "You will mark the word 'Discounted' on the product list. It shows the price is lower now.",
+  },
 };
 
 export function conceptById(id: string): Concept | undefined {
