@@ -705,6 +705,14 @@ function solvedSlot(slot: { page: string; slotLine: number }, block: string): Re
 }
 
 /** Authored proof for every step. Missing entries stop the course from loading. */
+const HEALTH_CENTER_NOTICE_TITLE_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const HEALTH_CENTER_NOTICE_TITLE_BODY = `    <h2></h2>\n`;
+const HEALTH_CENTER_NOTICE_HEADING_BODY = `    <h2>Important Notice</h2>\n`;
+const HEALTH_CENTER_NOTICE_INTRO_BODY = `    <h2>Important Notice</h2>
+    <p>Learn about important health tips for your barangay.</p>\n`;
+const HEALTH_CENTER_NOTICE_ELEMENT_SLOT = slotPage(`${HEALTH_CENTER_NOTICE_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
+const HEALTH_CENTER_NOTICE_ELEMENT_BODY = `${HEALTH_CENTER_NOTICE_INTRO_BODY}    <i></i>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1181,6 +1189,11 @@ const references = {
   "reminder-quote": { estimatedMinutes: 3, solution: solvedSlot(REMINDER_QUOTE_SLOT, "<q></q>") },
   "reminder-quote-text": { estimatedMinutes: 3, solution: solved(REMINDER_QUOTE_TEXT_BODY) },
   "reminder-quote-source": { estimatedMinutes: 3, solution: solved(`${REMINDER_QUOTE_TEXT_BODY}    <cite>Barangay Hall Notice</cite>\n`) },
+  "health-center-notice-title": { estimatedMinutes: 4, solution: solvedSlot(HEALTH_CENTER_NOTICE_TITLE_SLOT, "<h2></h2>") },
+  "health-center-notice-heading": { estimatedMinutes: 4, solution: solved(HEALTH_CENTER_NOTICE_HEADING_BODY) },
+  "health-center-notice-copy": { estimatedMinutes: 4, solution: solved(HEALTH_CENTER_NOTICE_INTRO_BODY) },
+  "health-center-notice-i": { estimatedMinutes: 5, solution: solvedSlot(HEALTH_CENTER_NOTICE_ELEMENT_SLOT, "<i></i>") },
+  "health-center-notice-i-text": { estimatedMinutes: 4, solution: solved(`${HEALTH_CENTER_NOTICE_INTRO_BODY}    <i>important</i>\n`) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1210,6 +1223,7 @@ const PROJECT_24_ID = "barangay-document-request";
 const PROJECT_25_ID = "barangay-story-source";
 const PROJECT_26_ID = "barangay-abbreviation-guide";
 const PROJECT_27_ID = "barangay-reminder-quote";
+const PROJECT_28_ID = "barangay-health-center";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1382,6 +1396,11 @@ const s27 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_27_ID };
 };
 
+const s28 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_28_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1415,6 +1434,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_25_ID, title: "Barangay Story Source" },
     { id: PROJECT_26_ID, title: "Barangay Abbreviation Guide" },
     { id: PROJECT_27_ID, title: "Barangay Reminder Quote" },
+    { id: PROJECT_28_ID, title: "Barangay Health Center Notice" },
   ],
   kind: "web",
   requires: [],
@@ -4282,5 +4302,10 @@ export const htmlCourse: Course = {
     s27({ id: "reminder-quote", task: "Add a place for the short reminder.", inputMode: "tap-to-build", files: { "index.html": REMINDER_QUOTE_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: REMINDER_QUOTE_SLOT.slotLine, blocks: ["<q></q>", "<p></p>", "<quote></quote>", "<blockquote></blockquote>"], correctBlock: "<q></q>", conceptIds: ["q-element"], tests: [{ id: "reminder-quote-exists", kind: "exists", selector: "q", label: "The short reminder has a place" }], hints: [{ level: 1, text: "Add the element for a short quoted phrase." }, { level: 2, text: "Use q for the short reminder." }], xp: 50 }),
     s27({ id: "reminder-quote-text", task: "Write Bring your ID. in the quote.", inputMode: "guided", files: solved(REMINDER_QUOTE_BODY), activeFile: "index.html", highlightToken: "<q></q>", tests: [{ id: "reminder-quote-text-set", kind: "text-equals", selector: "q", value: "Bring your ID.", label: "The reminder words are shown" }], hints: [{ level: 1, text: "Write the short reminder inside the q tags." }, { level: 2, text: "Use Bring your ID. exactly." }], xp: 40 }),
     s27({ id: "reminder-quote-source", task: "Name Barangay Hall Notice as the reminder source.", inputMode: "guided", files: solved(REMINDER_QUOTE_TEXT_BODY), activeFile: "index.html", highlightToken: "</q>", tests: [{ id: "reminder-quote-source-set", kind: "text-equals", selector: "cite", value: "Barangay Hall Notice", label: "The reminder source has a title" }], hints: [{ level: 1, text: "Add a cited record title after the quote." }, { level: 2, text: "Use Barangay Hall Notice exactly." }], xp: 40 }),
+    s28({ id: "health-center-notice-title", task: "Start the barangay health center notice with a smaller heading.", inputMode: "tap-to-build", files: { "index.html": HEALTH_CENTER_NOTICE_TITLE_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: HEALTH_CENTER_NOTICE_TITLE_SLOT.slotLine, blocks: ["<h2></h2>", "<p></p>", "<h1></h1>", "<i></i>"], correctBlock: "<h2></h2>", tests: [{ id: "health-center-notice-title-exists", kind: "exists", selector: "h2", label: "The page has a heading" }], hints: [{ level: 1, text: "Add a level-two heading in the blank line." }, { level: 2, text: "Use h2 for this smaller heading." }], xp: 40 }),
+    s28({ id: "health-center-notice-heading", task: "Name the heading Important Notice.", inputMode: "guided", files: solved(HEALTH_CENTER_NOTICE_TITLE_BODY), activeFile: "index.html", highlightToken: "<h2></h2>", tests: [{ id: "health-center-notice-heading-text", kind: "text-equals", selector: "h2", value: "Important Notice", label: "The page has its name" }], hints: [{ level: 1, text: "Write the page name between the heading tags." }, { level: 2, text: "Use Important Notice exactly." }], xp: 40 }),
+    s28({ id: "health-center-notice-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(HEALTH_CENTER_NOTICE_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "health-center-notice-copy-text", kind: "text-equals", selector: "p", value: "Learn about important health tips for your barangay.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write Learn about important health tips for your barangay." }], xp: 40 }),
+    s28({ id: "health-center-notice-i", task: "Add a place for the italic.", inputMode: "tap-to-build", files: { "index.html": HEALTH_CENTER_NOTICE_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: HEALTH_CENTER_NOTICE_ELEMENT_SLOT.slotLine, blocks: ["<i></i>","<p></p>","<span></span>","<em></em>"], correctBlock: "<i></i>", conceptIds: ["i-element"], tests: [{ id: "health-center-notice-i-exists", kind: "exists", selector: "i", label: "The italic has a place" }], hints: [{ level: 1, text: "Add the element that marks a italic." }, { level: 2, text: "Use i for the italic." }], xp: 50 }),
+    s28({ id: "health-center-notice-i-text", task: "Write important inside it.", inputMode: "guided", files: solved(HEALTH_CENTER_NOTICE_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<i></i>", tests: [{ id: "health-center-notice-i-text-set", kind: "text-equals", selector: "i", value: "important", label: "The italic shows its words" }], hints: [{ level: 1, text: "Write the words inside the i tags." }, { level: 2, text: "Use important exactly." }], xp: 40 }),
   ],
 };

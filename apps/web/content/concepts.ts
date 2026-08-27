@@ -2286,6 +2286,14 @@ export const concepts: Record<string, Concept> = {
     visual: { kind: "diagram", diagram: { alt: "A dark night notice goes through the color-scheme property and tells the browser to use dark-colour controls nearby.", columns: 3, nodes: [{ id: "notice", label: "dark notice", note: "dark surface", tone: "ghost" }, { id: "scheme", label: "color-scheme", note: "name dark", tone: "accent" }, { id: "browser", label: "dark controls", note: "matching browser UI", tone: "box" }], arrows: [{ from: "notice", to: "scheme" }, { from: "scheme", to: "browser" }] } },
     proof: "You will tell the browser that a barangay notice uses dark colours.",
   },
+  "i-element": {
+    id: "i-element",
+    term: "i element",
+    definition: "Makes text italicized.",
+    analogy: "Like whispering something softly.",
+    visual: { kind: "diagram", diagram: { alt: "A notice with important health tips in italics.", columns: 3, nodes: [{ id: "words", label: "important", note: "plain words", tone: "ghost" }, { id: "tag", label: "i", note: "italic", tone: "accent" }, { id: "result", label: "Italic", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
+    proof: "You will make the words 'important' appear in italics.",
+  },
 };
 
 export function conceptById(id: string): Concept | undefined {
