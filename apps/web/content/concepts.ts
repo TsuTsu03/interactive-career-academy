@@ -2294,6 +2294,14 @@ export const concepts: Record<string, Concept> = {
     visual: { kind: "diagram", diagram: { alt: "A notice with important health tips in italics.", columns: 3, nodes: [{ id: "words", label: "important", note: "plain words", tone: "ghost" }, { id: "tag", label: "i", note: "italic", tone: "accent" }, { id: "result", label: "Italic", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
     proof: "You will make the words 'important' appear in italics.",
   },
+  "b-element": {
+    id: "b-element",
+    term: "bold element",
+    definition: "Make text bold for emphasis.",
+    analogy: "It's like when you shout something loudly in real life.",
+    visual: { kind: "diagram", diagram: { alt: "A picture of a jeepney with routes written in bold letters.", columns: 3, nodes: [{ id: "words", label: "Important words", note: "plain words", tone: "ghost" }, { id: "tag", label: "b", note: "bold", tone: "accent" }, { id: "result", label: "Bold", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
+    proof: "You will mark the important words on the jeepney route notice.",
+  },
 };
 
 export function conceptById(id: string): Concept | undefined {

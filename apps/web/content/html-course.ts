@@ -713,6 +713,14 @@ const HEALTH_CENTER_NOTICE_INTRO_BODY = `    <h2>Important Notice</h2>
 const HEALTH_CENTER_NOTICE_ELEMENT_SLOT = slotPage(`${HEALTH_CENTER_NOTICE_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
 const HEALTH_CENTER_NOTICE_ELEMENT_BODY = `${HEALTH_CENTER_NOTICE_INTRO_BODY}    <i></i>\n`;
 
+const JEEPNEY_ROUTE_TITLE_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const JEEPNEY_ROUTE_TITLE_BODY = `    <h2></h2>\n`;
+const JEEPNEY_ROUTE_HEADING_BODY = `    <h2>Jeepney Route Notice</h2>\n`;
+const JEEPNEY_ROUTE_INTRO_BODY = `    <h2>Jeepney Route Notice</h2>
+    <p>Learn how to use the <kbd>element</kbd> in a real-life jeepney route notice.</p>\n`;
+const JEEPNEY_ROUTE_ELEMENT_SLOT = slotPage(`${JEEPNEY_ROUTE_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
+const JEEPNEY_ROUTE_ELEMENT_BODY = `${JEEPNEY_ROUTE_INTRO_BODY}    <b></b>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1194,6 +1202,11 @@ const references = {
   "health-center-notice-copy": { estimatedMinutes: 4, solution: solved(HEALTH_CENTER_NOTICE_INTRO_BODY) },
   "health-center-notice-i": { estimatedMinutes: 5, solution: solvedSlot(HEALTH_CENTER_NOTICE_ELEMENT_SLOT, "<i></i>") },
   "health-center-notice-i-text": { estimatedMinutes: 4, solution: solved(`${HEALTH_CENTER_NOTICE_INTRO_BODY}    <i>important</i>\n`) },
+  "jeepney-route-title": { estimatedMinutes: 4, solution: solvedSlot(JEEPNEY_ROUTE_TITLE_SLOT, "<h2></h2>") },
+  "jeepney-route-heading": { estimatedMinutes: 4, solution: solved(JEEPNEY_ROUTE_HEADING_BODY) },
+  "jeepney-route-copy": { estimatedMinutes: 4, solution: solved(JEEPNEY_ROUTE_INTRO_BODY) },
+  "jeepney-route-b": { estimatedMinutes: 5, solution: solvedSlot(JEEPNEY_ROUTE_ELEMENT_SLOT, "<b></b>") },
+  "jeepney-route-b-text": { estimatedMinutes: 4, solution: solved(`${JEEPNEY_ROUTE_INTRO_BODY}    <b>Important words</b>\n`) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1224,6 +1237,7 @@ const PROJECT_25_ID = "barangay-story-source";
 const PROJECT_26_ID = "barangay-abbreviation-guide";
 const PROJECT_27_ID = "barangay-reminder-quote";
 const PROJECT_28_ID = "barangay-health-center";
+const PROJECT_29_ID = "barangay-jeepney-route";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1401,6 +1415,11 @@ const s28 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_28_ID };
 };
 
+const s29 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_29_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1435,6 +1454,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_26_ID, title: "Barangay Abbreviation Guide" },
     { id: PROJECT_27_ID, title: "Barangay Reminder Quote" },
     { id: PROJECT_28_ID, title: "Barangay Health Center Notice" },
+    { id: PROJECT_29_ID, title: "Jeepney Route Notice" },
   ],
   kind: "web",
   requires: [],
@@ -4307,5 +4327,10 @@ export const htmlCourse: Course = {
     s28({ id: "health-center-notice-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(HEALTH_CENTER_NOTICE_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "health-center-notice-copy-text", kind: "text-equals", selector: "p", value: "Learn about important health tips for your barangay.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write Learn about important health tips for your barangay." }], xp: 40 }),
     s28({ id: "health-center-notice-i", task: "Add a place for the italic.", inputMode: "tap-to-build", files: { "index.html": HEALTH_CENTER_NOTICE_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: HEALTH_CENTER_NOTICE_ELEMENT_SLOT.slotLine, blocks: ["<i></i>","<p></p>","<span></span>","<em></em>"], correctBlock: "<i></i>", conceptIds: ["i-element"], tests: [{ id: "health-center-notice-i-exists", kind: "exists", selector: "i", label: "The italic has a place" }], hints: [{ level: 1, text: "Add the element that marks a italic." }, { level: 2, text: "Use i for the italic." }], xp: 50 }),
     s28({ id: "health-center-notice-i-text", task: "Write important inside it.", inputMode: "guided", files: solved(HEALTH_CENTER_NOTICE_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<i></i>", tests: [{ id: "health-center-notice-i-text-set", kind: "text-equals", selector: "i", value: "important", label: "The italic shows its words" }], hints: [{ level: 1, text: "Write the words inside the i tags." }, { level: 2, text: "Use important exactly." }], xp: 40 }),
+    s29({ id: "jeepney-route-title", task: "Start the jeepney route notice with a smaller heading.", inputMode: "tap-to-build", files: { "index.html": JEEPNEY_ROUTE_TITLE_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: JEEPNEY_ROUTE_TITLE_SLOT.slotLine, blocks: ["<h2></h2>", "<p></p>", "<h1></h1>", "<b></b>"], correctBlock: "<h2></h2>", tests: [{ id: "jeepney-route-title-exists", kind: "exists", selector: "h2", label: "The page has a heading" }], hints: [{ level: 1, text: "Add a level-two heading in the blank line." }, { level: 2, text: "Use h2 for this smaller heading." }], xp: 40 }),
+    s29({ id: "jeepney-route-heading", task: "Name the heading Jeepney Route Notice.", inputMode: "guided", files: solved(JEEPNEY_ROUTE_TITLE_BODY), activeFile: "index.html", highlightToken: "<h2></h2>", tests: [{ id: "jeepney-route-heading-text", kind: "text-equals", selector: "h2", value: "Jeepney Route Notice", label: "The page has its name" }], hints: [{ level: 1, text: "Write the page name between the heading tags." }, { level: 2, text: "Use Jeepney Route Notice exactly." }], xp: 40 }),
+    s29({ id: "jeepney-route-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(JEEPNEY_ROUTE_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "jeepney-route-copy-text", kind: "text-equals", selector: "p", value: "Learn how to use the <kbd>element</kbd> in a real-life jeepney route notice.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write Learn how to use the <kbd>element</kbd> in a real-life jeepney route notice." }], xp: 40 }),
+    s29({ id: "jeepney-route-b", task: "Add a place for the bold.", inputMode: "tap-to-build", files: { "index.html": JEEPNEY_ROUTE_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: JEEPNEY_ROUTE_ELEMENT_SLOT.slotLine, blocks: ["<b></b>","<p></p>","<span></span>","<key></key>"], correctBlock: "<b></b>", conceptIds: ["b-element"], tests: [{ id: "jeepney-route-b-exists", kind: "exists", selector: "b", label: "The bold has a place" }], hints: [{ level: 1, text: "Add the element that marks a bold." }, { level: 2, text: "Use b for the bold." }], xp: 50 }),
+    s29({ id: "jeepney-route-b-text", task: "Write Important words inside it.", inputMode: "guided", files: solved(JEEPNEY_ROUTE_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<b></b>", tests: [{ id: "jeepney-route-b-text-set", kind: "text-equals", selector: "b", value: "Important words", label: "The bold shows its words" }], hints: [{ level: 1, text: "Write the words inside the b tags." }, { level: 2, text: "Use Important words exactly." }], xp: 40 }),
   ],
 };
