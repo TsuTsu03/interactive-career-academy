@@ -900,6 +900,12 @@ const LIST_NOTICE_B1 = `    <section></section>\n`;
 const LIST_NOTICE_B2 = `    <section>\n      <h2>Pharmacy Stock List</h2>\n    </section>\n`;
 const LIST_NOTICE_B3 = `    <section>\n      <h2>Pharmacy Stock List</h2>\n      <p>Update on inventory levels</p>\n    </section>\n`;
 
+/* composition: notice-card */
+const APPLICATION_NOTICE_ROOT_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const APPLICATION_NOTICE_B1 = `    <section></section>\n`;
+const APPLICATION_NOTICE_B2 = `    <section>\n      <h2>Notice</h2>\n    </section>\n`;
+const APPLICATION_NOTICE_B3 = `    <section>\n      <h2>Notice</h2>\n      <p>Complete your Barangay ID application by the deadline</p>\n    </section>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1499,6 +1505,9 @@ const references = {
   "list-notice-root": { estimatedMinutes: 4, solution: solvedSlot(LIST_NOTICE_ROOT_SLOT, "<section></section>") },
   "list-notice-h2-1": { estimatedMinutes: 4, solution: solved(LIST_NOTICE_B2) },
   "list-notice-p-2": { estimatedMinutes: 4, solution: solved(LIST_NOTICE_B3) },
+  "application-notice-root": { estimatedMinutes: 4, solution: solvedSlot(APPLICATION_NOTICE_ROOT_SLOT, "<section></section>") },
+  "application-notice-h2-1": { estimatedMinutes: 4, solution: solved(APPLICATION_NOTICE_B2) },
+  "application-notice-p-2": { estimatedMinutes: 4, solution: solved(APPLICATION_NOTICE_B3) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1552,6 +1561,7 @@ const PROJECT_48_ID = "fiesta-programme-described";
 const PROJECT_49_ID = "rice-retailer-price";
 const PROJECT_50_ID = "laundry-shop-receipt";
 const PROJECT_51_ID = "pharmacy-stock-list-notice";
+const PROJECT_52_ID = "barangay-id-application-notice";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1844,6 +1854,11 @@ const s51 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_51_ID };
 };
 
+const s52 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_52_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1901,6 +1916,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_49_ID, title: "Rice Retailer Price" },
     { id: PROJECT_50_ID, title: "Laundry Shop Receipt" },
     { id: PROJECT_51_ID, title: "Pharmacy Stock List Notice" },
+    { id: PROJECT_52_ID, title: "Barangay ID Application Notice" },
   ],
   kind: "web",
   requires: [],
@@ -4892,5 +4908,8 @@ export const htmlCourse: Course = {
     s51({ id: "list-notice-root", task: "Start the notice card. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": LIST_NOTICE_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: LIST_NOTICE_ROOT_SLOT.slotLine, blocks: ["<section></section>","<div></div>","<p></p>","<span></span>"], correctBlock: "<section></section>", tests: [{ id: "list-notice-root-exists", kind: "exists", selector: "section", label: "The notice card has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this notice card." }, { level: 2, text: "Use section tags for the outer box." }], xp: 40 }),
     s51({ id: "list-notice-h2-1", task: "Add the heading inside the section, and write Pharmacy Stock List in it.", inputMode: "guided", files: solved(LIST_NOTICE_B1), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "list-notice-h2-1-text", kind: "text-equals", selector: "section h2", value: "Pharmacy Stock List", label: "The heading shows the card heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Pharmacy Stock List between them." }], xp: 45 }),
     s51({ id: "list-notice-p-2", task: "Add the paragraph inside the section, and write Update on inventory levels in it.", inputMode: "guided", files: solved(LIST_NOTICE_B2), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "list-notice-p-2-text", kind: "text-equals", selector: "section p", value: "Update on inventory levels", label: "The paragraph shows one sentence of detail" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use p tags, and write Update on inventory levels between them." }], xp: 45 }),
+    s52({ id: "application-notice-root", task: "Start the notice card. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": APPLICATION_NOTICE_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: APPLICATION_NOTICE_ROOT_SLOT.slotLine, blocks: ["<section></section>","<div></div>","<p></p>","<span></span>"], correctBlock: "<section></section>", tests: [{ id: "application-notice-root-exists", kind: "exists", selector: "section", label: "The notice card has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this notice card." }, { level: 2, text: "Use section tags for the outer box." }], xp: 40 }),
+    s52({ id: "application-notice-h2-1", task: "Add the heading inside the section, and write Notice in it.", inputMode: "guided", files: solved(APPLICATION_NOTICE_B1), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "application-notice-h2-1-text", kind: "text-equals", selector: "section h2", value: "Notice", label: "The heading shows the card heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Notice between them." }], xp: 45 }),
+    s52({ id: "application-notice-p-2", task: "Add the paragraph inside the section, and write Complete your Barangay ID application by the deadline in it.", inputMode: "guided", files: solved(APPLICATION_NOTICE_B2), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "application-notice-p-2-text", kind: "text-equals", selector: "section p", value: "Complete your Barangay ID application by the deadline", label: "The paragraph shows one sentence of detail" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use p tags, and write Complete your Barangay ID application by the deadline between them." }], xp: 45 }),
   ],
 };
