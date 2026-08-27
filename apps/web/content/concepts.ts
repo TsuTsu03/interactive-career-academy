@@ -2366,6 +2366,14 @@ export const concepts: Record<string, Concept> = {
     visual: { kind: "diagram", diagram: { alt: "An old health center sign with a red pen underlining a misspelled 'flu'.", columns: 3, nodes: [{ id: "words", label: "misspelled word or important note", note: "plain words", tone: "ghost" }, { id: "tag", label: "u", note: "marked word", tone: "accent" }, { id: "result", label: "Marked word", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
     proof: "You will mark the misspelled word 'flu' on this notice.",
   },
+  "sup-element": {
+    id: "sup-element",
+    term: "sup element",
+    definition: "The sup element raises text above the line, used in things like 1st and footnote marks.",
+    analogy: "The footnotes in your storybook that explain things.",
+    visual: { kind: "diagram", diagram: { alt: "A water meter with a reading marked as 1st.", columns: 3, nodes: [{ id: "words", label: "1st", note: "plain words", tone: "ghost" }, { id: "tag", label: "sup", note: "superscript", tone: "accent" }, { id: "result", label: "Superscript", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
+    proof: "You will mark the words 1st on the water bill.",
+  },
 };
 
 export function conceptById(id: string): Concept | undefined {

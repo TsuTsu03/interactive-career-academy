@@ -1460,3 +1460,13 @@ added to catch mechanically instead of by review.
 **How:** `tools/local-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. The model supplied the scene, the element, and the wording as JSON; the step structure, tests, hints, and concept entry were generated from a template, so the shape cannot drift.
 
 **Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 253 steps.
+
+---
+
+## 2026-08-27 - HTML course, project 38 (local model)
+
+**What got made:** Jeepney Route Board, five steps teaching the `sup` element, plus the `sup-element` concept with all four representations.
+
+**How:** `tools/local-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. The model supplied the scene, the element, and the wording as JSON; the step structure, tests, hints, and concept entry were generated from a template, so the shape cannot drift.
+
+**Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 258 steps.
