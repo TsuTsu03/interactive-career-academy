@@ -108,7 +108,9 @@ function readCourseState() {
     for (const w of m[1].toLowerCase().split(/[^a-z0-9]+/)) if (w) conceptWords.add(w);
   }
 
-  return { src, conceptSrc, nextNum: lastNum + 1, taughtTags, conceptIds, conceptWords };
+  const usedProjectIds = new Set(projectIds.map((m) => m[2]));
+
+  return { src, conceptSrc, nextNum: lastNum + 1, taughtTags, conceptIds, conceptWords, usedProjectIds };
 }
 
 /* ------------------------------------------------------------------ */
@@ -162,7 +164,22 @@ const TEACHABLE = [
   { tag: "bdi", name: "isolated name", what: "The bdi element keeps a name written in another writing direction from disturbing the text around it." },
 ];
 
-function buildPrompt({ taughtTags, conceptWords }) {
+/**
+ * Settings to rotate through. Left to choose freely, the model proposed
+ * "barangay-water-bill" and "sari-sari-store" on nearly every pass and burned
+ * its retries colliding with ids it had already used.
+ */
+const SETTINGS = [
+  "a sari-sari store price list", "a barangay health centre notice",
+  "a jeepney route board", "a palengke fish stall sign", "a turo-turo menu",
+  "a barangay basketball league schedule", "a school supply list",
+  "a tricycle fare table", "a bakery order slip", "a water refill station notice",
+  "a barangay clean-up announcement", "a computer shop rate card",
+  "a fiesta programme", "a rice retailer price board", "a laundry shop receipt",
+  "a pharmacy stock list", "a barangay ID application notice",
+];
+
+function buildPrompt({ taughtTags, conceptWords, usedProjectIds }) {
   const open = TEACHABLE.filter((e) => !taughtTags.has(e.tag) && !conceptWords.has(e.tag));
   if (open.length === 0) {
     throw new Error("every teachable element in the list is already covered; extend TEACHABLE");
@@ -172,6 +189,11 @@ function buildPrompt({ taughtTags, conceptWords }) {
   // order already made, and a model given twelve options spends its attention
   // on picking instead of on writing.
   const target = open[0];
+
+  // Rotate the setting by how many projects exist, so consecutive passes are
+  // pushed apart rather than left to the model's own narrow preferences.
+  const setting = SETTINGS[usedProjectIds.size % SETTINGS.length];
+  const takenNote = [...usedProjectIds].slice(-14).join(", ");
 
   const system = [
     "You write one small HTML lesson for absolute beginners in the Philippines.",
@@ -185,9 +207,9 @@ What it means: ${target.what}
 Do not change what the element means. That sentence is the truth you are
 teaching. Your job is to put it in a Filipino setting and explain it warmly.
 
-Set it in everyday Filipino life: a barangay notice, a sari-sari store, a
-palengke stall, a jeepney route, a turo-turo menu, a health centre, a school.
-Pick a setting where ${target.tag} is genuinely useful.
+Set it here: ${setting}. Show ${target.tag} being genuinely useful there.
+
+These names are already used. Do not reuse any of them: ${takenNote}
 
 Reply with exactly this JSON shape:
 
@@ -274,6 +296,14 @@ const VOID_ELEMENTS = new Set(["area", "base", "br", "col", "embed", "hr", "img"
   "link", "meta", "param", "source", "track", "wbr"]);
 
 /**
+ * Tagalog words that must not appear in learner copy. Deliberately excludes
+ * the Filipino nouns the curriculum is built on - barangay, sari-sari,
+ * palengke, jeepney, turo-turo, adobo, sinigang - which are the subject matter
+ * decision 25 asks for, not a second language.
+ */
+const TAGALOG = /\b(?:ang|mga|nang|iyong|ito|iyan|iyon|dito|diyan|doon|kayo|kami|tayo|natin|namin|ninyo|nila|niya|ako|ikaw|siya|hindi|wala|meron|mayroon|marami|konti|importante|mahalaga|paalala|babala|bayad|bayaran|presyo|halaga|libre|bagong|luma|maganda|mabuti|masama|malaki|maliit|mabilis|mabagal|salamat|paki|pakiusap|kailangan|puwede|pwede|dapat|gusto|ayaw|alam|kilala|tanong|sagot|tulong|trabaho|bahay|paaralan|simbahan|palengke_|umaga|hapon|gabi|araw|bukas|kahapon|ngayon|linggo|buwan|taon)\b/i;
+
+/**
  * Rejects a spec before anything is written. Every check here is one the
  * authoring harness or the type checker would catch later, moved earlier so a
  * bad reply costs a retry rather than a reverted pass.
@@ -332,8 +362,20 @@ function validateSpec(raw, state, target) {
   // Learner-facing copy is prose, not markup. A raw tag here renders as
   // literal text in the concept card, and the model reaches for one whenever
   // it is asked to talk about an element.
-  for (const k of ["conceptAnalogy", "conceptProof", "intro", "elementText"]) {
+  const learnerCopy = ["conceptAnalogy", "conceptProof", "intro", "elementText",
+    "heading", "projectTitle"];
+  for (const k of learnerCopy) {
     if (/[<>]/.test(String(spec[k]))) throw new Error(`"${k}" contains a raw angle bracket`);
+  }
+
+  // PLAN.md decision 10: English only. The Filipino setting is the subject
+  // matter, not the language - place names and glossed nouns like barangay,
+  // palengke, and turo-turo are the point, but Tagalog sentences are not.
+  // Asked to write about Filipino life, the model slips into Tagalog on its
+  // own: one early draft told the learner to mark the word "importante".
+  for (const k of learnerCopy) {
+    const hit = String(spec[k]).match(TAGALOG);
+    if (hit) throw new Error(`"${k}" contains Tagalog ("${hit[0]}"); write in English`);
   }
 
   // An analogy that restates the definition teaches nothing twice. Compare on
