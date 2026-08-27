@@ -36,6 +36,9 @@ const BARANGAY_HELP_HTML = "<h1 id=\"notice-title\">Find Your Item</h1>\n<p id=\
 /* dom-topic: change-text */
 const SARI_SARI_HTML = "<h1 id=\"notice-title\">Welcome!</h1>\n<p id=\"notice-body\">How can I assist you today?</p>";
 
+/* dom-topic: click-handler */
+const PALENGKE_STALL_HTML = "<button id=\"action\">Click Me!</button>\n<p id=\"status\">Welcome to Palengke!</p>";
+
 /** Authored proof for every step. Missing entries stop the course from loading. */
 const references = {
   "barangay-help-1": { estimatedMinutes: 4, solution: page(BARANGAY_HELP_HTML, "const title = document.querySelector(\"#notice-title\");\n") },
@@ -48,6 +51,11 @@ const references = {
   "sari-sari-3": { estimatedMinutes: 4, solution: page(SARI_SARI_HTML, "const title = document.querySelector(\"#notice-title\");\ntitle.textContent = \"Today's Notice\";\nconst body = document.querySelector(\"#notice-body\");\n") },
   "sari-sari-4": { estimatedMinutes: 4, solution: page(SARI_SARI_HTML, "const title = document.querySelector(\"#notice-title\");\ntitle.textContent = \"Today's Notice\";\nconst body = document.querySelector(\"#notice-body\");\nbody.textContent = \"How can I assist you today? Thank you.\";\n") },
   "sari-sari-5": { estimatedMinutes: 4, solution: page(SARI_SARI_HTML, "const title = document.querySelector(\"#notice-title\");\ntitle.textContent = \"Today's Notice\";\nconst body = document.querySelector(\"#notice-body\");\nbody.textContent = \"How can I assist you today? Thank you.\";\ntitle.setAttribute(\"lang\", \"en\");\n") },
+  "palengke-stall-1": { estimatedMinutes: 4, solution: page(PALENGKE_STALL_HTML, "const button = document.querySelector(\"#action\");\n") },
+  "palengke-stall-2": { estimatedMinutes: 4, solution: page(PALENGKE_STALL_HTML, "const button = document.querySelector(\"#action\");\nconst status = document.querySelector(\"#status\");\n") },
+  "palengke-stall-3": { estimatedMinutes: 4, solution: page(PALENGKE_STALL_HTML, "const button = document.querySelector(\"#action\");\nconst status = document.querySelector(\"#status\");\nbutton.addEventListener(\"click\", function () {\n  status.textContent = \"Done\";\n});\n") },
+  "palengke-stall-4": { estimatedMinutes: 4, solution: page(PALENGKE_STALL_HTML, "const button = document.querySelector(\"#action\");\nconst status = document.querySelector(\"#status\");\nbutton.addEventListener(\"click\", function () {\n  status.textContent = \"Done\";\n});\nbutton.setAttribute(\"type\", \"button\");\n") },
+  "palengke-stall-5": { estimatedMinutes: 4, solution: page(PALENGKE_STALL_HTML, "const button = document.querySelector(\"#action\");\nconst status = document.querySelector(\"#status\");\nbutton.addEventListener(\"click\", function () {\n  status.textContent = \"Done\";\n});\nbutton.setAttribute(\"type\", \"button\");\nstatus.setAttribute(\"role\", \"status\");\n") },
 } satisfies Record<string, StepReference>;
 const PROJECT_1_ID = "barangay-help";
 const s1 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for DOM step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_1_ID }; };
@@ -55,13 +63,16 @@ const s1 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const r
 const PROJECT_2_ID = "sari-sari";
 const s2 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for DOM step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_2_ID }; };
 
+const PROJECT_3_ID = "palengke-stall";
+const s3 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for DOM step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_3_ID }; };
+
 
 export const domCourse: Course = {
   id: "dom-basics",
   order: 5,
   title: "Learn JavaScript on a Page by Building Barangay Screens",
   project: "Barangay Notice",
-  projects: [ { id: PROJECT_1_ID, title: "Barangay Help" }, { id: PROJECT_2_ID, title: "Sari Sari" } ],
+  projects: [ { id: PROJECT_1_ID, title: "Barangay Help" }, { id: PROJECT_2_ID, title: "Sari Sari" }, { id: PROJECT_3_ID, title: "Palengke Stall" } ],
   kind: "web",
   requires: ["js-basics"],
   summary:
@@ -77,6 +88,11 @@ export const domCourse: Course = {
     s2({ id: "sari-sari-3", task: "Find the message.", inputMode: "guided", files: page(SARI_SARI_HTML, "const title = document.querySelector(\"#notice-title\");\ntitle.textContent = \"Today's Notice\";\nconst body = ;\n"), activeFile: "script.js", highlightToken: "const body = ;", tests: [{ id: "sari-sari-3-check", label: "#notice-body reads How can I assist you today?", kind: "page-text-equals", selector: "#notice-body", value: "How can I assist you today?" }], hints: [{ level: 1, text: "Ask the document for the element with that id." }, { level: 2, text: "Write document.querySelector(\"#notice-body\") after the equals sign." }], xp: 50 }),
     s2({ id: "sari-sari-4", task: "Add a thank you to the end of the message.", inputMode: "guided", files: page(SARI_SARI_HTML, "const title = document.querySelector(\"#notice-title\");\ntitle.textContent = \"Today's Notice\";\nconst body = document.querySelector(\"#notice-body\");\nbody.textContent = ;\n"), activeFile: "script.js", highlightToken: "body.textContent = ;", tests: [{ id: "sari-sari-4-check", label: "#notice-body reads How can I assist you today? Thank you.", kind: "page-text-equals", selector: "#notice-body", value: "How can I assist you today? Thank you." }], hints: [{ level: 1, text: "Put the whole new sentence in quotes." }, { level: 2, text: "Write \"How can I assist you today? Thank you.\" after the equals sign." }], xp: 50 }),
     s2({ id: "sari-sari-5", task: "Mark the heading as English so screen readers say it correctly.", inputMode: "guided", files: page(SARI_SARI_HTML, "const title = document.querySelector(\"#notice-title\");\ntitle.textContent = \"Today's Notice\";\nconst body = document.querySelector(\"#notice-body\");\nbody.textContent = \"How can I assist you today? Thank you.\";\ntitle.setAttribute(\"lang\", );\n"), activeFile: "script.js", highlightToken: "title.setAttribute(\"lang\", );", tests: [{ id: "sari-sari-5-check", label: "#notice-title has lang set to en", kind: "page-attr-equals", selector: "#notice-title", attr: "lang", value: "en" }], hints: [{ level: 1, text: "The language code goes in quotes as the second value." }, { level: 2, text: "Write \"en\" as the second value." }], xp: 50 }),
+    s3({ id: "palengke-stall-1", task: "Find the button.", inputMode: "guided", files: page(PALENGKE_STALL_HTML, "const button = ;\n"), activeFile: "script.js", highlightToken: "const button = ;", tests: [{ id: "palengke-stall-1-check", label: "#action reads Click Me!", kind: "page-text-equals", selector: "#action", value: "Click Me!" }], hints: [{ level: 1, text: "Ask the document for the element with that id." }, { level: 2, text: "Write document.querySelector(\"#action\") after the equals sign." }], xp: 50 }),
+    s3({ id: "palengke-stall-2", task: "Find the line the page shows.", inputMode: "guided", files: page(PALENGKE_STALL_HTML, "const button = document.querySelector(\"#action\");\nconst status = ;\n"), activeFile: "script.js", highlightToken: "const status = ;", tests: [{ id: "palengke-stall-2-check", label: "#status reads Welcome to Palengke!", kind: "page-text-equals", selector: "#status", value: "Welcome to Palengke!" }], hints: [{ level: 1, text: "Ask the document for the element with that id." }, { level: 2, text: "Write document.querySelector(\"#status\") after the equals sign." }], xp: 50 }),
+    s3({ id: "palengke-stall-3", task: "Make the line say Done when the button is pressed.", inputMode: "guided", files: page(PALENGKE_STALL_HTML, "const button = document.querySelector(\"#action\");\nconst status = document.querySelector(\"#status\");\nbutton.addEventListener(, function () {\n  status.textContent = \"Done\";\n});\n"), activeFile: "script.js", highlightToken: "addEventListener(,", tests: [{ id: "palengke-stall-3-check", label: "#status reads Done after the click", kind: "page-click-text-equals", clickSelector: "#action", selector: "#status", value: "Done" }], hints: [{ level: 1, text: "Name the event you are listening for, in quotes." }, { level: 2, text: "Write \"click\" as the first value." }], xp: 50 }),
+    s3({ id: "palengke-stall-4", task: "Say plainly that this button does not submit a form.", inputMode: "guided", files: page(PALENGKE_STALL_HTML, "const button = document.querySelector(\"#action\");\nconst status = document.querySelector(\"#status\");\nbutton.addEventListener(\"click\", function () {\n  status.textContent = \"Done\";\n});\nbutton.setAttribute(\"type\", );\n"), activeFile: "script.js", highlightToken: "button.setAttribute(\"type\", );", tests: [{ id: "palengke-stall-4-check", label: "#action has type set to button", kind: "page-attr-equals", selector: "#action", attr: "type", value: "button" }], hints: [{ level: 1, text: "The type goes in quotes as the second value." }, { level: 2, text: "Write \"button\" as the second value." }], xp: 50 }),
+    s3({ id: "palengke-stall-5", task: "Let a screen reader announce the line when it changes.", inputMode: "guided", files: page(PALENGKE_STALL_HTML, "const button = document.querySelector(\"#action\");\nconst status = document.querySelector(\"#status\");\nbutton.addEventListener(\"click\", function () {\n  status.textContent = \"Done\";\n});\nbutton.setAttribute(\"type\", \"button\");\nstatus.setAttribute(\"role\", );\n"), activeFile: "script.js", highlightToken: "status.setAttribute(\"role\", );", tests: [{ id: "palengke-stall-5-check", label: "#status has role set to status", kind: "page-attr-equals", selector: "#status", attr: "role", value: "status" }], hints: [{ level: 1, text: "The role name goes in quotes as the second value." }, { level: 2, text: "Write \"status\" as the second value." }], xp: 50 }),
   ],
 };
 
