@@ -3166,3 +3166,13 @@ added to catch mechanically instead of by review.
 **How:** `tools/dom-author.mjs` with `qwen2.5-coder-7b-instruct` served locally, asserting through the `page-*` family so the script actually runs before the check. Selectors, expressions, and expected results all come from `tools/dom-topics.mjs`. The model supplied only the words on the screen.
 
 **Verification performed:** TypeScript and ESLint both clean. Course is at 95 steps.
+
+---
+
+## 2026-08-27 - JavaScript on a Page, project 20 (local model)
+
+**What got made:** Sari Sari Store, five steps teaching changing how something looks on a click.
+
+**How:** `tools/dom-author.mjs` with `qwen2.5-coder-7b-instruct` served locally, asserting through the `page-*` family so the script actually runs before the check. Selectors, expressions, and expected results all come from `tools/dom-topics.mjs`. The model supplied only the words on the screen.
+
+**Verification performed:** TypeScript and ESLint both clean. Course is at 100 steps.
