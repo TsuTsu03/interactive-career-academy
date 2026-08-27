@@ -172,6 +172,13 @@ const TURO_MENU_HTML = `<article class="info-card">
 </article>`;
 const solvedTuroMenu = (styles: string): Record<string, string> => ({ "index.html": TURO_MENU_HTML, "styles.css": css(styles) });
 
+/* css-topic: alignment */
+const BASKETBALL_LEAGUE_HTML = `<aside class="notice-banner">
+  <h2>Barangay Basketball League</h2>
+  <p>Schedule Centered</p>
+</aside>`;
+const solvedBasketballLeague = (styles: string): Record<string, string> => ({ "index.html": BASKETBALL_LEAGUE_HTML, "styles.css": css(styles) });
+
 /** Authored proof for every step. Missing entries stop the course from loading. */
 const references = {
   "first-rule": {
@@ -377,6 +384,11 @@ const references = {
   "turo-menu-box-shadow": { estimatedMinutes: 4, solution: solvedTuroMenu(".info-card {\n  background-color: #ffffff;\n  border-radius: 10px;\n  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);\n}") },
   "turo-menu-padding": { estimatedMinutes: 4, solution: solvedTuroMenu(".info-card {\n  background-color: #ffffff;\n  border-radius: 10px;\n  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);\n  padding: 20px;\n}") },
   "turo-menu-border": { estimatedMinutes: 4, solution: solvedTuroMenu(".info-card {\n  background-color: #ffffff;\n  border-radius: 10px;\n  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);\n  padding: 20px;\n  border: 1px solid #e2e8f0;\n}") },
+  "basketball-league-text-align": { estimatedMinutes: 4, solution: solvedBasketballLeague(".notice-banner {\n  text-align: center;\n}") },
+  "basketball-league-margin-left": { estimatedMinutes: 4, solution: solvedBasketballLeague(".notice-banner {\n  text-align: center;\n  margin-left: auto;\n}") },
+  "basketball-league-margin-right": { estimatedMinutes: 4, solution: solvedBasketballLeague(".notice-banner {\n  text-align: center;\n  margin-left: auto;\n  margin-right: auto;\n}") },
+  "basketball-league-max-width": { estimatedMinutes: 4, solution: solvedBasketballLeague(".notice-banner {\n  text-align: center;\n  margin-left: auto;\n  margin-right: auto;\n  max-width: 360px;\n}") },
+  "basketball-league-padding": { estimatedMinutes: 4, solution: solvedBasketballLeague(".notice-banner {\n  text-align: center;\n  margin-left: auto;\n  margin-right: auto;\n  max-width: 360px;\n  padding: 16px;\n}") },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "jeepney-route-card";
@@ -405,6 +417,7 @@ const PROJECT_23_ID = "barangay-health-centre";
 const PROJECT_24_ID = "jeepney-route-board";
 const PROJECT_25_ID = "palengke-fish-stall";
 const PROJECT_26_ID = "turo-turo-menu";
+const PROJECT_27_ID = "barangay-basketball-league";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -445,12 +458,14 @@ const s25 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const 
 
 const s26 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_26_ID }; };
 
+const s27 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_27_ID }; };
+
 export const cssCourse: Course = {
   id: "css-basics",
   order: 2,
   title: "Learn CSS by Building a Jeepney Route Card",
   project: "Jeepney Route Card",
-  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }, { id: PROJECT_23_ID, title: "Barangay Health Centre" }, { id: PROJECT_24_ID, title: "Jeepney Route Board" }, { id: PROJECT_25_ID, title: "Palengke Fish Stall" }, { id: PROJECT_26_ID, title: "Turo Turo Menu" }],
+  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }, { id: PROJECT_23_ID, title: "Barangay Health Centre" }, { id: PROJECT_24_ID, title: "Jeepney Route Board" }, { id: PROJECT_25_ID, title: "Palengke Fish Stall" }, { id: PROJECT_26_ID, title: "Turo Turo Menu" }, { id: PROJECT_27_ID, title: "Barangay Basketball League" }],
   kind: "web",
   requires: ["html-basics"],
   summary: "Now make it look good. Colours, spacing, fonts, and layout.",
@@ -951,5 +966,10 @@ export const cssCourse: Course = {
     s26({ id: "turo-menu-box-shadow", task: "Lift the card slightly off the page.", inputMode: "guided", files: solvedTuroMenu(".info-card {\n  background-color: #ffffff;\n  border-radius: 10px;\n  box-shadow: ;\n}"), activeFile: "styles.css", highlightToken: "box-shadow: ;", tests: [{ id: "turo-menu-box-shadow-set", kind: "source-matches", file: "styles.css", pattern: "box-shadow\s*:\s*0\s+1px\s+3px", flags: "i", because: "The shadow needs an offset, a blur, and a colour.", label: "The card carries a soft shadow" }], hints: [{ level: 1, text: "A shadow needs a sideways offset, a downward offset, a blur, and a colour." }, { level: 2, text: "Write 0 1px 3px rgba(15, 23, 42, 0.2) after the colon." }], xp: 55 }),
     s26({ id: "turo-menu-padding", task: "Give the lifted card room inside.", inputMode: "guided", files: solvedTuroMenu(".info-card {\n  background-color: #ffffff;\n  border-radius: 10px;\n  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);\n  padding: ;\n}"), activeFile: "styles.css", highlightToken: "padding: ;", tests: [{ id: "turo-menu-padding-set", kind: "style", selector: ".info-card", prop: "padding-top", equals: "20px", readable: "20 pixels", label: "The card has room inside of 20 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the inside room." }, { level: 2, text: "Write 20px after the colon." }], xp: 45 }),
     s26({ id: "turo-menu-border", task: "Add a faint edge so the card reads on a white page.", inputMode: "guided", files: solvedTuroMenu(".info-card {\n  background-color: #ffffff;\n  border-radius: 10px;\n  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);\n  padding: 20px;\n  border: ;\n}"), activeFile: "styles.css", highlightToken: "border: ;", tests: [{ id: "turo-menu-border-set", kind: "style", selector: ".info-card", prop: "border-top-width", equals: "1px", readable: "a thin grey edge", label: "The card has an edge of a thin grey edge" }], hints: [{ level: 1, text: "A border needs a width, a style, and a colour." }, { level: 2, text: "Write 1px solid #e2e8f0 after the colon." }], xp: 45 }),
+    s27({ id: "basketball-league-text-align", task: "Centre the words in the notice.", inputMode: "guided", files: solvedBasketballLeague(".notice-banner {\n  text-align: ;\n}"), activeFile: "styles.css", highlightToken: "text-align: ;", tests: [{ id: "basketball-league-text-align-set", kind: "style", selector: ".notice-banner", prop: "text-align", equals: "center", readable: "centred", label: "The notice aligns its words centred" }], hints: [{ level: 1, text: "Use the alignment value that puts text in the middle." }, { level: 2, text: "Write center after the colon." }], xp: 45 }),
+    s27({ id: "basketball-league-margin-left", task: "Let the browser share the space on the left.", inputMode: "guided", files: solvedBasketballLeague(".notice-banner {\n  text-align: center;\n  margin-left: ;\n}"), activeFile: "styles.css", highlightToken: "margin-left: ;", tests: [{ id: "basketball-league-margin-left-set", kind: "source-matches", file: "styles.css", pattern: "margin-left\s*:\s*auto", flags: "i", because: "An automatic left margin is half of centring a block.", label: "The notice has its left margin shared automatically" }], hints: [{ level: 1, text: "Use the value that lets the browser decide." }, { level: 2, text: "Write auto after the colon." }], xp: 55 }),
+    s27({ id: "basketball-league-margin-right", task: "Do the same on the right so the notice sits in the middle.", inputMode: "guided", files: solvedBasketballLeague(".notice-banner {\n  text-align: center;\n  margin-left: auto;\n  margin-right: ;\n}"), activeFile: "styles.css", highlightToken: "margin-right: ;", tests: [{ id: "basketball-league-margin-right-set", kind: "source-matches", file: "styles.css", pattern: "margin-right\s*:\s*auto", flags: "i", because: "With both margins automatic, the block sits in the middle.", label: "The notice has its right margin shared automatically" }], hints: [{ level: 1, text: "Use the same value as the left side." }, { level: 2, text: "Write auto after the colon." }], xp: 55 }),
+    s27({ id: "basketball-league-max-width", task: "Give the notice a width to be centred within.", inputMode: "guided", files: solvedBasketballLeague(".notice-banner {\n  text-align: center;\n  margin-left: auto;\n  margin-right: auto;\n  max-width: ;\n}"), activeFile: "styles.css", highlightToken: "max-width: ;", tests: [{ id: "basketball-league-max-width-set", kind: "style", selector: ".notice-banner", prop: "max-width", equals: "360px", readable: "360 pixels", label: "The notice stops growing past 360 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the widest it may get." }, { level: 2, text: "Write 360px after the colon." }], xp: 45 }),
+    s27({ id: "basketball-league-padding", task: "Give the centred notice room inside.", inputMode: "guided", files: solvedBasketballLeague(".notice-banner {\n  text-align: center;\n  margin-left: auto;\n  margin-right: auto;\n  max-width: 360px;\n  padding: ;\n}"), activeFile: "styles.css", highlightToken: "padding: ;", tests: [{ id: "basketball-league-padding-set", kind: "style", selector: ".notice-banner", prop: "padding-top", equals: "16px", readable: "16 pixels", label: "The notice has room inside of 16 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the inside room." }, { level: 2, text: "Write 16px after the colon." }], xp: 45 }),
   ],
 };
