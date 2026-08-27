@@ -2976,3 +2976,13 @@ added to catch mechanically instead of by review.
 **Review corrections:** Reconciled the obsolete dual-copy and one-project rules with canonical `PLAN.md`, replaced visible React concept diagrams with live demos where the browser can show the idea, narrowed the dependency-array claim to what the step proves, added a dynamic accessible queue-button name with an interaction assertion, and added a watchdog that remounts an unresponsive React preview.
 
 **JSX gate measurement:** Babel standalone 8.0.4 measured 567,084 bytes gzip and was rejected. Sucrase 3.35.1 raises the combined React runtime from 60,735 to 120,992 bytes gzip, a 60,257-byte increase. No dependency was added because this needs an explicit owner-approved exception to the repository's no-runtime-cost rule.
+
+---
+
+## 2026-08-27 - JavaScript on a Page, project 1 (local model)
+
+**What got made:** Barangay Help, five steps teaching finding an element on the page.
+
+**How:** `tools/dom-author.mjs` with `qwen2.5-coder-7b-instruct` served locally, asserting through the `page-*` family so the script actually runs before the check. Selectors, expressions, and expected results all come from `tools/dom-topics.mjs`. The model supplied only the words on the screen.
+
+**Verification performed:** TypeScript and ESLint both clean. Course is at 5 steps.
