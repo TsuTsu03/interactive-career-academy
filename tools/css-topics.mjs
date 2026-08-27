@@ -204,6 +204,86 @@ export const CSS_TOPICS = [
     ],
   },
   {
+    id: "backgrounds", noun: "banner", fixture: "banner", label: "a tinted banner",
+    steps: [
+      { prop: "background-color", decl: "#ecfdf5", computed: "rgb(236, 253, 245)", readable: "pale green", task: "Tint the banner pale green.", hint1: "Use the pale green code named in the task.", hint2: "Write #ecfdf5 after the colon." },
+      { prop: "background-image", decl: "linear-gradient(#ecfdf5, #d1fae5)", computed: null, check: "source", pattern: "background-image\\s*:\\s*linear-gradient", because: "A gradient names the colours it fades between.", readable: "a colour that fades down", task: "Fade the banner from its top colour into a deeper one.", hint1: "Name the two colours the fade runs between.", hint2: "Write linear-gradient(#ecfdf5, #d1fae5) after the colon." },
+      { prop: "background-clip", decl: "padding-box", computed: "padding-box", readable: "kept inside the padding", task: "Stop the background running under the border.", hint1: "Name the box the background should stop at.", hint2: "Write padding-box after the colon." },
+      { prop: "padding", decl: "18px", readProp: "padding-top", computed: "18px", readable: "18 pixels", task: "Give the banner room inside.", hint1: "Use a pixel value for the inside room.", hint2: "Write 18px after the colon." },
+      { prop: "border-radius", decl: "8px", readProp: "border-top-left-radius", computed: "8px", readable: "8 pixels", task: "Round the banner corners.", hint1: "Use a pixel value for the corner curve.", hint2: "Write 8px after the colon." },
+    ],
+  },
+  {
+    id: "units", noun: "card", fixture: "card", label: "sizes that scale",
+    steps: [
+      { prop: "font-size", decl: "1rem", computed: "16px", readable: "one root size", task: "Size the card text from the page setting instead of a fixed number.", hint1: "Use the unit that means one root font size.", hint2: "Write 1rem after the colon." },
+      { prop: "padding", decl: "1.25rem", readProp: "padding-top", computed: "20px", readable: "1.25 root sizes", task: "Set the inside room in the same scaling unit.", hint1: "Use a rem value a little over one.", hint2: "Write 1.25rem after the colon." },
+      { prop: "max-width", decl: "30rem", computed: "480px", readable: "30 root sizes", task: "Cap the card width in the same unit.", hint1: "Use a rem value for the widest it may get.", hint2: "Write 30rem after the colon." },
+      { prop: "line-height", decl: "1.5", computed: "24px", readable: "1.5 times the text size", task: "Space the lines relative to the text size.", hint1: "Use a number with no unit.", hint2: "Write 1.5 after the colon." },
+      { prop: "border-radius", decl: "0.5rem", readProp: "border-top-left-radius", computed: "8px", readable: "half a root size", task: "Round the corners in the same scaling unit.", hint1: "Use a rem value below one.", hint2: "Write 0.5rem after the colon." },
+    ],
+  },
+  {
+    id: "list-styling", noun: "list", fixture: "list", label: "a tidy list",
+    steps: [
+      { prop: "list-style-type", decl: "none", computed: "none", readable: "no bullets", task: "Take the bullets off the list.", hint1: "Use the value that means no marker at all.", hint2: "Write none after the colon." },
+      { prop: "padding-left", decl: "0px", computed: "0px", readable: "no left indent", task: "Remove the indent the bullets left behind.", hint1: "Use zero pixels.", hint2: "Write 0px after the colon." },
+      { prop: "background-color", decl: "#f8fafc", computed: "rgb(248, 250, 252)", readable: "pale grey", task: "Tint the list so it reads as one block.", hint1: "Use the pale grey code.", hint2: "Write #f8fafc after the colon." },
+      { prop: "border-radius", decl: "8px", readProp: "border-top-left-radius", computed: "8px", readable: "8 pixels", task: "Round the list corners.", hint1: "Use a pixel value for the corner curve.", hint2: "Write 8px after the colon." },
+      { prop: "padding-top", decl: "12px", computed: "12px", readable: "12 pixels", task: "Keep the first item clear of the top edge.", hint1: "Use a pixel value for the space above.", hint2: "Write 12px after the colon." },
+    ],
+  },
+  {
+    id: "hover-state", noun: "row", fixture: "row", label: "a row that answers the pointer",
+    steps: [
+      { prop: "padding", decl: "12px", readProp: "padding-top", computed: "12px", readable: "12 pixels", task: "Give the row room inside.", hint1: "Use a pixel value for the inside room.", hint2: "Write 12px after the colon." },
+      { prop: "cursor", decl: "pointer", computed: "pointer", readable: "a pointing hand", task: "Show that the row can be clicked.", hint1: "Use the cursor value that shows a pointing hand.", hint2: "Write pointer after the colon." },
+      { prop: "transition-property", decl: "background-color", computed: "background-color", readable: "a smooth colour change", task: "Name what should change smoothly rather than snapping.", hint1: "Name the property that will change.", hint2: "Write background-color after the colon." },
+      { prop: "transition-duration", decl: "150ms", computed: "0.15s", readable: "150 milliseconds", task: "Set how long that change takes.", hint1: "Use a value in milliseconds.", hint2: "Write 150ms after the colon." },
+      { prop: "transition-timing-function", decl: "ease-out", computed: "ease-out", readable: "quick then gentle", task: "Make the change start quickly and settle gently.", hint1: "Use the timing value that eases at the end.", hint2: "Write ease-out after the colon." },
+    ],
+  },
+  {
+    id: "grid-repeat", noun: "grid", fixture: "grid", label: "cells that line up in rows",
+    steps: [
+      { prop: "display", decl: "grid", computed: "grid", readable: "a grid", task: "Lay the cells out as a grid.", hint1: "Use the display value made for rows and columns together.", hint2: "Write grid after the colon." },
+      { prop: "grid-template-columns", decl: "repeat(2, 1fr)", computed: null, check: "source", pattern: "grid-template-columns\\s*:\\s*repeat\\(2,\\s*1fr\\)", because: "Repeat asks for the same track twice without writing it twice.", readable: "two repeated columns", task: "Ask for two equal columns without writing the track twice.", hint1: "Use the function that repeats a track a number of times.", hint2: "Write repeat(2, 1fr) after the colon." },
+      { prop: "row-gap", decl: "10px", computed: "10px", readable: "10 pixels between rows", task: "Space the rows apart.", hint1: "Use a pixel value for the gap between rows.", hint2: "Write 10px after the colon." },
+      { prop: "column-gap", decl: "16px", computed: "16px", readable: "16 pixels between columns", task: "Use a wider gap between the columns.", hint1: "Use a pixel value for the gap between columns.", hint2: "Write 16px after the colon." },
+      { prop: "align-items", decl: "stretch", computed: "stretch", readable: "cells of equal height", task: "Make every cell in a row the same height.", hint1: "Use the value that stretches children to fill the row.", hint2: "Write stretch after the colon." },
+    ],
+  },
+  {
+    id: "opacity-layer", noun: "notice", fixture: "banner", label: "a notice that sits above the page",
+    steps: [
+      { prop: "padding", decl: "16px", readProp: "padding-top", computed: "16px", readable: "16 pixels", task: "Give the notice room inside.", hint1: "Use a pixel value for the inside room.", hint2: "Write 16px after the colon." },
+      { prop: "opacity", decl: "0.95", computed: "0.95", readable: "very slightly see-through", task: "Soften the notice very slightly.", hint1: "Use a number just below one.", hint2: "Write 0.95 after the colon." },
+      { prop: "z-index", decl: "10", computed: "10", readable: "stacked above", task: "Keep the notice above anything it overlaps.", hint1: "Use a whole number; higher sits on top.", hint2: "Write 10 after the colon." },
+      { prop: "position", decl: "relative", computed: "relative", readable: "positioned", task: "Give the stacking order something to apply to.", hint1: "Stacking only applies to a positioned element.", hint2: "Write relative after the colon." },
+      { prop: "background-color", decl: "#fef2f2", computed: "rgb(254, 242, 242)", readable: "pale red", task: "Tint the notice so it reads as urgent.", hint1: "Use the pale red code.", hint2: "Write #fef2f2 after the colon." },
+    ],
+  },
+  {
+    id: "text-detail", noun: "card text", fixture: "card", label: "text with fine control",
+    steps: [
+      { prop: "text-transform", decl: "uppercase", computed: "uppercase", readable: "capital letters", task: "Put the card text in capitals.", hint1: "Use the value that makes every letter a capital.", hint2: "Write uppercase after the colon." },
+      { prop: "font-style", decl: "normal", computed: "normal", readable: "upright", task: "Keep the text upright rather than slanted.", hint1: "Use the value that means not italic.", hint2: "Write normal after the colon." },
+      { prop: "text-decoration-line", decl: "underline", computed: "underline", readable: "underlined", task: "Underline the card text.", hint1: "Use the value that draws a line under the words.", hint2: "Write underline after the colon." },
+      { prop: "text-indent", decl: "8px", computed: "8px", readable: "8 pixels of indent", task: "Indent the first line.", hint1: "Use a pixel value for the first-line indent.", hint2: "Write 8px after the colon." },
+      { prop: "word-spacing", decl: "1px", computed: "1px", readable: "1 pixel between words", task: "Loosen the gaps between words slightly.", hint1: "Use a small pixel value.", hint2: "Write 1px after the colon." },
+    ],
+  },
+  {
+    id: "sizing-limits", noun: "card", fixture: "card", label: "a card with size limits",
+    steps: [
+      { prop: "min-width", decl: "240px", computed: "240px", readable: "240 pixels", task: "Stop the card shrinking below a readable width.", hint1: "Use a pixel value for the narrowest it may get.", hint2: "Write 240px after the colon." },
+      { prop: "max-width", decl: "520px", computed: "520px", readable: "520 pixels", task: "Stop the card growing past a comfortable line length.", hint1: "Use a pixel value for the widest it may get.", hint2: "Write 520px after the colon." },
+      { prop: "min-height", decl: "120px", computed: "120px", readable: "120 pixels", task: "Keep the card from collapsing when it holds little text.", hint1: "Use a pixel value for the shortest it may be.", hint2: "Write 120px after the colon." },
+      { prop: "box-sizing", decl: "border-box", computed: "border-box", readable: "border box", task: "Count the padding inside those limits rather than on top of them.", hint1: "Use the sizing value that includes padding and border.", hint2: "Write border-box after the colon." },
+      { prop: "padding", decl: "20px", readProp: "padding-top", computed: "20px", readable: "20 pixels", task: "Give the card room inside its limits.", hint1: "Use a pixel value for the inside room.", hint2: "Write 20px after the colon." },
+    ],
+  },
+  {
     id: "custom-properties", noun: "card", fixture: "card", label: "reusable colour names",
     steps: [
       { prop: "--card-ink", decl: "#0f172a", computed: null, check: "source", pattern: "--card-ink\\s*:\\s*#0f172a", because: "A custom property starts with two dashes and holds a value for later.", readable: "a stored colour", task: "Store the card ink colour under a name you can reuse.", hint1: "A name you invent starts with two dashes.", hint2: "Write #0f172a after the colon." },

@@ -52,6 +52,10 @@ const DRY_RUN = flag("dry-run", false) === true;
 const ENDPOINT = String(flag("endpoint", "http://localhost:1234"));
 const MODEL = String(flag("model", "qwen2.5-coder-7b-instruct"));
 const RETRIES = Number(flag("retries", 3));
+// Projects per topic before the course counts as covered. Three is varied
+// practice; twenty, which an earlier unbounded loop produced, is the same
+// lesson with different nouns.
+const ROUNDS = Number(flag("rounds", 3));
 // Leaves a failed pass on disk instead of reverting it, so the generated
 // source can be read. Debugging only - never use it in a running loop.
 const KEEP_FAILED = flag("keep-failed", false) === true;
@@ -83,15 +87,17 @@ function readCourseState() {
 
   const usedProjectIds = new Set(projectIds.map((m) => m[2]));
 
-  // Topics are marked in the generated source, so an interrupted run picks up
-  // where it stopped rather than repeating the first topic forever.
-  const usedTopics = new Set();
-  for (const t of CSS_TOPICS) {
-    const marker = "css-topic: " + t.id;
-    if (src.includes(marker)) usedTopics.add(t.id);
+  // How many times each topic has been built. Counted rather than merely
+  // flagged: the loop has to know when a topic has had enough practice. An
+  // earlier version only asked "used at all", so once every topic was used
+  // once it cycled forever, and produced twelve lessons repeated twenty times
+  // each before anybody looked.
+  const topicCounts = new Map(CSS_TOPICS.map((t) => [t.id, 0]));
+  for (const m of src.matchAll(/css-topic: ([a-z-]+)/g)) {
+    if (topicCounts.has(m[1])) topicCounts.set(m[1], topicCounts.get(m[1]) + 1);
   }
 
-  return { src, nextNum: lastNum + 1, usedProjectIds, usedTopics };
+  return { src, nextNum: lastNum + 1, usedProjectIds, topicCounts };
 }
 
 /* ------------------------------------------------------------------ */
@@ -393,8 +399,14 @@ function logPass(gen, steps) {
 async function onePass(passNo) {
   const state = readCourseState();
 
-  const topic = CSS_TOPICS.find((t) => !state.usedTopics.has(t.id))
-    ?? CSS_TOPICS[state.usedProjectIds.size % CSS_TOPICS.length];
+  // Always the least-practised topic, and nothing at all once every topic has
+  // had ROUNDS turns. Repeating a lesson in a new setting past that point is
+  // padding, which PLAN.md decision 38 exists to refuse.
+  const [leastId, leastCount] = [...state.topicCounts.entries()].sort((a, b) => a[1] - b[1])[0];
+  if (leastCount >= ROUNDS) {
+    return { done: true, reason: `every topic has ${ROUNDS} projects; the course is covered` };
+  }
+  const topic = CSS_TOPICS.find((t) => t.id === leastId);
   const fixture = CSS_FIXTURES[topic.fixture];
   const setting = SETTINGS[state.usedProjectIds.size % SETTINGS.length];
 
@@ -449,6 +461,8 @@ async function main() {
     let r;
     try { r = await onePass(pass); }
     catch (e) { r = { ok: false, reason: e.message }; revert(); }
+
+    if (r.done) { console.log(`\n${r.reason}. Stopping.`); break; }
 
     if (r.ok) {
       fails = 0;
