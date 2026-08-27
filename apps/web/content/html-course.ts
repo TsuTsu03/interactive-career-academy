@@ -930,6 +930,12 @@ const STALL_SIGN_B1 = `    <section></section>\n`;
 const STALL_SIGN_B2 = `    <section>\n      <h2>Fresh Tilapia</h2>\n    </section>\n`;
 const STALL_SIGN_B3 = `    <section>\n      <h2>Fresh Tilapia</h2>\n      <p>Catch of the Day</p>\n    </section>\n`;
 
+/* composition: notice-card */
+const MENU_NOTICE_ROOT_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const MENU_NOTICE_B1 = `    <section></section>\n`;
+const MENU_NOTICE_B2 = `    <section>\n      <h2>Notice Card</h2>\n    </section>\n`;
+const MENU_NOTICE_B3 = `    <section>\n      <h2>Notice Card</h2>\n      <p>Special offer today! Up to 50% off selected items.</p>\n    </section>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1544,6 +1550,9 @@ const references = {
   "stall-sign-root": { estimatedMinutes: 4, solution: solvedSlot(STALL_SIGN_ROOT_SLOT, "<section></section>") },
   "stall-sign-h2-1": { estimatedMinutes: 4, solution: solved(STALL_SIGN_B2) },
   "stall-sign-p-2": { estimatedMinutes: 4, solution: solved(STALL_SIGN_B3) },
+  "menu-notice-root": { estimatedMinutes: 4, solution: solvedSlot(MENU_NOTICE_ROOT_SLOT, "<section></section>") },
+  "menu-notice-h2-1": { estimatedMinutes: 4, solution: solved(MENU_NOTICE_B2) },
+  "menu-notice-p-2": { estimatedMinutes: 4, solution: solved(MENU_NOTICE_B3) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1602,6 +1611,7 @@ const PROJECT_53_ID = "sari-sari-store-price-list";
 const PROJECT_54_ID = "barangay-health-centre-notice";
 const PROJECT_55_ID = "jeepney-route-board-notice";
 const PROJECT_56_ID = "palengke-fish-stall-sign";
+const PROJECT_57_ID = "turo-turo-menu-notice";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1919,6 +1929,11 @@ const s56 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_56_ID };
 };
 
+const s57 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_57_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1981,6 +1996,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_54_ID, title: "Barangay Health Centre Notice" },
     { id: PROJECT_55_ID, title: "Jeepney Route Board Notice" },
     { id: PROJECT_56_ID, title: "Palengke Fish Stall Sign" },
+    { id: PROJECT_57_ID, title: "Turo Turo Menu Notice" },
   ],
   kind: "web",
   requires: [],
@@ -4987,5 +5003,8 @@ export const htmlCourse: Course = {
     s56({ id: "stall-sign-root", task: "Start the notice card. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": STALL_SIGN_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: STALL_SIGN_ROOT_SLOT.slotLine, blocks: ["<section></section>","<div></div>","<p></p>","<span></span>"], correctBlock: "<section></section>", tests: [{ id: "stall-sign-root-exists", kind: "exists", selector: "section", label: "The notice card has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this notice card." }, { level: 2, text: "Use section tags for the outer box." }], xp: 40 }),
     s56({ id: "stall-sign-h2-1", task: "Add the heading inside the section, and write Fresh Tilapia in it.", inputMode: "guided", files: solved(STALL_SIGN_B1), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "stall-sign-h2-1-text", kind: "text-equals", selector: "section h2", value: "Fresh Tilapia", label: "The heading shows the card heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Fresh Tilapia between them." }], xp: 45 }),
     s56({ id: "stall-sign-p-2", task: "Add the paragraph inside the section, and write Catch of the Day in it.", inputMode: "guided", files: solved(STALL_SIGN_B2), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "stall-sign-p-2-text", kind: "text-equals", selector: "section p", value: "Catch of the Day", label: "The paragraph shows one sentence of detail" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use p tags, and write Catch of the Day between them." }], xp: 45 }),
+    s57({ id: "menu-notice-root", task: "Start the notice card. Add the box that holds everything else.", inputMode: "tap-to-build", files: { "index.html": MENU_NOTICE_ROOT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: MENU_NOTICE_ROOT_SLOT.slotLine, blocks: ["<section></section>","<div></div>","<p></p>","<span></span>"], correctBlock: "<section></section>", tests: [{ id: "menu-notice-root-exists", kind: "exists", selector: "section", label: "The notice card has its outer box" }], hints: [{ level: 1, text: "Add the element that groups everything else in this notice card." }, { level: 2, text: "Use section tags for the outer box." }], xp: 40 }),
+    s57({ id: "menu-notice-h2-1", task: "Add the heading inside the section, and write Notice Card in it.", inputMode: "guided", files: solved(MENU_NOTICE_B1), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "menu-notice-h2-1-text", kind: "text-equals", selector: "section h2", value: "Notice Card", label: "The heading shows the card heading" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use h2 tags, and write Notice Card between them." }], xp: 45 }),
+    s57({ id: "menu-notice-p-2", task: "Add the paragraph inside the section, and write Special offer today! Up to 50% off selected items. in it.", inputMode: "guided", files: solved(MENU_NOTICE_B2), activeFile: "index.html", highlightToken: "<section>", tests: [{ id: "menu-notice-p-2-text", kind: "text-equals", selector: "section p", value: "Special offer today! Up to 50% off selected items.", label: "The paragraph shows one sentence of detail" }], hints: [{ level: 1, text: "Find the section you already added, and work inside the section." }, { level: 2, text: "Use p tags, and write Special offer today! Up to 50% off selected items. between them." }], xp: 45 }),
   ],
 };
