@@ -793,6 +793,14 @@ const ROUTE_BOARD_INTRO_BODY = `    <h2>Jeepney Route Board</h2>
 const ROUTE_BOARD_ELEMENT_SLOT = slotPage(`${ROUTE_BOARD_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
 const ROUTE_BOARD_ELEMENT_BODY = `${ROUTE_BOARD_INTRO_BODY}    <sup></sup>\n`;
 
+const FISH_STALL_TITLE_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const FISH_STALL_TITLE_BODY = `    <h2></h2>\n`;
+const FISH_STALL_HEADING_BODY = `    <h2>Palengke Fish Stall</h2>\n`;
+const FISH_STALL_INTRO_BODY = `    <h2>Palengke Fish Stall</h2>
+    <p>Learn how to mark fish names at the market.</p>\n`;
+const FISH_STALL_ELEMENT_SLOT = slotPage(`${FISH_STALL_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
+const FISH_STALL_ELEMENT_BODY = `${FISH_STALL_INTRO_BODY}    <dfn></dfn>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1324,6 +1332,11 @@ const references = {
   "route-board-copy": { estimatedMinutes: 4, solution: solved(ROUTE_BOARD_INTRO_BODY) },
   "route-board-sup": { estimatedMinutes: 5, solution: solvedSlot(ROUTE_BOARD_ELEMENT_SLOT, "<sup></sup>") },
   "route-board-sup-text": { estimatedMinutes: 4, solution: solved(`${ROUTE_BOARD_INTRO_BODY}    <sup>1st</sup>\n`) },
+  "fish-stall-title": { estimatedMinutes: 4, solution: solvedSlot(FISH_STALL_TITLE_SLOT, "<h2></h2>") },
+  "fish-stall-heading": { estimatedMinutes: 4, solution: solved(FISH_STALL_HEADING_BODY) },
+  "fish-stall-copy": { estimatedMinutes: 4, solution: solved(FISH_STALL_INTRO_BODY) },
+  "fish-stall-dfn": { estimatedMinutes: 5, solution: solvedSlot(FISH_STALL_ELEMENT_SLOT, "<dfn></dfn>") },
+  "fish-stall-dfn-text": { estimatedMinutes: 4, solution: solved(`${FISH_STALL_INTRO_BODY}    <dfn>Tilapia</dfn>\n`) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1364,6 +1377,7 @@ const PROJECT_35_ID = "barangay-id-application";
 const PROJECT_36_ID = "sari-sari-store-price";
 const PROJECT_37_ID = "barangay-health-centre";
 const PROJECT_38_ID = "jeepney-route-board";
+const PROJECT_39_ID = "palengke-fish-stall";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1591,6 +1605,11 @@ const s38 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_38_ID };
 };
 
+const s39 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_39_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1635,6 +1654,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_36_ID, title: "Sari Sari Store Price" },
     { id: PROJECT_37_ID, title: "Barangay Health Centre" },
     { id: PROJECT_38_ID, title: "Jeepney Route Board" },
+    { id: PROJECT_39_ID, title: "Palengke Fish Stall" },
   ],
   kind: "web",
   requires: [],
@@ -4558,5 +4578,10 @@ export const htmlCourse: Course = {
     s38({ id: "route-board-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(ROUTE_BOARD_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "route-board-copy-text", kind: "text-equals", selector: "p", value: "See how the sup element shows the meter reading on a water bill.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write See how the sup element shows the meter reading on a water bill." }], xp: 40 }),
     s38({ id: "route-board-sup", task: "Add a place for the superscript.", inputMode: "tap-to-build", files: { "index.html": ROUTE_BOARD_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: ROUTE_BOARD_ELEMENT_SLOT.slotLine, blocks: ["<sup></sup>","<p></p>","<div></div>","<note></note>"], correctBlock: "<sup></sup>", conceptIds: ["sup-element"], tests: [{ id: "route-board-sup-exists", kind: "exists", selector: "sup", label: "The superscript has a place" }], hints: [{ level: 1, text: "Add the element that marks a superscript." }, { level: 2, text: "Use sup for the superscript." }], xp: 50 }),
     s38({ id: "route-board-sup-text", task: "Write 1st inside it.", inputMode: "guided", files: solved(ROUTE_BOARD_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<sup></sup>", tests: [{ id: "route-board-sup-text-set", kind: "text-equals", selector: "sup", value: "1st", label: "The superscript shows its words" }], hints: [{ level: 1, text: "Write the words inside the sup tags." }, { level: 2, text: "Use 1st exactly." }], xp: 40 }),
+    s39({ id: "fish-stall-title", task: "Start the palengke fish stall with a smaller heading.", inputMode: "tap-to-build", files: { "index.html": FISH_STALL_TITLE_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: FISH_STALL_TITLE_SLOT.slotLine, blocks: ["<h2></h2>", "<p></p>", "<h1></h1>", "<dfn></dfn>"], correctBlock: "<h2></h2>", tests: [{ id: "fish-stall-title-exists", kind: "exists", selector: "h2", label: "The page has a heading" }], hints: [{ level: 1, text: "Add a level-two heading in the blank line." }, { level: 2, text: "Use h2 for this smaller heading." }], xp: 40 }),
+    s39({ id: "fish-stall-heading", task: "Name the heading Palengke Fish Stall.", inputMode: "guided", files: solved(FISH_STALL_TITLE_BODY), activeFile: "index.html", highlightToken: "<h2></h2>", tests: [{ id: "fish-stall-heading-text", kind: "text-equals", selector: "h2", value: "Palengke Fish Stall", label: "The page has its name" }], hints: [{ level: 1, text: "Write the page name between the heading tags." }, { level: 2, text: "Use Palengke Fish Stall exactly." }], xp: 40 }),
+    s39({ id: "fish-stall-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(FISH_STALL_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "fish-stall-copy-text", kind: "text-equals", selector: "p", value: "Learn how to mark fish names at the market.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write Learn how to mark fish names at the market." }], xp: 40 }),
+    s39({ id: "fish-stall-dfn", task: "Add a place for the term being defined.", inputMode: "tap-to-build", files: { "index.html": FISH_STALL_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: FISH_STALL_ELEMENT_SLOT.slotLine, blocks: ["<dfn></dfn>","<p></p>","<div></div>","<note></note>"], correctBlock: "<dfn></dfn>", conceptIds: ["dfn-element"], tests: [{ id: "fish-stall-dfn-exists", kind: "exists", selector: "dfn", label: "The term being defined has a place" }], hints: [{ level: 1, text: "Add the element that marks a term being defined." }, { level: 2, text: "Use dfn for the term being defined." }], xp: 50 }),
+    s39({ id: "fish-stall-dfn-text", task: "Write Tilapia inside it.", inputMode: "guided", files: solved(FISH_STALL_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<dfn></dfn>", tests: [{ id: "fish-stall-dfn-text-set", kind: "text-equals", selector: "dfn", value: "Tilapia", label: "The term being defined shows its words" }], hints: [{ level: 1, text: "Write the words inside the dfn tags." }, { level: 2, text: "Use Tilapia exactly." }], xp: 40 }),
   ],
 };

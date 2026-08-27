@@ -2374,6 +2374,14 @@ export const concepts: Record<string, Concept> = {
     visual: { kind: "diagram", diagram: { alt: "A water meter with a reading marked as 1st.", columns: 3, nodes: [{ id: "words", label: "1st", note: "plain words", tone: "ghost" }, { id: "tag", label: "sup", note: "superscript", tone: "accent" }, { id: "result", label: "Superscript", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
     proof: "You will mark the words 1st on the water bill.",
   },
+  "dfn-element": {
+    id: "dfn-element",
+    term: "dfn element",
+    definition: "The dfn element marks the word a sentence is defining.",
+    analogy: "Pointing at an object while naming it.",
+    visual: { kind: "diagram", diagram: { alt: "A picture of a tilapia fish with its name 'Tilapia' written below it.", columns: 3, nodes: [{ id: "words", label: "Tilapia", note: "plain words", tone: "ghost" }, { id: "tag", label: "dfn", note: "term being defined", tone: "accent" }, { id: "result", label: "Term being defined", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
+    proof: "You will mark 'Tilapia' on the fish stall sign.",
+  },
 };
 
 export function conceptById(id: string): Concept | undefined {
