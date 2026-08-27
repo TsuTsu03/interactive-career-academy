@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CodeDaddy - Write real code. Build a real future.</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-primary-dark": "#002576",
+                "outline-variant": "#444651",
+                "surface-container-low": "#0f172a",
+                "secondary-dark": "#79f7ea",
+                "primary-fixed": "#dce1ff",
+                "on-primary-fixed": "#00164f",
+                "error": "#ffb4ab",
+                "surface": "#0f172a",
+                "tertiary-fixed": "#ffdbd1",
+                "error-dark": "#ffb4ab",
+                "tertiary-container": "#5a1301",
+                "primary-fixed-dim": "#b6c4ff",
+                "secondary-container": "#006861",
+                "on-surface-variant": "#94a3b8",
+                "primary-container": "#002576",
+                "surface-container-high": "#292a2f",
+                "on-error-dark": "#690005",
+                "on-surface": "#f8fafc",
+                "tertiary-fixed-dim": "#ffb5a1",
+                "surface-container": "#1e1f25",
+                "surface-container-highest": "#475569",
+                "on-background": "#e3e1e9",
+                "background": "#121318",
+                "on-primary": "#062979",
+                "on-tertiary-fixed-variant": "#7d2c16",
+                "inverse-surface": "#e3e1e9",
+                "on-tertiary-container": "#e0775b",
+                "primary-dark": "#b6c4ff",
+                "on-primary-container": "#7991e5",
+                "surface-tint": "#b6c4ff",
+                "on-error": "#690005",
+                "secondary-fixed-dim": "#84d5cc",
+                "on-tertiary": "#5e1603",
+                "secondary-fixed": "#a0f1e8",
+                "primary": "#b6c4ff",
+                "surface-bright": "#1e293b",
+                "inverse-on-surface": "#181c1e",
+                "on-secondary-fixed": "#00201d",
+                "inverse-primary": "#415aaa",
+                "surface-dim": "#0a0f1d",
+                "surface-variant": "#34343a",
+                "on-secondary-dark": "#003733",
+                "on-error-container": "#ffdad6",
+                "surface-container-lowest": "#0d0e13",
+                "on-secondary": "#003733",
+                "on-tertiary-fixed": "#3b0800",
+                "on-secondary-fixed-variant": "#00504a",
+                "on-secondary-container": "#92e3da",
+                "error-container": "#93000a",
+                "outline": "#475569",
+                "on-primary-fixed-variant": "#274191",
+                "secondary": "#84d5cc",
+                "tertiary": "#ffb5a1"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "base": "4px",
+                "gutter": "16px",
+                "pane-gap": "2px",
+                "margin-desktop": "32px",
+                "touch-target": "44px",
+                "margin-mobile": "16px"
+        },
+        "fontFamily": {
+                "label-caps": [
+                        "Inter"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "headline-lg-mobile": [
+                        "Inter"
+                ],
+                "headline-md": [
+                        "Inter"
+                ],
+                "body-lg": [
+                        "Inter"
+                ],
+                "headline-lg": [
+                        "Inter"
+                ],
+                "label-code": [
+                        "JetBrains Mono"
+                ]
+        },
+        "fontSize": {
+                "label-caps": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "label-code": [
+                        "14px",
+                        {
+                                "lineHeight": "20px",
+                                "fontWeight": "500"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+</head>
+<body class="bg-[#f7fafc] dark:bg-background text-[#181c1e] dark:text-on-background font-body-md antialiased min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar (Shared Component - Login/Signup intent, mostly hidden nav links for logged out state) -->
+<header class="bg-[#ffffff] dark:bg-surface docked full-width top-0 border-b border-[#e5e9eb] dark:border-outline-variant flat no shadows sticky z-50">
+<div class="flex justify-between items-center w-full px-margin-desktop h-touch-target md:h-16">
+<div class="flex items-center gap-2">
+<img alt="CodeDaddy Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDa1ueYDju4ze9lvjGGGI07IPgnkOXC0LtBijGuK9t_7HAhaCXfiEQCWpG64RxkA-hKf0hFfW7yeGjAIvQUhCMl-K7tjIc0dwvgsQZhZyxytBsP_yyKfqvE2GS1z6VDeJS4qtGI6chi_ZKMndj91ubXMPtwSha_Pm-ZVmjU1q9_uT0kLm8P40ERmTX9pFPM6oYGV-qJ2RQVoqnbuf2eSReh0KPuhhRE_ytqHYmi7QO-SUc6K4Cijn3s"/>
+</div>
+<nav class="hidden md:flex gap-6 items-center">
+<!-- Links hidden for public landing page based on logic rules to keep focus on CTA -->
+<a class="font-body-md text-body-md text-[#444653] dark:text-on-surface-variant hover:text-primary transition-colors" href="#curriculum">Curriculum</a>
+<a class="font-body-md text-body-md text-[#444653] dark:text-on-surface-variant hover:text-primary transition-colors" href="#how-it-works">How it Works</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="font-label-caps text-label-caps text-[#002576] dark:text-primary hover:text-[#0038a8] dark:hover:text-primary-container transition-colors h-touch-target px-4 hidden md:flex items-center justify-center uppercase">Login</button>
+<button class="bg-[#002576] dark:bg-primary text-[#ffffff] dark:text-on-primary font-label-caps text-label-caps uppercase h-touch-target px-6 rounded flex items-center justify-center hover:bg-[#3056c4] dark:hover:bg-surface-tint transition-colors shadow-sm active:opacity-80">
+<span class="material-symbols-outlined mr-2" style="font-size: 18px;">code</span>
+                    Start Coding
+                </button>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow flex flex-col">
+<!-- Hero Section -->
+<section class="relative w-full pt-20 pb-24 md:pt-32 md:pb-40 px-margin-mobile md:px-margin-desktop overflow-hidden flex flex-col items-center text-center">
+<div class="max-w-4xl z-10 flex flex-col items-center">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-[#002576] dark:text-primary mb-6 max-w-3xl">
+                    Write real code.<br/>
+<span class="text-[#006a63] dark:text-secondary">Build a real future.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-[#444653] dark:text-on-surface-variant mb-10 max-w-2xl">
+                    Master modern web development from HTML to React through a structured, project-based curriculum. Build authentic, locally-relevant projects like a Sari-Sari store inventory system or a Jeepney route tracker. Zero fluff. 100% free front-end path.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 w-full justify-center">
+<button class="bg-[#002576] dark:bg-primary text-[#ffffff] dark:text-on-primary font-label-caps text-label-caps uppercase h-14 px-8 rounded-lg flex items-center justify-center hover:bg-[#3056c4] dark:hover:bg-surface-tint transition-all shadow-sm active:scale-95 group w-full sm:w-auto">
+<svg class="w-5 h-5 mr-3 fill-current" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
+                        Start Learning for Free
+                    </button>
+<button class="bg-[#ffffff] dark:bg-surface text-[#002576] dark:text-primary border border-[#002576] dark:border-primary font-label-caps text-label-caps uppercase h-14 px-8 rounded-lg flex items-center justify-center hover:bg-[#e0e3e5] dark:hover:bg-surface-variant transition-colors shadow-sm active:scale-95 w-full sm:w-auto">
+                        Explore Curriculum
+                    </button>
+</div>
+<p class="font-label-caps text-label-caps text-[#444653] dark:text-on-surface-variant mt-4 opacity-70">No credit card required. GitHub account needed to save progress.</p>
+</div>
+</section>
+<!-- IDE Sneak Peek Section (Bento Grid Style) -->
+<section class="w-full bg-[#f1f4f6] dark:bg-surface-container-low py-16 md:py-24 px-margin-mobile md:px-margin-desktop border-y border-[#e5e9eb] dark:border-outline-variant" id="curriculum">
+<div class="max-w-6xl mx-auto">
+<div class="mb-12 md:mb-16 text-center md:text-left">
+<h2 class="font-headline-md text-headline-md text-[#002576] dark:text-primary mb-2">The Workspace</h2>
+<p class="font-body-lg text-body-lg text-[#444653] dark:text-on-surface-variant max-w-2xl">Experience an environment built for focus. No fluffy tutorials—just a real IDE embedded in your browser.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-pane-gap bg-[#d7dadd] dark:bg-surface-variant border border-[#c4c5d5] dark:border-outline-variant rounded-xl overflow-hidden shadow-sm h-[600px]">
+<!-- Instructions Pane -->
+<div class="hidden md:flex flex-col md:col-span-3 bg-[#ffffff] dark:bg-surface border-r border-[#c4c5d5] dark:border-outline-variant h-full">
+<div class="h-10 border-b border-[#c4c5d5] dark:border-outline-variant flex items-center px-4 bg-[#f7fafc] dark:bg-surface-container-lowest">
+<span class="font-label-caps text-label-caps text-[#444653] dark:text-on-surface-variant uppercase tracking-wider">Instructions</span>
+</div>
+<div class="p-4 overflow-y-auto flex-grow prose prose-sm prose-stone">
+<h3 class="font-headline-md text-headline-md text-[#002576] dark:text-primary mb-2">Task 4: Build the Cart Item</h3>
+<p class="font-body-md text-body-md text-[#444653] dark:text-on-surface-variant mb-4">In this step, you will create a reusable <code>&lt;CartItem /&gt;</code> component for the Sari-Sari store POS system.</p>
+<div class="bg-[#dce1ff] dark:bg-primary-fixed rounded-md p-3 mb-4">
+<p class="font-label-code text-label-code text-[#093cab] dark:text-on-primary-fixed-variant m-0 text-xs">
+<span class="material-symbols-outlined text-sm align-middle mr-1">check_circle</span>
+                                    Goal: Render product name and price dynamically based on props.
+                                </p>
+</div>
+</div>
+</div>
+<!-- Editor Pane -->
+<div class="col-span-1 md:col-span-6 flex flex-col bg-[#ffffff] dark:bg-surface h-full">
+<div class="h-10 border-b border-[#c4c5d5] dark:border-outline-variant flex items-center px-4 bg-[#f7fafc] dark:bg-surface-container-lowest gap-4">
+<span class="font-label-code text-label-code text-[#002576] dark:text-primary bg-[#b6c4ff] dark:bg-primary-fixed-dim px-2 py-1 rounded text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">javascript</span> CartItem.jsx</span>
+<span class="font-label-code text-label-code text-[#444653] dark:text-on-surface-variant px-2 py-1 rounded text-xs flex items-center gap-1 opacity-60"><span class="material-symbols-outlined text-[14px]">css</span> styles.css</span>
+</div>
+<div class="p-4 bg-[#1e1e1e] flex-grow overflow-hidden font-label-code text-label-code text-[#d4d4d4] flex">
+<div class="w-8 text-[#858585] text-right pr-4 select-none border-r border-[#404040] mr-4 opacity-50">
+                                1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11
+                             </div>
+<div class="whitespace-pre overflow-x-auto text-sm">
+<span class="text-[#569cd6]">export default function</span> <span class="text-[#4ec9b0]">CartItem</span>({ product, price }) {
+  <span class="text-[#569cd6]">return</span> (
+    &lt;<span class="text-[#4ec9b0]">div</span> <span class="text-[#9cdcfe]">className</span>=<span class="text-[#ce9178]">"flex justify-between p-4 border-b border-stone-200"</span>&gt;
+      &lt;<span class="text-[#4ec9b0]">div</span>&gt;
+        &lt;<span class="text-[#4ec9b0]">h4</span> <span class="text-[#9cdcfe]">className</span>=<span class="text-[#ce9178]">"font-semibold text-primary"</span>&gt;{product}&lt;/<span class="text-[#4ec9b0]">h4</span>&gt;
+        &lt;<span class="text-[#4ec9b0]">span</span> <span class="text-[#9cdcfe]">className</span>=<span class="text-[#ce9178]">"text-sm text-stone-500"</span>&gt;Qty: 1&lt;/<span class="text-[#4ec9b0]">span</span>&gt;
+      &lt;/<span class="text-[#4ec9b0]">div</span>&gt;
+      &lt;<span class="text-[#4ec9b0]">div</span> <span class="text-[#9cdcfe]">className</span>=<span class="text-[#ce9178]">"font-bold"</span>&gt;₱{price}&lt;/<span class="text-[#4ec9b0]">div</span>&gt;
+    &lt;/<span class="text-[#4ec9b0]">div</span>&gt;
+  );
+}</div>
+</div>
+</div>
+<!-- Output Pane -->
+<div class="hidden md:flex flex-col md:col-span-3 bg-[#ffffff] dark:bg-surface border-l border-[#c4c5d5] dark:border-outline-variant h-full">
+<div class="h-10 border-b border-[#c4c5d5] dark:border-outline-variant flex justify-between items-center px-4 bg-[#f7fafc] dark:bg-surface-container-lowest">
+<span class="font-label-caps text-label-caps text-[#444653] dark:text-on-surface-variant uppercase tracking-wider">Preview</span>
+<span class="material-symbols-outlined text-[#444653] dark:text-on-surface-variant text-sm">open_in_new</span>
+</div>
+<div class="p-6 bg-[#ffffff] dark:bg-surface-container-lowest flex-grow flex items-center justify-center flex-col gap-4">
+<!-- Rendered Output Simulation -->
+<div class="w-full max-w-[240px] border border-[#c4c5d5] dark:border-outline-variant rounded bg-[#f7fafc] dark:bg-surface-container shadow-sm">
+<div class="flex justify-between p-4 border-b border-[#e0e3e5] dark:border-surface-variant">
+<div>
+<h4 class="font-headline-md text-[16px] leading-[24px] text-[#002576] dark:text-primary">Chippy Garlic</h4>
+<span class="text-sm text-[#444653] dark:text-on-surface-variant opacity-70">Qty: 1</span>
+</div>
+<div class="font-headline-md text-[16px] leading-[24px] text-[#006a63] dark:text-secondary">₱15.00</div>
+</div>
+</div>
+<div class="mt-4 px-3 py-1.5 bg-[#79f7ea] dark:bg-secondary-container text-[#007169] dark:text-on-secondary-container rounded font-label-caps text-[10px] flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check</span> Preview Updated
+                            </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How it Works (Process loop) -->
+<section class="py-16 md:py-24 px-margin-mobile md:px-margin-desktop bg-[#ffffff] dark:bg-surface" id="how-it-works">
+<div class="max-w-5xl mx-auto text-center">
+<h2 class="font-headline-md text-headline-md md:font-headline-lg md:text-headline-lg text-[#002576] dark:text-primary mb-12">The Learning Loop</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+<!-- Connecting line for desktop -->
+<div class="hidden md:block absolute top-12 left-[16.66%] right-[16.66%] h-[2px] bg-[#c4c5d5] dark:bg-outline-variant z-0"></div>
+<!-- Step 1 -->
+<div class="relative z-10 flex flex-col items-center p-6 bg-[#f7fafc] dark:bg-surface-container-lowest rounded-xl border border-[#c4c5d5] dark:border-outline-variant shadow-sm hover:border-[#002576] dark:hover:border-primary transition-colors">
+<div class="w-16 h-16 rounded-full bg-[#dce1ff] dark:bg-primary-fixed text-[#002576] dark:text-primary flex items-center justify-center mb-6 ring-4 ring-[#ffffff] dark:ring-surface">
+<span class="material-symbols-outlined text-3xl">menu_book</span>
+</div>
+<h3 class="font-headline-md text-[20px] leading-[28px] text-[#002576] dark:text-primary mb-3">1. Read Task</h3>
+<p class="font-body-md text-body-md text-[#444653] dark:text-on-surface-variant text-center">Clear, concise instructions focused on building specific features of a larger project. No endless reading.</p>
+</div>
+<!-- Step 2 -->
+<div class="relative z-10 flex flex-col items-center p-6 bg-[#f7fafc] dark:bg-surface-container-lowest rounded-xl border border-[#c4c5d5] dark:border-outline-variant shadow-sm hover:border-[#006a63] dark:hover:border-secondary transition-colors">
+<div class="w-16 h-16 rounded-full bg-[#79f7ea] dark:bg-secondary-container text-[#006a63] dark:text-secondary flex items-center justify-center mb-6 ring-4 ring-[#ffffff] dark:ring-surface">
+<span class="material-symbols-outlined text-3xl">terminal</span>
+</div>
+<h3 class="font-headline-md text-[20px] leading-[28px] text-[#002576] dark:text-primary mb-3">2. Edit Code</h3>
+<p class="font-body-md text-body-md text-[#444653] dark:text-on-surface-variant text-center">Write code directly in our robust, in-browser editor. Get comfortable with real syntax and structure.</p>
+</div>
+<!-- Step 3 -->
+<div class="relative z-10 flex flex-col items-center p-6 bg-[#f7fafc] dark:bg-surface-container-lowest rounded-xl border border-[#c4c5d5] dark:border-outline-variant shadow-sm hover:border-[#3b2b00] dark:hover:border-tertiary transition-colors">
+<div class="w-16 h-16 rounded-full bg-[#ffdf99] dark:bg-tertiary-fixed text-[#3b2b00] dark:text-tertiary flex items-center justify-center mb-6 ring-4 ring-[#ffffff] dark:ring-surface">
+<span class="material-symbols-outlined text-3xl">visibility</span>
+</div>
+<h3 class="font-headline-md text-[20px] leading-[28px] text-[#002576] dark:text-primary mb-3">3. See Results</h3>
+<p class="font-body-md text-body-md text-[#444653] dark:text-on-surface-variant text-center">Instant visual feedback. See your changes render immediately in the preview pane as you type.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="bg-[#ffffff] dark:bg-surface border-t border-[#e5e9eb] dark:border-outline-variant flat no shadows full-width bottom-0 mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-margin-desktop py-gutter">
+<span class="font-headline-md text-[16px] leading-[24px] text-[#002576] dark:text-primary mb-4 md:mb-0">CodeDaddy</span>
+<nav class="flex gap-6 mb-4 md:mb-0">
+<a class="font-label-caps text-label-caps text-[#444653] dark:text-on-surface-variant hover:underline hover:text-[#002576] dark:hover:text-primary transition-colors opacity-90 hover:opacity-100" href="#">Open Source</a>
+<a class="font-label-caps text-label-caps text-[#444653] dark:text-on-surface-variant hover:underline hover:text-[#002576] dark:hover:text-primary transition-colors opacity-90 hover:opacity-100" href="#">About</a>
+<a class="font-label-caps text-label-caps text-[#444653] dark:text-on-surface-variant hover:underline hover:text-[#002576] dark:hover:text-primary transition-colors opacity-90 hover:opacity-100" href="#">Discord</a>
+<a class="font-label-caps text-label-caps text-[#444653] dark:text-on-surface-variant hover:underline hover:text-[#002576] dark:hover:text-primary transition-colors opacity-90 hover:opacity-100" href="#">GitHub</a>
+</nav>
+<span class="font-label-caps text-label-caps text-[#444653] dark:text-on-surface-variant">© 2024 CodeDaddy Philippines</span>
+</div>
+</footer>
+</body></html>

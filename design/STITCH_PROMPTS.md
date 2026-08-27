@@ -1,3 +1,7 @@
+# Historical Stitch prompts — superseded
+
+> Do not use this file as current visual or product direction. The implemented CodeDaddy rebrand is defined in `design/DESIGN.md` and preserved under `design/stitch/codedaddy-learning-platform/`. This historical file contains rejected decisions including the former neon game treatment, leagues, bosses, chests, and dual reading registers.
+
 # Google Stitch Prompts — Interactive Career Academy
 
 **Responsive web application.** Desktop browser at 1440x900 is the product. Mobile web is a designed companion.

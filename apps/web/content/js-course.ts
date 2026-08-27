@@ -73,12 +73,935 @@ const references = {
       "const prices = [25, 40, 15];\n\nfunction addUp(list) {\n  let t = 0;\n  for (const item of list) {\n    t = t + item;\n  }\n  return t;\n}\n\nconsole.log(`Total: ${addUp(prices)} pesos`);\n",
     ),
   },
+  "fare-constant": { estimatedMinutes: 4, solution: js("const fare = 13;\n") },
+  "fare-payment": { estimatedMinutes: 4, solution: js("const fare = 13;\nconst paid = 20;\n") },
+  "fare-change": { estimatedMinutes: 5, solution: js("const fare = 13;\nconst paid = 20;\nconst change = paid - fare;\n") },
+  "fare-log-change": { estimatedMinutes: 5, solution: js("const fare = 13;\nconst paid = 20;\nconst change = paid - fare;\nconsole.log(`Change: ${change}`);\n") },
+  "fare-exact": { estimatedMinutes: 6, solution: js("const fare = 13;\n\nfunction hasExactFare(amount) {\n  return amount === fare;\n}\n") },
+  "fare-exact-log": { estimatedMinutes: 4, solution: js("const fare = 13;\n\nfunction hasExactFare(amount) {\n  return amount === fare;\n}\n\nconsole.log(hasExactFare(13));\n") },
+  "queue-list": { estimatedMinutes: 4, solution: js('const queue = ["Lia", "Noel", "Pia"];\n') },
+  "queue-contains": { estimatedMinutes: 5, solution: js('const queue = ["Lia", "Noel", "Pia"];\nconst isWaiting = queue.includes("Noel");\n') },
+  "queue-log": { estimatedMinutes: 4, solution: js('const queue = ["Lia", "Noel", "Pia"];\nconst isWaiting = queue.includes("Noel");\nconsole.log(isWaiting);\n') },
+  "queue-function": { estimatedMinutes: 6, solution: js('const queue = ["Lia", "Noel", "Pia"];\n\nfunction isInQueue(name) {\n  return queue.includes(name);\n}\n') },
+  "queue-position": { estimatedMinutes: 5, solution: js('const queue = ["Lia", "Noel", "Pia"];\nconst position = queue.indexOf("Pia");\n') },
+  "queue-position-log": { estimatedMinutes: 4, solution: js('const queue = ["Lia", "Noel", "Pia"];\nconst position = queue.indexOf("Pia");\nconsole.log(position);\n') },
+  "item-object": { estimatedMinutes: 5, solution: js('const item = { name: "Coffee", price: 12 };\n') },
+  "item-name": { estimatedMinutes: 4, solution: js('const item = { name: "Coffee", price: 12 };\nconst itemName = item.name;\n') },
+  "item-price": { estimatedMinutes: 4, solution: js('const item = { name: "Coffee", price: 12 };\nconst itemPrice = item.price;\n') },
+  "item-label": { estimatedMinutes: 6, solution: js('const item = { name: "Coffee", price: 12 };\n\nfunction labelFor(product) {\n  return `${product.name}: PHP ${product.price}`;\n}\n') },
+  "item-label-log": { estimatedMinutes: 4, solution: js('const item = { name: "Coffee", price: 12 };\n\nfunction labelFor(product) {\n  return `${product.name}: PHP ${product.price}`;\n}\n\nconsole.log(labelFor(item));\n') },
+  "budget-total": { estimatedMinutes: 4, solution: js("const budget = 500;\n") },
+  "budget-people": { estimatedMinutes: 4, solution: js("const budget = 500;\nconst people = 3;\n") },
+  "budget-share": { estimatedMinutes: 5, solution: js("const budget = 500;\nconst people = 3;\nconst share = budget / people;\n") },
+  "budget-remainder": { estimatedMinutes: 5, solution: js("const budget = 500;\nconst people = 3;\nconst remainder = budget % people;\n") },
+  "budget-label": { estimatedMinutes: 6, solution: js("function splitLabel(total, count) {\n  return `PHP ${total / count} each`;\n}\n") },
+  "budget-label-log": { estimatedMinutes: 4, solution: js("const budget = 500;\nconst people = 3;\n\nfunction splitLabel(total, count) {\n  return `PHP ${total / count} each`;\n}\n\nconsole.log(splitLabel(budget, people));\n") },
+  "raw-fare": { estimatedMinutes: 4, solution: js("const rawFare = 83.6;\n") },
+  "round-fare": { estimatedMinutes: 5, solution: js("const rawFare = 83.6;\nconst roundedFare = Math.round(rawFare);\n") },
+  "floor-fare": { estimatedMinutes: 5, solution: js("const rawFare = 83.6;\nconst lowerFare = Math.floor(rawFare);\n") },
+  "round-function": { estimatedMinutes: 6, solution: js("function pesoFare(amount) {\n  return Math.round(amount);\n}\n") },
+  "round-log": { estimatedMinutes: 4, solution: js("function pesoFare(amount) {\n  return Math.round(amount);\n}\n\nconsole.log(pesoFare(83.6));\n") },
+  "raw-name": { estimatedMinutes: 4, solution: js('const rawName = "  Ana  ";\n') },
+  "trim-name": { estimatedMinutes: 5, solution: js('const rawName = "  Ana  ";\nconst cleanName = rawName.trim();\n') },
+  "upper-name": { estimatedMinutes: 5, solution: js('const rawName = "  Ana  ";\nconst loudName = rawName.trim().toUpperCase();\n') },
+  "name-function": { estimatedMinutes: 6, solution: js("function displayName(name) {\n  return name.trim().toUpperCase();\n}\n") },
+  "name-log": { estimatedMinutes: 4, solution: js("function displayName(name) {\n  return name.trim().toUpperCase();\n}\n\nconsole.log(displayName(\"  Ana  \"));\n") },
+  "stock-list": { estimatedMinutes: 5, solution: js("const stocks = [3, 0, 5];\n") },
+  "sold-out-function": { estimatedMinutes: 6, solution: js("function isSoldOut(stock) {\n  return stock === 0;\n}\n") },
+  "sold-out-list": { estimatedMinutes: 6, solution: js("const stocks = [3, 0, 5];\n\nfunction isSoldOut(stock) {\n  return stock === 0;\n}\n\nconst soldOut = stocks.filter(isSoldOut);\n") },
+  "sold-out-count": { estimatedMinutes: 5, solution: js("const stocks = [3, 0, 5];\n\nfunction isSoldOut(stock) {\n  return stock === 0;\n}\n\nconst soldOut = stocks.filter(isSoldOut);\nconst soldOutCount = soldOut.length;\n") },
+  "sold-out-log": { estimatedMinutes: 4, solution: js("const stocks = [3, 0, 5];\n\nfunction isSoldOut(stock) {\n  return stock === 0;\n}\n\nconst soldOut = stocks.filter(isSoldOut);\nconsole.log(soldOut.length);\n") },
+  "price-list": { estimatedMinutes: 4, solution: js("const prices = [40, 70, 55];\n") },
+  "add-ten-function": { estimatedMinutes: 5, solution: js("function addTen(price) {\n  return price + 10;\n}\n") },
+  "updated-prices": { estimatedMinutes: 6, solution: js("const prices = [40, 70, 55];\n\nfunction addTen(price) {\n  return price + 10;\n}\n\nconst updated = prices.map(addTen);\n") },
+  "updated-first": { estimatedMinutes: 4, solution: js("const prices = [40, 70, 55];\n\nfunction addTen(price) {\n  return price + 10;\n}\n\nconst updated = prices.map(addTen);\nconst firstUpdated = updated[0];\n") },
+  "updated-log": { estimatedMinutes: 4, solution: js("const prices = [40, 70, 55];\n\nfunction addTen(price) {\n  return price + 10;\n}\n\nconst updated = prices.map(addTen);\nconsole.log(updated);\n") },
+  "donation-list": { estimatedMinutes: 4, solution: js("const donations = [50, 100, 25];\n") },
+  "add-function": { estimatedMinutes: 5, solution: js("function add(left, right) {\n  return left + right;\n}\n") },
+  "donation-total": { estimatedMinutes: 6, solution: js("const donations = [50, 100, 25];\n\nfunction add(left, right) {\n  return left + right;\n}\n\nconst total = donations.reduce(add, 0);\n") },
+  "donation-label": { estimatedMinutes: 4, solution: js("const donations = [50, 100, 25];\n\nfunction add(left, right) {\n  return left + right;\n}\n\nconst total = donations.reduce(add, 0);\nconst label = `PHP ${total}`;\n") },
+  "donation-log": { estimatedMinutes: 4, solution: js("const donations = [50, 100, 25];\n\nfunction add(left, right) {\n  return left + right;\n}\n\nconst total = donations.reduce(add, 0);\nconsole.log(total);\n") },
+  "contact-list": { estimatedMinutes: 4, solution: js("const contacts = [\"Health desk\", \"Permit desk\", \"Help desk\"];\n") },
+  "is-help-function": { estimatedMinutes: 5, solution: js("function isHelp(contact) {\n  return contact === \"Help desk\";\n}\n") },
+  "help-contact": { estimatedMinutes: 6, solution: js("const contacts = [\"Health desk\", \"Permit desk\", \"Help desk\"];\n\nfunction isHelp(contact) {\n  return contact === \"Help desk\";\n}\n\nconst helpContact = contacts.find(isHelp);\n") },
+  "contact-length": { estimatedMinutes: 4, solution: js("const contacts = [\"Health desk\", \"Permit desk\", \"Help desk\"];\n\nfunction isHelp(contact) {\n  return contact === \"Help desk\";\n}\n\nconst helpContact = contacts.find(isHelp);\nconst nameLength = helpContact.length;\n") },
+  "contact-log": { estimatedMinutes: 4, solution: js("const contacts = [\"Health desk\", \"Permit desk\", \"Help desk\"];\n\nfunction isHelp(contact) {\n  return contact === \"Help desk\";\n}\n\nconst helpContact = contacts.find(isHelp);\nconsole.log(helpContact);\n") },
+  "alert-stock-list": { estimatedMinutes: 4, solution: js("const stocks = [4, 0, 2];\n") },
+  "alert-sold-out-function": { estimatedMinutes: 5, solution: js("function isSoldOut(stock) {\n  return stock === 0;\n}\n") },
+  "alert-has-sold-out": { estimatedMinutes: 6, solution: js("const stocks = [4, 0, 2];\n\nfunction isSoldOut(stock) {\n  return stock === 0;\n}\n\nconst hasSoldOut = stocks.some(isSoldOut);\n") },
+  "alert-notice": { estimatedMinutes: 4, solution: js("const stocks = [4, 0, 2];\n\nfunction isSoldOut(stock) {\n  return stock === 0;\n}\n\nconst hasSoldOut = stocks.some(isSoldOut);\nconst notice = `Sold out: ${hasSoldOut}`;\n") },
+  "alert-log": { estimatedMinutes: 4, solution: js("const stocks = [4, 0, 2];\n\nfunction isSoldOut(stock) {\n  return stock === 0;\n}\n\nconst hasSoldOut = stocks.some(isSoldOut);\nconst notice = `Sold out: ${hasSoldOut}`;\nconsole.log(notice);\n") },
+  "payment-list": { estimatedMinutes: 4, solution: js("const payments = [20, 50, 35];\n") },
+  "paid-function": { estimatedMinutes: 5, solution: js("function isPaid(amount) {\n  return amount > 0;\n}\n") },
+  "all-paid": { estimatedMinutes: 6, solution: js("const payments = [20, 50, 35];\n\nfunction isPaid(amount) {\n  return amount > 0;\n}\n\nconst allPaid = payments.every(isPaid);\n") },
+  "payment-label": { estimatedMinutes: 4, solution: js("const payments = [20, 50, 35];\n\nfunction isPaid(amount) {\n  return amount > 0;\n}\n\nconst allPaid = payments.every(isPaid);\nconst label = `All paid: ${allPaid}`;\n") },
+  "payment-log": { estimatedMinutes: 4, solution: js("const payments = [20, 50, 35];\n\nfunction isPaid(amount) {\n  return amount > 0;\n}\n\nconst allPaid = payments.every(isPaid);\nconst label = `All paid: ${allPaid}`;\nconsole.log(label);\n") },
+  "notice-parts": { estimatedMinutes: 4, solution: js('const noticeParts = ["Flood", "warning"];\n') },
+  "notice-text": { estimatedMinutes: 5, solution: js('const noticeParts = ["Flood", "warning"];\nconst notice = noticeParts.join(" ");\n') },
+  "notice-label": { estimatedMinutes: 4, solution: js('const noticeParts = ["Flood", "warning"];\nconst notice = noticeParts.join(" ");\nconst label = "Alert: " + notice;\n') },
+  "notice-urgent": { estimatedMinutes: 5, solution: js('const noticeParts = ["Flood", "warning"];\nconst notice = noticeParts.join(" ");\nconst label = "Alert: " + notice;\nconst urgentLabel = label.toUpperCase();\n') },
+  "notice-log": { estimatedMinutes: 4, solution: js('const noticeParts = ["Flood", "warning"];\nconst notice = noticeParts.join(" ");\nconst label = "Alert: " + notice;\nconst urgentLabel = label.toUpperCase();\nconsole.log(urgentLabel);\n') },
+  "contact-object": { estimatedMinutes: 4, solution: js('const contact = { office: "Barangay Hall", phone: "117" };\n') },
+  "contact-keys": { estimatedMinutes: 6, solution: js('const contact = { office: "Barangay Hall", phone: "117" };\nconst keys = Object.keys(contact);\n') },
+  "contact-first-key": { estimatedMinutes: 4, solution: js('const contact = { office: "Barangay Hall", phone: "117" };\nconst keys = Object.keys(contact);\nconst firstKey = keys[0];\n') },
+  "contact-key-label": { estimatedMinutes: 5, solution: js('const contact = { office: "Barangay Hall", phone: "117" };\nconst keys = Object.keys(contact);\nconst firstKey = keys[0];\nconst label = firstKey.toUpperCase();\n') },
+  "contact-key-log": { estimatedMinutes: 4, solution: js('const contact = { office: "Barangay Hall", phone: "117" };\nconst keys = Object.keys(contact);\nconst firstKey = keys[0];\nconst label = firstKey.toUpperCase();\nconsole.log(label);\n') },
+  "service-list": { estimatedMinutes: 4, solution: js('const serviceNames = ["Health", "Permit"];\n') },
+  "service-is-list": { estimatedMinutes: 5, solution: js('const serviceNames = ["Health", "Permit"];\nconst hasList = Array.isArray(serviceNames);\n') },
+  "service-first": { estimatedMinutes: 4, solution: js('const serviceNames = ["Health", "Permit"];\nconst hasList = Array.isArray(serviceNames);\nconst firstService = serviceNames[0];\n') },
+  "service-label": { estimatedMinutes: 5, solution: js('const serviceNames = ["Health", "Permit"];\nconst hasList = Array.isArray(serviceNames);\nconst firstService = serviceNames[0];\nconst label = firstService + ": " + hasList;\n') },
+  "service-log": { estimatedMinutes: 4, solution: js('const serviceNames = ["Health", "Permit"];\nconst hasList = Array.isArray(serviceNames);\nconst firstService = serviceNames[0];\nconst label = firstService + ": " + hasList;\nconsole.log(label);\n') },
+  "shelter-object": { estimatedMinutes: 4, solution: js('const shelter = { lead: "Mila", seats: 40 };\n') },
+  "shelter-values": { estimatedMinutes: 6, solution: js('const shelter = { lead: "Mila", seats: 40 };\nconst values = Object.values(shelter);\n') },
+  "shelter-first-value": { estimatedMinutes: 4, solution: js('const shelter = { lead: "Mila", seats: 40 };\nconst values = Object.values(shelter);\nconst firstValue = values[0];\n') },
+  "shelter-label": { estimatedMinutes: 5, solution: js('const shelter = { lead: "Mila", seats: 40 };\nconst values = Object.values(shelter);\nconst firstValue = values[0];\nconst label = "Lead: " + firstValue;\n') },
+  "shelter-log": { estimatedMinutes: 4, solution: js('const shelter = { lead: "Mila", seats: 40 };\nconst values = Object.values(shelter);\nconst firstValue = values[0];\nconst label = "Lead: " + firstValue;\nconsole.log(label);\n') },
+  "hours-object": { estimatedMinutes: 4, solution: js('const hours = { open: "8 AM", close: "5 PM" };\n') },
+  "hours-entries": { estimatedMinutes: 6, solution: js('const hours = { open: "8 AM", close: "5 PM" };\nconst entries = Object.entries(hours);\n') },
+  "hours-first-entry": { estimatedMinutes: 4, solution: js('const hours = { open: "8 AM", close: "5 PM" };\nconst entries = Object.entries(hours);\nconst firstEntry = entries[0];\n') },
+  "hours-key": { estimatedMinutes: 4, solution: js('const hours = { open: "8 AM", close: "5 PM" };\nconst entries = Object.entries(hours);\nconst firstEntry = entries[0];\nconst firstKey = firstEntry[0];\n') },
+  "hours-log": { estimatedMinutes: 4, solution: js('const hours = { open: "8 AM", close: "5 PM" };\nconst entries = Object.entries(hours);\nconst firstEntry = entries[0];\nconst firstKey = firstEntry[0];\nconsole.log(firstKey);\n') },
+  "permit-object": { estimatedMinutes: 4, solution: js('const permit = { name: "Ari", status: "Draft" };\n') },
+  "permit-ready": { estimatedMinutes: 6, solution: js('const permit = { name: "Ari", status: "Draft" };\npermit.status = "Ready";\n') },
+  "permit-status": { estimatedMinutes: 4, solution: js('const permit = { name: "Ari", status: "Draft" };\npermit.status = "Ready";\nconst status = permit.status;\n') },
+  "permit-label": { estimatedMinutes: 5, solution: js('const permit = { name: "Ari", status: "Draft" };\npermit.status = "Ready";\nconst status = permit.status;\nconst label = "Status: " + status;\n') },
+  "permit-log": { estimatedMinutes: 4, solution: js('const permit = { name: "Ari", status: "Draft" };\npermit.status = "Ready";\nconst status = permit.status;\nconst label = "Status: " + status;\nconsole.log(label);\n') },
+  "desk-object": { estimatedMinutes: 4, solution: js('const desks = { health: "117", permit: "118" };\n') },
+  "desk-loop": { estimatedMinutes: 6, solution: js('const desks = { health: "117", permit: "118" };\nfor (const desk in desks) console.log(desk);\n') },
+  "desk-health-number": { estimatedMinutes: 5, solution: js('const desks = { health: "117", permit: "118" };\nfor (const desk in desks) console.log(desk);\nconst healthNumber = desks["health"];\n') },
+  "desk-label": { estimatedMinutes: 5, solution: js('const desks = { health: "117", permit: "118" };\nfor (const desk in desks) console.log(desk);\nconst healthNumber = desks["health"];\nconst label = "Health: " + healthNumber;\n') },
+  "desk-log": { estimatedMinutes: 4, solution: js('const desks = { health: "117", permit: "118" };\nfor (const desk in desks) console.log(desk);\nconst healthNumber = desks["health"];\nconst label = "Health: " + healthNumber;\nconsole.log(label);\n') },
+  "hotline-list": { estimatedMinutes: 4, solution: js('const hotlines = ["117", "911"];\n') },
+  "hotline-unpack": { estimatedMinutes: 6, solution: js('const hotlines = ["117", "911"];\nconst [health, emergency] = hotlines;\n') },
+  "hotline-label": { estimatedMinutes: 4, solution: js('const hotlines = ["117", "911"];\nconst [health, emergency] = hotlines;\nconst label = "Health: " + health;\n') },
+  "emergency-label": { estimatedMinutes: 4, solution: js('const hotlines = ["117", "911"];\nconst [health, emergency] = hotlines;\nconst label = "Health: " + health;\nconst emergencyLabel = "Emergency: " + emergency;\n') },
+  "hotline-log": { estimatedMinutes: 4, solution: js('const hotlines = ["117", "911"];\nconst [health, emergency] = hotlines;\nconst label = "Health: " + health;\nconst emergencyLabel = "Emergency: " + emergency;\nconsole.log(label);\nconsole.log(emergencyLabel);\n') },
+  "emergency-object": { estimatedMinutes: 4, solution: js('const emergency = { contact: "Mia", number: "911" };\n') },
+  "emergency-unpack": { estimatedMinutes: 6, solution: js('const emergency = { contact: "Mia", number: "911" };\nconst { contact, number } = emergency;\n') },
+  "emergency-contact-label": { estimatedMinutes: 4, solution: js('const emergency = { contact: "Mia", number: "911" };\nconst { contact, number } = emergency;\nconst contactLabel = "Contact: " + contact;\n') },
+  "emergency-number-label": { estimatedMinutes: 4, solution: js('const emergency = { contact: "Mia", number: "911" };\nconst { contact, number } = emergency;\nconst contactLabel = "Contact: " + contact;\nconst numberLabel = "Call: " + number;\n') },
+  "emergency-log": { estimatedMinutes: 4, solution: js('const emergency = { contact: "Mia", number: "911" };\nconst { contact, number } = emergency;\nconst contactLabel = "Contact: " + contact;\nconst numberLabel = "Call: " + number;\nconsole.log(contactLabel);\nconsole.log(numberLabel);\n') },
+  "welcome-guest": { estimatedMinutes: 4, solution: js('const guest = "Ari";\n') },
+  "welcome-function": { estimatedMinutes: 6, solution: js('const guest = "Ari";\n\nfunction welcome(name = "Neighbor") {\n  return "Welcome, " + name;\n}\n') },
+  "welcome-personal": { estimatedMinutes: 4, solution: js('const guest = "Ari";\n\nfunction welcome(name = "Neighbor") {\n  return "Welcome, " + name;\n}\n\nconst personalWelcome = welcome(guest);\n') },
+  "welcome-default": { estimatedMinutes: 4, solution: js('const guest = "Ari";\n\nfunction welcome(name = "Neighbor") {\n  return "Welcome, " + name;\n}\n\nconst personalWelcome = welcome(guest);\nconst defaultWelcome = welcome();\n') },
+  "welcome-log": { estimatedMinutes: 4, solution: js('const guest = "Ari";\n\nfunction welcome(name = "Neighbor") {\n  return "Welcome, " + name;\n}\n\nconst personalWelcome = welcome(guest);\nconst defaultWelcome = welcome();\nconsole.log(personalWelcome);\nconsole.log(defaultWelcome);\n') },
+  "service-status-object": { estimatedMinutes: 4, solution: js('const services = { health: "Open", permit: "Closed" };\n') },
+  "service-has-health": { estimatedMinutes: 6, solution: js('const services = { health: "Open", permit: "Closed" };\nconst hasHealth = Object.hasOwn(services, "health");\n') },
+  "service-has-sports": { estimatedMinutes: 4, solution: js('const services = { health: "Open", permit: "Closed" };\nconst hasHealth = Object.hasOwn(services, "health");\nconst hasSports = Object.hasOwn(services, "sports");\n') },
+  "service-health-label": { estimatedMinutes: 4, solution: js('const services = { health: "Open", permit: "Closed" };\nconst hasHealth = Object.hasOwn(services, "health");\nconst hasSports = Object.hasOwn(services, "sports");\nconst label = "Health service: " + hasHealth;\n') },
+  "service-health-log": { estimatedMinutes: 4, solution: js('const services = { health: "Open", permit: "Closed" };\nconst hasHealth = Object.hasOwn(services, "health");\nconst hasSports = Object.hasOwn(services, "sports");\nconst label = "Health service: " + hasHealth;\nconsole.log(label);\n') },
+  "roster-weekday": { estimatedMinutes: 4, solution: js('const weekdayShifts = ["Mia", "Ari"];\n') },
+  "roster-weekend": { estimatedMinutes: 4, solution: js('const weekdayShifts = ["Mia", "Ari"];\nconst weekendShifts = ["Noel"];\n') },
+  "roster-combine": { estimatedMinutes: 6, solution: js('const weekdayShifts = ["Mia", "Ari"];\nconst weekendShifts = ["Noel"];\nconst roster = [...weekdayShifts, ...weekendShifts];\n') },
+  "roster-first": { estimatedMinutes: 4, solution: js('const weekdayShifts = ["Mia", "Ari"];\nconst weekendShifts = ["Noel"];\nconst roster = [...weekdayShifts, ...weekendShifts];\nconst firstVolunteer = roster[0];\n') },
+  "roster-log": { estimatedMinutes: 4, solution: js('const weekdayShifts = ["Mia", "Ari"];\nconst weekendShifts = ["Noel"];\nconst roster = [...weekdayShifts, ...weekendShifts];\nconst firstVolunteer = roster[0];\nconsole.log(firstVolunteer);\n') },
+  "donation-raw": { estimatedMinutes: 4, solution: js('const rawDonation = "125";\n') },
+  "donation-number": { estimatedMinutes: 6, solution: js('const rawDonation = "125";\nconst amount = Number(rawDonation);\n') },
+  "donation-large": { estimatedMinutes: 4, solution: js('const rawDonation = "125";\nconst amount = Number(rawDonation);\nconst isLarge = amount >= 100;\n') },
+  "donation-large-label": { estimatedMinutes: 4, solution: js('const rawDonation = "125";\nconst amount = Number(rawDonation);\nconst isLarge = amount >= 100;\nconst label = "Large donation: " + isLarge;\n') },
+  "donation-large-log": { estimatedMinutes: 4, solution: js('const rawDonation = "125";\nconst amount = Number(rawDonation);\nconst isLarge = amount >= 100;\nconst label = "Large donation: " + isLarge;\nconsole.log(label);\n') },
+  "visitor-name": { estimatedMinutes: 4, solution: js('const visitor = "Mila Santos";\n') },
+  "visitor-has-mila": { estimatedMinutes: 6, solution: js('const visitor = "Mila Santos";\nconst hasMila = visitor.includes("Mila");\n') },
+  "visitor-has-ari": { estimatedMinutes: 4, solution: js('const visitor = "Mila Santos";\nconst hasMila = visitor.includes("Mila");\nconst hasAri = visitor.includes("Ari");\n') },
+  "visitor-label": { estimatedMinutes: 4, solution: js('const visitor = "Mila Santos";\nconst hasMila = visitor.includes("Mila");\nconst hasAri = visitor.includes("Ari");\nconst label = "Mila listed: " + hasMila;\n') },
+  "visitor-log": { estimatedMinutes: 4, solution: js('const visitor = "Mila Santos";\nconst hasMila = visitor.includes("Mila");\nconst hasAri = visitor.includes("Ari");\nconst label = "Mila listed: " + hasMila;\nconsole.log(label);\n') },
+  "event-message": { estimatedMinutes: 4, solution: js('const message = "Clean-up day";\n') },
+  "event-announce": { estimatedMinutes: 6, solution: js('const message = "Clean-up day";\nconst announce = () => message;\n') },
+  "event-announcement": { estimatedMinutes: 4, solution: js('const message = "Clean-up day";\nconst announce = () => message;\nconst announcement = announce();\n') },
+  "event-loud": { estimatedMinutes: 4, solution: js('const message = "Clean-up day";\nconst announce = () => message;\nconst announcement = announce();\nconst loudAnnouncement = announcement.toUpperCase();\n') },
+  "event-log": { estimatedMinutes: 4, solution: js('const message = "Clean-up day";\nconst announce = () => message;\nconst announcement = announce();\nconst loudAnnouncement = announcement.toUpperCase();\nconsole.log(loudAnnouncement);\n') },
+  "attendee-list": { estimatedMinutes: 4, solution: js('const attendees = ["Mia", "Ari", "Noel"];\n') },
+  "attendee-counter": { estimatedMinutes: 6, solution: js('const attendees = ["Mia", "Ari", "Noel"];\n\nfunction countNames(...names) {\n  return names.length;\n}\n') },
+  "attendee-count": { estimatedMinutes: 4, solution: js('const attendees = ["Mia", "Ari", "Noel"];\n\nfunction countNames(...names) {\n  return names.length;\n}\n\nconst attendeeCount = countNames(...attendees);\n') },
+  "attendee-label": { estimatedMinutes: 4, solution: js('const attendees = ["Mia", "Ari", "Noel"];\n\nfunction countNames(...names) {\n  return names.length;\n}\n\nconst attendeeCount = countNames(...attendees);\nconst label = "Attendees: " + attendeeCount;\n') },
+  "attendee-log": { estimatedMinutes: 4, solution: js('const attendees = ["Mia", "Ari", "Noel"];\n\nfunction countNames(...names) {\n  return names.length;\n}\n\nconst attendeeCount = countNames(...attendees);\nconst label = "Attendees: " + attendeeCount;\nconsole.log(label);\n') },
+  "reminder-list": { estimatedMinutes: 4, solution: js('const reminders = ["Bring water", "Wear a hat"];\n') },
+  "reminder-each": { estimatedMinutes: 6, solution: js('const reminders = ["Bring water", "Wear a hat"];\nreminders.forEach((reminder) => console.log(reminder));\n') },
+  "reminder-count": { estimatedMinutes: 4, solution: js('const reminders = ["Bring water", "Wear a hat"];\nreminders.forEach((reminder) => console.log(reminder));\nconst reminderCount = reminders.length;\n') },
+  "reminder-label": { estimatedMinutes: 4, solution: js('const reminders = ["Bring water", "Wear a hat"];\nreminders.forEach((reminder) => console.log(reminder));\nconst reminderCount = reminders.length;\nconst label = "Reminders: " + reminderCount;\n') },
+  "reminder-log": { estimatedMinutes: 4, solution: js('const reminders = ["Bring water", "Wear a hat"];\nreminders.forEach((reminder) => console.log(reminder));\nconst reminderCount = reminders.length;\nconst label = "Reminders: " + reminderCount;\nconsole.log(label);\n') },
+  "aid-list": { estimatedMinutes: 4, solution: js('const aidPacks = [2, 3, 4];\n') },
+  "aid-double": { estimatedMinutes: 6, solution: js('const aidPacks = [2, 3, 4];\nconst doubledPacks = aidPacks.map((pack) => pack * 2);\n') },
+  "aid-first": { estimatedMinutes: 4, solution: js('const aidPacks = [2, 3, 4];\nconst doubledPacks = aidPacks.map((pack) => pack * 2);\nconst firstDoubled = doubledPacks[0];\n') },
+  "aid-label": { estimatedMinutes: 4, solution: js('const aidPacks = [2, 3, 4];\nconst doubledPacks = aidPacks.map((pack) => pack * 2);\nconst firstDoubled = doubledPacks[0];\nconst label = "First doubled pack: " + firstDoubled;\n') },
+  "aid-log": { estimatedMinutes: 4, solution: js('const aidPacks = [2, 3, 4];\nconst doubledPacks = aidPacks.map((pack) => pack * 2);\nconst firstDoubled = doubledPacks[0];\nconst label = "First doubled pack: " + firstDoubled;\nconsole.log(label);\n') },
+  "seat-list": { estimatedMinutes: 4, solution: js('const seats = [0, 4, 2];\n') },
+  "seat-open": { estimatedMinutes: 6, solution: js('const seats = [0, 4, 2];\nconst openSeats = seats.filter((seat) => seat > 0);\n') },
+  "seat-first": { estimatedMinutes: 4, solution: js('const seats = [0, 4, 2];\nconst openSeats = seats.filter((seat) => seat > 0);\nconst firstOpen = openSeats[0];\n') },
+  "seat-label": { estimatedMinutes: 4, solution: js('const seats = [0, 4, 2];\nconst openSeats = seats.filter((seat) => seat > 0);\nconst firstOpen = openSeats[0];\nconst label = "First open seats: " + firstOpen;\n') },
+  "seat-log": { estimatedMinutes: 4, solution: js('const seats = [0, 4, 2];\nconst openSeats = seats.filter((seat) => seat > 0);\nconst firstOpen = openSeats[0];\nconst label = "First open seats: " + firstOpen;\nconsole.log(label);\n') },
+  "rice-list": { estimatedMinutes: 4, solution: js("const sacks = [3, 5, 2];\n") },
+  "rice-add": { estimatedMinutes: 6, solution: js("const sacks = [3, 5, 2];\n\nfunction add(left, right) {\n  return left + right;\n}\n") },
+  "rice-total": { estimatedMinutes: 6, solution: js("const sacks = [3, 5, 2];\n\nfunction add(left, right) {\n  return left + right;\n}\n\nconst totalSacks = sacks.reduce(add, 0);\n") },
+  "rice-label": { estimatedMinutes: 4, solution: js('const sacks = [3, 5, 2];\n\nfunction add(left, right) {\n  return left + right;\n}\n\nconst totalSacks = sacks.reduce(add, 0);\nconst label = "Rice sacks: " + totalSacks;\n') },
+  "rice-log": { estimatedMinutes: 4, solution: js('const sacks = [3, 5, 2];\n\nfunction add(left, right) {\n  return left + right;\n}\n\nconst totalSacks = sacks.reduce(add, 0);\nconst label = "Rice sacks: " + totalSacks;\nconsole.log(label);\n') },
+  "notice-list": { estimatedMinutes: 4, solution: js('const notices = ["Meeting", "Cleanup", "Clinic"];\n') },
+  "notice-reverse": { estimatedMinutes: 6, solution: js('const notices = ["Meeting", "Cleanup", "Clinic"];\nconst newestFirst = notices.reverse();\n') },
+  "notice-first": { estimatedMinutes: 4, solution: js('const notices = ["Meeting", "Cleanup", "Clinic"];\nconst newestFirst = notices.reverse();\nconst firstNotice = newestFirst[0];\n') },
+  "notice-first-label": { estimatedMinutes: 4, solution: js('const notices = ["Meeting", "Cleanup", "Clinic"];\nconst newestFirst = notices.reverse();\nconst firstNotice = newestFirst[0];\nconst label = "First notice: " + firstNotice;\n') },
+  "notice-first-log": { estimatedMinutes: 4, solution: js('const notices = ["Meeting", "Cleanup", "Clinic"];\nconst newestFirst = notices.reverse();\nconst firstNotice = newestFirst[0];\nconst label = "First notice: " + firstNotice;\nconsole.log(label);\n') },
+  "top-notice-list": { estimatedMinutes: 4, solution: js('const notices = ["Meeting", "Cleanup", "Clinic"];\n') },
+  "top-notice-copy": { estimatedMinutes: 6, solution: js('const notices = ["Meeting", "Cleanup", "Clinic"];\nconst topNotices = notices.slice(0, 2);\n') },
+  "top-notice-first": { estimatedMinutes: 4, solution: js('const notices = ["Meeting", "Cleanup", "Clinic"];\nconst topNotices = notices.slice(0, 2);\nconst firstNotice = topNotices[0];\n') },
+  "top-notice-label": { estimatedMinutes: 4, solution: js('const notices = ["Meeting", "Cleanup", "Clinic"];\nconst topNotices = notices.slice(0, 2);\nconst firstNotice = topNotices[0];\nconst label = "Top notice: " + firstNotice;\n') },
+  "top-notice-log": { estimatedMinutes: 4, solution: js('const notices = ["Meeting", "Cleanup", "Clinic"];\nconst topNotices = notices.slice(0, 2);\nconst firstNotice = topNotices[0];\nconst label = "Top notice: " + firstNotice;\nconsole.log(label);\n') },
+  "morning-tags": { estimatedMinutes: 4, solution: js('const morningTags = ["Meeting", "Cleanup"];\n') },
+  "afternoon-tags": { estimatedMinutes: 4, solution: js('const morningTags = ["Meeting", "Cleanup"];\nconst afternoonTags = ["Clinic"];\n') },
+  "all-tags": { estimatedMinutes: 6, solution: js('const morningTags = ["Meeting", "Cleanup"];\nconst afternoonTags = ["Clinic"];\nconst allTags = morningTags.concat(afternoonTags);\n') },
+  "tag-count": { estimatedMinutes: 4, solution: js('const morningTags = ["Meeting", "Cleanup"];\nconst afternoonTags = ["Clinic"];\nconst allTags = morningTags.concat(afternoonTags);\nconst tagCount = allTags.length;\n') },
+  "tag-count-log": { estimatedMinutes: 4, solution: js('const morningTags = ["Meeting", "Cleanup"];\nconst afternoonTags = ["Clinic"];\nconst allTags = morningTags.concat(afternoonTags);\nconst tagCount = allTags.length;\nconsole.log(tagCount);\n') },
+  "supply-groups": { estimatedMinutes: 4, solution: js('const supplyGroups = [["Medicine", "Water"], ["Rice"]];\n') },
+  "supply-flat": { estimatedMinutes: 6, solution: js('const supplyGroups = [["Medicine", "Water"], ["Rice"]];\nconst supplies = supplyGroups.flat();\n') },
+  "supply-flat-first": { estimatedMinutes: 4, solution: js('const supplyGroups = [["Medicine", "Water"], ["Rice"]];\nconst supplies = supplyGroups.flat();\nconst firstSupply = supplies[0];\n') },
+  "supply-flat-label": { estimatedMinutes: 4, solution: js('const supplyGroups = [["Medicine", "Water"], ["Rice"]];\nconst supplies = supplyGroups.flat();\nconst firstSupply = supplies[0];\nconst label = "First supply: " + firstSupply;\n') },
+  "supply-flat-log": { estimatedMinutes: 4, solution: js('const supplyGroups = [["Medicine", "Water"], ["Rice"]];\nconst supplies = supplyGroups.flat();\nconst firstSupply = supplies[0];\nconst label = "First supply: " + firstSupply;\nconsole.log(label);\n') },
+  "latest-notice-list": { estimatedMinutes: 4, solution: js('const notices = ["Meeting", "Clinic", "Cleanup"];\n') },
+  "latest-notice": { estimatedMinutes: 6, solution: js('const notices = ["Meeting", "Clinic", "Cleanup"];\nconst latestNotice = notices.at(-1);\n') },
+  "latest-notice-label": { estimatedMinutes: 4, solution: js('const notices = ["Meeting", "Clinic", "Cleanup"];\nconst latestNotice = notices.at(-1);\nconst label = "Latest notice: " + latestNotice;\n') },
+  "latest-notice-loud": { estimatedMinutes: 4, solution: js('const notices = ["Meeting", "Clinic", "Cleanup"];\nconst latestNotice = notices.at(-1);\nconst label = "Latest notice: " + latestNotice;\nconst loudLabel = label.toUpperCase();\n') },
+  "latest-notice-log": { estimatedMinutes: 4, solution: js('const notices = ["Meeting", "Clinic", "Cleanup"];\nconst latestNotice = notices.at(-1);\nconst label = "Latest notice: " + latestNotice;\nconst loudLabel = label.toUpperCase();\nconsole.log(loudLabel);\n') },
+  "service-position-list": { estimatedMinutes: 4, solution: js('const services = ["Health", "Permit", "Sports"];\n') },
+  "permit-index": { estimatedMinutes: 5, solution: js('const services = ["Health", "Permit", "Sports"];\nconst permitIndex = services.indexOf("Permit");\n') },
+  "permit-number": { estimatedMinutes: 4, solution: js('const services = ["Health", "Permit", "Sports"];\nconst permitIndex = services.indexOf("Permit");\nconst permitNumber = permitIndex + 1;\n') },
+  "permit-number-label": { estimatedMinutes: 4, solution: js('const services = ["Health", "Permit", "Sports"];\nconst permitIndex = services.indexOf("Permit");\nconst permitNumber = permitIndex + 1;\nconst label = "Permit service: " + permitNumber;\n') },
+  "permit-number-log": { estimatedMinutes: 4, solution: js('const services = ["Health", "Permit", "Sports"];\nconst permitIndex = services.indexOf("Permit");\nconst permitNumber = permitIndex + 1;\nconst label = "Permit service: " + permitNumber;\nconsole.log(label);\n') },
+  "service-labels-object": { estimatedMinutes: 4, solution: js('const services = { health: "Open", permit: "Closed" };\n') },
+  "service-labels-entries": { estimatedMinutes: 6, solution: js('const services = { health: "Open", permit: "Closed" };\nconst entries = Object.entries(services);\n') },
+  "service-labels-first": { estimatedMinutes: 4, solution: js('const services = { health: "Open", permit: "Closed" };\nconst entries = Object.entries(services);\nconst firstEntry = entries[0];\n') },
+  "service-labels-text": { estimatedMinutes: 4, solution: js('const services = { health: "Open", permit: "Closed" };\nconst entries = Object.entries(services);\nconst firstEntry = entries[0];\nconst label = firstEntry[0] + ": " + firstEntry[1];\n') },
+  "service-labels-log": { estimatedMinutes: 4, solution: js('const services = { health: "Open", permit: "Closed" };\nconst entries = Object.entries(services);\nconst firstEntry = entries[0];\nconst label = firstEntry[0] + ": " + firstEntry[1];\nconsole.log(label);\n') },
+  "volunteer-counts": { estimatedMinutes: 4, solution: js("const volunteerCounts = [2, 1, 3];\n") },
+  "has-volunteer": { estimatedMinutes: 5, solution: js("const volunteerCounts = [2, 1, 3];\n\nfunction hasVolunteer(count) {\n  return count > 0;\n}\n") },
+  "all-volunteers": { estimatedMinutes: 6, solution: js("const volunteerCounts = [2, 1, 3];\n\nfunction hasVolunteer(count) {\n  return count > 0;\n}\n\nconst allPresent = volunteerCounts.every(hasVolunteer);\n") },
+  "all-volunteers-label": { estimatedMinutes: 4, solution: js('const volunteerCounts = [2, 1, 3];\n\nfunction hasVolunteer(count) {\n  return count > 0;\n}\n\nconst allPresent = volunteerCounts.every(hasVolunteer);\nconst label = "Every zone staffed: " + allPresent;\n') },
+  "all-volunteers-log": { estimatedMinutes: 4, solution: js('const volunteerCounts = [2, 1, 3];\n\nfunction hasVolunteer(count) {\n  return count > 0;\n}\n\nconst allPresent = volunteerCounts.every(hasVolunteer);\nconst label = "Every zone staffed: " + allPresent;\nconsole.log(label);\n') },
+  "aid-search-list": { estimatedMinutes: 4, solution: js('const aidItems = ["Water", "Rice", "Blanket"];\n') },
+  "is-rice": { estimatedMinutes: 5, solution: js('const aidItems = ["Water", "Rice", "Blanket"];\n\nfunction isRice(item) {\n  return item === "Rice";\n}\n') },
+  "rice-aid": { estimatedMinutes: 6, solution: js('const aidItems = ["Water", "Rice", "Blanket"];\n\nfunction isRice(item) {\n  return item === "Rice";\n}\n\nconst riceAid = aidItems.find(isRice);\n') },
+  "rice-aid-label": { estimatedMinutes: 4, solution: js('const aidItems = ["Water", "Rice", "Blanket"];\n\nfunction isRice(item) {\n  return item === "Rice";\n}\n\nconst riceAid = aidItems.find(isRice);\nconst label = "Rice aid: " + riceAid;\n') },
+  "rice-aid-log": { estimatedMinutes: 4, solution: js('const aidItems = ["Water", "Rice", "Blanket"];\n\nfunction isRice(item) {\n  return item === "Rice";\n}\n\nconst riceAid = aidItems.find(isRice);\nconst label = "Rice aid: " + riceAid;\nconsole.log(label);\n') },
+  "aid-stock-list": { estimatedMinutes: 4, solution: js("const stockCounts = [3, 0, 2];\n") },
+  "aid-stock-empty": { estimatedMinutes: 5, solution: js("const stockCounts = [3, 0, 2];\n\nfunction isEmpty(count) {\n  return count === 0;\n}\n") },
+  "aid-stock-alert": { estimatedMinutes: 6, solution: js("const stockCounts = [3, 0, 2];\n\nfunction isEmpty(count) {\n  return count === 0;\n}\n\nconst hasEmptyStock = stockCounts.some(isEmpty);\n") },
+  "aid-stock-label": { estimatedMinutes: 4, solution: js('const stockCounts = [3, 0, 2];\n\nfunction isEmpty(count) {\n  return count === 0;\n}\n\nconst hasEmptyStock = stockCounts.some(isEmpty);\nconst label = "Needs restock: " + hasEmptyStock;\n') },
+  "aid-stock-log": { estimatedMinutes: 4, solution: js('const stockCounts = [3, 0, 2];\n\nfunction isEmpty(count) {\n  return count === 0;\n}\n\nconst hasEmptyStock = stockCounts.some(isEmpty);\nconst label = "Needs restock: " + hasEmptyStock;\nconsole.log(label);\n') },
+  "hotline-prefix-list": { estimatedMinutes: 4, solution: js('const hotlines = ["117", "911"];\n') },
+  "hotline-prefix-first": { estimatedMinutes: 4, solution: js('const hotlines = ["117", "911"];\nconst firstHotline = hotlines[0];\n') },
+  "hotline-prefix-check": { estimatedMinutes: 6, solution: js('const hotlines = ["117", "911"];\nconst firstHotline = hotlines[0];\nconst startsWithOne = firstHotline.startsWith("1");\n') },
+  "hotline-prefix-label": { estimatedMinutes: 4, solution: js('const hotlines = ["117", "911"];\nconst firstHotline = hotlines[0];\nconst startsWithOne = firstHotline.startsWith("1");\nconst label = "Starts with 1: " + startsWithOne;\n') },
+  "hotline-prefix-log": { estimatedMinutes: 4, solution: js('const hotlines = ["117", "911"];\nconst firstHotline = hotlines[0];\nconst startsWithOne = firstHotline.startsWith("1");\nconst label = "Starts with 1: " + startsWithOne;\nconsole.log(label);\n') },
+  "permit-suffix-list": { estimatedMinutes: 4, solution: js('const permits = ["A-2026", "B-2025"];\n') },
+  "permit-suffix-first": { estimatedMinutes: 4, solution: js('const permits = ["A-2026", "B-2025"];\nconst currentPermit = permits[0];\n') },
+  "permit-suffix-check": { estimatedMinutes: 6, solution: js('const permits = ["A-2026", "B-2025"];\nconst currentPermit = permits[0];\nconst endsWithYear = currentPermit.endsWith("2026");\n') },
+  "permit-suffix-label": { estimatedMinutes: 4, solution: js('const permits = ["A-2026", "B-2025"];\nconst currentPermit = permits[0];\nconst endsWithYear = currentPermit.endsWith("2026");\nconst label = "Current year: " + endsWithYear;\n') },
+  "permit-suffix-log": { estimatedMinutes: 4, solution: js('const permits = ["A-2026", "B-2025"];\nconst currentPermit = permits[0];\nconst endsWithYear = currentPermit.endsWith("2026");\nconst label = "Current year: " + endsWithYear;\nconsole.log(label);\n') },
+  "notice-edit-text": { estimatedMinutes: 4, solution: js('const notice = "Meeting 2025";\n') },
+  "notice-edit-year": { estimatedMinutes: 6, solution: js('const notice = "Meeting 2025";\nconst updatedNotice = notice.replace("2025", "2026");\n') },
+  "notice-edit-label": { estimatedMinutes: 4, solution: js('const notice = "Meeting 2025";\nconst updatedNotice = notice.replace("2025", "2026");\nconst label = "Updated: " + updatedNotice;\n') },
+  "notice-edit-loud": { estimatedMinutes: 4, solution: js('const notice = "Meeting 2025";\nconst updatedNotice = notice.replace("2025", "2026");\nconst label = "Updated: " + updatedNotice;\nconst loudLabel = label.toUpperCase();\n') },
+  "notice-edit-log": { estimatedMinutes: 4, solution: js('const notice = "Meeting 2025";\nconst updatedNotice = notice.replace("2025", "2026");\nconst label = "Updated: " + updatedNotice;\nconst loudLabel = label.toUpperCase();\nconsole.log(loudLabel);\n') },
+  "ticket-code-text": { estimatedMinutes: 4, solution: js('const ticket = "7";\n') },
+  "ticket-code-pad": { estimatedMinutes: 6, solution: js('const ticket = "7";\nconst ticketCode = ticket.padStart(3, "0");\n') },
+  "ticket-code-label": { estimatedMinutes: 4, solution: js('const ticket = "7";\nconst ticketCode = ticket.padStart(3, "0");\nconst label = "Ticket: " + ticketCode;\n') },
+  "ticket-code-loud": { estimatedMinutes: 4, solution: js('const ticket = "7";\nconst ticketCode = ticket.padStart(3, "0");\nconst label = "Ticket: " + ticketCode;\nconst loudLabel = label.toUpperCase();\n') },
+  "ticket-code-log": { estimatedMinutes: 4, solution: js('const ticket = "7";\nconst ticketCode = ticket.padStart(3, "0");\nconst label = "Ticket: " + ticketCode;\nconst loudLabel = label.toUpperCase();\nconsole.log(loudLabel);\n') },
+  "highest-donation-list": { estimatedMinutes: 4, solution: js("const highDonations = [100, 250, 175];\n") },
+  "highest-donation-max": { estimatedMinutes: 6, solution: js("const highDonations = [100, 250, 175];\nconst highestDonation = Math.max(...highDonations);\n") },
+  "highest-donation-label": { estimatedMinutes: 4, solution: js('const highDonations = [100, 250, 175];\nconst highestDonation = Math.max(...highDonations);\nconst label = "Highest donation: PHP " + highestDonation;\n') },
+  "highest-donation-loud": { estimatedMinutes: 4, solution: js('const highDonations = [100, 250, 175];\nconst highestDonation = Math.max(...highDonations);\nconst label = "Highest donation: PHP " + highestDonation;\nconst loudLabel = label.toUpperCase();\n') },
+  "highest-donation-log": { estimatedMinutes: 4, solution: js('const highDonations = [100, 250, 175];\nconst highestDonation = Math.max(...highDonations);\nconst label = "Highest donation: PHP " + highestDonation;\nconst loudLabel = label.toUpperCase();\nconsole.log(loudLabel);\n') },
+  "water-alert-levels": { estimatedMinutes: 4, solution: js("const waterLevels = [80, 45, 60];\n") },
+  "water-alert-lowest": { estimatedMinutes: 6, solution: js("const waterLevels = [80, 45, 60];\nconst lowestLevel = Math.min(...waterLevels);\n") },
+  "water-alert-refill": { estimatedMinutes: 4, solution: js("const waterLevels = [80, 45, 60];\nconst lowestLevel = Math.min(...waterLevels);\nconst needsRefill = lowestLevel < 50;\n") },
+  "water-alert-label": { estimatedMinutes: 4, solution: js('const waterLevels = [80, 45, 60];\nconst lowestLevel = Math.min(...waterLevels);\nconst needsRefill = lowestLevel < 50;\nconst label = "Needs refill: " + needsRefill;\n') },
+  "water-alert-log": { estimatedMinutes: 4, solution: js('const waterLevels = [80, 45, 60];\nconst lowestLevel = Math.min(...waterLevels);\nconst needsRefill = lowestLevel < 50;\nconst label = "Needs refill: " + needsRefill;\nconsole.log(label);\n') },
+  "relief-box-families": { estimatedMinutes: 4, solution: js("const familyCount = 13;\n") },
+  "relief-box-capacity": { estimatedMinutes: 4, solution: js("const familyCount = 13;\nconst packsPerBox = 5;\n") },
+  "relief-box-count": { estimatedMinutes: 6, solution: js("const familyCount = 13;\nconst packsPerBox = 5;\nconst boxesNeeded = Math.ceil(familyCount / packsPerBox);\n") },
+  "relief-box-label": { estimatedMinutes: 4, solution: js('const familyCount = 13;\nconst packsPerBox = 5;\nconst boxesNeeded = Math.ceil(familyCount / packsPerBox);\nconst label = "Boxes needed: " + boxesNeeded;\n') },
+  "relief-box-log": { estimatedMinutes: 4, solution: js('const familyCount = 13;\nconst packsPerBox = 5;\nconst boxesNeeded = Math.ceil(familyCount / packsPerBox);\nconst label = "Boxes needed: " + boxesNeeded;\nconsole.log(label);\n') },
+  "cash-difference-fare": { estimatedMinutes: 4, solution: js("const fare = 73;\n") },
+  "cash-difference-paid": { estimatedMinutes: 4, solution: js("const fare = 73;\nconst paid = 50;\n") },
+  "cash-difference-value": { estimatedMinutes: 4, solution: js("const fare = 73;\nconst paid = 50;\nconst difference = paid - fare;\n") },
+  "cash-difference-amount": { estimatedMinutes: 6, solution: js("const fare = 73;\nconst paid = 50;\nconst difference = paid - fare;\nconst amountToCollect = Math.abs(difference);\n") },
+  "cash-difference-log": { estimatedMinutes: 4, solution: js('const fare = 73;\nconst paid = 50;\nconst difference = paid - fare;\nconst amountToCollect = Math.abs(difference);\nconsole.log("Amount to collect: PHP " + amountToCollect);\n') },
+  "full-box-pack-count": { estimatedMinutes: 4, solution: js("const packCount = 18;\n") },
+  "full-box-capacity": { estimatedMinutes: 4, solution: js("const packCount = 18;\nconst packsPerBox = 6;\n") },
+  "full-box-count": { estimatedMinutes: 4, solution: js("const packCount = 18;\nconst packsPerBox = 6;\nconst boxCount = packCount / packsPerBox;\n") },
+  "full-box-check": { estimatedMinutes: 6, solution: js("const packCount = 18;\nconst packsPerBox = 6;\nconst boxCount = packCount / packsPerBox;\nconst isWholeBoxCount = Number.isInteger(boxCount);\n") },
+  "full-box-log": { estimatedMinutes: 4, solution: js('const packCount = 18;\nconst packsPerBox = 6;\nconst boxCount = packCount / packsPerBox;\nconst isWholeBoxCount = Number.isInteger(boxCount);\nconsole.log("Full boxes: " + isWholeBoxCount);\n') },
+  "price-tag-price": { estimatedMinutes: 4, solution: js("const price = 12.5;\n") },
+  "price-tag-fixed": { estimatedMinutes: 6, solution: js("const price = 12.5;\nconst priceText = price.toFixed(2);\n") },
+  "price-tag-label": { estimatedMinutes: 4, solution: js('const price = 12.5;\nconst priceText = price.toFixed(2);\nconst priceTag = "PHP " + priceText;\n') },
+  "price-tag-length": { estimatedMinutes: 4, solution: js('const price = 12.5;\nconst priceText = price.toFixed(2);\nconst priceTag = "PHP " + priceText;\nconst tagLength = priceTag.length;\n') },
+  "price-tag-log": { estimatedMinutes: 4, solution: js('const price = 12.5;\nconst priceText = price.toFixed(2);\nconst priceTag = "PHP " + priceText;\nconst tagLength = priceTag.length;\nconsole.log(priceTag);\n') },
+  "meter-reading-text": { estimatedMinutes: 4, solution: js('const readingText = "18.75";\n') },
+  "meter-reading-number": { estimatedMinutes: 6, solution: js('const readingText = "18.75";\nconst reading = Number.parseFloat(readingText);\n') },
+  "meter-reading-check": { estimatedMinutes: 4, solution: js('const readingText = "18.75";\nconst reading = Number.parseFloat(readingText);\nconst isHighReading = reading > 15;\n') },
+  "meter-reading-label": { estimatedMinutes: 4, solution: js('const readingText = "18.75";\nconst reading = Number.parseFloat(readingText);\nconst isHighReading = reading > 15;\nconst label = "High reading: " + isHighReading;\n') },
+  "meter-reading-log": { estimatedMinutes: 4, solution: js('const readingText = "18.75";\nconst reading = Number.parseFloat(readingText);\nconst isHighReading = reading > 15;\nconst label = "High reading: " + isHighReading;\nconsole.log(label);\n') },
+  "notice-words-text": { estimatedMinutes: 4, solution: js('const noticeText = "Clinic opens Monday";\n') },
+  "notice-words-list": { estimatedMinutes: 6, solution: js('const noticeText = "Clinic opens Monday";\nconst words = noticeText.split(" ");\n') },
+  "notice-words-count": { estimatedMinutes: 4, solution: js('const noticeText = "Clinic opens Monday";\nconst words = noticeText.split(" ");\nconst wordCount = words.length;\n') },
+  "notice-words-label": { estimatedMinutes: 4, solution: js('const noticeText = "Clinic opens Monday";\nconst words = noticeText.split(" ");\nconst wordCount = words.length;\nconst label = "Words: " + wordCount;\n') },
+  "notice-words-log": { estimatedMinutes: 4, solution: js('const noticeText = "Clinic opens Monday";\nconst words = noticeText.split(" ");\nconst wordCount = words.length;\nconst label = "Words: " + wordCount;\nconsole.log(label);\n') },
+  "alert-banner-mark": { estimatedMinutes: 4, solution: js('const alertMark = "!";\n') },
+  "alert-banner-marks": { estimatedMinutes: 6, solution: js('const alertMark = "!";\nconst alertMarks = alertMark.repeat(3);\n') },
+  "alert-banner-label": { estimatedMinutes: 4, solution: js('const alertMark = "!";\nconst alertMarks = alertMark.repeat(3);\nconst label = "Flood alert" + alertMarks;\n') },
+  "alert-banner-loud": { estimatedMinutes: 4, solution: js('const alertMark = "!";\nconst alertMarks = alertMark.repeat(3);\nconst label = "Flood alert" + alertMarks;\nconst loudLabel = label.toUpperCase();\n') },
+  "alert-banner-log": { estimatedMinutes: 4, solution: js('const alertMark = "!";\nconst alertMarks = alertMark.repeat(3);\nconst label = "Flood alert" + alertMarks;\nconst loudLabel = label.toUpperCase();\nconsole.log(loudLabel);\n') },
+  "permit-prefix-code": { estimatedMinutes: 4, solution: js('const permitCode = "BRGY-2026-001";\n') },
+  "permit-prefix-text": { estimatedMinutes: 6, solution: js('const permitCode = "BRGY-2026-001";\nconst prefix = permitCode.substring(0, 4);\n') },
+  "permit-prefix-check": { estimatedMinutes: 4, solution: js('const permitCode = "BRGY-2026-001";\nconst prefix = permitCode.substring(0, 4);\nconst isBarangayCode = prefix === "BRGY";\n') },
+  "permit-prefix-label": { estimatedMinutes: 4, solution: js('const permitCode = "BRGY-2026-001";\nconst prefix = permitCode.substring(0, 4);\nconst isBarangayCode = prefix === "BRGY";\nconst label = "Barangay code: " + isBarangayCode;\n') },
+  "permit-prefix-log": { estimatedMinutes: 4, solution: js('const permitCode = "BRGY-2026-001";\nconst prefix = permitCode.substring(0, 4);\nconst isBarangayCode = prefix === "BRGY";\nconst label = "Barangay code: " + isBarangayCode;\nconsole.log(label);\n') },
+  "notice-cleanup-text": { estimatedMinutes: 4, solution: js('const noticeText = "Clinic  opens  Monday";\n') },
+  "notice-cleanup-spaces": { estimatedMinutes: 6, solution: js('const noticeText = "Clinic  opens  Monday";\nconst cleanedNotice = noticeText.replaceAll("  ", " ");\n') },
+  "notice-cleanup-monday": { estimatedMinutes: 4, solution: js('const noticeText = "Clinic  opens  Monday";\nconst cleanedNotice = noticeText.replaceAll("  ", " ");\nconst hasMonday = cleanedNotice.includes("Monday");\n') },
+  "notice-cleanup-label": { estimatedMinutes: 4, solution: js('const noticeText = "Clinic  opens  Monday";\nconst cleanedNotice = noticeText.replaceAll("  ", " ");\nconst hasMonday = cleanedNotice.includes("Monday");\nconst label = "Notice ready: " + hasMonday;\n') },
+  "notice-cleanup-log": { estimatedMinutes: 4, solution: js('const noticeText = "Clinic  opens  Monday";\nconst cleanedNotice = noticeText.replaceAll("  ", " ");\nconst hasMonday = cleanedNotice.includes("Monday");\nconst label = "Notice ready: " + hasMonday;\nconsole.log(label);\n') },
+  "notice-letter-text": { estimatedMinutes: 4, solution: js('const noticeText = "Flood alert";\n') },
+  "notice-letter-read": { estimatedMinutes: 6, solution: js('const noticeText = "Flood alert";\nconst firstLetter = noticeText.charAt(0);\n') },
+  "notice-letter-check": { estimatedMinutes: 4, solution: js('const noticeText = "Flood alert";\nconst firstLetter = noticeText.charAt(0);\nconst isFloodNotice = firstLetter === "F";\n') },
+  "notice-letter-label": { estimatedMinutes: 4, solution: js('const noticeText = "Flood alert";\nconst firstLetter = noticeText.charAt(0);\nconst isFloodNotice = firstLetter === "F";\nconst label = "Flood notice: " + isFloodNotice;\n') },
+  "notice-letter-log": { estimatedMinutes: 4, solution: js('const noticeText = "Flood alert";\nconst firstLetter = noticeText.charAt(0);\nconst isFloodNotice = firstLetter === "F";\nconst label = "Flood notice: " + isFloodNotice;\nconsole.log(label);\n') },
+  "notice-end-text": { estimatedMinutes: 4, solution: js('const noticeText = "Clinic opens Monday  ";\n') },
+  "notice-end-clean": { estimatedMinutes: 6, solution: js('const noticeText = "Clinic opens Monday  ";\nconst cleanedNotice = noticeText.trimEnd();\n') },
+  "notice-end-check": { estimatedMinutes: 4, solution: js('const noticeText = "Clinic opens Monday  ";\nconst cleanedNotice = noticeText.trimEnd();\nconst endsOnMonday = cleanedNotice.endsWith("Monday");\n') },
+  "notice-end-label": { estimatedMinutes: 4, solution: js('const noticeText = "Clinic opens Monday  ";\nconst cleanedNotice = noticeText.trimEnd();\nconst endsOnMonday = cleanedNotice.endsWith("Monday");\nconst label = "Ends on Monday: " + endsOnMonday;\n') },
+  "notice-end-log": { estimatedMinutes: 4, solution: js('const noticeText = "Clinic opens Monday  ";\nconst cleanedNotice = noticeText.trimEnd();\nconst endsOnMonday = cleanedNotice.endsWith("Monday");\nconst label = "Ends on Monday: " + endsOnMonday;\nconsole.log(label);\n') },
+  "notice-start-text": { estimatedMinutes: 4, solution: js('const noticeText = "  Clinic opens Monday";\n') },
+  "notice-start-clean": { estimatedMinutes: 6, solution: js('const noticeText = "  Clinic opens Monday";\nconst cleanedNotice = noticeText.trimStart();\n') },
+  "notice-start-check": { estimatedMinutes: 4, solution: js('const noticeText = "  Clinic opens Monday";\nconst cleanedNotice = noticeText.trimStart();\nconst startsWithClinic = cleanedNotice.startsWith("Clinic");\n') },
+  "notice-start-label": { estimatedMinutes: 4, solution: js('const noticeText = "  Clinic opens Monday";\nconst cleanedNotice = noticeText.trimStart();\nconst startsWithClinic = cleanedNotice.startsWith("Clinic");\nconst label = "Starts with Clinic: " + startsWithClinic;\n') },
+  "notice-start-log": { estimatedMinutes: 4, solution: js('const noticeText = "  Clinic opens Monday";\nconst cleanedNotice = noticeText.trimStart();\nconst startsWithClinic = cleanedNotice.startsWith("Clinic");\nconst label = "Starts with Clinic: " + startsWithClinic;\nconsole.log(label);\n') },
+  "notice-lower-text": { estimatedMinutes: 4, solution: js('const noticeText = "CLINIC OPENS MONDAY";\n') },
+  "notice-lower-read": { estimatedMinutes: 6, solution: js('const noticeText = "CLINIC OPENS MONDAY";\nconst quietNotice = noticeText.toLowerCase();\n') },
+  "notice-lower-check": { estimatedMinutes: 4, solution: js('const noticeText = "CLINIC OPENS MONDAY";\nconst quietNotice = noticeText.toLowerCase();\nconst hasClinic = quietNotice.includes("clinic");\n') },
+  "notice-lower-label": { estimatedMinutes: 4, solution: js('const noticeText = "CLINIC OPENS MONDAY";\nconst quietNotice = noticeText.toLowerCase();\nconst hasClinic = quietNotice.includes("clinic");\nconst label = "Clinic named: " + hasClinic;\n') },
+  "notice-lower-log": { estimatedMinutes: 4, solution: js('const noticeText = "CLINIC OPENS MONDAY";\nconst quietNotice = noticeText.toLowerCase();\nconst hasClinic = quietNotice.includes("clinic");\nconst label = "Clinic named: " + hasClinic;\nconsole.log(label);\n') },
+  "notice-last-text": { estimatedMinutes: 4, solution: js('const noticeText = "Clinic opens Monday";\n') },
+  "notice-last-space": { estimatedMinutes: 6, solution: js('const noticeText = "Clinic opens Monday";\nconst lastSpace = noticeText.lastIndexOf(" ");\n') },
+  "notice-last-word": { estimatedMinutes: 4, solution: js('const noticeText = "Clinic opens Monday";\nconst lastSpace = noticeText.lastIndexOf(" ");\nconst lastWord = noticeText.substring(lastSpace + 1);\n') },
+  "notice-last-label": { estimatedMinutes: 4, solution: js('const noticeText = "Clinic opens Monday";\nconst lastSpace = noticeText.lastIndexOf(" ");\nconst lastWord = noticeText.substring(lastSpace + 1);\nconst label = "Last word: " + lastWord;\n') },
+  "notice-last-log": { estimatedMinutes: 4, solution: js('const noticeText = "Clinic opens Monday";\nconst lastSpace = noticeText.lastIndexOf(" ");\nconst lastWord = noticeText.substring(lastSpace + 1);\nconst label = "Last word: " + lastWord;\nconsole.log(label);\n') },
+  "notice-letters-text": { estimatedMinutes: 4, solution: js('const noticeText = "Flood";\n') },
+  "notice-letters-list": { estimatedMinutes: 6, solution: js('const noticeText = "Flood";\nconst letters = Array.from(noticeText);\n') },
+  "notice-letters-first": { estimatedMinutes: 4, solution: js('const noticeText = "Flood";\nconst letters = Array.from(noticeText);\nconst firstLetter = letters[0];\n') },
+  "notice-letters-label": { estimatedMinutes: 4, solution: js('const noticeText = "Flood";\nconst letters = Array.from(noticeText);\nconst firstLetter = letters[0];\nconst label = "First letter: " + firstLetter;\n') },
+  "notice-letters-log": { estimatedMinutes: 4, solution: js('const noticeText = "Flood";\nconst letters = Array.from(noticeText);\nconst firstLetter = letters[0];\nconst label = "First letter: " + firstLetter;\nconsole.log(label);\n') },
+  "seat-update-list": { estimatedMinutes: 4, solution: js('const seats = ["Open", "Open", "Open"];\n') },
+  "seat-update-fill": { estimatedMinutes: 6, solution: js('const seats = ["Open", "Open", "Open"];\nconst updatedSeats = seats.fill("Taken");\n') },
+  "seat-update-first": { estimatedMinutes: 4, solution: js('const seats = ["Open", "Open", "Open"];\nconst updatedSeats = seats.fill("Taken");\nconst firstSeat = updatedSeats[0];\n') },
+  "seat-update-label": { estimatedMinutes: 4, solution: js('const seats = ["Open", "Open", "Open"];\nconst updatedSeats = seats.fill("Taken");\nconst firstSeat = updatedSeats[0];\nconst label = "First seat: " + firstSeat;\n') },
+  "seat-update-log": { estimatedMinutes: 4, solution: js('const seats = ["Open", "Open", "Open"];\nconst updatedSeats = seats.fill("Taken");\nconst firstSeat = updatedSeats[0];\nconst label = "First seat: " + firstSeat;\nconsole.log(label);\n') },
+  "seat-numbers-list": { estimatedMinutes: 4, solution: js('const seats = ["A", "B", "C"];\n') },
+  "seat-numbers-make": { estimatedMinutes: 6, solution: js('const seats = ["A", "B", "C"];\nconst seatNumbers = Array.from(seats.keys());\n') },
+  "seat-numbers-last": { estimatedMinutes: 4, solution: js('const seats = ["A", "B", "C"];\nconst seatNumbers = Array.from(seats.keys());\nconst lastNumber = seatNumbers[2];\n') },
+  "seat-numbers-label": { estimatedMinutes: 4, solution: js('const seats = ["A", "B", "C"];\nconst seatNumbers = Array.from(seats.keys());\nconst lastNumber = seatNumbers[2];\nconst label = "Last seat number: " + lastNumber;\n') },
+  "seat-numbers-log": { estimatedMinutes: 4, solution: js('const seats = ["A", "B", "C"];\nconst seatNumbers = Array.from(seats.keys());\nconst lastNumber = seatNumbers[2];\nconst label = "Last seat number: " + lastNumber;\nconsole.log(label);\n') },
+  "seat-pairs-list": { estimatedMinutes: 4, solution: js('const seats = ["A", "B"];\n') },
+  "seat-pairs-make": { estimatedMinutes: 6, solution: js('const seats = ["A", "B"];\nconst seatPairs = Array.from(seats.entries());\n') },
+  "seat-pairs-first": { estimatedMinutes: 4, solution: js('const seats = ["A", "B"];\nconst seatPairs = Array.from(seats.entries());\nconst firstPair = seatPairs[0];\n') },
+  "seat-pairs-label": { estimatedMinutes: 4, solution: js('const seats = ["A", "B"];\nconst seatPairs = Array.from(seats.entries());\nconst firstPair = seatPairs[0];\nconst label = "First seat: " + firstPair[1];\n') },
+  "seat-pairs-log": { estimatedMinutes: 4, solution: js('const seats = ["A", "B"];\nconst seatPairs = Array.from(seats.entries());\nconst firstPair = seatPairs[0];\nconst label = "First seat: " + firstPair[1];\nconsole.log(label);\n') },
+  "seat-call-list": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben", "Cia"];\n') },
+  "seat-call-next": { estimatedMinutes: 6, solution: js('const seats = ["Ana", "Ben", "Cia"];\nconst nextSeat = seats.shift();\n') },
+  "seat-call-remaining": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben", "Cia"];\nconst nextSeat = seats.shift();\nconst remainingSeats = seats.length;\n') },
+  "seat-call-label": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben", "Cia"];\nconst nextSeat = seats.shift();\nconst remainingSeats = seats.length;\nconst label = "Next seat: " + nextSeat;\n') },
+  "seat-call-log": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben", "Cia"];\nconst nextSeat = seats.shift();\nconst remainingSeats = seats.length;\nconst label = "Next seat: " + nextSeat;\nconsole.log(label);\n') },
+  "seat-arrival-list": { estimatedMinutes: 4, solution: js('const seats = ["Ben", "Cia"];\n') },
+  "seat-arrival-add": { estimatedMinutes: 6, solution: js('const seats = ["Ben", "Cia"];\nseats.unshift("Ana");\n') },
+  "seat-arrival-first": { estimatedMinutes: 4, solution: js('const seats = ["Ben", "Cia"];\nseats.unshift("Ana");\nconst firstSeat = seats[0];\n') },
+  "seat-arrival-label": { estimatedMinutes: 4, solution: js('const seats = ["Ben", "Cia"];\nseats.unshift("Ana");\nconst firstSeat = seats[0];\nconst label = "First seat: " + firstSeat;\n') },
+  "seat-arrival-log": { estimatedMinutes: 4, solution: js('const seats = ["Ben", "Cia"];\nseats.unshift("Ana");\nconst firstSeat = seats[0];\nconst label = "First seat: " + firstSeat;\nconsole.log(label);\n') },
+  "seat-close-list": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben", "Cia"];\n') },
+  "seat-close-last": { estimatedMinutes: 6, solution: js('const seats = ["Ana", "Ben", "Cia"];\nconst lastSeat = seats.pop();\n') },
+  "seat-close-remaining": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben", "Cia"];\nconst lastSeat = seats.pop();\nconst remainingSeats = seats.length;\n') },
+  "seat-close-label": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben", "Cia"];\nconst lastSeat = seats.pop();\nconst remainingSeats = seats.length;\nconst label = "Last seat: " + lastSeat;\n') },
+  "seat-close-log": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben", "Cia"];\nconst lastSeat = seats.pop();\nconst remainingSeats = seats.length;\nconst label = "Last seat: " + lastSeat;\nconsole.log(label);\n') },
+  "seat-join-list": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben"];\n') },
+  "seat-join-add": { estimatedMinutes: 6, solution: js('const seats = ["Ana", "Ben"];\nseats.push("Cia");\n') },
+  "seat-join-last": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben"];\nseats.push("Cia");\nconst lastSeat = seats[2];\n') },
+  "seat-join-label": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben"];\nseats.push("Cia");\nconst lastSeat = seats[2];\nconst label = "Last seat: " + lastSeat;\n') },
+  "seat-join-log": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben"];\nseats.push("Cia");\nconst lastSeat = seats[2];\nconst label = "Last seat: " + lastSeat;\nconsole.log(label);\n') },
+  "seat-change-list": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben", "Cia"];\n') },
+  "seat-change-remove": { estimatedMinutes: 6, solution: js('const seats = ["Ana", "Ben", "Cia"];\nseats.splice(1, 1);\n') },
+  "seat-change-middle": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben", "Cia"];\nseats.splice(1, 1);\nconst middleSeat = seats[1];\n') },
+  "seat-change-label": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben", "Cia"];\nseats.splice(1, 1);\nconst middleSeat = seats[1];\nconst label = "Middle seat: " + middleSeat;\n') },
+  "seat-change-log": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben", "Cia"];\nseats.splice(1, 1);\nconst middleSeat = seats[1];\nconst label = "Middle seat: " + middleSeat;\nconsole.log(label);\n') },
+  "seat-duplicate-list": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben", "Ana"];\n') },
+  "seat-duplicate-last": { estimatedMinutes: 6, solution: js('const seats = ["Ana", "Ben", "Ana"];\nconst lastAna = seats.lastIndexOf("Ana");\n') },
+  "seat-duplicate-number": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben", "Ana"];\nconst lastAna = seats.lastIndexOf("Ana");\nconst seatNumber = lastAna + 1;\n') },
+  "seat-duplicate-label": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben", "Ana"];\nconst lastAna = seats.lastIndexOf("Ana");\nconst seatNumber = lastAna + 1;\nconst label = "Last Ana seat: " + seatNumber;\n') },
+  "seat-duplicate-log": { estimatedMinutes: 4, solution: js('const seats = ["Ana", "Ben", "Ana"];\nconst lastAna = seats.lastIndexOf("Ana");\nconst seatNumber = lastAna + 1;\nconst label = "Last Ana seat: " + seatNumber;\nconsole.log(label);\n') },
+  "supply-list": { estimatedMinutes: 4, solution: js('const supplies = ["Water", "Rice", "Blanket"];\n') },
+  "supply-sort": { estimatedMinutes: 6, solution: js('const supplies = ["Water", "Rice", "Blanket"];\nconst ordered = supplies.sort();\n') },
+  "supply-first": { estimatedMinutes: 4, solution: js('const supplies = ["Water", "Rice", "Blanket"];\nconst ordered = supplies.sort();\nconst firstSupply = ordered[0];\n') },
+  "supply-label": { estimatedMinutes: 4, solution: js('const supplies = ["Water", "Rice", "Blanket"];\nconst ordered = supplies.sort();\nconst firstSupply = ordered[0];\nconst label = "First supply: " + firstSupply;\n') },
+  "supply-log": { estimatedMinutes: 4, solution: js('const supplies = ["Water", "Rice", "Blanket"];\nconst ordered = supplies.sort();\nconst firstSupply = ordered[0];\nconst label = "First supply: " + firstSupply;\nconsole.log(label);\n') },
+  "seat-final-match-list": { estimatedMinutes: 4, solution: js('const seats = ["Open", "Taken", "Open"];\n') },
+  "seat-final-match-find": { estimatedMinutes: 6, solution: js('const seats = ["Open", "Taken", "Open"];\nconst lastOpen = seats.findLast((seat) => seat === "Open");\n') },
+  "seat-final-match-label": { estimatedMinutes: 4, solution: js('const seats = ["Open", "Taken", "Open"];\nconst lastOpen = seats.findLast((seat) => seat === "Open");\nconst label = "Last open seat: " + lastOpen;\n') },
+  "seat-final-match-loud": { estimatedMinutes: 4, solution: js('const seats = ["Open", "Taken", "Open"];\nconst lastOpen = seats.findLast((seat) => seat === "Open");\nconst label = "Last open seat: " + lastOpen;\nconst loudLabel = label.toUpperCase();\n') },
+  "seat-final-match-log": { estimatedMinutes: 4, solution: js('const seats = ["Open", "Taken", "Open"];\nconst lastOpen = seats.findLast((seat) => seat === "Open");\nconst label = "Last open seat: " + lastOpen;\nconst loudLabel = label.toUpperCase();\nconsole.log(loudLabel);\n') },
+  "seat-final-position-list": { estimatedMinutes: 4, solution: js('const seats = ["Open", "Taken", "Open"];\n') },
+  "seat-final-position-find": { estimatedMinutes: 6, solution: js('const seats = ["Open", "Taken", "Open"];\nconst lastOpenIndex = seats.findLastIndex((seat) => seat === "Open");\n') },
+  "seat-final-position-number": { estimatedMinutes: 4, solution: js('const seats = ["Open", "Taken", "Open"];\nconst lastOpenIndex = seats.findLastIndex((seat) => seat === "Open");\nconst seatNumber = lastOpenIndex + 1;\n') },
+  "seat-final-position-label": { estimatedMinutes: 4, solution: js('const seats = ["Open", "Taken", "Open"];\nconst lastOpenIndex = seats.findLastIndex((seat) => seat === "Open");\nconst seatNumber = lastOpenIndex + 1;\nconst label = "Final open seat number: " + seatNumber;\n') },
+  "seat-final-position-log": { estimatedMinutes: 4, solution: js('const seats = ["Open", "Taken", "Open"];\nconst lastOpenIndex = seats.findLastIndex((seat) => seat === "Open");\nconst seatNumber = lastOpenIndex + 1;\nconst label = "Final open seat number: " + seatNumber;\nconsole.log(label);\n') },
+  "desk-safe-object": { estimatedMinutes: 4, solution: js('const desk = { health: { phone: "117" } };\n') },
+  "desk-safe-phone": { estimatedMinutes: 6, solution: js('const desk = { health: { phone: "117" } };\nconst healthPhone = desk.health?.phone;\n') },
+  "desk-safe-label": { estimatedMinutes: 4, solution: js('const desk = { health: { phone: "117" } };\nconst healthPhone = desk.health?.phone;\nconst label = "Health phone: " + healthPhone;\n') },
+  "desk-safe-loud": { estimatedMinutes: 4, solution: js('const desk = { health: { phone: "117" } };\nconst healthPhone = desk.health?.phone;\nconst label = "Health phone: " + healthPhone;\nconst loudLabel = label.toUpperCase();\n') },
+  "desk-safe-log": { estimatedMinutes: 4, solution: js('const desk = { health: { phone: "117" } };\nconst healthPhone = desk.health?.phone;\nconst label = "Health phone: " + healthPhone;\nconst loudLabel = label.toUpperCase();\nconsole.log(loudLabel);\n') },
+  "desk-fallback-object": { estimatedMinutes: 4, solution: js("const desk = {};\n") },
+  "desk-fallback-phone": { estimatedMinutes: 6, solution: js('const desk = {};\nconst healthPhone = desk.health?.phone ?? "No number listed";\n') },
+  "desk-fallback-label": { estimatedMinutes: 4, solution: js('const desk = {};\nconst healthPhone = desk.health?.phone ?? "No number listed";\nconst label = "Health phone: " + healthPhone;\n') },
+  "desk-fallback-loud": { estimatedMinutes: 4, solution: js('const desk = {};\nconst healthPhone = desk.health?.phone ?? "No number listed";\nconst label = "Health phone: " + healthPhone;\nconst loudLabel = label.toUpperCase();\n') },
+  "desk-fallback-log": { estimatedMinutes: 4, solution: js('const desk = {};\nconst healthPhone = desk.health?.phone ?? "No number listed";\nconst label = "Health phone: " + healthPhone;\nconst loudLabel = label.toUpperCase();\nconsole.log(loudLabel);\n') },
+  "contact-type-phone": { estimatedMinutes: 4, solution: js('const hotline = "117";\n') },
+  "contact-type-check": { estimatedMinutes: 6, solution: js('const hotline = "117";\nconst hotlineType = typeof hotline;\n') },
+  "contact-type-label": { estimatedMinutes: 4, solution: js('const hotline = "117";\nconst hotlineType = typeof hotline;\nconst label = "Hotline type: " + hotlineType;\n') },
+  "contact-type-loud": { estimatedMinutes: 4, solution: js('const hotline = "117";\nconst hotlineType = typeof hotline;\nconst label = "Hotline type: " + hotlineType;\nconst loudLabel = label.toUpperCase();\n') },
+  "contact-type-log": { estimatedMinutes: 4, solution: js('const hotline = "117";\nconst hotlineType = typeof hotline;\nconst label = "Hotline type: " + hotlineType;\nconst loudLabel = label.toUpperCase();\nconsole.log(loudLabel);\n') },
+  "contact-card-pairs": { estimatedMinutes: 4, solution: js('const pairs = [["office", "Barangay Hall"], ["phone", "117"]];\n') },
+  "contact-card-build": { estimatedMinutes: 6, solution: js('const pairs = [["office", "Barangay Hall"], ["phone", "117"]];\nconst contact = Object.fromEntries(pairs);\n') },
+  "contact-card-phone": { estimatedMinutes: 4, solution: js('const pairs = [["office", "Barangay Hall"], ["phone", "117"]];\nconst contact = Object.fromEntries(pairs);\nconst phone = contact.phone;\n') },
+  "contact-card-label": { estimatedMinutes: 4, solution: js('const pairs = [["office", "Barangay Hall"], ["phone", "117"]];\nconst contact = Object.fromEntries(pairs);\nconst phone = contact.phone;\nconst label = "Contact phone: " + phone;\n') },
+  "contact-card-log": { estimatedMinutes: 4, solution: js('const pairs = [["office", "Barangay Hall"], ["phone", "117"]];\nconst contact = Object.fromEntries(pairs);\nconst phone = contact.phone;\nconst label = "Contact phone: " + phone;\nconsole.log(label);\n') },
+  "rain-plan-weather": { estimatedMinutes: 4, solution: js("const isRaining = true;\n") },
+  "rain-plan-choice": { estimatedMinutes: 6, solution: js('const isRaining = true;\nconst plan = isRaining ? "Bring an umbrella" : "Walk outside";\n') },
+  "rain-plan-message": { estimatedMinutes: 4, solution: js('const isRaining = true;\nconst plan = isRaining ? "Bring an umbrella" : "Walk outside";\nconst message = "Plan: " + plan;\n') },
+  "rain-plan-loud": { estimatedMinutes: 4, solution: js('const isRaining = true;\nconst plan = isRaining ? "Bring an umbrella" : "Walk outside";\nconst message = "Plan: " + plan;\nconst loudMessage = message.toUpperCase();\n') },
+  "rain-plan-log": { estimatedMinutes: 4, solution: js('const isRaining = true;\nconst plan = isRaining ? "Bring an umbrella" : "Walk outside";\nconst message = "Plan: " + plan;\nconst loudMessage = message.toUpperCase();\nconsole.log(loudMessage);\n') },
+  "desk-entry-id": { estimatedMinutes: 4, solution: js("const hasID = true;\n") },
+  "desk-entry-open": { estimatedMinutes: 4, solution: js("const hasID = true;\nconst isDeskOpen = true;\n") },
+  "desk-entry-check": { estimatedMinutes: 6, solution: js("const hasID = true;\nconst isDeskOpen = true;\nconst canEnter = hasID && isDeskOpen;\n") },
+  "desk-entry-message": { estimatedMinutes: 4, solution: js('const hasID = true;\nconst isDeskOpen = true;\nconst canEnter = hasID && isDeskOpen;\nconst message = "Can enter: " + canEnter;\n') },
+  "desk-entry-log": { estimatedMinutes: 4, solution: js('const hasID = true;\nconst isDeskOpen = true;\nconst canEnter = hasID && isDeskOpen;\nconst message = "Can enter: " + canEnter;\nconsole.log(message);\n') },
+  "help-desk-health": { estimatedMinutes: 4, solution: js("const hasHealthDesk = false;\n") },
+  "help-desk-service": { estimatedMinutes: 4, solution: js("const hasHealthDesk = false;\nconst hasServiceDesk = true;\n") },
+  "help-desk-check": { estimatedMinutes: 6, solution: js("const hasHealthDesk = false;\nconst hasServiceDesk = true;\nconst canAskForHelp = hasHealthDesk || hasServiceDesk;\n") },
+  "help-desk-message": { estimatedMinutes: 4, solution: js('const hasHealthDesk = false;\nconst hasServiceDesk = true;\nconst canAskForHelp = hasHealthDesk || hasServiceDesk;\nconst message = "Help desk available: " + canAskForHelp;\n') },
+  "help-desk-log": { estimatedMinutes: 4, solution: js('const hasHealthDesk = false;\nconst hasServiceDesk = true;\nconst canAskForHelp = hasHealthDesk || hasServiceDesk;\nconst message = "Help desk available: " + canAskForHelp;\nconsole.log(message);\n') },
+  "desk-closed-open": { estimatedMinutes: 4, solution: js("const isDeskOpen = false;\n") },
+  "desk-closed-check": { estimatedMinutes: 6, solution: js("const isDeskOpen = false;\nconst isDeskClosed = !isDeskOpen;\n") },
+  "desk-closed-message": { estimatedMinutes: 4, solution: js('const isDeskOpen = false;\nconst isDeskClosed = !isDeskOpen;\nconst message = "Desk closed: " + isDeskClosed;\n') },
+  "desk-closed-reminder": { estimatedMinutes: 4, solution: js('const isDeskOpen = false;\nconst isDeskClosed = !isDeskOpen;\nconst message = "Desk closed: " + isDeskClosed;\nconst reminder = message + ". Please return later.";\n') },
+  "desk-closed-log": { estimatedMinutes: 4, solution: js('const isDeskOpen = false;\nconst isDeskClosed = !isDeskOpen;\nconst message = "Desk closed: " + isDeskClosed;\nconst reminder = message + ". Please return later.";\nconsole.log(reminder);\n') },
 } satisfies Record<string, StepReference>;
 
-const s = (step: Omit<Step, "index" | "kind">): Step => {
+const PROJECT_ID = "palengke-price-counter";
+const PROJECT_2_ID = "jeepney-fare-check";
+const PROJECT_3_ID = "barangay-queue-check";
+const PROJECT_4_ID = "sari-sari-item-facts";
+const PROJECT_5_ID = "barangay-budget-split";
+const PROJECT_6_ID = "tricycle-fare-rounder";
+const PROJECT_7_ID = "barangay-name-cleanup";
+const PROJECT_8_ID = "sari-sari-stock-check";
+const PROJECT_9_ID = "palengke-price-update";
+const PROJECT_10_ID = "barangay-donation-total";
+const PROJECT_11_ID = "barangay-contact-find";
+const PROJECT_12_ID = "sari-sari-stock-alert";
+const PROJECT_13_ID = "barangay-payment-check";
+const PROJECT_14_ID = "barangay-flood-notice";
+const PROJECT_15_ID = "barangay-contact-keys";
+const PROJECT_16_ID = "barangay-service-list-check";
+const PROJECT_17_ID = "barangay-shelter-contacts";
+const PROJECT_18_ID = "barangay-clinic-hours-entries";
+const PROJECT_19_ID = "barangay-permit-update";
+const PROJECT_20_ID = "barangay-desk-list";
+const PROJECT_21_ID = "barangay-hotline-pair";
+const PROJECT_22_ID = "barangay-emergency-details";
+const PROJECT_23_ID = "barangay-welcome-message";
+const PROJECT_24_ID = "barangay-service-lookup";
+const PROJECT_25_ID = "barangay-shift-roster";
+const PROJECT_26_ID = "barangay-donation-readout";
+const PROJECT_27_ID = "barangay-visitor-check";
+const PROJECT_28_ID = "barangay-supply-order";
+const PROJECT_29_ID = "barangay-event-announcement";
+const PROJECT_30_ID = "barangay-attendee-count";
+const PROJECT_31_ID = "barangay-reminder-list";
+const PROJECT_32_ID = "barangay-aid-doubling";
+const PROJECT_33_ID = "barangay-open-seats";
+const PROJECT_34_ID = "barangay-rice-total";
+const PROJECT_35_ID = "barangay-notice-order";
+const PROJECT_36_ID = "barangay-top-notices";
+const PROJECT_37_ID = "barangay-notice-tags";
+const PROJECT_38_ID = "barangay-relief-supplies";
+const PROJECT_39_ID = "barangay-latest-notice";
+const PROJECT_40_ID = "barangay-service-position";
+const PROJECT_41_ID = "barangay-service-labels";
+const PROJECT_42_ID = "barangay-volunteer-check";
+const PROJECT_43_ID = "barangay-aid-search";
+const PROJECT_44_ID = "barangay-aid-stock-alert";
+const PROJECT_45_ID = "barangay-hotline-prefix";
+const PROJECT_46_ID = "barangay-permit-suffix";
+const PROJECT_47_ID = "barangay-notice-edit";
+const PROJECT_48_ID = "barangay-ticket-code";
+const PROJECT_49_ID = "barangay-highest-donation";
+const PROJECT_50_ID = "barangay-water-alert";
+const PROJECT_51_ID = "barangay-relief-boxes";
+const PROJECT_52_ID = "barangay-cash-difference";
+const PROJECT_53_ID = "barangay-full-boxes";
+const PROJECT_54_ID = "barangay-price-tag";
+const PROJECT_55_ID = "barangay-meter-reading";
+const PROJECT_56_ID = "barangay-notice-words";
+const PROJECT_57_ID = "barangay-alert-banner";
+const PROJECT_58_ID = "barangay-permit-prefix";
+const PROJECT_59_ID = "barangay-notice-cleanup";
+const PROJECT_60_ID = "barangay-notice-first-letter";
+const PROJECT_61_ID = "barangay-notice-end-cleanup";
+const PROJECT_62_ID = "barangay-notice-start-cleanup";
+const PROJECT_63_ID = "barangay-notice-small-letters";
+const PROJECT_64_ID = "barangay-notice-last-word";
+const PROJECT_65_ID = "barangay-notice-letter-list";
+const PROJECT_66_ID = "barangay-seat-update";
+const PROJECT_67_ID = "barangay-seat-numbers";
+const PROJECT_68_ID = "barangay-seat-pairs";
+const PROJECT_69_ID = "barangay-seat-call";
+const PROJECT_70_ID = "barangay-seat-arrival";
+const PROJECT_71_ID = "barangay-seat-close";
+const PROJECT_72_ID = "barangay-seat-join";
+const PROJECT_73_ID = "barangay-seat-change";
+const PROJECT_74_ID = "barangay-seat-duplicate";
+const PROJECT_75_ID = "barangay-seat-final-match";
+const PROJECT_76_ID = "barangay-seat-final-position";
+const PROJECT_77_ID = "barangay-desk-safe-number";
+const PROJECT_78_ID = "barangay-desk-fallback-number";
+const PROJECT_79_ID = "barangay-contact-type-check";
+const PROJECT_80_ID = "barangay-contact-values";
+const PROJECT_81_ID = "barangay-rain-plan";
+const PROJECT_82_ID = "barangay-desk-entry";
+const PROJECT_83_ID = "barangay-help-desk";
+const PROJECT_84_ID = "barangay-desk-closed";
+
+const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
   if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
-  return { ...step, ...reference, index: ++n, kind: "js" };
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_ID };
+};
+const s2 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_2_ID };
+};
+const s3 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_3_ID };
+};
+const s4 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_4_ID };
+};
+const s5 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_5_ID };
+};
+const s6 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_6_ID };
+};
+const s7 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_7_ID };
+};
+const s8 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_8_ID };
+};
+const s9 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_9_ID };
+};
+
+const s10 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_10_ID };
+};
+
+const s11 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_11_ID };
+};
+
+const s12 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_12_ID };
+};
+
+const s13 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_13_ID };
+};
+
+const s14 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_14_ID };
+};
+const s15 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_15_ID };
+};
+const s16 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_16_ID };
+};
+const s17 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_17_ID };
+};
+const s18 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_18_ID };
+};
+const s19 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_19_ID };
+};
+const s20 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_20_ID };
+};
+const s21 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_21_ID };
+};
+const s22 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_22_ID };
+};
+const s23 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_23_ID };
+};
+const s24 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_24_ID };
+};
+const s25 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_25_ID };
+};
+const s26 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_26_ID };
+};
+const s27 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_27_ID };
+};
+const s28 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_28_ID };
+};
+const s29 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_29_ID };
+};
+const s30 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_30_ID };
+};
+const s31 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_31_ID };
+};
+const s32 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_32_ID };
+};
+const s33 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_33_ID };
+};
+const s34 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_34_ID };
+};
+const s35 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_35_ID };
+};
+const s36 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_36_ID };
+};
+const s37 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_37_ID };
+};
+const s38 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_38_ID };
+};
+const s39 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_39_ID };
+};
+const s40 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_40_ID };
+};
+const s41 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_41_ID };
+};
+const s42 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_42_ID };
+};
+const s43 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_43_ID };
+};
+const s44 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_44_ID };
+};
+const s45 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_45_ID };
+};
+const s46 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_46_ID };
+};
+const s47 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_47_ID };
+};
+const s48 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_48_ID };
+};
+const s49 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_49_ID };
+};
+const s50 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_50_ID };
+};
+const s51 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_51_ID };
+};
+const s52 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_52_ID };
+};
+const s53 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_53_ID };
+};
+const s54 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_54_ID };
+};
+const s55 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_55_ID };
+};
+const s56 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_56_ID };
+};
+const s57 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_57_ID };
+};
+const s58 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_58_ID };
+};
+const s59 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_59_ID };
+};
+const s60 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_60_ID };
+};
+const s61 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_61_ID };
+};
+const s62 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_62_ID };
+};
+const s63 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_63_ID };
+};
+const s64 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_64_ID };
+};
+const s65 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_65_ID };
+};
+const s66 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_66_ID };
+};
+const s67 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_67_ID };
+};
+const s68 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_68_ID };
+};
+const s69 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_69_ID };
+};
+const s70 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_70_ID };
+};
+const s71 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_71_ID };
+};
+const s72 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_72_ID };
+};
+const s73 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_73_ID };
+};
+const s74 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_74_ID };
+};
+const s75 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_75_ID };
+};
+const s76 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_76_ID };
+};
+const s77 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_77_ID };
+};
+const s78 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_78_ID };
+};
+const s79 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_79_ID };
+};
+const s80 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_80_ID };
+};
+const s81 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_81_ID };
+};
+const s82 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_82_ID };
+};
+const s83 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_83_ID };
+};
+const s84 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  if (!reference) throw new Error(`Missing reference data for JavaScript step: ${step.id}`);
+  return { ...step, ...reference, index: ++n, kind: "js", projectId: PROJECT_84_ID };
 };
 
 export const jsCourse: Course = {
@@ -86,20 +1009,14 @@ export const jsCourse: Course = {
   order: 3,
   title: "Learn JavaScript by Building a Palengke Price Counter",
   project: "Palengke Price Counter",
+  projects: [{ id: PROJECT_ID, title: "Palengke Price Counter" }, { id: PROJECT_2_ID, title: "Jeepney Fare Check" }, { id: PROJECT_3_ID, title: "Barangay Queue Check" }, { id: PROJECT_4_ID, title: "Sari-Sari Item Facts" }, { id: PROJECT_5_ID, title: "Barangay Budget Split" }, { id: PROJECT_6_ID, title: "Tricycle Fare Rounder" }, { id: PROJECT_7_ID, title: "Barangay Name Cleanup" }, { id: PROJECT_8_ID, title: "Sari-Sari Stock Check" }, { id: PROJECT_9_ID, title: "Palengke Price Update" }, { id: PROJECT_10_ID, title: "Barangay Donation Total" }, { id: PROJECT_11_ID, title: "Barangay Contact Find" }, { id: PROJECT_12_ID, title: "Sari-Sari Stock Alert" }, { id: PROJECT_13_ID, title: "Barangay Payment Check" }, { id: PROJECT_14_ID, title: "Barangay Flood Notice" }, { id: PROJECT_15_ID, title: "Barangay Contact Keys" }, { id: PROJECT_16_ID, title: "Barangay Service List Check" }, { id: PROJECT_17_ID, title: "Barangay Shelter Contacts" }, { id: PROJECT_18_ID, title: "Barangay Clinic Hours Entries" }, { id: PROJECT_19_ID, title: "Barangay Permit Update" }, { id: PROJECT_20_ID, title: "Barangay Desk List" }, { id: PROJECT_21_ID, title: "Barangay Hotline Pair" }, { id: PROJECT_22_ID, title: "Barangay Emergency Details" }, { id: PROJECT_23_ID, title: "Barangay Welcome Message" }, { id: PROJECT_24_ID, title: "Barangay Service Lookup" }, { id: PROJECT_25_ID, title: "Barangay Shift Roster" }, { id: PROJECT_26_ID, title: "Barangay Donation Readout" }, { id: PROJECT_27_ID, title: "Barangay Visitor Check" }, { id: PROJECT_28_ID, title: "Barangay Supply Order" }, { id: PROJECT_29_ID, title: "Barangay Event Announcement" }, { id: PROJECT_30_ID, title: "Barangay Attendee Count" }, { id: PROJECT_31_ID, title: "Barangay Reminder List" }, { id: PROJECT_32_ID, title: "Barangay Aid Doubling" }, { id: PROJECT_33_ID, title: "Barangay Open Seats" }, { id: PROJECT_34_ID, title: "Barangay Rice Total" }, { id: PROJECT_35_ID, title: "Barangay Notice Order" }, { id: PROJECT_36_ID, title: "Barangay Top Notices" }, { id: PROJECT_37_ID, title: "Barangay Notice Tags" }, { id: PROJECT_38_ID, title: "Barangay Relief Supplies" }, { id: PROJECT_39_ID, title: "Barangay Latest Notice" }, { id: PROJECT_40_ID, title: "Barangay Service Position" }, { id: PROJECT_41_ID, title: "Barangay Service Labels" }, { id: PROJECT_42_ID, title: "Barangay Volunteer Check" }, { id: PROJECT_43_ID, title: "Barangay Aid Search" }, { id: PROJECT_44_ID, title: "Barangay Aid Stock Alert" }, { id: PROJECT_45_ID, title: "Barangay Hotline Prefix" }, { id: PROJECT_46_ID, title: "Barangay Permit Suffix" }, { id: PROJECT_47_ID, title: "Barangay Notice Edit" }, { id: PROJECT_48_ID, title: "Barangay Ticket Code" }, { id: PROJECT_49_ID, title: "Barangay Highest Donation" }, { id: PROJECT_50_ID, title: "Barangay Water Alert" }, { id: PROJECT_51_ID, title: "Barangay Relief Boxes" }, { id: PROJECT_52_ID, title: "Barangay Cash Difference" }, { id: PROJECT_53_ID, title: "Barangay Full Boxes" }, { id: PROJECT_54_ID, title: "Barangay Price Tag" }, { id: PROJECT_55_ID, title: "Barangay Meter Reading" }, { id: PROJECT_56_ID, title: "Barangay Notice Words" }, { id: PROJECT_57_ID, title: "Barangay Alert Banner" }, { id: PROJECT_58_ID, title: "Barangay Permit Prefix" }, { id: PROJECT_59_ID, title: "Barangay Notice Cleanup" }, { id: PROJECT_60_ID, title: "Barangay Notice First Letter" }, { id: PROJECT_61_ID, title: "Barangay Notice End Cleanup" }, { id: PROJECT_62_ID, title: "Barangay Notice Start Cleanup" }, { id: PROJECT_63_ID, title: "Barangay Notice Small Letters" }, { id: PROJECT_64_ID, title: "Barangay Notice Last Word" }, { id: PROJECT_65_ID, title: "Barangay Notice Letter List" }, { id: PROJECT_66_ID, title: "Barangay Seat Update" }, { id: PROJECT_67_ID, title: "Barangay Seat Numbers" }, { id: PROJECT_68_ID, title: "Barangay Seat Pairs" }, { id: PROJECT_69_ID, title: "Barangay Seat Call" }, { id: PROJECT_70_ID, title: "Barangay Seat Arrival" }, { id: PROJECT_71_ID, title: "Barangay Seat Close" }, { id: PROJECT_72_ID, title: "Barangay Seat Join" }, { id: PROJECT_73_ID, title: "Barangay Seat Change" }, { id: PROJECT_74_ID, title: "Barangay Seat Duplicate" }, { id: PROJECT_75_ID, title: "Barangay Seat Final Match" }, { id: PROJECT_76_ID, title: "Barangay Seat Final Position" }, { id: PROJECT_77_ID, title: "Barangay Desk Safe Number" }, { id: PROJECT_78_ID, title: "Barangay Desk Fallback Number" }, { id: PROJECT_79_ID, title: "Barangay Contact Type Check" }, { id: PROJECT_80_ID, title: "Barangay Contact Card" }, { id: PROJECT_81_ID, title: "Barangay Rain Plan" }, { id: PROJECT_82_ID, title: "Barangay Desk Entry" }, { id: PROJECT_83_ID, title: "Barangay Help Desk" }, { id: PROJECT_84_ID, title: "Barangay Desk Closed" }],
   kind: "js",
   requires: ["css-basics"],
-  summary: {
-    simple: "Now make it think. Store numbers, do maths, make decisions, repeat work.",
-    standard:
-      "Behaviour. Variables, types, operators, conditionals, functions, arrays, and loops.",
-  },
+  summary: "Now make it think. Store numbers, do maths, make decisions, repeat work.",
   steps: [
     s({
       id: "console-log",
-      task: {
-        simple: 'Make the computer say something. Print the words Palengke open.',
-        standard: 'Use console.log to print the string "Palengke open".',
-      },
+      task: 'Make the computer say something. Print the words Palengke open.',
       inputMode: "guided",
       files: js("// Print something below this line\n"),
       activeFile: "script.js",
@@ -108,64 +1025,48 @@ export const jsCourse: Course = {
           id: "logs-open",
           kind: "js-logs",
           values: ["Palengke open"],
-          label: { simple: "It prints Palengke open", standard: 'Console output is "Palengke open"' },
+          label: "It prints Palengke open",
         },
       ],
       hints: [
         {
           level: 1,
-          text: {
-            simple: "console.log is how you show something. Words need quotes.",
-            standard: "`console.log(\"...\")` writes to the console.",
-          },
+          text: "console.log is how you show something. Words need quotes.",
         },
         {
           level: 2,
-          text: {
-            simple: 'console.log("Palengke open");',
-            standard: '`console.log("Palengke open");`',
-          },
+          text: 'console.log("Palengke open");',
         },
       ],
       xp: 40,
     }),
     s({
       id: "variable",
-      task: {
-        simple:
-          "A variable remembers a value. Make one called price that holds 25.",
-        standard: "Declare a variable named price with the value 25.",
-      },
+      task: "A variable remembers a value. Make one called price that holds 25.",
       inputMode: "guided",
       files: js("// Make the variable below\n"),
       activeFile: "script.js",
+      conceptIds: ["variable"],
       tests: [
         {
           id: "price-25",
           kind: "js-value",
           expression: "price",
           equals: 25,
-          label: { simple: "price holds 25", standard: "price equals 25" },
+          label: "price holds 25",
         },
       ],
       hints: [
         {
           level: 1,
-          text: {
-            simple: "Use let, then the name, then =, then the number.",
-            standard: "`let price = 25;`",
-          },
+          text: "Use let, then the name, then =, then the number.",
         },
       ],
       xp: 50,
     }),
     s({
       id: "const",
-      task: {
-        simple:
-          "Some things never change. Make a const called storeName holding Divisoria.",
-        standard: "Declare a const named storeName with the string Divisoria.",
-      },
+      task: "Some things never change. Make a const called storeName holding Divisoria.",
       inputMode: "guided",
       files: js("let price = 25;\n"),
       activeFile: "script.js",
@@ -175,38 +1076,28 @@ export const jsCourse: Course = {
           kind: "js-value",
           expression: "storeName",
           equals: "Divisoria",
-          label: { simple: "storeName holds Divisoria", standard: 'storeName equals "Divisoria"' },
+          label: "storeName holds Divisoria",
         },
         {
           id: "uses-const",
           kind: "source-matches",
           file: "script.js",
           pattern: "const\\s+storeName",
-          because: {
-            simple: "Use const, not let, so it cannot be changed later.",
-            standard: "Declare storeName with `const`.",
-          },
-          label: { simple: "You used const", standard: "storeName is declared with const" },
+          because: "Use const, not let, so it cannot be changed later.",
+          label: "You used const",
         },
       ],
       hints: [
         {
           level: 1,
-          text: {
-            simple: "const means it can never be changed after this.",
-            standard: "`const` creates a binding that cannot be reassigned.",
-          },
+          text: "const means it can never be changed after this.",
         },
       ],
       xp: 50,
     }),
     s({
       id: "maths",
-      task: {
-        simple:
-          "Three kilos at 25 each. Make a variable total that multiplies price by 3.",
-        standard: "Declare total as price multiplied by 3.",
-      },
+      task: "Three kilos at 25 each. Make a variable total that multiplies price by 3.",
       inputMode: "guided",
       files: js('let price = 25;\nconst storeName = "Divisoria";\n'),
       activeFile: "script.js",
@@ -216,27 +1107,20 @@ export const jsCourse: Course = {
           kind: "js-value",
           expression: "total",
           equals: 75,
-          label: { simple: "total is 75", standard: "total equals 75" },
+          label: "total is 75",
         },
       ],
       hints: [
         {
           level: 1,
-          text: {
-            simple: "The star * means multiply.",
-            standard: "`let total = price * 3;`",
-          },
+          text: "The star * means multiply.",
         },
       ],
       xp: 50,
     }),
     s({
       id: "template",
-      task: {
-        simple:
-          "Print the total in a sentence. Use backticks and ${total} to drop the number in.",
-        standard: "Use a template literal to print `Total: 75 pesos`.",
-      },
+      task: "Print the total in a sentence. Use backticks and ${total} to drop the number in.",
       inputMode: "guided",
       files: js("let price = 25;\nlet total = price * 3;\n"),
       activeFile: "script.js",
@@ -245,36 +1129,28 @@ export const jsCourse: Course = {
           id: "logs-total",
           kind: "js-logs",
           values: ["Total: 75 pesos"],
-          label: { simple: "It prints Total: 75 pesos", standard: "Console output matches" },
+          label: "It prints Total: 75 pesos",
         },
       ],
       hints: [
         {
           level: 1,
-          text: {
-            simple: "Backticks are the key above Tab, not normal quotes.",
-            standard: "Template literals use backticks and `${}` interpolation.",
-          },
+          text: "Backticks are the key above Tab, not normal quotes.",
         },
         {
           level: 2,
-          text: {
-            simple: "console.log(`Total: ${total} pesos`);",
-            standard: "`console.log(`Total: ${total} pesos`);`",
-          },
+          text: "console.log(`Total: ${total} pesos`);",
         },
       ],
       xp: 60,
     }),
     s({
       id: "function",
-      task: {
-        simple: "Make a function called double. It returns twice the number you give it.",
-        standard: "Write a function double(n) that returns n multiplied by 2.",
-      },
+      task: "Make a function called double. It returns twice the number you give it.",
       inputMode: "guided",
       files: js("// Write your function below\n"),
       activeFile: "script.js",
+      conceptIds: ["function"],
       tests: [
         {
           id: "double-4",
@@ -282,7 +1158,7 @@ export const jsCourse: Course = {
           fn: "double",
           args: [4],
           equals: 8,
-          label: { simple: "double(4) gives 8", standard: "double(4) returns 8" },
+          label: "double(4) gives 8",
         },
         {
           id: "double-25",
@@ -290,33 +1166,24 @@ export const jsCourse: Course = {
           fn: "double",
           args: [25],
           equals: 50,
-          label: { simple: "double(25) gives 50", standard: "double(25) returns 50" },
+          label: "double(25) gives 50",
         },
       ],
       hints: [
         {
           level: 1,
-          text: {
-            simple: "A function needs return to give a value back.",
-            standard: "Without `return` a function evaluates to undefined.",
-          },
+          text: "A function needs return to give a value back.",
         },
         {
           level: 2,
-          text: {
-            simple: "function double(n) {\n  return n * 2;\n}",
-            standard: "`function double(n) { return n * 2; }`",
-          },
+          text: "function double(n) {\n  return n * 2;\n}",
         },
       ],
       xp: 70,
     }),
     s({
       id: "if",
-      task: {
-        simple: "Make a function called isCheap. It returns true below 30, and false otherwise.",
-        standard: "Write isCheap(p) returning true when p is less than 30.",
-      },
+      task: "Make a function called isCheap. It returns true below 30, and false otherwise.",
       inputMode: "guided",
       files: js("// Write your function below\n"),
       activeFile: "script.js",
@@ -327,7 +1194,7 @@ export const jsCourse: Course = {
           fn: "isCheap",
           args: [20],
           equals: true,
-          label: { simple: "isCheap(20) is true", standard: "isCheap(20) returns true" },
+          label: "isCheap(20) is true",
         },
         {
           id: "cheap-no",
@@ -335,64 +1202,51 @@ export const jsCourse: Course = {
           fn: "isCheap",
           args: [45],
           equals: false,
-          label: { simple: "isCheap(45) is false", standard: "isCheap(45) returns false" },
+          label: "isCheap(45) is false",
         },
       ],
       hints: [
         {
           level: 1,
-          text: {
-            simple: "The < sign means less than.",
-            standard: "`return p < 30;` is enough; no if statement required.",
-          },
+          text: "The < sign means less than.",
         },
       ],
       xp: 70,
     }),
     s({
       id: "array",
-      task: {
-        simple:
-          "Make a list called prices holding 25, 40 and 15. Lists use square brackets.",
-        standard: "Declare an array prices containing 25, 40, 15.",
-      },
+      task: "Make a list called prices holding 25, 40 and 15. Lists use square brackets.",
       inputMode: "guided",
       files: js("// Make the list below\n"),
       activeFile: "script.js",
+      conceptIds: ["array"],
       tests: [
         {
           id: "prices-array",
           kind: "js-value",
           expression: "prices",
           equals: [25, 40, 15],
-          label: { simple: "prices holds the three numbers", standard: "prices equals [25, 40, 15]" },
+          label: "prices holds the three numbers",
         },
         {
           id: "prices-length",
           kind: "js-value",
           expression: "prices.length",
           equals: 3,
-          label: { simple: "The list has three things", standard: "prices.length is 3" },
+          label: "The list has three things",
         },
       ],
       hints: [
         {
           level: 1,
-          text: {
-            simple: "Square brackets, numbers separated by commas.",
-            standard: "`const prices = [25, 40, 15];`",
-          },
+          text: "Square brackets, numbers separated by commas.",
         },
       ],
       xp: 70,
     }),
     s({
       id: "index",
-      task: {
-        simple:
-          "Lists start counting at 0. Make a variable first holding the first price.",
-        standard: "Declare first as the element at index 0 of prices.",
-      },
+      task: "Lists start counting at 0. Make a variable first holding the first price.",
       inputMode: "guided",
       files: js("const prices = [25, 40, 15];\n"),
       activeFile: "script.js",
@@ -402,66 +1256,51 @@ export const jsCourse: Course = {
           kind: "js-value",
           expression: "first",
           equals: 25,
-          label: { simple: "first is 25", standard: "first equals 25" },
+          label: "first is 25",
         },
       ],
       hints: [
         {
           level: 1,
-          text: {
-            simple: "The first one is number 0, not number 1.",
-            standard: "`prices[0]` is the first element.",
-          },
+          text: "The first one is number 0, not number 1.",
         },
       ],
       xp: 60,
     }),
     s({
       id: "loop",
-      task: {
-        simple:
-          "Print every price in the list, one per line. Use a for loop.",
-        standard: "Loop over prices and log each value.",
-      },
+      task: "Print every price in the list, one per line. Use a for loop.",
       inputMode: "guided",
       files: js("const prices = [25, 40, 15];\n\n// Loop below\n"),
       activeFile: "script.js",
+      conceptIds: ["loop"],
       tests: [
         {
           id: "logs-each",
           kind: "js-logs",
           values: ["25", "40", "15"],
-          label: { simple: "It prints all three prices", standard: "Each price is logged in order" },
+          label: "It prints all three prices",
         },
         {
           id: "uses-loop",
           kind: "source-matches",
           file: "script.js",
           pattern: "for\\s*\\(|forEach|for\\s+.*\\s+of\\s+",
-          because: {
-            simple: "Use a loop, not three separate console.log lines.",
-            standard: "Expected a loop construct rather than repeated statements.",
-          },
-          label: { simple: "You used a loop", standard: "A loop is present" },
+          because: "Use a loop, not three separate console.log lines.",
+          label: "You used a loop",
         },
       ],
       hints: [
         {
           level: 1,
-          text: {
-            simple: "A loop repeats the same work for each thing in the list.",
-            standard: "`for (const p of prices) { console.log(p); }`",
-          },
+          text: "A loop repeats the same work for each thing in the list.",
         },
       ],
       xp: 80,
     }),
     s({
       id: "sum-function",
-      task: {
-        simple: "Make a function called addUp. It returns the total of a list of numbers.",
-        standard: "Write addUp(list) returning the sum of its numbers.",
-      },
+      task: "Make a function called addUp. It returns the total of a list of numbers.",
       inputMode: "guided",
       files: js("// Write your function below\n"),
       activeFile: "script.js",
@@ -472,7 +1311,7 @@ export const jsCourse: Course = {
           fn: "addUp",
           args: [[25, 40, 15]],
           equals: 80,
-          label: { simple: "addUp([25,40,15]) gives 80", standard: "addUp returns 80" },
+          label: "addUp([25,40,15]) gives 80",
         },
         {
           id: "addup-empty",
@@ -480,38 +1319,24 @@ export const jsCourse: Course = {
           fn: "addUp",
           args: [[]],
           equals: 0,
-          label: {
-            simple: "An empty list gives 0",
-            standard: "addUp([]) returns 0",
-          },
+          label: "An empty list gives 0",
         },
       ],
       hints: [
         {
           level: 1,
-          text: {
-            simple: "Start a total at 0, then add each number to it.",
-            standard: "Accumulate into a variable initialised to 0.",
-          },
+          text: "Start a total at 0, then add each number to it.",
         },
         {
           level: 2,
-          text: {
-            simple:
-              "function addUp(list) {\n  let t = 0;\n  for (const nItem of list) {\n    t = t + nItem;\n  }\n  return t;\n}",
-            standard: "`let t = 0; for (const x of list) t += x; return t;`",
-          },
+          text: "function addUp(list) {\n  let t = 0;\n  for (const nItem of list) {\n    t = t + nItem;\n  }\n  return t;\n}",
         },
       ],
       xp: 90,
     }),
     s({
       id: "final",
-      task: {
-        simple:
-          "Last one. Print the total using your function, like this: Total: 80 pesos",
-        standard: "Use addUp with prices and log the result in a template literal.",
-      },
+      task: "Last one. Print the total using your function, like this: Total: 80 pesos",
       inputMode: "guided",
       files: js(
         "const prices = [25, 40, 15];\n\nfunction addUp(list) {\n  let t = 0;\n  for (const item of list) {\n    t = t + item;\n  }\n  return t;\n}\n\n// Print the total below\n",
@@ -522,19 +1347,491 @@ export const jsCourse: Course = {
           id: "final-log",
           kind: "js-logs",
           values: ["Total: 80 pesos"],
-          label: { simple: "It prints Total: 80 pesos", standard: "Console output matches" },
+          label: "It prints Total: 80 pesos",
         },
       ],
       hints: [
         {
           level: 1,
-          text: {
-            simple: "Call your function inside the backticks.",
-            standard: "`console.log(`Total: ${addUp(prices)} pesos`);`",
-          },
+          text: "Call your function inside the backticks.",
         },
       ],
       xp: 120,
     }),
+    s2({
+      id: "fare-constant",
+      task: "Remember the jeepney fare. Make a constant named fare holding 13.",
+      inputMode: "guided",
+      files: js("// Write the fare below\n"),
+      activeFile: "script.js",
+      conceptIds: ["constant"],
+      tests: [{ id: "fare-is-13", kind: "js-value", expression: "fare", equals: 13, label: "fare holds 13" }, { id: "fare-uses-const", kind: "source-matches", file: "script.js", pattern: "const\\s+fare\\s*=\\s*13", because: "Use const for the fixed fare.", label: "The fare stays fixed" }],
+      hints: [{ level: 1, text: "Start with const, then fare, then = 13." }],
+      xp: 50,
+    }),
+    s2({
+      id: "fare-payment",
+      task: "The rider gave 20 pesos. Make a constant named paid holding 20.",
+      inputMode: "guided",
+      files: js("const fare = 13;\n"),
+      activeFile: "script.js",
+      tests: [{ id: "paid-is-20", kind: "js-value", expression: "paid", equals: 20, label: "paid holds 20" }],
+      hints: [{ level: 1, text: "Use const paid = 20." }],
+      xp: 40,
+    }),
+    s2({
+      id: "fare-change",
+      task: "Work out the change. Make change equal paid minus fare.",
+      inputMode: "guided",
+      files: js("const fare = 13;\nconst paid = 20;\n"),
+      activeFile: "script.js",
+      tests: [{ id: "change-is-7", kind: "js-value", expression: "change", equals: 7, label: "change is 7" }],
+      hints: [{ level: 1, text: "The minus sign takes fare away from paid." }],
+      xp: 50,
+    }),
+    s2({
+      id: "fare-log-change",
+      task: "Print the change as Change: 7.",
+      inputMode: "guided",
+      files: js("const fare = 13;\nconst paid = 20;\nconst change = paid - fare;\n"),
+      activeFile: "script.js",
+      tests: [{ id: "logs-change", kind: "js-logs", values: ["Change: 7"], label: "It prints the change" }],
+      hints: [{ level: 1, text: "Use backticks and put change inside ${}." }],
+      xp: 50,
+    }),
+    s2({
+      id: "fare-exact",
+      task: "Make hasExactFare. It says true only when the amount is 13.",
+      inputMode: "guided",
+      files: js("const fare = 13;\n\nfunction hasExactFare(amount) {\n  return ;\n}\n"),
+      activeFile: "script.js",
+      highlightToken: "return ;",
+      conceptIds: ["strict-equality"],
+      tests: [{ id: "exact-yes", kind: "js-returns", fn: "hasExactFare", args: [13], equals: true, label: "13 is the exact fare" }, { id: "exact-no", kind: "js-returns", fn: "hasExactFare", args: [20], equals: false, label: "20 is not the exact fare" }],
+      hints: [{ level: 1, text: "Use three equals signs to compare amount and fare." }],
+      xp: 70,
+    }),
+    s2({
+      id: "fare-exact-log",
+      task: "Ask if 13 is the exact fare, then print the answer.",
+      inputMode: "guided",
+      files: js("const fare = 13;\n\nfunction hasExactFare(amount) {\n  return amount === fare;\n}\n\n// Print the answer below\n"),
+      activeFile: "script.js",
+      tests: [{ id: "logs-exact-fare", kind: "js-logs", values: ["true"], label: "It prints true" }],
+      hints: [{ level: 1, text: "Put hasExactFare(13) inside console.log." }],
+      xp: 60,
+    }),
+    s3({ id: "queue-list", task: "Make a waiting list called queue. Put Lia, Noel, and Pia in it.", inputMode: "guided", files: js("// Make the waiting list below\n"), activeFile: "script.js", tests: [{ id: "queue-names", kind: "js-value", expression: "queue", equals: ["Lia", "Noel", "Pia"], label: "The queue has three names" }], hints: [{ level: 1, text: "Use square brackets and put each name in quotes." }], xp: 50 }),
+    s3({ id: "queue-contains", task: "Check if Noel is waiting. Make isWaiting hold that answer.", inputMode: "guided", files: js('const queue = ["Lia", "Noel", "Pia"];\n'), activeFile: "script.js", conceptIds: ["array-includes"], tests: [{ id: "noel-waiting", kind: "js-value", expression: "isWaiting", equals: true, label: "Noel is waiting" }], hints: [{ level: 1, text: "Ask the list whether it includes Noel." }], xp: 60 }),
+    s3({ id: "queue-log", task: "Print the answer from isWaiting.", inputMode: "guided", files: js('const queue = ["Lia", "Noel", "Pia"];\nconst isWaiting = queue.includes("Noel");\n'), activeFile: "script.js", tests: [{ id: "logs-waiting", kind: "js-logs", values: ["true"], label: "It prints true" }], hints: [{ level: 1, text: "Put isWaiting inside console.log." }], xp: 40 }),
+    s3({ id: "queue-function", task: "Make isInQueue. It checks any name in the waiting list.", inputMode: "guided", files: js('const queue = ["Lia", "Noel", "Pia"];\n\nfunction isInQueue(name) {\n  return ;\n}\n'), activeFile: "script.js", highlightToken: "return ;", tests: [{ id: "queue-name-yes", kind: "js-returns", fn: "isInQueue", args: ["Lia"], equals: true, label: "Lia is in the queue" }, { id: "queue-name-no", kind: "js-returns", fn: "isInQueue", args: ["Mika"], equals: false, label: "Mika is not in the queue" }], hints: [{ level: 1, text: "Use the name inside the same list check." }], xp: 70 }),
+    s3({ id: "queue-position", task: "Find Pia's place in the queue. Make position hold the number.", inputMode: "guided", files: js('const queue = ["Lia", "Noel", "Pia"];\n'), activeFile: "script.js", conceptIds: ["array-index-of"], tests: [{ id: "pia-position", kind: "js-value", expression: "position", equals: 2, label: "Pia is number 2 in the list" }], hints: [{ level: 1, text: "Ask the list for Pia's index." }], xp: 60 }),
+    s3({ id: "queue-position-log", task: "Print Pia's position.", inputMode: "guided", files: js('const queue = ["Lia", "Noel", "Pia"];\nconst position = queue.indexOf("Pia");\n'), activeFile: "script.js", tests: [{ id: "logs-position", kind: "js-logs", values: ["2"], label: "It prints 2" }], hints: [{ level: 1, text: "Put position inside console.log." }], xp: 40 }),
+    s4({ id: "item-object", task: "Keep a coffee item's name and price together.", inputMode: "guided", files: js("// Make the item below\n"), activeFile: "script.js", conceptIds: ["object"], tests: [{ id: "item-details", kind: "js-value", expression: "item", equals: { name: "Coffee", price: 12 }, label: "The item has a name and price" }], hints: [{ level: 1, text: "Use curly brackets with a name and price inside." }], xp: 60 }),
+    s4({ id: "item-name", task: "Read the item name into itemName.", inputMode: "guided", files: js('const item = { name: "Coffee", price: 12 };\n'), activeFile: "script.js", conceptIds: ["property-access"], tests: [{ id: "item-name-value", kind: "js-value", expression: "itemName", equals: "Coffee", label: "itemName is Coffee" }], hints: [{ level: 1, text: "Put a dot and name after item." }], xp: 50 }),
+    s4({ id: "item-price", task: "Read the item price into itemPrice.", inputMode: "guided", files: js('const item = { name: "Coffee", price: 12 };\n'), activeFile: "script.js", tests: [{ id: "item-price-value", kind: "js-value", expression: "itemPrice", equals: 12, label: "itemPrice is 12" }], hints: [{ level: 1, text: "Use item, then a dot, then price." }], xp: 50 }),
+    s4({ id: "item-label", task: "Make labelFor. It returns a product name and price in one line.", inputMode: "guided", files: js('const item = { name: "Coffee", price: 12 };\n\nfunction labelFor(product) {\n  return ;\n}\n'), activeFile: "script.js", highlightToken: "return ;", tests: [{ id: "coffee-label", kind: "js-returns", fn: "labelFor", args: [{ name: "Coffee", price: 12 }], equals: "Coffee: PHP 12", label: "Coffee gets a clear label" }, { id: "rice-label", kind: "js-returns", fn: "labelFor", args: [{ name: "Rice", price: 58 }], equals: "Rice: PHP 58", label: "A different item also works" }], hints: [{ level: 1, text: "Use backticks and read both pieces from product." }], xp: 80 }),
+    s4({ id: "item-label-log", task: "Print the label for the coffee item.", inputMode: "guided", files: js('const item = { name: "Coffee", price: 12 };\n\nfunction labelFor(product) {\n  return `${product.name}: PHP ${product.price}`;\n}\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "logs-item-label", kind: "js-logs", values: ["Coffee: PHP 12"], label: "It prints the coffee label" }], hints: [{ level: 1, text: "Put item inside the label function, then log it." }], xp: 60 }),
+    s5({ id: "budget-total", task: "Remember the barangay activity budget. Make budget hold 500.", inputMode: "guided", files: js("// Store the budget below\n"), activeFile: "script.js", tests: [{ id: "budget-is-500", kind: "js-value", expression: "budget", equals: 500, label: "budget holds 500" }], hints: [{ level: 1, text: "Use const, then budget, then 500." }], xp: 40 }),
+    s5({ id: "budget-people", task: "Three people will share it. Make people hold 3.", inputMode: "guided", files: js("const budget = 500;\n"), activeFile: "script.js", tests: [{ id: "people-is-3", kind: "js-value", expression: "people", equals: 3, label: "people holds 3" }], hints: [{ level: 1, text: "Use const people = 3." }], xp: 40 }),
+    s5({ id: "budget-share", task: "Find each person's share. Divide budget by people.", inputMode: "guided", files: js("const budget = 500;\nconst people = 3;\n"), activeFile: "script.js", tests: [{ id: "share-value", kind: "js-value", expression: "share", equals: 500 / 3, label: "share has the divided amount" }], hints: [{ level: 1, text: "The slash / means divide." }], xp: 50 }),
+    s5({ id: "budget-remainder", task: "Find the pesos left after an even split.", inputMode: "guided", files: js("const budget = 500;\nconst people = 3;\n"), activeFile: "script.js", conceptIds: ["remainder-operator"], tests: [{ id: "remainder-value", kind: "js-value", expression: "remainder", equals: 2, label: "2 pesos are left" }], hints: [{ level: 1, text: "The percent sign finds what is left after dividing." }], xp: 60 }),
+    s5({ id: "budget-label", task: "Make splitLabel. It returns the share as words.", inputMode: "guided", files: js("function splitLabel(total, count) {\n  return ;\n}\n"), activeFile: "script.js", highlightToken: "return ;", tests: [{ id: "split-label-three", kind: "js-returns", fn: "splitLabel", args: [500, 3], equals: "PHP 166.66666666666666 each", label: "The split has a label" }, { id: "split-label-two", kind: "js-returns", fn: "splitLabel", args: [100, 2], equals: "PHP 50 each", label: "Another split also works" }], hints: [{ level: 1, text: "Use backticks and divide total by count inside them." }], xp: 80 }),
+    s5({ id: "budget-label-log", task: "Print the label for the 500-peso budget split.", inputMode: "guided", files: js("const budget = 500;\nconst people = 3;\n\nfunction splitLabel(total, count) {\n  return `PHP ${total / count} each`;\n}\n\n// Print the split below\n"), activeFile: "script.js", tests: [{ id: "logs-split", kind: "js-logs", values: ["PHP 166.66666666666666 each"], label: "It prints the split" }], hints: [{ level: 1, text: "Put budget and people inside the label function, then log it." }], xp: 60 }),
+    s6({ id: "raw-fare", task: "Store a raw tricycle fare with decimals. Make rawFare hold 83.6.", inputMode: "guided", files: js("// Store the raw fare below\n"), activeFile: "script.js", tests: [{ id: "raw-fare-value", kind: "js-value", expression: "rawFare", equals: 83.6, label: "rawFare holds 83.6" }], hints: [{ level: 1, text: "Use const rawFare = 83.6." }], xp: 40 }),
+    s6({ id: "round-fare", task: "Round the fare to the nearest peso.", inputMode: "guided", files: js("const rawFare = 83.6;\n"), activeFile: "script.js", conceptIds: ["math-round"], tests: [{ id: "rounded-fare-value", kind: "js-value", expression: "roundedFare", equals: 84, label: "roundedFare is 84" }], hints: [{ level: 1, text: "Ask Math to round the raw fare." }], xp: 60 }),
+    s6({ id: "floor-fare", task: "Find the whole-peso fare below the decimal.", inputMode: "guided", files: js("const rawFare = 83.6;\n"), activeFile: "script.js", conceptIds: ["math-floor"], tests: [{ id: "lower-fare-value", kind: "js-value", expression: "lowerFare", equals: 83, label: "lowerFare is 83" }], hints: [{ level: 1, text: "Ask Math for the lower whole number." }], xp: 60 }),
+    s6({ id: "round-function", task: "Make pesoFare. It rounds any amount to the nearest peso.", inputMode: "guided", files: js("function pesoFare(amount) {\n  return ;\n}\n"), activeFile: "script.js", highlightToken: "return ;", tests: [{ id: "rounds-up", kind: "js-returns", fn: "pesoFare", args: [83.6], equals: 84, label: "83.6 rounds to 84" }, { id: "rounds-down", kind: "js-returns", fn: "pesoFare", args: [83.2], equals: 83, label: "83.2 rounds to 83" }], hints: [{ level: 1, text: "Put amount inside the same Math helper." }], xp: 70 }),
+    s6({ id: "round-log", task: "Print the rounded fare for 83.6.", inputMode: "guided", files: js("function pesoFare(amount) {\n  return Math.round(amount);\n}\n\n// Print the rounded fare below\n"), activeFile: "script.js", tests: [{ id: "logs-rounded-fare", kind: "js-logs", values: ["84"], label: "It prints 84" }], hints: [{ level: 1, text: "Put 83.6 inside pesoFare, then log it." }], xp: 50 }),
+    s7({ id: "raw-name", task: "Store a name with extra spaces. Make rawName hold two spaces, Ana, then two spaces.", inputMode: "guided", files: js("// Store the typed name below\n"), activeFile: "script.js", tests: [{ id: "raw-name-value", kind: "js-value", expression: "rawName", equals: "  Ana  ", label: "rawName keeps the spaces" }], hints: [{ level: 1, text: "Use quotes and keep the spaces inside them." }], xp: 40 }),
+    s7({ id: "trim-name", task: "Remove the extra spaces around the name.", inputMode: "guided", files: js('const rawName = "  Ana  ";\n'), activeFile: "script.js", conceptIds: ["string-trim"], tests: [{ id: "clean-name-value", kind: "js-value", expression: "cleanName", equals: "Ana", label: "cleanName is Ana" }], hints: [{ level: 1, text: "Ask the text to trim itself." }], xp: 60 }),
+    s7({ id: "upper-name", task: "Show the clean name in capital letters.", inputMode: "guided", files: js('const rawName = "  Ana  ";\n'), activeFile: "script.js", conceptIds: ["string-uppercase"], tests: [{ id: "loud-name-value", kind: "js-value", expression: "loudName", equals: "ANA", label: "loudName is ANA" }], hints: [{ level: 1, text: "First remove outer spaces, then ask for upper case." }], xp: 60 }),
+    s7({ id: "name-function", task: "Make displayName. It cleans and capitalises any name.", inputMode: "guided", files: js("function displayName(name) {\n  return ;\n}\n"), activeFile: "script.js", highlightToken: "return ;", tests: [{ id: "ana-display", kind: "js-returns", fn: "displayName", args: ["  Ana  "], equals: "ANA", label: "Ana becomes ANA" }, { id: "ben-display", kind: "js-returns", fn: "displayName", args: [" ben"], equals: "BEN", label: "Ben becomes BEN" }], hints: [{ level: 1, text: "Use both text helpers after name." }], xp: 70 }),
+    s7({ id: "name-log", task: "Print the clean version of Ana's typed name.", inputMode: "guided", files: js("function displayName(name) {\n  return name.trim().toUpperCase();\n}\n\n// Print the clean name below\n"), activeFile: "script.js", tests: [{ id: "logs-clean-name", kind: "js-logs", values: ["ANA"], label: "It prints ANA" }], hints: [{ level: 1, text: "Put the spaced name inside displayName, then log it." }], xp: 50 }),
+    s8({ id: "stock-list", task: "Store three stock counts: 3, 0, and 5.", inputMode: "guided", files: js("// Store stock counts below\n"), activeFile: "script.js", tests: [{ id: "stock-list-value", kind: "js-value", expression: "stocks", equals: [3, 0, 5], label: "stocks holds three counts" }], hints: [{ level: 1, text: "Use square brackets and put the counts in order." }], xp: 50 }),
+    s8({ id: "sold-out-function", task: "Make isSoldOut. It says true only for zero stock.", inputMode: "guided", files: js("function isSoldOut(stock) {\n  return ;\n}\n"), activeFile: "script.js", highlightToken: "return ;", tests: [{ id: "zero-sold-out", kind: "js-returns", fn: "isSoldOut", args: [0], equals: true, label: "0 is sold out" }, { id: "three-in-stock", kind: "js-returns", fn: "isSoldOut", args: [3], equals: false, label: "3 is still in stock" }], hints: [{ level: 1, text: "Compare stock with zero using three equals signs." }], xp: 60 }),
+    s8({ id: "sold-out-list", task: "Keep only the stock counts that are sold out.", inputMode: "guided", files: js("const stocks = [3, 0, 5];\n\nfunction isSoldOut(stock) {\n  return stock === 0;\n}\n\nconst soldOut = ;\n"), activeFile: "script.js", highlightToken: "const soldOut = ;", conceptIds: ["array-filter"], tests: [{ id: "sold-out-value", kind: "js-value", expression: "soldOut", equals: [0], label: "soldOut keeps only zero" }], hints: [{ level: 1, text: "Ask the list to filter using isSoldOut." }], xp: 70 }),
+    s8({ id: "sold-out-count", task: "Count the sold-out items.", inputMode: "guided", files: js("const stocks = [3, 0, 5];\n\nfunction isSoldOut(stock) {\n  return stock === 0;\n}\n\nconst soldOut = stocks.filter(isSoldOut);\n"), activeFile: "script.js", tests: [{ id: "sold-out-count-value", kind: "js-value", expression: "soldOutCount", equals: 1, label: "There is one sold-out item" }], hints: [{ level: 1, text: "Use the list's length after a dot." }], xp: 50 }),
+    s8({ id: "sold-out-log", task: "Print how many stock counts are sold out.", inputMode: "guided", files: js("const stocks = [3, 0, 5];\n\nfunction isSoldOut(stock) {\n  return stock === 0;\n}\n\nconst soldOut = stocks.filter(isSoldOut);\n\n// Print the count below\n"), activeFile: "script.js", tests: [{ id: "logs-sold-out-count", kind: "js-logs", values: ["1"], label: "It prints 1" }], hints: [{ level: 1, text: "Put soldOut.length inside console.log." }], xp: 50 }),
+    s9({ id: "price-list", task: "Store three market prices: 40, 70, and 55.", inputMode: "guided", files: js("// Store prices below\n"), activeFile: "script.js", tests: [{ id: "price-list-value", kind: "js-value", expression: "prices", equals: [40, 70, 55], label: "prices holds three values" }], hints: [{ level: 1, text: "Use square brackets and put the values in order." }], xp: 40 }),
+    s9({ id: "add-ten-function", task: "Make addTen. It returns a price plus 10.", inputMode: "guided", files: js("function addTen(price) {\n  return ;\n}\n"), activeFile: "script.js", highlightToken: "return ;", tests: [{ id: "add-ten-yes", kind: "js-returns", fn: "addTen", args: [40], equals: 50, label: "40 becomes 50" }, { id: "add-ten-second", kind: "js-returns", fn: "addTen", args: [70], equals: 80, label: "70 becomes 80" }], hints: [{ level: 1, text: "Add 10 to price." }], xp: 60 }),
+    s9({ id: "updated-prices", task: "Make a new list with 10 added to every price.", inputMode: "guided", files: js("const prices = [40, 70, 55];\n\nfunction addTen(price) {\n  return price + 10;\n}\n\nconst updated = ;\n"), activeFile: "script.js", highlightToken: "const updated = ;", conceptIds: ["array-map"], tests: [{ id: "updated-prices-value", kind: "js-value", expression: "updated", equals: [50, 80, 65], label: "All prices have 10 added" }], hints: [{ level: 1, text: "Ask prices to map using addTen." }], xp: 70 }),
+    s9({ id: "updated-first", task: "Read the first updated price into firstUpdated.", inputMode: "guided", files: js("const prices = [40, 70, 55];\n\nfunction addTen(price) {\n  return price + 10;\n}\n\nconst updated = prices.map(addTen);\n"), activeFile: "script.js", tests: [{ id: "updated-first-value", kind: "js-value", expression: "firstUpdated", equals: 50, label: "firstUpdated is 50" }], hints: [{ level: 1, text: "Use square brackets with 0 after updated." }], xp: 50 }),
+    s9({ id: "updated-log", task: "Print the whole updated price list.", inputMode: "guided", files: js("const prices = [40, 70, 55];\n\nfunction addTen(price) {\n  return price + 10;\n}\n\nconst updated = prices.map(addTen);\n\n// Print the new prices below\n"), activeFile: "script.js", tests: [{ id: "logs-updated-prices", kind: "js-logs", values: ["[50,80,65]"], label: "It prints the new prices" }], hints: [{ level: 1, text: "Put updated inside console.log." }], xp: 50 }),
+    s10({ id: "donation-list", task: "Store three donation amounts: 50, 100, and 25.", inputMode: "guided", files: js("// Store the donations below\n"), activeFile: "script.js", tests: [{ id: "donation-list-value", kind: "js-value", expression: "donations", equals: [50, 100, 25], label: "donations holds three amounts" }], hints: [{ level: 1, text: "Use square brackets and put the amounts in order." }], xp: 40 }),
+    s10({ id: "add-function", task: "Make add. It puts two numbers together.", inputMode: "guided", files: js("function add(left, right) {\n  return ;\n}\n"), activeFile: "script.js", highlightToken: "return ;", tests: [{ id: "add-two-donations", kind: "js-returns", fn: "add", args: [50, 100], equals: 150, label: "50 and 100 make 150" }, { id: "add-second-pair", kind: "js-returns", fn: "add", args: [25, 25], equals: 50, label: "Another pair also works" }], hints: [{ level: 1, text: "Use the plus sign between left and right." }], xp: 60 }),
+    s10({ id: "donation-total", task: "Add every donation into one total.", inputMode: "guided", files: js("const donations = [50, 100, 25];\n\nfunction add(left, right) {\n  return left + right;\n}\n\nconst total = ;\n"), activeFile: "script.js", highlightToken: "const total = ;", conceptIds: ["array-reduce"], tests: [{ id: "donation-total-value", kind: "js-value", expression: "total", equals: 175, label: "The total is 175" }], hints: [{ level: 1, text: "Ask donations to reduce with add, starting at 0." }], xp: 70 }),
+    s10({ id: "donation-label", task: "Put the total into a peso label.", inputMode: "guided", files: js("const donations = [50, 100, 25];\n\nfunction add(left, right) {\n  return left + right;\n}\n\nconst total = donations.reduce(add, 0);\n"), activeFile: "script.js", tests: [{ id: "donation-label-value", kind: "js-value", expression: "label", equals: "PHP 175", label: "The label says PHP 175" }], hints: [{ level: 1, text: "Use backticks, PHP, and total inside ${}." }], xp: 50 }),
+    s10({ id: "donation-log", task: "Print the donation total.", inputMode: "guided", files: js("const donations = [50, 100, 25];\n\nfunction add(left, right) {\n  return left + right;\n}\n\nconst total = donations.reduce(add, 0);\n\n// Print the total below\n"), activeFile: "script.js", tests: [{ id: "logs-donation-total", kind: "js-logs", values: ["175"], label: "It prints 175" }], hints: [{ level: 1, text: "Put total inside console.log." }], xp: 50 }),
+    s11({ id: "contact-list", task: "Store three barangay contact names.", inputMode: "guided", files: js("// Store the contact names below\n"), activeFile: "script.js", tests: [{ id: "contact-list-value", kind: "js-value", expression: "contacts", equals: ["Health desk", "Permit desk", "Help desk"], label: "contacts has three names" }], hints: [{ level: 1, text: "Use square brackets and put each contact in quotes." }], xp: 40 }),
+    s11({ id: "is-help-function", task: "Make isHelp. It checks for the Help desk name.", inputMode: "guided", files: js("function isHelp(contact) {\n  return ;\n}\n"), activeFile: "script.js", highlightToken: "return ;", tests: [{ id: "is-help-yes", kind: "js-returns", fn: "isHelp", args: ["Help desk"], equals: true, label: "Help desk is a match" }, { id: "is-help-no", kind: "js-returns", fn: "isHelp", args: ["Health desk"], equals: false, label: "Health desk is not a match" }], hints: [{ level: 1, text: "Use three equals signs to compare contact and the Help desk words." }], xp: 60 }),
+    s11({ id: "help-contact", task: "Find the Help desk name in the contact list.", inputMode: "guided", files: js("const contacts = [\"Health desk\", \"Permit desk\", \"Help desk\"];\n\nfunction isHelp(contact) {\n  return contact === \"Help desk\";\n}\n\nconst helpContact = ;\n"), activeFile: "script.js", highlightToken: "const helpContact = ;", conceptIds: ["array-find"], tests: [{ id: "help-contact-value", kind: "js-value", expression: "helpContact", equals: "Help desk", label: "The Help desk contact is found" }], hints: [{ level: 1, text: "Ask contacts to find using isHelp." }], xp: 70 }),
+    s11({ id: "contact-length", task: "Count the letters in the found contact name.", inputMode: "guided", files: js("const contacts = [\"Health desk\", \"Permit desk\", \"Help desk\"];\n\nfunction isHelp(contact) {\n  return contact === \"Help desk\";\n}\n\nconst helpContact = contacts.find(isHelp);\n"), activeFile: "script.js", tests: [{ id: "contact-length-value", kind: "js-value", expression: "nameLength", equals: 9, label: "The contact has 9 letters and spaces" }], hints: [{ level: 1, text: "Put .length after helpContact." }], xp: 50 }),
+    s11({ id: "contact-log", task: "Print the Help desk contact name.", inputMode: "guided", files: js("const contacts = [\"Health desk\", \"Permit desk\", \"Help desk\"];\n\nfunction isHelp(contact) {\n  return contact === \"Help desk\";\n}\n\nconst helpContact = contacts.find(isHelp);\n\n// Print the contact below\n"), activeFile: "script.js", tests: [{ id: "logs-help-contact", kind: "js-logs", values: ["Help desk"], label: "It prints Help desk" }], hints: [{ level: 1, text: "Put helpContact inside console.log." }], xp: 50 }),
+    s12({ id: "alert-stock-list", task: "Store three stock counts: 4, 0, and 2.", inputMode: "guided", files: js("// Store the stock counts below\n"), activeFile: "script.js", tests: [{ id: "alert-stock-list-value", kind: "js-value", expression: "stocks", equals: [4, 0, 2], label: "stocks has three counts" }], hints: [{ level: 1, text: "Use square brackets and put the counts in order." }], xp: 40 }),
+    s12({ id: "alert-sold-out-function", task: "Make isSoldOut. It checks if a count is zero.", inputMode: "guided", files: js("function isSoldOut(stock) {\n  return ;\n}\n"), activeFile: "script.js", highlightToken: "return ;", tests: [{ id: "alert-zero-sold-out", kind: "js-returns", fn: "isSoldOut", args: [0], equals: true, label: "Zero is sold out" }, { id: "alert-stock-left", kind: "js-returns", fn: "isSoldOut", args: [2], equals: false, label: "Two is not sold out" }], hints: [{ level: 1, text: "Compare stock with 0 using three equals signs." }], xp: 60 }),
+    s12({ id: "alert-has-sold-out", task: "Check if any stock count is sold out.", inputMode: "guided", files: js("const stocks = [4, 0, 2];\n\nfunction isSoldOut(stock) {\n  return stock === 0;\n}\n\nconst hasSoldOut = ;\n"), activeFile: "script.js", highlightToken: "const hasSoldOut = ;", conceptIds: ["array-some"], tests: [{ id: "alert-some-value", kind: "js-value", expression: "hasSoldOut", equals: true, label: "One stock count is sold out" }], hints: [{ level: 1, text: "Ask the list whether some item passes isSoldOut." }], xp: 70 }),
+    s12({ id: "alert-notice", task: "Put the alert answer into a short message.", inputMode: "guided", files: js("const stocks = [4, 0, 2];\n\nfunction isSoldOut(stock) {\n  return stock === 0;\n}\n\nconst hasSoldOut = stocks.some(isSoldOut);\n"), activeFile: "script.js", tests: [{ id: "alert-notice-value", kind: "js-value", expression: "notice", equals: "Sold out: true", label: "The message says Sold out: true" }], hints: [{ level: 1, text: "Use backticks and put hasSoldOut inside ${}." }], xp: 50 }),
+    s12({ id: "alert-log", task: "Print the stock alert message.", inputMode: "guided", files: js("const stocks = [4, 0, 2];\n\nfunction isSoldOut(stock) {\n  return stock === 0;\n}\n\nconst hasSoldOut = stocks.some(isSoldOut);\nconst notice = `Sold out: ${hasSoldOut}`;\n\n// Print the alert below\n"), activeFile: "script.js", tests: [{ id: "logs-stock-alert", kind: "js-logs", values: ["Sold out: true"], label: "It prints the alert" }], hints: [{ level: 1, text: "Put notice inside console.log." }], xp: 50 }),
+    s13({ id: "payment-list", task: "Store three payment amounts: 20, 50, and 35.", inputMode: "guided", files: js("// Store the payment amounts below\n"), activeFile: "script.js", tests: [{ id: "payment-list-value", kind: "js-value", expression: "payments", equals: [20, 50, 35], label: "payments has three amounts" }], hints: [{ level: 1, text: "Use square brackets and put the amounts in order." }], xp: 40 }),
+    s13({ id: "paid-function", task: "Make isPaid. It checks if an amount is more than zero.", inputMode: "guided", files: js("function isPaid(amount) {\n  return ;\n}\n"), activeFile: "script.js", highlightToken: "return ;", tests: [{ id: "paid-positive", kind: "js-returns", fn: "isPaid", args: [20], equals: true, label: "A positive amount is paid" }, { id: "paid-zero", kind: "js-returns", fn: "isPaid", args: [0], equals: false, label: "Zero is not paid" }], hints: [{ level: 1, text: "Use the greater-than sign between amount and 0." }], xp: 60 }),
+    s13({ id: "all-paid", task: "Check that every payment amount is paid.", inputMode: "guided", files: js("const payments = [20, 50, 35];\n\nfunction isPaid(amount) {\n  return amount > 0;\n}\n\nconst allPaid = ;\n"), activeFile: "script.js", highlightToken: "const allPaid = ;", conceptIds: ["array-every"], tests: [{ id: "all-paid-value", kind: "js-value", expression: "allPaid", equals: true, label: "Every amount is paid" }], hints: [{ level: 1, text: "Ask payments whether every item passes isPaid." }], xp: 70 }),
+    s13({ id: "payment-label", task: "Put the payment answer into a short message.", inputMode: "guided", files: js("const payments = [20, 50, 35];\n\nfunction isPaid(amount) {\n  return amount > 0;\n}\n\nconst allPaid = payments.every(isPaid);\n"), activeFile: "script.js", tests: [{ id: "payment-label-value", kind: "js-value", expression: "label", equals: "All paid: true", label: "The message says All paid: true" }], hints: [{ level: 1, text: "Use backticks and put allPaid inside ${}." }], xp: 50 }),
+    s13({ id: "payment-log", task: "Print the payment message.", inputMode: "guided", files: js("const payments = [20, 50, 35];\n\nfunction isPaid(amount) {\n  return amount > 0;\n}\n\nconst allPaid = payments.every(isPaid);\nconst label = `All paid: ${allPaid}`;\n\n// Print the payment check below\n"), activeFile: "script.js", tests: [{ id: "logs-payment-label", kind: "js-logs", values: ["All paid: true"], label: "It prints the payment message" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s14({ id: "notice-parts", task: "Store two notice words: Flood and warning.", inputMode: "guided", files: js("// Store the notice words below\n"), activeFile: "script.js", tests: [{ id: "notice-parts-value", kind: "js-value", expression: "noticeParts", equals: ["Flood", "warning"], label: "noticeParts has two words" }], hints: [{ level: 1, text: "Use square brackets and quote each word." }], xp: 40 }),
+    s14({ id: "notice-text", task: "Join the two notice words with a space.", inputMode: "guided", files: js('const noticeParts = ["Flood", "warning"];\nconst notice = ;\n'), activeFile: "script.js", highlightToken: "const notice = ;", conceptIds: ["array-join"], tests: [{ id: "notice-text-value", kind: "js-value", expression: "notice", equals: "Flood warning", label: "The notice words become one message" }], hints: [{ level: 1, text: "Ask noticeParts to join its items with a space." }], xp: 70 }),
+    s14({ id: "notice-label", task: "Put Alert: before the notice.", inputMode: "guided", files: js('const noticeParts = ["Flood", "warning"];\nconst notice = noticeParts.join(" ");\n'), activeFile: "script.js", tests: [{ id: "notice-label-value", kind: "js-value", expression: "label", equals: "Alert: Flood warning", label: "The label starts with Alert" }], hints: [{ level: 1, text: "Connect the fixed label text to notice." }], xp: 50 }),
+    s14({ id: "notice-urgent", task: "Make the full alert use capital letters.", inputMode: "guided", files: js('const noticeParts = ["Flood", "warning"];\nconst notice = noticeParts.join(" ");\nconst label = "Alert: " + notice;\n'), activeFile: "script.js", tests: [{ id: "notice-urgent-value", kind: "js-value", expression: "urgentLabel", equals: "ALERT: FLOOD WARNING", label: "The full alert uses capitals" }], hints: [{ level: 1, text: "Use the uppercase text method after label." }], xp: 60 }),
+    s14({ id: "notice-log", task: "Print the urgent flood alert.", inputMode: "guided", files: js('const noticeParts = ["Flood", "warning"];\nconst notice = noticeParts.join(" ");\nconst label = "Alert: " + notice;\nconst urgentLabel = label.toUpperCase();\n\n// Print the urgent notice below\n'), activeFile: "script.js", tests: [{ id: "logs-urgent-notice", kind: "js-logs", values: ["ALERT: FLOOD WARNING"], label: "It prints the urgent alert" }], hints: [{ level: 1, text: "Put urgentLabel inside console.log." }], xp: 50 }),
+    s15({ id: "contact-object", task: "Store a contact with an office and phone number.", inputMode: "guided", files: js("// Store the contact below\n"), activeFile: "script.js", tests: [{ id: "contact-object-value", kind: "js-value", expression: "contact", equals: { office: "Barangay Hall", phone: "117" }, label: "contact holds the office and phone" }], hints: [{ level: 1, text: "Use curly brackets with a name for each detail." }], xp: 40 }),
+    s15({ id: "contact-keys", task: "Make a list of the contact detail names.", inputMode: "guided", files: js('const contact = { office: "Barangay Hall", phone: "117" };\nconst keys = ;\n'), activeFile: "script.js", highlightToken: "const keys = ;", conceptIds: ["object-keys"], tests: [{ id: "contact-keys-value", kind: "js-value", expression: "keys", equals: ["office", "phone"], label: "keys has the contact detail names" }], hints: [{ level: 1, text: "Ask Object for the names stored in contact." }], xp: 70 }),
+    s15({ id: "contact-first-key", task: "Read the first contact detail name.", inputMode: "guided", files: js('const contact = { office: "Barangay Hall", phone: "117" };\nconst keys = Object.keys(contact);\n'), activeFile: "script.js", tests: [{ id: "contact-first-key-value", kind: "js-value", expression: "firstKey", equals: "office", label: "The first detail name is office" }], hints: [{ level: 1, text: "Use square brackets with 0 after keys." }], xp: 50 }),
+    s15({ id: "contact-key-label", task: "Make the first key label use capital letters.", inputMode: "guided", files: js('const contact = { office: "Barangay Hall", phone: "117" };\nconst keys = Object.keys(contact);\nconst firstKey = keys[0];\n'), activeFile: "script.js", tests: [{ id: "contact-key-label-value", kind: "js-value", expression: "label", equals: "OFFICE", label: "The first key label uses capitals" }], hints: [{ level: 1, text: "Use the uppercase text method after firstKey." }], xp: 60 }),
+    s15({ id: "contact-key-log", task: "Print the capital first contact detail name.", inputMode: "guided", files: js('const contact = { office: "Barangay Hall", phone: "117" };\nconst keys = Object.keys(contact);\nconst firstKey = keys[0];\nconst label = firstKey.toUpperCase();\n\n// Print the detail name below\n'), activeFile: "script.js", tests: [{ id: "logs-contact-key-label", kind: "js-logs", values: ["OFFICE"], label: "It prints OFFICE" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s16({ id: "service-list", task: "Store two service names: Health and Permit.", inputMode: "guided", files: js("// Store the service names below\n"), activeFile: "script.js", tests: [{ id: "service-list-value", kind: "js-value", expression: "serviceNames", equals: ["Health", "Permit"], label: "serviceNames has two names" }], hints: [{ level: 1, text: "Use square brackets and quote each name." }], xp: 40 }),
+    s16({ id: "service-is-list", task: "Check that the service names are a list.", inputMode: "guided", files: js('const serviceNames = ["Health", "Permit"];\nconst hasList = ;\n'), activeFile: "script.js", highlightToken: "const hasList = ;", conceptIds: ["array-is-array"], tests: [{ id: "service-is-list-value", kind: "js-value", expression: "hasList", equals: true, label: "The service names are a list" }], hints: [{ level: 1, text: "Ask Array if serviceNames is an array." }], xp: 70 }),
+    s16({ id: "service-first", task: "Read the first service name.", inputMode: "guided", files: js('const serviceNames = ["Health", "Permit"];\nconst hasList = Array.isArray(serviceNames);\n'), activeFile: "script.js", tests: [{ id: "service-first-value", kind: "js-value", expression: "firstService", equals: "Health", label: "The first service is Health" }], hints: [{ level: 1, text: "Use square brackets with 0 after serviceNames." }], xp: 50 }),
+    s16({ id: "service-label", task: "Make a label with the first service and list answer.", inputMode: "guided", files: js('const serviceNames = ["Health", "Permit"];\nconst hasList = Array.isArray(serviceNames);\nconst firstService = serviceNames[0];\n'), activeFile: "script.js", tests: [{ id: "service-label-value", kind: "js-value", expression: "label", equals: "Health: true", label: "The label says Health: true" }], hints: [{ level: 1, text: "Connect the name, fixed punctuation, and answer." }], xp: 60 }),
+    s16({ id: "service-log", task: "Print the service list label.", inputMode: "guided", files: js('const serviceNames = ["Health", "Permit"];\nconst hasList = Array.isArray(serviceNames);\nconst firstService = serviceNames[0];\nconst label = firstService + ": " + hasList;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "logs-service-label", kind: "js-logs", values: ["Health: true"], label: "It prints the service label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s17({ id: "shelter-object", task: "Store a shelter lead and seat count.", inputMode: "guided", files: js("// Store the shelter details below\n"), activeFile: "script.js", tests: [{ id: "shelter-object-value", kind: "js-value", expression: "shelter", equals: { lead: "Mila", seats: 40 }, label: "shelter holds the lead and seats" }], hints: [{ level: 1, text: "Use curly brackets with a name for each detail." }], xp: 40 }),
+    s17({ id: "shelter-values", task: "Make a list of the shelter details.", inputMode: "guided", files: js('const shelter = { lead: "Mila", seats: 40 };\nconst values = ;\n'), activeFile: "script.js", highlightToken: "const values = ;", conceptIds: ["object-values"], tests: [{ id: "shelter-values-value", kind: "js-value", expression: "values", equals: ["Mila", 40], label: "values has the shelter details" }], hints: [{ level: 1, text: "Ask Object for the details stored in shelter." }], xp: 70 }),
+    s17({ id: "shelter-first-value", task: "Read the first shelter detail.", inputMode: "guided", files: js('const shelter = { lead: "Mila", seats: 40 };\nconst values = Object.values(shelter);\n'), activeFile: "script.js", tests: [{ id: "shelter-first-value-value", kind: "js-value", expression: "firstValue", equals: "Mila", label: "The first shelter detail is Mila" }], hints: [{ level: 1, text: "Use square brackets with 0 after values." }], xp: 50 }),
+    s17({ id: "shelter-label", task: "Make a label for the shelter lead.", inputMode: "guided", files: js('const shelter = { lead: "Mila", seats: 40 };\nconst values = Object.values(shelter);\nconst firstValue = values[0];\n'), activeFile: "script.js", tests: [{ id: "shelter-label-value", kind: "js-value", expression: "label", equals: "Lead: Mila", label: "The label says Lead: Mila" }], hints: [{ level: 1, text: "Connect the fixed label text to firstValue." }], xp: 60 }),
+    s17({ id: "shelter-log", task: "Print the shelter lead label.", inputMode: "guided", files: js('const shelter = { lead: "Mila", seats: 40 };\nconst values = Object.values(shelter);\nconst firstValue = values[0];\nconst label = "Lead: " + firstValue;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "logs-shelter-label", kind: "js-logs", values: ["Lead: Mila"], label: "It prints the shelter lead" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s18({ id: "hours-object", task: "Store the clinic opening and closing times.", inputMode: "guided", files: js("// Store the clinic hours below\n"), activeFile: "script.js", tests: [{ id: "hours-object-value", kind: "js-value", expression: "hours", equals: { open: "8 AM", close: "5 PM" }, label: "hours holds both clinic times" }], hints: [{ level: 1, text: "Use curly brackets with a name for each time." }], xp: 40 }),
+    s18({ id: "hours-entries", task: "Make pairs from the clinic hour names and times.", inputMode: "guided", files: js('const hours = { open: "8 AM", close: "5 PM" };\nconst entries = ;\n'), activeFile: "script.js", highlightToken: "const entries = ;", conceptIds: ["object-entries"], tests: [{ id: "hours-entries-value", kind: "js-value", expression: "entries", equals: [["open", "8 AM"], ["close", "5 PM"]], label: "entries has both name and time pairs" }], hints: [{ level: 1, text: "Ask Object for the pairs stored in hours." }], xp: 70 }),
+    s18({ id: "hours-first-entry", task: "Read the first clinic hour pair.", inputMode: "guided", files: js('const hours = { open: "8 AM", close: "5 PM" };\nconst entries = Object.entries(hours);\n'), activeFile: "script.js", tests: [{ id: "hours-first-entry-value", kind: "js-value", expression: "firstEntry", equals: ["open", "8 AM"], label: "The first pair has open and 8 AM" }], hints: [{ level: 1, text: "Use square brackets with 0 after entries." }], xp: 50 }),
+    s18({ id: "hours-key", task: "Read the name from the first clinic hour pair.", inputMode: "guided", files: js('const hours = { open: "8 AM", close: "5 PM" };\nconst entries = Object.entries(hours);\nconst firstEntry = entries[0];\n'), activeFile: "script.js", tests: [{ id: "hours-key-value", kind: "js-value", expression: "firstKey", equals: "open", label: "The first hour name is open" }], hints: [{ level: 1, text: "Use square brackets with 0 after firstEntry." }], xp: 50 }),
+    s18({ id: "hours-log", task: "Print the first clinic hour name.", inputMode: "guided", files: js('const hours = { open: "8 AM", close: "5 PM" };\nconst entries = Object.entries(hours);\nconst firstEntry = entries[0];\nconst firstKey = firstEntry[0];\n\n// Print the hour name below\n'), activeFile: "script.js", tests: [{ id: "logs-hours-key", kind: "js-logs", values: ["open"], label: "It prints open" }], hints: [{ level: 1, text: "Put firstKey inside console.log." }], xp: 50 }),
+    s19({ id: "permit-object", task: "Store a permit name and status.", inputMode: "guided", files: js("// Store the permit details below\n"), activeFile: "script.js", tests: [{ id: "permit-object-value", kind: "js-value", expression: "permit", equals: { name: "Ari", status: "Draft" }, label: "permit holds the name and status" }], hints: [{ level: 1, text: "Use curly brackets with a name for each detail." }], xp: 40 }),
+    s19({ id: "permit-ready", task: "Change the permit status to Ready.", inputMode: "guided", files: js('const permit = { name: "Ari", status: "Draft" };\n\n// Change the permit status below\n'), activeFile: "script.js", conceptIds: ["object-property-update"], tests: [{ id: "permit-ready-value", kind: "js-value", expression: "permit.status", equals: "Ready", label: "The permit status is Ready" }], hints: [{ level: 1, text: "Use the status name after a dot on permit." }], xp: 70 }),
+    s19({ id: "permit-status", task: "Read the current permit status.", inputMode: "guided", files: js('const permit = { name: "Ari", status: "Draft" };\npermit.status = "Ready";\n'), activeFile: "script.js", tests: [{ id: "permit-status-value", kind: "js-value", expression: "status", equals: "Ready", label: "status holds Ready" }], hints: [{ level: 1, text: "Put .status after permit." }], xp: 50 }),
+    s19({ id: "permit-label", task: "Make a label with the permit status.", inputMode: "guided", files: js('const permit = { name: "Ari", status: "Draft" };\npermit.status = "Ready";\nconst status = permit.status;\n'), activeFile: "script.js", tests: [{ id: "permit-label-value", kind: "js-value", expression: "label", equals: "Status: Ready", label: "The label says Status: Ready" }], hints: [{ level: 1, text: "Connect the fixed label text to status." }], xp: 60 }),
+    s19({ id: "permit-log", task: "Print the permit status label.", inputMode: "guided", files: js('const permit = { name: "Ari", status: "Draft" };\npermit.status = "Ready";\nconst status = permit.status;\nconst label = "Status: " + status;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "logs-permit-label", kind: "js-logs", values: ["Status: Ready"], label: "It prints the permit status" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s20({ id: "desk-object", task: "Store a health desk and permit desk number.", inputMode: "guided", files: js("// Store the desk details below\n"), activeFile: "script.js", tests: [{ id: "desk-object-value", kind: "js-value", expression: "desks", equals: { health: "117", permit: "118" }, label: "desks holds both desk numbers" }], hints: [{ level: 1, text: "Use curly brackets with a name for each number." }], xp: 40 }),
+    s20({ id: "desk-loop", task: "Print each desk name from the desk object.", inputMode: "guided", files: js('const desks = { health: "117", permit: "118" };\n'), activeFile: "script.js", conceptIds: ["for-in-loop"], tests: [{ id: "logs-desk-names", kind: "js-logs", values: ["health", "permit"], label: "It prints both desk names" }], hints: [{ level: 1, text: "Use for, const, a desk name, in, then desks." }], xp: 70 }),
+    s20({ id: "desk-health-number", task: "Read the health desk number using its name.", inputMode: "guided", files: js('const desks = { health: "117", permit: "118" };\nfor (const desk in desks) console.log(desk);\n'), activeFile: "script.js", conceptIds: ["bracket-notation"], tests: [{ id: "desk-health-number-value", kind: "js-value", expression: "healthNumber", equals: "117", label: "healthNumber holds 117" }], hints: [{ level: 1, text: "Put the health word in quotes inside square brackets." }], xp: 60 }),
+    s20({ id: "desk-label", task: "Make a label with the health desk number.", inputMode: "guided", files: js('const desks = { health: "117", permit: "118" };\nfor (const desk in desks) console.log(desk);\nconst healthNumber = desks["health"];\n'), activeFile: "script.js", tests: [{ id: "desk-label-value", kind: "js-value", expression: "label", equals: "Health: 117", label: "The label says Health: 117" }], hints: [{ level: 1, text: "Connect the fixed label text to healthNumber." }], xp: 60 }),
+    s20({ id: "desk-log", task: "Print the health desk label after the desk names.", inputMode: "guided", files: js('const desks = { health: "117", permit: "118" };\nfor (const desk in desks) console.log(desk);\nconst healthNumber = desks["health"];\nconst label = "Health: " + healthNumber;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "logs-desk-label", kind: "js-logs", values: ["health", "permit", "Health: 117"], label: "It prints both desk names and the number" }], hints: [{ level: 1, text: "Put label inside console.log after the loop." }], xp: 50 }),
+    s21({ id: "hotline-list", task: "Store the health and emergency hotline numbers.", inputMode: "guided", files: js("// Store the hotline numbers below\n"), activeFile: "script.js", tests: [{ id: "hotline-list-value", kind: "js-value", expression: "hotlines", equals: ["117", "911"], label: "hotlines has both numbers" }], hints: [{ level: 1, text: "Use square brackets and quote each number." }], xp: 40 }),
+    s21({ id: "hotline-unpack", task: "Take each hotline number into its own name.", inputMode: "guided", files: js('const hotlines = ["117", "911"];\nconst [] = hotlines;\n'), activeFile: "script.js", highlightToken: "[]", conceptIds: ["array-destructuring"], tests: [{ id: "hotline-health-value", kind: "js-value", expression: "health", equals: "117", label: "health holds 117" }, { id: "hotline-emergency-value", kind: "js-value", expression: "emergency", equals: "911", label: "emergency holds 911" }], hints: [{ level: 1, text: "Put one name for each list item inside the brackets." }], xp: 70 }),
+    s21({ id: "hotline-label", task: "Make a label for the health hotline.", inputMode: "guided", files: js('const hotlines = ["117", "911"];\nconst [health, emergency] = hotlines;\n'), activeFile: "script.js", tests: [{ id: "hotline-label-value", kind: "js-value", expression: "label", equals: "Health: 117", label: "The label says Health: 117" }], hints: [{ level: 1, text: "Connect the fixed label text to health." }], xp: 50 }),
+    s21({ id: "emergency-label", task: "Make a label for the emergency hotline.", inputMode: "guided", files: js('const hotlines = ["117", "911"];\nconst [health, emergency] = hotlines;\nconst label = "Health: " + health;\n'), activeFile: "script.js", tests: [{ id: "emergency-label-value", kind: "js-value", expression: "emergencyLabel", equals: "Emergency: 911", label: "The label says Emergency: 911" }], hints: [{ level: 1, text: "Connect the fixed label text to emergency." }], xp: 50 }),
+    s21({ id: "hotline-log", task: "Print both hotline labels.", inputMode: "guided", files: js('const hotlines = ["117", "911"];\nconst [health, emergency] = hotlines;\nconst label = "Health: " + health;\nconst emergencyLabel = "Emergency: " + emergency;\n\n// Print both labels below\n'), activeFile: "script.js", tests: [{ id: "logs-hotline-labels", kind: "js-logs", values: ["Health: 117", "Emergency: 911"], label: "It prints both hotline labels" }], hints: [{ level: 1, text: "Log label first, then emergencyLabel." }], xp: 50 }),
+    s22({ id: "emergency-object", task: "Store an emergency contact name and number.", inputMode: "guided", files: js("// Store the emergency details below\n"), activeFile: "script.js", tests: [{ id: "emergency-object-value", kind: "js-value", expression: "emergency", equals: { contact: "Mia", number: "911" }, label: "emergency holds both details" }], hints: [{ level: 1, text: "Use curly brackets with a name for each detail." }], xp: 40 }),
+    s22({ id: "emergency-unpack", task: "Take each emergency detail into its own name.", inputMode: "guided", files: js('const emergency = { contact: "Mia", number: "911" };\nconst {} = emergency;\n'), activeFile: "script.js", highlightToken: "{}", conceptIds: ["object-destructuring"], tests: [{ id: "emergency-contact-value", kind: "js-value", expression: "contact", equals: "Mia", label: "contact holds Mia" }, { id: "emergency-number-value", kind: "js-value", expression: "number", equals: "911", label: "number holds 911" }], hints: [{ level: 1, text: "Put both detail names inside the curly brackets." }], xp: 70 }),
+    s22({ id: "emergency-contact-label", task: "Make a label for the emergency contact.", inputMode: "guided", files: js('const emergency = { contact: "Mia", number: "911" };\nconst { contact, number } = emergency;\n'), activeFile: "script.js", tests: [{ id: "emergency-contact-label-value", kind: "js-value", expression: "contactLabel", equals: "Contact: Mia", label: "The label says Contact: Mia" }], hints: [{ level: 1, text: "Join the fixed words to contact." }], xp: 50 }),
+    s22({ id: "emergency-number-label", task: "Make a label for the emergency number.", inputMode: "guided", files: js('const emergency = { contact: "Mia", number: "911" };\nconst { contact, number } = emergency;\nconst contactLabel = "Contact: " + contact;\n'), activeFile: "script.js", tests: [{ id: "emergency-number-label-value", kind: "js-value", expression: "numberLabel", equals: "Call: 911", label: "The label says Call: 911" }], hints: [{ level: 1, text: "Join the fixed words to number." }], xp: 50 }),
+    s22({ id: "emergency-log", task: "Print both emergency labels.", inputMode: "guided", files: js('const emergency = { contact: "Mia", number: "911" };\nconst { contact, number } = emergency;\nconst contactLabel = "Contact: " + contact;\nconst numberLabel = "Call: " + number;\n\n// Print both labels below\n'), activeFile: "script.js", tests: [{ id: "logs-emergency-labels", kind: "js-logs", values: ["Contact: Mia", "Call: 911"], label: "It prints both emergency labels" }], hints: [{ level: 1, text: "Log contactLabel first, then numberLabel." }], xp: 50 }),
+    s23({ id: "welcome-guest", task: "Store a barangay guest name.", inputMode: "guided", files: js("// Store the guest name below\n"), activeFile: "script.js", tests: [{ id: "welcome-guest-value", kind: "js-value", expression: "guest", equals: "Ari", label: "guest holds Ari" }], hints: [{ level: 1, text: "Put Ari in quotes after the equal sign." }], xp: 40 }),
+    s23({ id: "welcome-function", task: "Make a welcome function with a fallback name.", inputMode: "guided", files: js('const guest = "Ari";\n\nfunction welcome(name) {\n  return "";\n}\n'), activeFile: "script.js", highlightToken: "name", conceptIds: ["default-parameter"], tests: [{ id: "welcome-named", kind: "js-returns", fn: "welcome", args: ["Mia"], equals: "Welcome, Mia", label: "A named guest gets a welcome" }, { id: "welcome-default", kind: "js-returns", fn: "welcome", args: [], equals: "Welcome, Neighbor", label: "A missing name gets the fallback" }], hints: [{ level: 1, text: "Put the fallback inside the function brackets." }], xp: 80 }),
+    s23({ id: "welcome-personal", task: "Make a welcome for the named guest.", inputMode: "guided", files: js('const guest = "Ari";\n\nfunction welcome(name = "Neighbor") {\n  return "Welcome, " + name;\n}\n'), activeFile: "script.js", tests: [{ id: "welcome-personal-value", kind: "js-value", expression: "personalWelcome", equals: "Welcome, Ari", label: "The guest welcome says Ari" }], hints: [{ level: 1, text: "Call welcome with guest inside its brackets." }], xp: 50 }),
+    s23({ id: "welcome-default", task: "Make a welcome using the fallback name.", inputMode: "guided", files: js('const guest = "Ari";\n\nfunction welcome(name = "Neighbor") {\n  return "Welcome, " + name;\n}\n\nconst personalWelcome = welcome(guest);\n'), activeFile: "script.js", tests: [{ id: "welcome-default-value", kind: "js-value", expression: "defaultWelcome", equals: "Welcome, Neighbor", label: "The fallback welcome says Neighbor" }], hints: [{ level: 1, text: "Call welcome with empty brackets." }], xp: 50 }),
+    s23({ id: "welcome-log", task: "Print both welcome messages.", inputMode: "guided", files: js('const guest = "Ari";\n\nfunction welcome(name = "Neighbor") {\n  return "Welcome, " + name;\n}\n\nconst personalWelcome = welcome(guest);\nconst defaultWelcome = welcome();\n\n// Print both messages below\n'), activeFile: "script.js", tests: [{ id: "logs-welcome-messages", kind: "js-logs", values: ["Welcome, Ari", "Welcome, Neighbor"], label: "It prints both welcome messages" }], hints: [{ level: 1, text: "Log personalWelcome first, then defaultWelcome." }], xp: 50 }),
+    s24({ id: "service-status-object", task: "Store two barangay service statuses.", inputMode: "guided", files: js("// Store the service statuses below\n"), activeFile: "script.js", tests: [{ id: "service-status-object-value", kind: "js-value", expression: "services", equals: { health: "Open", permit: "Closed" }, label: "services holds both statuses" }], hints: [{ level: 1, text: "Use curly brackets with a name for each status." }], xp: 40 }),
+    s24({ id: "service-has-health", task: "Check if health is a listed service.", inputMode: "guided", files: js('const services = { health: "Open", permit: "Closed" };\nconst hasHealth = ;\n'), activeFile: "script.js", highlightToken: "const hasHealth = ;", conceptIds: ["object-has-own"], tests: [{ id: "service-has-health-value", kind: "js-value", expression: "hasHealth", equals: true, label: "health is a listed service" }], hints: [{ level: 1, text: "Ask Object if services owns the health name." }], xp: 70 }),
+    s24({ id: "service-has-sports", task: "Check for a service that is not listed.", inputMode: "guided", files: js('const services = { health: "Open", permit: "Closed" };\nconst hasHealth = Object.hasOwn(services, "health");\n'), activeFile: "script.js", tests: [{ id: "service-has-sports-value", kind: "js-value", expression: "hasSports", equals: false, label: "sports is not a listed service" }], hints: [{ level: 1, text: "Use the same check with the sports name." }], xp: 50 }),
+    s24({ id: "service-health-label", task: "Make a label for the health check.", inputMode: "guided", files: js('const services = { health: "Open", permit: "Closed" };\nconst hasHealth = Object.hasOwn(services, "health");\nconst hasSports = Object.hasOwn(services, "sports");\n'), activeFile: "script.js", tests: [{ id: "service-health-label-value", kind: "js-value", expression: "label", equals: "Health service: true", label: "The label says health is listed" }], hints: [{ level: 1, text: "Join the fixed label words to hasHealth." }], xp: 50 }),
+    s24({ id: "service-health-log", task: "Print the health service label.", inputMode: "guided", files: js('const services = { health: "Open", permit: "Closed" };\nconst hasHealth = Object.hasOwn(services, "health");\nconst hasSports = Object.hasOwn(services, "sports");\nconst label = "Health service: " + hasHealth;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "logs-service-health-label", kind: "js-logs", values: ["Health service: true"], label: "It prints the health service label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s25({ id: "roster-weekday", task: "Store two weekday volunteer names.", inputMode: "guided", files: js("// Store weekday volunteers below\n"), activeFile: "script.js", tests: [{ id: "roster-weekday-value", kind: "js-value", expression: "weekdayShifts", equals: ["Mia", "Ari"], label: "weekdayShifts has both names" }], hints: [{ level: 1, text: "Use square brackets and quote both names." }], xp: 40 }),
+    s25({ id: "roster-weekend", task: "Store the weekend volunteer name.", inputMode: "guided", files: js('const weekdayShifts = ["Mia", "Ari"];\n'), activeFile: "script.js", tests: [{ id: "roster-weekend-value", kind: "js-value", expression: "weekendShifts", equals: ["Noel"], label: "weekendShifts has Noel" }], hints: [{ level: 1, text: "Make a one-name list for Noel." }], xp: 40 }),
+    s25({ id: "roster-combine", task: "Make one roster from both shift lists.", inputMode: "guided", files: js('const weekdayShifts = ["Mia", "Ari"];\nconst weekendShifts = ["Noel"];\n'), activeFile: "script.js", conceptIds: ["spread-syntax"], tests: [{ id: "roster-combine-value", kind: "js-value", expression: "roster", equals: ["Mia", "Ari", "Noel"], label: "roster has all three names" }], hints: [{ level: 1, text: "Use three dots before each list name." }], xp: 70 }),
+    s25({ id: "roster-first", task: "Read the first roster name.", inputMode: "guided", files: js('const weekdayShifts = ["Mia", "Ari"];\nconst weekendShifts = ["Noel"];\nconst roster = [...weekdayShifts, ...weekendShifts];\n'), activeFile: "script.js", tests: [{ id: "roster-first-value", kind: "js-value", expression: "firstVolunteer", equals: "Mia", label: "The first volunteer is Mia" }], hints: [{ level: 1, text: "Use square brackets with 0 after roster." }], xp: 50 }),
+    s25({ id: "roster-log", task: "Print the first volunteer name.", inputMode: "guided", files: js('const weekdayShifts = ["Mia", "Ari"];\nconst weekendShifts = ["Noel"];\nconst roster = [...weekdayShifts, ...weekendShifts];\nconst firstVolunteer = roster[0];\n\n// Print the first volunteer below\n'), activeFile: "script.js", tests: [{ id: "logs-roster-first", kind: "js-logs", values: ["Mia"], label: "It prints Mia" }], hints: [{ level: 1, text: "Put firstVolunteer inside console.log." }], xp: 50 }),
+    s26({ id: "donation-raw", task: "Store a donation amount as text.", inputMode: "guided", files: js("// Store the donation text below\n"), activeFile: "script.js", tests: [{ id: "donation-raw-value", kind: "js-value", expression: "rawDonation", equals: "125", label: "rawDonation holds the text 125" }], hints: [{ level: 1, text: "Put 125 inside quote marks." }], xp: 40 }),
+    s26({ id: "donation-number", task: "Turn the donation text into a number.", inputMode: "guided", files: js('const rawDonation = "125";\nconst amount = ;\n'), activeFile: "script.js", highlightToken: "const amount = ;", conceptIds: ["number-conversion"], tests: [{ id: "donation-number-value", kind: "js-value", expression: "amount", equals: 125, label: "amount is the number 125" }], hints: [{ level: 1, text: "Put rawDonation inside Number brackets." }], xp: 70 }),
+    s26({ id: "donation-large", task: "Check if the donation is at least 100.", inputMode: "guided", files: js('const rawDonation = "125";\nconst amount = Number(rawDonation);\n'), activeFile: "script.js", tests: [{ id: "donation-large-value", kind: "js-value", expression: "isLarge", equals: true, label: "The donation counts as large" }], hints: [{ level: 1, text: "Use greater than or equal to with 100." }], xp: 50 }),
+    s26({ id: "donation-large-label", task: "Make a label for the donation check.", inputMode: "guided", files: js('const rawDonation = "125";\nconst amount = Number(rawDonation);\nconst isLarge = amount >= 100;\n'), activeFile: "script.js", tests: [{ id: "donation-large-label-value", kind: "js-value", expression: "label", equals: "Large donation: true", label: "The label says the donation is large" }], hints: [{ level: 1, text: "Join the fixed label words to isLarge." }], xp: 50 }),
+    s26({ id: "donation-large-log", task: "Print the donation check label.", inputMode: "guided", files: js('const rawDonation = "125";\nconst amount = Number(rawDonation);\nconst isLarge = amount >= 100;\nconst label = "Large donation: " + isLarge;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "logs-donation-large-label", kind: "js-logs", values: ["Large donation: true"], label: "It prints the donation label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s27({ id: "visitor-name", task: "Store a barangay visitor name.", inputMode: "guided", files: js("// Store the visitor name below\n"), activeFile: "script.js", tests: [{ id: "visitor-name-value", kind: "js-value", expression: "visitor", equals: "Mila Santos", label: "visitor holds Mila Santos" }], hints: [{ level: 1, text: "Put both name parts inside quote marks." }], xp: 40 }),
+    s27({ id: "visitor-has-mila", task: "Check if the visitor name includes Mila.", inputMode: "guided", files: js('const visitor = "Mila Santos";\nconst hasMila = ;\n'), activeFile: "script.js", highlightToken: "const hasMila = ;", conceptIds: ["text-includes"], tests: [{ id: "visitor-has-mila-value", kind: "js-value", expression: "hasMila", equals: true, label: "The visitor name includes Mila" }], hints: [{ level: 1, text: "Ask visitor if it includes Mila." }], xp: 70 }),
+    s27({ id: "visitor-has-ari", task: "Check for a name that is not listed.", inputMode: "guided", files: js('const visitor = "Mila Santos";\nconst hasMila = visitor.includes("Mila");\n'), activeFile: "script.js", tests: [{ id: "visitor-has-ari-value", kind: "js-value", expression: "hasAri", equals: false, label: "The visitor name does not include Ari" }], hints: [{ level: 1, text: "Use the same check with Ari inside brackets." }], xp: 50 }),
+    s27({ id: "visitor-label", task: "Make a label for the Mila check.", inputMode: "guided", files: js('const visitor = "Mila Santos";\nconst hasMila = visitor.includes("Mila");\nconst hasAri = visitor.includes("Ari");\n'), activeFile: "script.js", tests: [{ id: "visitor-label-value", kind: "js-value", expression: "label", equals: "Mila listed: true", label: "The label says Mila is listed" }], hints: [{ level: 1, text: "Join the fixed label words to hasMila." }], xp: 50 }),
+    s27({ id: "visitor-log", task: "Print the visitor check label.", inputMode: "guided", files: js('const visitor = "Mila Santos";\nconst hasMila = visitor.includes("Mila");\nconst hasAri = visitor.includes("Ari");\nconst label = "Mila listed: " + hasMila;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "logs-visitor-label", kind: "js-logs", values: ["Mila listed: true"], label: "It prints the visitor label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s28({ id: "supply-list", task: "Store three barangay supply names.", inputMode: "guided", files: js("// Store the supplies below\n"), activeFile: "script.js", tests: [{ id: "supply-list-value", kind: "js-value", expression: "supplies", equals: ["Water", "Rice", "Blanket"], label: "supplies has all three names" }], hints: [{ level: 1, text: "Use square brackets and quote every supply name." }], xp: 40 }),
+    s28({ id: "supply-sort", task: "Put the supply names in letter order.", inputMode: "guided", files: js('const supplies = ["Water", "Rice", "Blanket"];\nconst ordered = ;\n'), activeFile: "script.js", highlightToken: "const ordered = ;", conceptIds: ["array-sort"], tests: [{ id: "supply-sort-value", kind: "js-value", expression: "ordered", equals: ["Blanket", "Rice", "Water"], label: "ordered has names in letter order" }], hints: [{ level: 1, text: "Use the sort method after supplies." }], xp: 70 }),
+    s28({ id: "supply-first", task: "Read the first supply in the order.", inputMode: "guided", files: js('const supplies = ["Water", "Rice", "Blanket"];\nconst ordered = supplies.sort();\n'), activeFile: "script.js", tests: [{ id: "supply-first-value", kind: "js-value", expression: "firstSupply", equals: "Blanket", label: "The first supply is Blanket" }], hints: [{ level: 1, text: "Use square brackets with 0 after ordered." }], xp: 50 }),
+    s28({ id: "supply-label", task: "Make a label for the first supply.", inputMode: "guided", files: js('const supplies = ["Water", "Rice", "Blanket"];\nconst ordered = supplies.sort();\nconst firstSupply = ordered[0];\n'), activeFile: "script.js", tests: [{ id: "supply-label-value", kind: "js-value", expression: "label", equals: "First supply: Blanket", label: "The label names Blanket first" }], hints: [{ level: 1, text: "Join the fixed label words to firstSupply." }], xp: 50 }),
+    s28({ id: "supply-log", task: "Print the first supply label.", inputMode: "guided", files: js('const supplies = ["Water", "Rice", "Blanket"];\nconst ordered = supplies.sort();\nconst firstSupply = ordered[0];\nconst label = "First supply: " + firstSupply;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "logs-supply-label", kind: "js-logs", values: ["First supply: Blanket"], label: "It prints the supply label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s29({ id: "event-message", task: "Store a barangay event message.", inputMode: "guided", files: js("// Store the event message below\n"), activeFile: "script.js", tests: [{ id: "event-message-value", kind: "js-value", expression: "message", equals: "Clean-up day", label: "message holds Clean-up day" }], hints: [{ level: 1, text: "Put Clean-up day inside quote marks." }], xp: 40 }),
+    s29({ id: "event-announce", task: "Make a short function that gives the message.", inputMode: "guided", files: js('const message = "Clean-up day";\nconst announce = ;\n'), activeFile: "script.js", highlightToken: "const announce = ;", conceptIds: ["arrow-function"], tests: [{ id: "event-announce-return", kind: "js-returns", fn: "announce", args: [], equals: "Clean-up day", label: "announce gives the event message" }], hints: [{ level: 1, text: "Use empty brackets, an arrow, then message." }], xp: 70 }),
+    s29({ id: "event-announcement", task: "Call the event function and store its message.", inputMode: "guided", files: js('const message = "Clean-up day";\nconst announce = () => message;\n'), activeFile: "script.js", tests: [{ id: "event-announcement-value", kind: "js-value", expression: "announcement", equals: "Clean-up day", label: "announcement has the event message" }], hints: [{ level: 1, text: "Call announce with empty brackets." }], xp: 50 }),
+    s29({ id: "event-loud", task: "Make the event message use capital letters.", inputMode: "guided", files: js('const message = "Clean-up day";\nconst announce = () => message;\nconst announcement = announce();\n'), activeFile: "script.js", tests: [{ id: "event-loud-value", kind: "js-value", expression: "loudAnnouncement", equals: "CLEAN-UP DAY", label: "The event message uses capitals" }], hints: [{ level: 1, text: "Use the uppercase text method after announcement." }], xp: 50 }),
+    s29({ id: "event-log", task: "Print the capital event message.", inputMode: "guided", files: js('const message = "Clean-up day";\nconst announce = () => message;\nconst announcement = announce();\nconst loudAnnouncement = announcement.toUpperCase();\n\n// Print the event message below\n'), activeFile: "script.js", tests: [{ id: "logs-event-message", kind: "js-logs", values: ["CLEAN-UP DAY"], label: "It prints the event message" }], hints: [{ level: 1, text: "Put loudAnnouncement inside console.log." }], xp: 50 }),
+    s30({ id: "attendee-list", task: "Store three barangay attendee names.", inputMode: "guided", files: js("// Store attendee names below\n"), activeFile: "script.js", tests: [{ id: "attendee-list-value", kind: "js-value", expression: "attendees", equals: ["Mia", "Ari", "Noel"], label: "attendees has three names" }], hints: [{ level: 1, text: "Use square brackets and quote each name." }], xp: 40 }),
+    s30({ id: "attendee-counter", task: "Make a function that counts any names you give it.", inputMode: "guided", files: js('const attendees = ["Mia", "Ari", "Noel"];\n\nfunction countNames(...names) {\n  return ;\n}\n'), activeFile: "script.js", highlightToken: "return ;", conceptIds: ["rest-parameter"], tests: [{ id: "attendee-counter-three", kind: "js-returns", fn: "countNames", args: ["Mia", "Ari", "Noel"], equals: 3, label: "Three names give 3" }, { id: "attendee-counter-one", kind: "js-returns", fn: "countNames", args: ["Mia"], equals: 1, label: "One name gives 1" }], hints: [{ level: 1, text: "The rest list has a length you can return." }], xp: 80 }),
+    s30({ id: "attendee-count", task: "Count every name in the attendee list.", inputMode: "guided", files: js('const attendees = ["Mia", "Ari", "Noel"];\n\nfunction countNames(...names) {\n  return names.length;\n}\n'), activeFile: "script.js", tests: [{ id: "attendee-count-value", kind: "js-value", expression: "attendeeCount", equals: 3, label: "attendeeCount is 3" }], hints: [{ level: 1, text: "Use three dots before attendees inside the call." }], xp: 60 }),
+    s30({ id: "attendee-label", task: "Make a label with the attendee count.", inputMode: "guided", files: js('const attendees = ["Mia", "Ari", "Noel"];\n\nfunction countNames(...names) {\n  return names.length;\n}\n\nconst attendeeCount = countNames(...attendees);\n'), activeFile: "script.js", tests: [{ id: "attendee-label-value", kind: "js-value", expression: "label", equals: "Attendees: 3", label: "The label says Attendees: 3" }], hints: [{ level: 1, text: "Join the fixed label words to attendeeCount." }], xp: 50 }),
+    s30({ id: "attendee-log", task: "Print the attendee count label.", inputMode: "guided", files: js('const attendees = ["Mia", "Ari", "Noel"];\n\nfunction countNames(...names) {\n  return names.length;\n}\n\nconst attendeeCount = countNames(...attendees);\nconst label = "Attendees: " + attendeeCount;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "logs-attendee-label", kind: "js-logs", values: ["Attendees: 3"], label: "It prints the attendee label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s31({ id: "reminder-list", task: "Store two barangay event reminders.", inputMode: "guided", files: js("// Store reminders below\n"), activeFile: "script.js", tests: [{ id: "reminder-list-value", kind: "js-value", expression: "reminders", equals: ["Bring water", "Wear a hat"], label: "reminders has both messages" }], hints: [{ level: 1, text: "Use square brackets and quote both messages." }], xp: 40 }),
+    s31({ id: "reminder-each", task: "Print every reminder, one at a time.", inputMode: "guided", files: js('const reminders = ["Bring water", "Wear a hat"];\n'), activeFile: "script.js", conceptIds: ["array-for-each"], tests: [{ id: "reminder-each-logs", kind: "js-logs", values: ["Bring water", "Wear a hat"], label: "It prints both reminders" }], hints: [{ level: 1, text: "Use forEach with an arrow that logs each reminder." }], xp: 70 }),
+    s31({ id: "reminder-count", task: "Count the reminders in the list.", inputMode: "guided", files: js('const reminders = ["Bring water", "Wear a hat"];\nreminders.forEach((reminder) => console.log(reminder));\n'), activeFile: "script.js", tests: [{ id: "reminder-count-value", kind: "js-value", expression: "reminderCount", equals: 2, label: "reminderCount is 2" }], hints: [{ level: 1, text: "Use the length after a dot on reminders." }], xp: 50 }),
+    s31({ id: "reminder-label", task: "Make a label with the reminder count.", inputMode: "guided", files: js('const reminders = ["Bring water", "Wear a hat"];\nreminders.forEach((reminder) => console.log(reminder));\nconst reminderCount = reminders.length;\n'), activeFile: "script.js", tests: [{ id: "reminder-label-value", kind: "js-value", expression: "label", equals: "Reminders: 2", label: "The label says Reminders: 2" }], hints: [{ level: 1, text: "Join the fixed words to reminderCount." }], xp: 50 }),
+    s31({ id: "reminder-log", task: "Print the reminder count label.", inputMode: "guided", files: js('const reminders = ["Bring water", "Wear a hat"];\nreminders.forEach((reminder) => console.log(reminder));\nconst reminderCount = reminders.length;\nconst label = "Reminders: " + reminderCount;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "reminder-log-values", kind: "js-logs", values: ["Bring water", "Wear a hat", "Reminders: 2"], label: "It prints reminders and their count" }], hints: [{ level: 1, text: "Put label in a log after forEach." }], xp: 50 }),
+    s32({ id: "aid-list", task: "Store three relief pack counts.", inputMode: "guided", files: js("// Store relief pack counts below\n"), activeFile: "script.js", tests: [{ id: "aid-list-value", kind: "js-value", expression: "aidPacks", equals: [2, 3, 4], label: "aidPacks has three counts" }], hints: [{ level: 1, text: "Use square brackets with three numbers." }], xp: 40 }),
+    s32({ id: "aid-double", task: "Make a new list with every pack count doubled.", inputMode: "guided", files: js('const aidPacks = [2, 3, 4];\nconst doubledPacks = ;\n'), activeFile: "script.js", highlightToken: "const doubledPacks = ;", conceptIds: ["array-map"], tests: [{ id: "aid-double-value", kind: "js-value", expression: "doubledPacks", equals: [4, 6, 8], label: "Every pack count is doubled" }], hints: [{ level: 1, text: "Use map with an arrow that multiplies each pack by 2." }], xp: 70 }),
+    s32({ id: "aid-first", task: "Read the first doubled pack count.", inputMode: "guided", files: js('const aidPacks = [2, 3, 4];\nconst doubledPacks = aidPacks.map((pack) => pack * 2);\n'), activeFile: "script.js", tests: [{ id: "aid-first-value", kind: "js-value", expression: "firstDoubled", equals: 4, label: "The first doubled count is 4" }], hints: [{ level: 1, text: "Use square brackets with 0 after doubledPacks." }], xp: 50 }),
+    s32({ id: "aid-label", task: "Make a label for the first doubled count.", inputMode: "guided", files: js('const aidPacks = [2, 3, 4];\nconst doubledPacks = aidPacks.map((pack) => pack * 2);\nconst firstDoubled = doubledPacks[0];\n'), activeFile: "script.js", tests: [{ id: "aid-label-value", kind: "js-value", expression: "label", equals: "First doubled pack: 4", label: "The label says the first count is 4" }], hints: [{ level: 1, text: "Join the fixed label words to firstDoubled." }], xp: 50 }),
+    s32({ id: "aid-log", task: "Print the doubled pack label.", inputMode: "guided", files: js('const aidPacks = [2, 3, 4];\nconst doubledPacks = aidPacks.map((pack) => pack * 2);\nconst firstDoubled = doubledPacks[0];\nconst label = "First doubled pack: " + firstDoubled;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "aid-log-value", kind: "js-logs", values: ["First doubled pack: 4"], label: "It prints the doubled pack label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s33({ id: "seat-list", task: "Store three shelter seat counts.", inputMode: "guided", files: js("// Store shelter seat counts below\n"), activeFile: "script.js", tests: [{ id: "seat-list-value", kind: "js-value", expression: "seats", equals: [0, 4, 2], label: "seats has three counts" }], hints: [{ level: 1, text: "Use square brackets with three numbers." }], xp: 40 }),
+    s33({ id: "seat-open", task: "Keep only seat counts above zero.", inputMode: "guided", files: js('const seats = [0, 4, 2];\nconst openSeats = ;\n'), activeFile: "script.js", highlightToken: "const openSeats = ;", conceptIds: ["array-filter"], tests: [{ id: "seat-open-value", kind: "js-value", expression: "openSeats", equals: [4, 2], label: "openSeats keeps 4 and 2" }], hints: [{ level: 1, text: "Use filter with an arrow that checks seat is above zero." }], xp: 70 }),
+    s33({ id: "seat-first", task: "Read the first open seat count.", inputMode: "guided", files: js('const seats = [0, 4, 2];\nconst openSeats = seats.filter((seat) => seat > 0);\n'), activeFile: "script.js", tests: [{ id: "seat-first-value", kind: "js-value", expression: "firstOpen", equals: 4, label: "The first open count is 4" }], hints: [{ level: 1, text: "Use square brackets with 0 after openSeats." }], xp: 50 }),
+    s33({ id: "seat-label", task: "Make a label for the first open count.", inputMode: "guided", files: js('const seats = [0, 4, 2];\nconst openSeats = seats.filter((seat) => seat > 0);\nconst firstOpen = openSeats[0];\n'), activeFile: "script.js", tests: [{ id: "seat-label-value", kind: "js-value", expression: "label", equals: "First open seats: 4", label: "The label names 4 open seats" }], hints: [{ level: 1, text: "Join the fixed label words to firstOpen." }], xp: 50 }),
+    s33({ id: "seat-log", task: "Print the open seat label.", inputMode: "guided", files: js('const seats = [0, 4, 2];\nconst openSeats = seats.filter((seat) => seat > 0);\nconst firstOpen = openSeats[0];\nconst label = "First open seats: " + firstOpen;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "seat-log-value", kind: "js-logs", values: ["First open seats: 4"], label: "It prints the open seat label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s34({ id: "rice-list", task: "Store three rice sack counts.", inputMode: "guided", files: js("// Store rice sack counts below\n"), activeFile: "script.js", tests: [{ id: "rice-list-value", kind: "js-value", expression: "sacks", equals: [3, 5, 2], label: "sacks has three counts" }], hints: [{ level: 1, text: "Use square brackets with the three counts." }], xp: 40 }),
+    s34({ id: "rice-add", task: "Make a function that adds two counts.", inputMode: "guided", files: js("const sacks = [3, 5, 2];\n\nfunction add(left, right) {\n  return ;\n}\n"), activeFile: "script.js", highlightToken: "return ;", tests: [{ id: "rice-add-result", kind: "js-returns", fn: "add", args: [3, 5], equals: 8, label: "add gives the combined count" }], hints: [{ level: 1, text: "Use the plus sign between the two function inputs." }], xp: 60 }),
+    s34({ id: "rice-total", task: "Combine all rice sack counts into one total.", inputMode: "guided", files: js("const sacks = [3, 5, 2];\n\nfunction add(left, right) {\n  return left + right;\n}\n\nconst totalSacks = ;\n"), activeFile: "script.js", highlightToken: "const totalSacks = ;", conceptIds: ["array-reduce"], tests: [{ id: "rice-total-value", kind: "js-value", expression: "totalSacks", equals: 10, label: "totalSacks is 10" }], hints: [{ level: 1, text: "Use the list method that combines items with add." }], xp: 70 }),
+    s34({ id: "rice-label", task: "Make a label with the rice sack total.", inputMode: "guided", files: js("const sacks = [3, 5, 2];\n\nfunction add(left, right) {\n  return left + right;\n}\n\nconst totalSacks = sacks.reduce(add, 0);\n"), activeFile: "script.js", tests: [{ id: "rice-label-value", kind: "js-value", expression: "label", equals: "Rice sacks: 10", label: "The label gives the rice sack total" }], hints: [{ level: 1, text: "Join the fixed label words to totalSacks." }], xp: 50 }),
+    s34({ id: "rice-log", task: "Print the rice sack label.", inputMode: "guided", files: js("const sacks = [3, 5, 2];\n\nfunction add(left, right) {\n  return left + right;\n}\n\nconst totalSacks = sacks.reduce(add, 0);\nconst label = \"Rice sacks: \" + totalSacks;\n\n// Print the label below\n"), activeFile: "script.js", tests: [{ id: "rice-log-value", kind: "js-logs", values: ["Rice sacks: 10"], label: "It prints the rice sack label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s35({ id: "notice-list", task: "Store three barangay notices.", inputMode: "guided", files: js("// Store barangay notices below\n"), activeFile: "script.js", tests: [{ id: "notice-list-value", kind: "js-value", expression: "notices", equals: ["Meeting", "Cleanup", "Clinic"], label: "notices has three messages" }], hints: [{ level: 1, text: "Use square brackets and quote each notice." }], xp: 40 }),
+    s35({ id: "notice-reverse", task: "Put the newest notice first.", inputMode: "guided", files: js('const notices = ["Meeting", "Cleanup", "Clinic"];\nconst newestFirst = ;\n'), activeFile: "script.js", highlightToken: "const newestFirst = ;", conceptIds: ["array-reverse"], tests: [{ id: "notice-reverse-value", kind: "js-value", expression: "newestFirst", equals: ["Clinic", "Cleanup", "Meeting"], label: "newestFirst is in reverse order" }], hints: [{ level: 1, text: "Use the list method that flips its order." }], xp: 70 }),
+    s35({ id: "notice-first", task: "Read the first notice in the new order.", inputMode: "guided", files: js('const notices = ["Meeting", "Cleanup", "Clinic"];\nconst newestFirst = notices.reverse();\n'), activeFile: "script.js", tests: [{ id: "notice-first-value", kind: "js-value", expression: "firstNotice", equals: "Clinic", label: "firstNotice is Clinic" }], hints: [{ level: 1, text: "Use square brackets with 0 after newestFirst." }], xp: 50 }),
+    s35({ id: "notice-first-label", task: "Make a label for the first notice.", inputMode: "guided", files: js('const notices = ["Meeting", "Cleanup", "Clinic"];\nconst newestFirst = notices.reverse();\nconst firstNotice = newestFirst[0];\n'), activeFile: "script.js", tests: [{ id: "notice-first-label-value", kind: "js-value", expression: "label", equals: "First notice: Clinic", label: "The label names the first notice" }], hints: [{ level: 1, text: "Join the fixed label words to firstNotice." }], xp: 50 }),
+    s35({ id: "notice-first-log", task: "Print the first notice label.", inputMode: "guided", files: js('const notices = ["Meeting", "Cleanup", "Clinic"];\nconst newestFirst = notices.reverse();\nconst firstNotice = newestFirst[0];\nconst label = "First notice: " + firstNotice;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "notice-first-log-value", kind: "js-logs", values: ["First notice: Clinic"], label: "It prints the first notice label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s36({ id: "top-notice-list", task: "Store three barangay notices.", inputMode: "guided", files: js("// Store barangay notices below\n"), activeFile: "script.js", tests: [{ id: "top-notice-list-value", kind: "js-value", expression: "notices", equals: ["Meeting", "Cleanup", "Clinic"], label: "notices has three messages" }], hints: [{ level: 1, text: "Use square brackets and quote each notice." }], xp: 40 }),
+    s36({ id: "top-notice-copy", task: "Copy the first two notices into a new list.", inputMode: "guided", files: js('const notices = ["Meeting", "Cleanup", "Clinic"];\nconst topNotices = ;\n'), activeFile: "script.js", highlightToken: "const topNotices = ;", conceptIds: ["array-slice"], tests: [{ id: "top-notice-copy-value", kind: "js-value", expression: "topNotices", equals: ["Meeting", "Cleanup"], label: "topNotices has the first two messages" }], hints: [{ level: 1, text: "Use the list method that copies a chosen part." }], xp: 70 }),
+    s36({ id: "top-notice-first", task: "Read the first copied notice.", inputMode: "guided", files: js('const notices = ["Meeting", "Cleanup", "Clinic"];\nconst topNotices = notices.slice(0, 2);\n'), activeFile: "script.js", tests: [{ id: "top-notice-first-value", kind: "js-value", expression: "firstNotice", equals: "Meeting", label: "firstNotice is Meeting" }], hints: [{ level: 1, text: "Use square brackets with 0 after topNotices." }], xp: 50 }),
+    s36({ id: "top-notice-label", task: "Make a label for the first copied notice.", inputMode: "guided", files: js('const notices = ["Meeting", "Cleanup", "Clinic"];\nconst topNotices = notices.slice(0, 2);\nconst firstNotice = topNotices[0];\n'), activeFile: "script.js", tests: [{ id: "top-notice-label-value", kind: "js-value", expression: "label", equals: "Top notice: Meeting", label: "The label names the first copied notice" }], hints: [{ level: 1, text: "Join the fixed label words to firstNotice." }], xp: 50 }),
+    s36({ id: "top-notice-log", task: "Print the top notice label.", inputMode: "guided", files: js('const notices = ["Meeting", "Cleanup", "Clinic"];\nconst topNotices = notices.slice(0, 2);\nconst firstNotice = topNotices[0];\nconst label = "Top notice: " + firstNotice;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "top-notice-log-value", kind: "js-logs", values: ["Top notice: Meeting"], label: "It prints the top notice label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s37({ id: "morning-tags", task: "Store two morning notice tags.", inputMode: "guided", files: js("// Store morning notice tags below\n"), activeFile: "script.js", tests: [{ id: "morning-tags-value", kind: "js-value", expression: "morningTags", equals: ["Meeting", "Cleanup"], label: "morningTags has two messages" }], hints: [{ level: 1, text: "Use square brackets and quote both tags." }], xp: 40 }),
+    s37({ id: "afternoon-tags", task: "Store the afternoon notice tag.", inputMode: "guided", files: js('const morningTags = ["Meeting", "Cleanup"];\n'), activeFile: "script.js", tests: [{ id: "afternoon-tags-value", kind: "js-value", expression: "afternoonTags", equals: ["Clinic"], label: "afternoonTags has Clinic" }], hints: [{ level: 1, text: "Make a one-item list with the Clinic tag." }], xp: 40 }),
+    s37({ id: "all-tags", task: "Join the morning and afternoon tag lists.", inputMode: "guided", files: js('const morningTags = ["Meeting", "Cleanup"];\nconst afternoonTags = ["Clinic"];\nconst allTags = ;\n'), activeFile: "script.js", highlightToken: "const allTags = ;", conceptIds: ["array-concat"], tests: [{ id: "all-tags-value", kind: "js-value", expression: "allTags", equals: ["Meeting", "Cleanup", "Clinic"], label: "allTags has all three tags" }], hints: [{ level: 1, text: "Use the list method that joins another list." }], xp: 70 }),
+    s37({ id: "tag-count", task: "Count all the joined tags.", inputMode: "guided", files: js('const morningTags = ["Meeting", "Cleanup"];\nconst afternoonTags = ["Clinic"];\nconst allTags = morningTags.concat(afternoonTags);\n'), activeFile: "script.js", tests: [{ id: "tag-count-value", kind: "js-value", expression: "tagCount", equals: 3, label: "tagCount is 3" }], hints: [{ level: 1, text: "The joined list has a length you can read." }], xp: 50 }),
+    s37({ id: "tag-count-log", task: "Print the joined tag count.", inputMode: "guided", files: js('const morningTags = ["Meeting", "Cleanup"];\nconst afternoonTags = ["Clinic"];\nconst allTags = morningTags.concat(afternoonTags);\nconst tagCount = allTags.length;\n\n// Print the count below\n'), activeFile: "script.js", tests: [{ id: "tag-count-log-value", kind: "js-logs", values: ["3"], label: "It prints the joined tag count" }], hints: [{ level: 1, text: "Put tagCount inside console.log." }], xp: 50 }),
+    s38({ id: "supply-groups", task: "Store two small relief supply lists.", inputMode: "guided", files: js("// Store the relief supply lists below\n"), activeFile: "script.js", tests: [{ id: "supply-groups-value", kind: "js-value", expression: "supplyGroups", equals: [["Medicine", "Water"], ["Rice"]], label: "supplyGroups has both supply lists" }], hints: [{ level: 1, text: "Use square brackets around each small supply list." }], xp: 40 }),
+    s38({ id: "supply-flat", task: "Put every supply into one list.", inputMode: "guided", files: js('const supplyGroups = [["Medicine", "Water"], ["Rice"]];\nconst supplies = ;\n'), activeFile: "script.js", highlightToken: "const supplies = ;", conceptIds: ["array-flat"], tests: [{ id: "supply-flat-value", kind: "js-value", expression: "supplies", equals: ["Medicine", "Water", "Rice"], label: "supplies has all three supply names" }], hints: [{ level: 1, text: "Use the list method that opens lists inside it." }], xp: 70 }),
+    s38({ id: "supply-flat-first", task: "Read the first supply from the combined list.", inputMode: "guided", files: js('const supplyGroups = [["Medicine", "Water"], ["Rice"]];\nconst supplies = supplyGroups.flat();\n'), activeFile: "script.js", tests: [{ id: "supply-flat-first-value", kind: "js-value", expression: "firstSupply", equals: "Medicine", label: "firstSupply is Medicine" }], hints: [{ level: 1, text: "Use square brackets with 0 after supplies." }], xp: 50 }),
+    s38({ id: "supply-flat-label", task: "Make a label for the first supply.", inputMode: "guided", files: js('const supplyGroups = [["Medicine", "Water"], ["Rice"]];\nconst supplies = supplyGroups.flat();\nconst firstSupply = supplies[0];\n'), activeFile: "script.js", tests: [{ id: "supply-flat-label-value", kind: "js-value", expression: "label", equals: "First supply: Medicine", label: "The label names the first supply" }], hints: [{ level: 1, text: "Join the fixed label words to firstSupply." }], xp: 50 }),
+    s38({ id: "supply-flat-log", task: "Print the first supply label.", inputMode: "guided", files: js('const supplyGroups = [["Medicine", "Water"], ["Rice"]];\nconst supplies = supplyGroups.flat();\nconst firstSupply = supplies[0];\nconst label = "First supply: " + firstSupply;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "supply-flat-log-value", kind: "js-logs", values: ["First supply: Medicine"], label: "It prints the first supply label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s39({ id: "latest-notice-list", task: "Store three barangay notices in time order.", inputMode: "guided", files: js("// Store notices from earliest to latest below\n"), activeFile: "script.js", tests: [{ id: "latest-notice-list-value", kind: "js-value", expression: "notices", equals: ["Meeting", "Clinic", "Cleanup"], label: "notices has all three messages" }], hints: [{ level: 1, text: "Use square brackets and quote each notice." }], xp: 40 }),
+    s39({ id: "latest-notice", task: "Read the latest notice from the list.", inputMode: "guided", files: js('const notices = ["Meeting", "Clinic", "Cleanup"];\nconst latestNotice = ;\n'), activeFile: "script.js", highlightToken: "const latestNotice = ;", conceptIds: ["array-at"], tests: [{ id: "latest-notice-value", kind: "js-value", expression: "latestNotice", equals: "Cleanup", label: "latestNotice is Cleanup" }], hints: [{ level: 1, text: "Use the list method that can count backward from the end." }], xp: 70 }),
+    s39({ id: "latest-notice-label", task: "Make a label for the latest notice.", inputMode: "guided", files: js('const notices = ["Meeting", "Clinic", "Cleanup"];\nconst latestNotice = notices.at(-1);\n'), activeFile: "script.js", tests: [{ id: "latest-notice-label-value", kind: "js-value", expression: "label", equals: "Latest notice: Cleanup", label: "The label names the latest notice" }], hints: [{ level: 1, text: "Join the fixed label words to latestNotice." }], xp: 50 }),
+    s39({ id: "latest-notice-loud", task: "Make the notice label use capital letters.", inputMode: "guided", files: js('const notices = ["Meeting", "Clinic", "Cleanup"];\nconst latestNotice = notices.at(-1);\nconst label = "Latest notice: " + latestNotice;\n'), activeFile: "script.js", tests: [{ id: "latest-notice-loud-value", kind: "js-value", expression: "loudLabel", equals: "LATEST NOTICE: CLEANUP", label: "loudLabel uses capital letters" }], hints: [{ level: 1, text: "Use the uppercase text method after label." }], xp: 50 }),
+    s39({ id: "latest-notice-log", task: "Print the capital latest notice label.", inputMode: "guided", files: js('const notices = ["Meeting", "Clinic", "Cleanup"];\nconst latestNotice = notices.at(-1);\nconst label = "Latest notice: " + latestNotice;\nconst loudLabel = label.toUpperCase();\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "latest-notice-log-value", kind: "js-logs", values: ["LATEST NOTICE: CLEANUP"], label: "It prints the capital latest notice label" }], hints: [{ level: 1, text: "Put loudLabel inside console.log." }], xp: 50 }),
+    s40({ id: "service-position-list", task: "Store three barangay service names.", inputMode: "guided", files: js("// Store barangay services below\n"), activeFile: "script.js", tests: [{ id: "service-position-list-value", kind: "js-value", expression: "services", equals: ["Health", "Permit", "Sports"], label: "services has all three names" }], hints: [{ level: 1, text: "Use square brackets and quote each service name." }], xp: 40 }),
+    s40({ id: "permit-index", task: "Find where Permit appears in the service list.", inputMode: "guided", files: js('const services = ["Health", "Permit", "Sports"];\nconst permitIndex = ;\n'), activeFile: "script.js", highlightToken: "const permitIndex = ;", conceptIds: ["array-index-of"], tests: [{ id: "permit-index-value", kind: "js-value", expression: "permitIndex", equals: 1, label: "permitIndex is 1" }], hints: [{ level: 1, text: "Use the list method that finds an item number." }], xp: 65 }),
+    s40({ id: "permit-number", task: "Turn the list number into a human number.", inputMode: "guided", files: js('const services = ["Health", "Permit", "Sports"];\nconst permitIndex = services.indexOf("Permit");\n'), activeFile: "script.js", tests: [{ id: "permit-number-value", kind: "js-value", expression: "permitNumber", equals: 2, label: "permitNumber is 2" }], hints: [{ level: 1, text: "Add one to the list number." }], xp: 50 }),
+    s40({ id: "permit-number-label", task: "Make a label with the Permit service number.", inputMode: "guided", files: js('const services = ["Health", "Permit", "Sports"];\nconst permitIndex = services.indexOf("Permit");\nconst permitNumber = permitIndex + 1;\n'), activeFile: "script.js", tests: [{ id: "permit-number-label-value", kind: "js-value", expression: "label", equals: "Permit service: 2", label: "The label gives the Permit service number" }], hints: [{ level: 1, text: "Join the fixed label words to permitNumber." }], xp: 50 }),
+    s40({ id: "permit-number-log", task: "Print the Permit service label.", inputMode: "guided", files: js('const services = ["Health", "Permit", "Sports"];\nconst permitIndex = services.indexOf("Permit");\nconst permitNumber = permitIndex + 1;\nconst label = "Permit service: " + permitNumber;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "permit-number-log-value", kind: "js-logs", values: ["Permit service: 2"], label: "It prints the Permit service label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s41({ id: "service-labels-object", task: "Store two barangay service labels.", inputMode: "guided", files: js("// Store service labels below\n"), activeFile: "script.js", tests: [{ id: "service-labels-object-value", kind: "js-value", expression: "services", equals: { health: "Open", permit: "Closed" }, label: "services has both labels" }], hints: [{ level: 1, text: "Use curly brackets with a name and a label for each service." }], xp: 40 }),
+    s41({ id: "service-labels-entries", task: "Turn the service labels into name and value pairs.", inputMode: "guided", files: js('const services = { health: "Open", permit: "Closed" };\nconst entries = ;\n'), activeFile: "script.js", highlightToken: "const entries = ;", conceptIds: ["object-entries"], tests: [{ id: "service-labels-entries-value", kind: "js-value", expression: "entries", equals: [["health", "Open"], ["permit", "Closed"]], label: "entries has both service pairs" }], hints: [{ level: 1, text: "Use the object method that returns every name and value pair." }], xp: 70 }),
+    s41({ id: "service-labels-first", task: "Read the first service pair.", inputMode: "guided", files: js('const services = { health: "Open", permit: "Closed" };\nconst entries = Object.entries(services);\n'), activeFile: "script.js", tests: [{ id: "service-labels-first-value", kind: "js-value", expression: "firstEntry", equals: ["health", "Open"], label: "firstEntry has health and Open" }], hints: [{ level: 1, text: "Use square brackets with 0 after entries." }], xp: 50 }),
+    s41({ id: "service-labels-text", task: "Make text from the first service pair.", inputMode: "guided", files: js('const services = { health: "Open", permit: "Closed" };\nconst entries = Object.entries(services);\nconst firstEntry = entries[0];\n'), activeFile: "script.js", tests: [{ id: "service-labels-text-value", kind: "js-value", expression: "label", equals: "health: Open", label: "The label has the service name and value" }], hints: [{ level: 1, text: "Join the two parts of firstEntry with a colon and space." }], xp: 50 }),
+    s41({ id: "service-labels-log", task: "Print the first service label.", inputMode: "guided", files: js('const services = { health: "Open", permit: "Closed" };\nconst entries = Object.entries(services);\nconst firstEntry = entries[0];\nconst label = firstEntry[0] + ": " + firstEntry[1];\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "service-labels-log-value", kind: "js-logs", values: ["health: Open"], label: "It prints the first service label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s42({ id: "volunteer-counts", task: "Store volunteer counts for three barangay zones.", inputMode: "guided", files: js("// Store volunteer counts below\n"), activeFile: "script.js", tests: [{ id: "volunteer-counts-value", kind: "js-value", expression: "volunteerCounts", equals: [2, 1, 3], label: "volunteerCounts has three counts" }], hints: [{ level: 1, text: "Use square brackets with three count numbers." }], xp: 40 }),
+    s42({ id: "has-volunteer", task: "Make a function that checks one zone has help.", inputMode: "guided", files: js("const volunteerCounts = [2, 1, 3];\n\nfunction hasVolunteer(count) {\n  return ;\n}\n"), activeFile: "script.js", highlightToken: "return ;", tests: [{ id: "has-volunteer-yes", kind: "js-returns", fn: "hasVolunteer", args: [1], equals: true, label: "One volunteer gives true" }, { id: "has-volunteer-no", kind: "js-returns", fn: "hasVolunteer", args: [0], equals: false, label: "No volunteers gives false" }], hints: [{ level: 1, text: "Compare count to zero with a greater-than sign." }], xp: 65 }),
+    s42({ id: "all-volunteers", task: "Check that every zone has a volunteer.", inputMode: "guided", files: js("const volunteerCounts = [2, 1, 3];\n\nfunction hasVolunteer(count) {\n  return count > 0;\n}\n\nconst allPresent = ;\n"), activeFile: "script.js", highlightToken: "const allPresent = ;", conceptIds: ["array-every"], tests: [{ id: "all-volunteers-value", kind: "js-value", expression: "allPresent", equals: true, label: "allPresent is true" }], hints: [{ level: 1, text: "Use the list method that checks every count with hasVolunteer." }], xp: 70 }),
+    s42({ id: "all-volunteers-label", task: "Make a label for the zone check.", inputMode: "guided", files: js("const volunteerCounts = [2, 1, 3];\n\nfunction hasVolunteer(count) {\n  return count > 0;\n}\n\nconst allPresent = volunteerCounts.every(hasVolunteer);\n"), activeFile: "script.js", tests: [{ id: "all-volunteers-label-value", kind: "js-value", expression: "label", equals: "Every zone staffed: true", label: "The label says every zone is staffed" }], hints: [{ level: 1, text: "Join the fixed label words to allPresent." }], xp: 50 }),
+    s42({ id: "all-volunteers-log", task: "Print the zone check label.", inputMode: "guided", files: js('const volunteerCounts = [2, 1, 3];\n\nfunction hasVolunteer(count) {\n  return count > 0;\n}\n\nconst allPresent = volunteerCounts.every(hasVolunteer);\nconst label = "Every zone staffed: " + allPresent;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "all-volunteers-log-value", kind: "js-logs", values: ["Every zone staffed: true"], label: "It prints the zone check label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s43({ id: "aid-search-list", task: "Store three barangay aid items.", inputMode: "guided", files: js("// Store aid items below\n"), activeFile: "script.js", tests: [{ id: "aid-search-list-value", kind: "js-value", expression: "aidItems", equals: ["Water", "Rice", "Blanket"], label: "aidItems has all three names" }], hints: [{ level: 1, text: "Use square brackets and quote each aid item." }], xp: 40 }),
+    s43({ id: "is-rice", task: "Make a function that checks for rice.", inputMode: "guided", files: js('const aidItems = ["Water", "Rice", "Blanket"];\n\nfunction isRice(item) {\n  return ;\n}\n'), activeFile: "script.js", highlightToken: "return ;", tests: [{ id: "is-rice-yes", kind: "js-returns", fn: "isRice", args: ["Rice"], equals: true, label: "Rice gives true" }, { id: "is-rice-no", kind: "js-returns", fn: "isRice", args: ["Water"], equals: false, label: "Water gives false" }], hints: [{ level: 1, text: "Compare item to the Rice text with three equals signs." }], xp: 65 }),
+    s43({ id: "rice-aid", task: "Find rice in the aid list.", inputMode: "guided", files: js('const aidItems = ["Water", "Rice", "Blanket"];\n\nfunction isRice(item) {\n  return item === "Rice";\n}\n\nconst riceAid = ;\n'), activeFile: "script.js", highlightToken: "const riceAid = ;", conceptIds: ["array-find"], tests: [{ id: "rice-aid-value", kind: "js-value", expression: "riceAid", equals: "Rice", label: "riceAid is Rice" }], hints: [{ level: 1, text: "Use the list method that returns the first matching item." }], xp: 70 }),
+    s43({ id: "rice-aid-label", task: "Make a label for the rice aid item.", inputMode: "guided", files: js('const aidItems = ["Water", "Rice", "Blanket"];\n\nfunction isRice(item) {\n  return item === "Rice";\n}\n\nconst riceAid = aidItems.find(isRice);\n'), activeFile: "script.js", tests: [{ id: "rice-aid-label-value", kind: "js-value", expression: "label", equals: "Rice aid: Rice", label: "The label names the rice aid item" }], hints: [{ level: 1, text: "Join the fixed label words to riceAid." }], xp: 50 }),
+    s43({ id: "rice-aid-log", task: "Print the rice aid label.", inputMode: "guided", files: js('const aidItems = ["Water", "Rice", "Blanket"];\n\nfunction isRice(item) {\n  return item === "Rice";\n}\n\nconst riceAid = aidItems.find(isRice);\nconst label = "Rice aid: " + riceAid;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "rice-aid-log-value", kind: "js-logs", values: ["Rice aid: Rice"], label: "It prints the rice aid label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s44({ id: "aid-stock-list", task: "Store three barangay aid stock counts.", inputMode: "guided", files: js("// Store aid stock counts below\n"), activeFile: "script.js", tests: [{ id: "aid-stock-list-value", kind: "js-value", expression: "stockCounts", equals: [3, 0, 2], label: "stockCounts has three counts" }], hints: [{ level: 1, text: "Use square brackets with three count numbers." }], xp: 40 }),
+    s44({ id: "aid-stock-empty", task: "Make a function that checks for an empty stock count.", inputMode: "guided", files: js("const stockCounts = [3, 0, 2];\n\nfunction isEmpty(count) {\n  return ;\n}\n"), activeFile: "script.js", highlightToken: "return ;", tests: [{ id: "aid-stock-empty-yes", kind: "js-returns", fn: "isEmpty", args: [0], equals: true, label: "Zero stock gives true" }, { id: "aid-stock-empty-no", kind: "js-returns", fn: "isEmpty", args: [2], equals: false, label: "Stock of two gives false" }], hints: [{ level: 1, text: "Compare count to zero with three equals signs." }], xp: 65 }),
+    s44({ id: "aid-stock-alert", task: "Check if any aid stock count is empty.", inputMode: "guided", files: js("const stockCounts = [3, 0, 2];\n\nfunction isEmpty(count) {\n  return count === 0;\n}\n\nconst hasEmptyStock = ;\n"), activeFile: "script.js", highlightToken: "const hasEmptyStock = ;", conceptIds: ["array-some"], tests: [{ id: "aid-stock-alert-value", kind: "js-value", expression: "hasEmptyStock", equals: true, label: "hasEmptyStock is true" }], hints: [{ level: 1, text: "Use the list method that checks whether one count passes isEmpty." }], xp: 70 }),
+    s44({ id: "aid-stock-label", task: "Make a label for the stock alert.", inputMode: "guided", files: js("const stockCounts = [3, 0, 2];\n\nfunction isEmpty(count) {\n  return count === 0;\n}\n\nconst hasEmptyStock = stockCounts.some(isEmpty);\n"), activeFile: "script.js", tests: [{ id: "aid-stock-label-value", kind: "js-value", expression: "label", equals: "Needs restock: true", label: "The label says stock needs restocking" }], hints: [{ level: 1, text: "Join the fixed label words to hasEmptyStock." }], xp: 50 }),
+    s44({ id: "aid-stock-log", task: "Print the stock alert label.", inputMode: "guided", files: js('const stockCounts = [3, 0, 2];\n\nfunction isEmpty(count) {\n  return count === 0;\n}\n\nconst hasEmptyStock = stockCounts.some(isEmpty);\nconst label = "Needs restock: " + hasEmptyStock;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "aid-stock-log-value", kind: "js-logs", values: ["Needs restock: true"], label: "It prints the stock alert label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s45({ id: "hotline-prefix-list", task: "Store two barangay hotline numbers.", inputMode: "guided", files: js("// Store hotline numbers below\n"), activeFile: "script.js", tests: [{ id: "hotline-prefix-list-value", kind: "js-value", expression: "hotlines", equals: ["117", "911"], label: "hotlines has both numbers" }], hints: [{ level: 1, text: "Use square brackets and quote each hotline number." }], xp: 40 }),
+    s45({ id: "hotline-prefix-first", task: "Read the first hotline number.", inputMode: "guided", files: js('const hotlines = ["117", "911"];\n'), activeFile: "script.js", tests: [{ id: "hotline-prefix-first-value", kind: "js-value", expression: "firstHotline", equals: "117", label: "firstHotline is 117" }], hints: [{ level: 1, text: "Use square brackets with 0 after hotlines." }], xp: 50 }),
+    s45({ id: "hotline-prefix-check", task: "Check whether the first hotline starts with 1.", inputMode: "guided", files: js('const hotlines = ["117", "911"];\nconst firstHotline = hotlines[0];\nconst startsWithOne = ;\n'), activeFile: "script.js", highlightToken: "const startsWithOne = ;", conceptIds: ["string-starts-with"], tests: [{ id: "hotline-prefix-check-value", kind: "js-value", expression: "startsWithOne", equals: true, label: "startsWithOne is true" }], hints: [{ level: 1, text: "Use the text method that checks its beginning." }], xp: 70 }),
+    s45({ id: "hotline-prefix-label", task: "Make a label for the hotline check.", inputMode: "guided", files: js('const hotlines = ["117", "911"];\nconst firstHotline = hotlines[0];\nconst startsWithOne = firstHotline.startsWith("1");\n'), activeFile: "script.js", tests: [{ id: "hotline-prefix-label-value", kind: "js-value", expression: "label", equals: "Starts with 1: true", label: "The label says the hotline starts with 1" }], hints: [{ level: 1, text: "Join the fixed label words to startsWithOne." }], xp: 50 }),
+    s45({ id: "hotline-prefix-log", task: "Print the hotline check label.", inputMode: "guided", files: js('const hotlines = ["117", "911"];\nconst firstHotline = hotlines[0];\nconst startsWithOne = firstHotline.startsWith("1");\nconst label = "Starts with 1: " + startsWithOne;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "hotline-prefix-log-value", kind: "js-logs", values: ["Starts with 1: true"], label: "It prints the hotline check label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s46({ id: "permit-suffix-list", task: "Store two barangay permit codes.", inputMode: "guided", files: js("// Store permit codes below\n"), activeFile: "script.js", tests: [{ id: "permit-suffix-list-value", kind: "js-value", expression: "permits", equals: ["A-2026", "B-2025"], label: "permits has both codes" }], hints: [{ level: 1, text: "Use square brackets and quote both permit codes." }], xp: 40 }),
+    s46({ id: "permit-suffix-first", task: "Read the first permit code.", inputMode: "guided", files: js('const permits = ["A-2026", "B-2025"];\n'), activeFile: "script.js", tests: [{ id: "permit-suffix-first-value", kind: "js-value", expression: "currentPermit", equals: "A-2026", label: "currentPermit is A-2026" }], hints: [{ level: 1, text: "Use square brackets with 0 after permits." }], xp: 50 }),
+    s46({ id: "permit-suffix-check", task: "Check whether the first permit ends with 2026.", inputMode: "guided", files: js('const permits = ["A-2026", "B-2025"];\nconst currentPermit = permits[0];\nconst endsWithYear = ;\n'), activeFile: "script.js", highlightToken: "const endsWithYear = ;", conceptIds: ["string-ends-with"], tests: [{ id: "permit-suffix-check-value", kind: "js-value", expression: "endsWithYear", equals: true, label: "endsWithYear is true" }], hints: [{ level: 1, text: "Use the text method that checks its ending." }], xp: 70 }),
+    s46({ id: "permit-suffix-label", task: "Make a label for the permit check.", inputMode: "guided", files: js('const permits = ["A-2026", "B-2025"];\nconst currentPermit = permits[0];\nconst endsWithYear = currentPermit.endsWith("2026");\n'), activeFile: "script.js", tests: [{ id: "permit-suffix-label-value", kind: "js-value", expression: "label", equals: "Current year: true", label: "The label says the permit has the current year" }], hints: [{ level: 1, text: "Join the fixed label words to endsWithYear." }], xp: 50 }),
+    s46({ id: "permit-suffix-log", task: "Print the permit check label.", inputMode: "guided", files: js('const permits = ["A-2026", "B-2025"];\nconst currentPermit = permits[0];\nconst endsWithYear = currentPermit.endsWith("2026");\nconst label = "Current year: " + endsWithYear;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "permit-suffix-log-value", kind: "js-logs", values: ["Current year: true"], label: "It prints the permit check label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s47({ id: "notice-edit-text", task: "Store a barangay meeting notice.", inputMode: "guided", files: js("// Store the meeting notice below\n"), activeFile: "script.js", tests: [{ id: "notice-edit-text-value", kind: "js-value", expression: "notice", equals: "Meeting 2025", label: "notice is Meeting 2025" }], hints: [{ level: 1, text: "Put the notice text inside quote marks." }], xp: 40 }),
+    s47({ id: "notice-edit-year", task: "Change the notice year to 2026.", inputMode: "guided", files: js('const notice = "Meeting 2025";\nconst updatedNotice = ;\n'), activeFile: "script.js", highlightToken: "const updatedNotice = ;", conceptIds: ["string-replace"], tests: [{ id: "notice-edit-year-value", kind: "js-value", expression: "updatedNotice", equals: "Meeting 2026", label: "updatedNotice has 2026" }], hints: [{ level: 1, text: "Use the text method that swaps old text for new text." }], xp: 70 }),
+    s47({ id: "notice-edit-label", task: "Make a label for the updated notice.", inputMode: "guided", files: js('const notice = "Meeting 2025";\nconst updatedNotice = notice.replace("2025", "2026");\n'), activeFile: "script.js", tests: [{ id: "notice-edit-label-value", kind: "js-value", expression: "label", equals: "Updated: Meeting 2026", label: "The label names the updated notice" }], hints: [{ level: 1, text: "Join the fixed label words to updatedNotice." }], xp: 50 }),
+    s47({ id: "notice-edit-loud", task: "Make the updated notice label use capital letters.", inputMode: "guided", files: js('const notice = "Meeting 2025";\nconst updatedNotice = notice.replace("2025", "2026");\nconst label = "Updated: " + updatedNotice;\n'), activeFile: "script.js", tests: [{ id: "notice-edit-loud-value", kind: "js-value", expression: "loudLabel", equals: "UPDATED: MEETING 2026", label: "loudLabel uses capital letters" }], hints: [{ level: 1, text: "Use the uppercase text method after label." }], xp: 50 }),
+    s47({ id: "notice-edit-log", task: "Print the capital updated notice label.", inputMode: "guided", files: js('const notice = "Meeting 2025";\nconst updatedNotice = notice.replace("2025", "2026");\nconst label = "Updated: " + updatedNotice;\nconst loudLabel = label.toUpperCase();\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "notice-edit-log-value", kind: "js-logs", values: ["UPDATED: MEETING 2026"], label: "It prints the capital updated notice label" }], hints: [{ level: 1, text: "Put loudLabel inside console.log." }], xp: 50 }),
+    s48({ id: "ticket-code-text", task: "Store a barangay queue ticket number.", inputMode: "guided", files: js("// Store the ticket number below\n"), activeFile: "script.js", tests: [{ id: "ticket-code-text-value", kind: "js-value", expression: "ticket", equals: "7", label: "ticket is 7" }], hints: [{ level: 1, text: "Put the ticket number inside quote marks." }], xp: 40 }),
+    s48({ id: "ticket-code-pad", task: "Make the ticket number three digits long.", inputMode: "guided", files: js('const ticket = "7";\nconst ticketCode = ;\n'), activeFile: "script.js", highlightToken: "const ticketCode = ;", conceptIds: ["string-pad-start"], tests: [{ id: "ticket-code-pad-value", kind: "js-value", expression: "ticketCode", equals: "007", label: "ticketCode is 007" }], hints: [{ level: 1, text: "Use the text method that adds zeroes at the beginning." }], xp: 70 }),
+    s48({ id: "ticket-code-label", task: "Make a label with the ticket code.", inputMode: "guided", files: js('const ticket = "7";\nconst ticketCode = ticket.padStart(3, "0");\n'), activeFile: "script.js", tests: [{ id: "ticket-code-label-value", kind: "js-value", expression: "label", equals: "Ticket: 007", label: "The label has the ticket code" }], hints: [{ level: 1, text: "Join the fixed label words to ticketCode." }], xp: 50 }),
+    s48({ id: "ticket-code-loud", task: "Make the ticket label use capital letters.", inputMode: "guided", files: js('const ticket = "7";\nconst ticketCode = ticket.padStart(3, "0");\nconst label = "Ticket: " + ticketCode;\n'), activeFile: "script.js", tests: [{ id: "ticket-code-loud-value", kind: "js-value", expression: "loudLabel", equals: "TICKET: 007", label: "loudLabel uses capital letters" }], hints: [{ level: 1, text: "Use the uppercase text method after label." }], xp: 50 }),
+    s48({ id: "ticket-code-log", task: "Print the capital ticket label.", inputMode: "guided", files: js('const ticket = "7";\nconst ticketCode = ticket.padStart(3, "0");\nconst label = "Ticket: " + ticketCode;\nconst loudLabel = label.toUpperCase();\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "ticket-code-log-value", kind: "js-logs", values: ["TICKET: 007"], label: "It prints the capital ticket label" }], hints: [{ level: 1, text: "Put loudLabel inside console.log." }], xp: 50 }),
+    s49({ id: "highest-donation-list", task: "Store three barangay donation amounts.", inputMode: "guided", files: js("// Store the donation amounts below\n"), activeFile: "script.js", tests: [{ id: "highest-donation-list-value", kind: "js-value", expression: "highDonations", equals: [100, 250, 175], label: "highDonations has three amounts" }], hints: [{ level: 1, text: "Use square brackets with the three donation amounts." }], xp: 40 }),
+    s49({ id: "highest-donation-max", task: "Find the largest donation amount.", inputMode: "guided", files: js("const highDonations = [100, 250, 175];\nconst highestDonation = ;\n"), activeFile: "script.js", highlightToken: "const highestDonation = ;", conceptIds: ["math-max"], tests: [{ id: "highest-donation-max-value", kind: "js-value", expression: "highestDonation", equals: 250, label: "highestDonation is 250" }], hints: [{ level: 1, text: "Use the Math tool that returns the largest number." }], xp: 70 }),
+    s49({ id: "highest-donation-label", task: "Make a label with the largest donation.", inputMode: "guided", files: js("const highDonations = [100, 250, 175];\nconst highestDonation = Math.max(...highDonations);\n"), activeFile: "script.js", tests: [{ id: "highest-donation-label-value", kind: "js-value", expression: "label", equals: "Highest donation: PHP 250", label: "The label names the largest donation" }], hints: [{ level: 1, text: "Join the fixed label words to highestDonation." }], xp: 50 }),
+    s49({ id: "highest-donation-loud", task: "Make the largest donation label use capital letters.", inputMode: "guided", files: js('const highDonations = [100, 250, 175];\nconst highestDonation = Math.max(...highDonations);\nconst label = "Highest donation: PHP " + highestDonation;\n'), activeFile: "script.js", tests: [{ id: "highest-donation-loud-value", kind: "js-value", expression: "loudLabel", equals: "HIGHEST DONATION: PHP 250", label: "loudLabel uses capital letters" }], hints: [{ level: 1, text: "Use the uppercase text method after label." }], xp: 50 }),
+    s49({ id: "highest-donation-log", task: "Print the capital largest donation label.", inputMode: "guided", files: js('const highDonations = [100, 250, 175];\nconst highestDonation = Math.max(...highDonations);\nconst label = "Highest donation: PHP " + highestDonation;\nconst loudLabel = label.toUpperCase();\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "highest-donation-log-value", kind: "js-logs", values: ["HIGHEST DONATION: PHP 250"], label: "It prints the capital largest donation label" }], hints: [{ level: 1, text: "Put loudLabel inside console.log." }], xp: 50 }),
+    s50({ id: "water-alert-levels", task: "Store three barangay water-tank levels.", inputMode: "guided", files: js("// Store the water levels below\n"), activeFile: "script.js", tests: [{ id: "water-alert-levels-value", kind: "js-value", expression: "waterLevels", equals: [80, 45, 60], label: "waterLevels has three levels" }], hints: [{ level: 1, text: "Use square brackets with the three water levels." }], xp: 40 }),
+    s50({ id: "water-alert-lowest", task: "Find the lowest water level.", inputMode: "guided", files: js("const waterLevels = [80, 45, 60];\nconst lowestLevel = ;\n"), activeFile: "script.js", highlightToken: "const lowestLevel = ;", conceptIds: ["math-min"], tests: [{ id: "water-alert-lowest-value", kind: "js-value", expression: "lowestLevel", equals: 45, label: "lowestLevel is 45" }], hints: [{ level: 1, text: "Use the Math tool that returns the smallest number." }], xp: 70 }),
+    s50({ id: "water-alert-refill", task: "Check whether the lowest level is below 50.", inputMode: "guided", files: js("const waterLevels = [80, 45, 60];\nconst lowestLevel = Math.min(...waterLevels);\nconst needsRefill = ;\n"), activeFile: "script.js", highlightToken: "const needsRefill = ;", tests: [{ id: "water-alert-refill-value", kind: "js-value", expression: "needsRefill", equals: true, label: "needsRefill is true" }], hints: [{ level: 1, text: "Use a comparison that is true only below 50." }], xp: 50 }),
+    s50({ id: "water-alert-label", task: "Make a label for the refill check.", inputMode: "guided", files: js("const waterLevels = [80, 45, 60];\nconst lowestLevel = Math.min(...waterLevels);\nconst needsRefill = lowestLevel < 50;\n"), activeFile: "script.js", tests: [{ id: "water-alert-label-value", kind: "js-value", expression: "label", equals: "Needs refill: true", label: "The label says a refill is needed" }], hints: [{ level: 1, text: "Join the fixed label words to needsRefill." }], xp: 50 }),
+    s50({ id: "water-alert-log", task: "Print the refill check label.", inputMode: "guided", files: js('const waterLevels = [80, 45, 60];\nconst lowestLevel = Math.min(...waterLevels);\nconst needsRefill = lowestLevel < 50;\nconst label = "Needs refill: " + needsRefill;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "water-alert-log-value", kind: "js-logs", values: ["Needs refill: true"], label: "It prints the refill check label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s51({ id: "relief-box-families", task: "Store the number of families needing relief packs.", inputMode: "guided", files: js("// Store the family count below\n"), activeFile: "script.js", tests: [{ id: "relief-box-families-value", kind: "js-value", expression: "familyCount", equals: 13, label: "familyCount is 13" }], hints: [{ level: 1, text: "Store the number as a whole number." }], xp: 40 }),
+    s51({ id: "relief-box-capacity", task: "Store how many relief packs fit in one box.", inputMode: "guided", files: js("const familyCount = 13;\n"), activeFile: "script.js", tests: [{ id: "relief-box-capacity-value", kind: "js-value", expression: "packsPerBox", equals: 5, label: "packsPerBox is 5" }], hints: [{ level: 1, text: "Store the box capacity as a number." }], xp: 40 }),
+    s51({ id: "relief-box-count", task: "Find how many whole boxes are needed.", inputMode: "guided", files: js("const familyCount = 13;\nconst packsPerBox = 5;\nconst boxesNeeded = ;\n"), activeFile: "script.js", highlightToken: "const boxesNeeded = ;", conceptIds: ["math-ceil"], tests: [{ id: "relief-box-count-value", kind: "js-value", expression: "boxesNeeded", equals: 3, label: "boxesNeeded is 3" }], hints: [{ level: 1, text: "Divide the family count by the box capacity, then round up." }], xp: 70 }),
+    s51({ id: "relief-box-label", task: "Make a label with the box count.", inputMode: "guided", files: js("const familyCount = 13;\nconst packsPerBox = 5;\nconst boxesNeeded = Math.ceil(familyCount / packsPerBox);\n"), activeFile: "script.js", tests: [{ id: "relief-box-label-value", kind: "js-value", expression: "label", equals: "Boxes needed: 3", label: "The label says three boxes are needed" }], hints: [{ level: 1, text: "Join the fixed label words to boxesNeeded." }], xp: 50 }),
+    s51({ id: "relief-box-log", task: "Print the box count label.", inputMode: "guided", files: js('const familyCount = 13;\nconst packsPerBox = 5;\nconst boxesNeeded = Math.ceil(familyCount / packsPerBox);\nconst label = "Boxes needed: " + boxesNeeded;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "relief-box-log-value", kind: "js-logs", values: ["Boxes needed: 3"], label: "It prints the box count label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s52({ id: "cash-difference-fare", task: "Store the amount a barangay desk should receive.", inputMode: "guided", files: js("// Store the amount due below\n"), activeFile: "script.js", tests: [{ id: "cash-difference-fare-value", kind: "js-value", expression: "fare", equals: 73, label: "fare is 73" }], hints: [{ level: 1, text: "Store the amount due as a number." }], xp: 40 }),
+    s52({ id: "cash-difference-paid", task: "Store the amount already paid.", inputMode: "guided", files: js("const fare = 73;\n"), activeFile: "script.js", tests: [{ id: "cash-difference-paid-value", kind: "js-value", expression: "paid", equals: 50, label: "paid is 50" }], hints: [{ level: 1, text: "Store the paid amount as a number." }], xp: 40 }),
+    s52({ id: "cash-difference-value", task: "Find the difference between what was paid and what is due.", inputMode: "guided", files: js("const fare = 73;\nconst paid = 50;\nconst difference = ;\n"), activeFile: "script.js", highlightToken: "const difference = ;", tests: [{ id: "cash-difference-value-result", kind: "js-value", expression: "difference", equals: -23, label: "difference is negative 23" }], hints: [{ level: 1, text: "Subtract the amount due from the amount paid." }], xp: 50 }),
+    s52({ id: "cash-difference-amount", task: "Find how much still needs to be collected.", inputMode: "guided", files: js("const fare = 73;\nconst paid = 50;\nconst difference = paid - fare;\nconst amountToCollect = ;\n"), activeFile: "script.js", highlightToken: "const amountToCollect = ;", conceptIds: ["math-abs"], tests: [{ id: "cash-difference-amount-value", kind: "js-value", expression: "amountToCollect", equals: 23, label: "amountToCollect is 23" }], hints: [{ level: 1, text: "Use the Math tool that turns a negative number positive." }], xp: 70 }),
+    s52({ id: "cash-difference-log", task: "Print the amount still to collect.", inputMode: "guided", files: js('const fare = 73;\nconst paid = 50;\nconst difference = paid - fare;\nconst amountToCollect = Math.abs(difference);\n\n// Print the amount below\n'), activeFile: "script.js", tests: [{ id: "cash-difference-log-value", kind: "js-logs", values: ["Amount to collect: PHP 23"], label: "It prints the amount to collect" }], hints: [{ level: 1, text: "Build the label with the amount, then put it inside console.log." }], xp: 50 }),
+    s53({ id: "full-box-pack-count", task: "Store the number of relief packs ready to box.", inputMode: "guided", files: js("// Store the pack count below\n"), activeFile: "script.js", tests: [{ id: "full-box-pack-count-value", kind: "js-value", expression: "packCount", equals: 18, label: "packCount is 18" }], hints: [{ level: 1, text: "Store the pack count as a number." }], xp: 40 }),
+    s53({ id: "full-box-capacity", task: "Store how many packs fit in one box.", inputMode: "guided", files: js("const packCount = 18;\n"), activeFile: "script.js", tests: [{ id: "full-box-capacity-value", kind: "js-value", expression: "packsPerBox", equals: 6, label: "packsPerBox is 6" }], hints: [{ level: 1, text: "Store the box capacity as a number." }], xp: 40 }),
+    s53({ id: "full-box-count", task: "Find the number of boxes from the pack count.", inputMode: "guided", files: js("const packCount = 18;\nconst packsPerBox = 6;\nconst boxCount = ;\n"), activeFile: "script.js", highlightToken: "const boxCount = ;", tests: [{ id: "full-box-count-value", kind: "js-value", expression: "boxCount", equals: 3, label: "boxCount is 3" }], hints: [{ level: 1, text: "Divide the pack count by the box capacity." }], xp: 50 }),
+    s53({ id: "full-box-check", task: "Check whether the box count has no decimal part.", inputMode: "guided", files: js("const packCount = 18;\nconst packsPerBox = 6;\nconst boxCount = packCount / packsPerBox;\nconst isWholeBoxCount = ;\n"), activeFile: "script.js", highlightToken: "const isWholeBoxCount = ;", conceptIds: ["number-is-integer"], tests: [{ id: "full-box-check-value", kind: "js-value", expression: "isWholeBoxCount", equals: true, label: "isWholeBoxCount is true" }], hints: [{ level: 1, text: "Use the Number tool that checks for a decimal part." }], xp: 70 }),
+    s53({ id: "full-box-log", task: "Print whether the packs fill whole boxes.", inputMode: "guided", files: js('const packCount = 18;\nconst packsPerBox = 6;\nconst boxCount = packCount / packsPerBox;\nconst isWholeBoxCount = Number.isInteger(boxCount);\n\n// Print the box check below\n'), activeFile: "script.js", tests: [{ id: "full-box-log-value", kind: "js-logs", values: ["Full boxes: true"], label: "It prints the full-box check" }], hints: [{ level: 1, text: "Build the label with isWholeBoxCount, then put it inside console.log." }], xp: 50 }),
+    s54({ id: "price-tag-price", task: "Store a barangay store price with a decimal.", inputMode: "guided", files: js("// Store the item price below\n"), activeFile: "script.js", tests: [{ id: "price-tag-price-value", kind: "js-value", expression: "price", equals: 12.5, label: "price is 12.5" }], hints: [{ level: 1, text: "Store the price as a number with a decimal." }], xp: 40 }),
+    s54({ id: "price-tag-fixed", task: "Make the price show two decimal places.", inputMode: "guided", files: js("const price = 12.5;\nconst priceText = ;\n"), activeFile: "script.js", highlightToken: "const priceText = ;", conceptIds: ["number-to-fixed"], tests: [{ id: "price-tag-fixed-value", kind: "js-value", expression: "priceText", equals: "12.50", label: "priceText is 12.50" }], hints: [{ level: 1, text: "Use the number method that chooses decimal places." }], xp: 70 }),
+    s54({ id: "price-tag-label", task: "Make a peso price tag.", inputMode: "guided", files: js("const price = 12.5;\nconst priceText = price.toFixed(2);\n"), activeFile: "script.js", tests: [{ id: "price-tag-label-value", kind: "js-value", expression: "priceTag", equals: "PHP 12.50", label: "priceTag has the formatted price" }], hints: [{ level: 1, text: "Join PHP and a space to priceText." }], xp: 50 }),
+    s54({ id: "price-tag-length", task: "Count the characters in the price tag.", inputMode: "guided", files: js('const price = 12.5;\nconst priceText = price.toFixed(2);\nconst priceTag = "PHP " + priceText;\n'), activeFile: "script.js", tests: [{ id: "price-tag-length-value", kind: "js-value", expression: "tagLength", equals: 9, label: "tagLength is 9" }], hints: [{ level: 1, text: "Use the length after a dot on priceTag." }], xp: 50 }),
+    s54({ id: "price-tag-log", task: "Print the formatted price tag.", inputMode: "guided", files: js('const price = 12.5;\nconst priceText = price.toFixed(2);\nconst priceTag = "PHP " + priceText;\nconst tagLength = priceTag.length;\n\n// Print the price tag below\n'), activeFile: "script.js", tests: [{ id: "price-tag-log-value", kind: "js-logs", values: ["PHP 12.50"], label: "It prints the formatted price tag" }], hints: [{ level: 1, text: "Put priceTag inside console.log." }], xp: 50 }),
+    s55({ id: "meter-reading-text", task: "Store a barangay water-meter reading as text.", inputMode: "guided", files: js("// Store the meter reading below\n"), activeFile: "script.js", tests: [{ id: "meter-reading-text-value", kind: "js-value", expression: "readingText", equals: "18.75", label: "readingText is 18.75" }], hints: [{ level: 1, text: "Put the reading inside quote marks." }], xp: 40 }),
+    s55({ id: "meter-reading-number", task: "Turn the meter reading text into a number.", inputMode: "guided", files: js('const readingText = "18.75";\nconst reading = ;\n'), activeFile: "script.js", highlightToken: "const reading = ;", conceptIds: ["number-parse-float"], tests: [{ id: "meter-reading-number-value", kind: "js-value", expression: "reading", equals: 18.75, label: "reading is 18.75" }], hints: [{ level: 1, text: "Use the Number tool that reads a decimal from text." }], xp: 70 }),
+    s55({ id: "meter-reading-check", task: "Check whether the reading is above 15.", inputMode: "guided", files: js('const readingText = "18.75";\nconst reading = Number.parseFloat(readingText);\nconst isHighReading = ;\n'), activeFile: "script.js", highlightToken: "const isHighReading = ;", tests: [{ id: "meter-reading-check-value", kind: "js-value", expression: "isHighReading", equals: true, label: "isHighReading is true" }], hints: [{ level: 1, text: "Use a comparison that is true above 15." }], xp: 50 }),
+    s55({ id: "meter-reading-label", task: "Make a label for the high-reading check.", inputMode: "guided", files: js('const readingText = "18.75";\nconst reading = Number.parseFloat(readingText);\nconst isHighReading = reading > 15;\n'), activeFile: "script.js", tests: [{ id: "meter-reading-label-value", kind: "js-value", expression: "label", equals: "High reading: true", label: "The label says the reading is high" }], hints: [{ level: 1, text: "Join the fixed label words to isHighReading." }], xp: 50 }),
+    s55({ id: "meter-reading-log", task: "Print the high-reading label.", inputMode: "guided", files: js('const readingText = "18.75";\nconst reading = Number.parseFloat(readingText);\nconst isHighReading = reading > 15;\nconst label = "High reading: " + isHighReading;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "meter-reading-log-value", kind: "js-logs", values: ["High reading: true"], label: "It prints the high-reading label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s56({ id: "notice-words-text", task: "Store a barangay clinic notice.", inputMode: "guided", files: js("// Store the clinic notice below\n"), activeFile: "script.js", tests: [{ id: "notice-words-text-value", kind: "js-value", expression: "noticeText", equals: "Clinic opens Monday", label: "noticeText has the clinic notice" }], hints: [{ level: 1, text: "Put the notice inside quote marks." }], xp: 40 }),
+    s56({ id: "notice-words-list", task: "Make a list of words from the notice.", inputMode: "guided", files: js('const noticeText = "Clinic opens Monday";\nconst words = ;\n'), activeFile: "script.js", highlightToken: "const words = ;", conceptIds: ["string-split"], tests: [{ id: "notice-words-list-value", kind: "js-value", expression: "words", equals: ["Clinic", "opens", "Monday"], label: "words has the three notice words" }], hints: [{ level: 1, text: "Use the text method that separates text at each space." }], xp: 70 }),
+    s56({ id: "notice-words-count", task: "Count the words in the notice.", inputMode: "guided", files: js('const noticeText = "Clinic opens Monday";\nconst words = noticeText.split(" ");\nconst wordCount = ;\n'), activeFile: "script.js", highlightToken: "const wordCount = ;", tests: [{ id: "notice-words-count-value", kind: "js-value", expression: "wordCount", equals: 3, label: "wordCount is 3" }], hints: [{ level: 1, text: "Use the length after a dot on words." }], xp: 50 }),
+    s56({ id: "notice-words-label", task: "Make a label with the word count.", inputMode: "guided", files: js('const noticeText = "Clinic opens Monday";\nconst words = noticeText.split(" ");\nconst wordCount = words.length;\n'), activeFile: "script.js", tests: [{ id: "notice-words-label-value", kind: "js-value", expression: "label", equals: "Words: 3", label: "The label says Words: 3" }], hints: [{ level: 1, text: "Join the fixed label words to wordCount." }], xp: 50 }),
+    s56({ id: "notice-words-log", task: "Print the word-count label.", inputMode: "guided", files: js('const noticeText = "Clinic opens Monday";\nconst words = noticeText.split(" ");\nconst wordCount = words.length;\nconst label = "Words: " + wordCount;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "notice-words-log-value", kind: "js-logs", values: ["Words: 3"], label: "It prints the word-count label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s57({ id: "alert-banner-mark", task: "Store one alert mark.", inputMode: "guided", files: js("// Store the alert mark below\n"), activeFile: "script.js", tests: [{ id: "alert-banner-mark-value", kind: "js-value", expression: "alertMark", equals: "!", label: "alertMark is an exclamation mark" }], hints: [{ level: 1, text: "Put the alert mark inside quote marks." }], xp: 40 }),
+    s57({ id: "alert-banner-marks", task: "Make three alert marks.", inputMode: "guided", files: js('const alertMark = "!";\nconst alertMarks = ;\n'), activeFile: "script.js", highlightToken: "const alertMarks = ;", conceptIds: ["string-repeat"], tests: [{ id: "alert-banner-marks-value", kind: "js-value", expression: "alertMarks", equals: "!!!", label: "alertMarks has three marks" }], hints: [{ level: 1, text: "Use the text method that repeats a value three times." }], xp: 70 }),
+    s57({ id: "alert-banner-label", task: "Make a flood alert label.", inputMode: "guided", files: js('const alertMark = "!";\nconst alertMarks = alertMark.repeat(3);\n'), activeFile: "script.js", tests: [{ id: "alert-banner-label-value", kind: "js-value", expression: "label", equals: "Flood alert!!!", label: "The label has the flood alert" }], hints: [{ level: 1, text: "Join the alert words to alertMarks." }], xp: 50 }),
+    s57({ id: "alert-banner-loud", task: "Make the flood alert use capital letters.", inputMode: "guided", files: js('const alertMark = "!";\nconst alertMarks = alertMark.repeat(3);\nconst label = "Flood alert" + alertMarks;\n'), activeFile: "script.js", tests: [{ id: "alert-banner-loud-value", kind: "js-value", expression: "loudLabel", equals: "FLOOD ALERT!!!", label: "loudLabel uses capital letters" }], hints: [{ level: 1, text: "Use the uppercase text method after label." }], xp: 50 }),
+    s57({ id: "alert-banner-log", task: "Print the capital flood alert.", inputMode: "guided", files: js('const alertMark = "!";\nconst alertMarks = alertMark.repeat(3);\nconst label = "Flood alert" + alertMarks;\nconst loudLabel = label.toUpperCase();\n\n// Print the alert below\n'), activeFile: "script.js", tests: [{ id: "alert-banner-log-value", kind: "js-logs", values: ["FLOOD ALERT!!!"], label: "It prints the capital flood alert" }], hints: [{ level: 1, text: "Put loudLabel inside console.log." }], xp: 50 }),
+    s58({ id: "permit-prefix-code", task: "Store a barangay permit code.", inputMode: "guided", files: js("// Store the permit code below\n"), activeFile: "script.js", tests: [{ id: "permit-prefix-code-value", kind: "js-value", expression: "permitCode", equals: "BRGY-2026-001", label: "permitCode has the permit code" }], hints: [{ level: 1, text: "Put the permit code inside quote marks." }], xp: 40 }),
+    s58({ id: "permit-prefix-text", task: "Read the first four characters of the permit code.", inputMode: "guided", files: js('const permitCode = "BRGY-2026-001";\nconst prefix = ;\n'), activeFile: "script.js", highlightToken: "const prefix = ;", conceptIds: ["string-substring"], tests: [{ id: "permit-prefix-text-value", kind: "js-value", expression: "prefix", equals: "BRGY", label: "prefix is BRGY" }], hints: [{ level: 1, text: "Use the text method that takes a section from the start." }], xp: 70 }),
+    s58({ id: "permit-prefix-check", task: "Check whether the code starts with BRGY.", inputMode: "guided", files: js('const permitCode = "BRGY-2026-001";\nconst prefix = permitCode.substring(0, 4);\nconst isBarangayCode = ;\n'), activeFile: "script.js", highlightToken: "const isBarangayCode = ;", tests: [{ id: "permit-prefix-check-value", kind: "js-value", expression: "isBarangayCode", equals: true, label: "isBarangayCode is true" }], hints: [{ level: 1, text: "Compare prefix with the expected four letters." }], xp: 50 }),
+    s58({ id: "permit-prefix-label", task: "Make a label for the permit-code check.", inputMode: "guided", files: js('const permitCode = "BRGY-2026-001";\nconst prefix = permitCode.substring(0, 4);\nconst isBarangayCode = prefix === "BRGY";\n'), activeFile: "script.js", tests: [{ id: "permit-prefix-label-value", kind: "js-value", expression: "label", equals: "Barangay code: true", label: "The label says the code is a barangay code" }], hints: [{ level: 1, text: "Join the fixed label words to isBarangayCode." }], xp: 50 }),
+    s58({ id: "permit-prefix-log", task: "Print the permit-code check label.", inputMode: "guided", files: js('const permitCode = "BRGY-2026-001";\nconst prefix = permitCode.substring(0, 4);\nconst isBarangayCode = prefix === "BRGY";\nconst label = "Barangay code: " + isBarangayCode;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "permit-prefix-log-value", kind: "js-logs", values: ["Barangay code: true"], label: "It prints the permit-code check label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s59({ id: "notice-cleanup-text", task: "Store a barangay clinic notice with extra spaces.", inputMode: "guided", files: js("// Store the clinic notice below\n"), activeFile: "script.js", tests: [{ id: "notice-cleanup-text-value", kind: "js-value", expression: "noticeText", equals: "Clinic  opens  Monday", label: "noticeText has the clinic notice" }], hints: [{ level: 1, text: "Put the notice inside quote marks." }], xp: 40 }),
+    s59({ id: "notice-cleanup-spaces", task: "Remove the extra spaces from the notice.", inputMode: "guided", files: js('const noticeText = "Clinic  opens  Monday";\nconst cleanedNotice = ;\n'), activeFile: "script.js", highlightToken: "const cleanedNotice = ;", conceptIds: ["string-replace-all"], tests: [{ id: "notice-cleanup-spaces-value", kind: "js-value", expression: "cleanedNotice", equals: "Clinic opens Monday", label: "cleanedNotice has single spaces" }], hints: [{ level: 1, text: "Use the text method that replaces every copy of a small piece." }], xp: 70 }),
+    s59({ id: "notice-cleanup-monday", task: "Check whether the cleaned notice names Monday.", inputMode: "guided", files: js('const noticeText = "Clinic  opens  Monday";\nconst cleanedNotice = noticeText.replaceAll("  ", " ");\nconst hasMonday = ;\n'), activeFile: "script.js", highlightToken: "const hasMonday = ;", tests: [{ id: "notice-cleanup-monday-value", kind: "js-value", expression: "hasMonday", equals: true, label: "hasMonday is true" }], hints: [{ level: 1, text: "Ask cleanedNotice whether it includes Monday." }], xp: 50 }),
+    s59({ id: "notice-cleanup-label", task: "Make a label for the clean-notice check.", inputMode: "guided", files: js('const noticeText = "Clinic  opens  Monday";\nconst cleanedNotice = noticeText.replaceAll("  ", " ");\nconst hasMonday = cleanedNotice.includes("Monday");\n'), activeFile: "script.js", tests: [{ id: "notice-cleanup-label-value", kind: "js-value", expression: "label", equals: "Notice ready: true", label: "The label says the notice is ready" }], hints: [{ level: 1, text: "Join the fixed label words to hasMonday." }], xp: 50 }),
+    s59({ id: "notice-cleanup-log", task: "Print the clean-notice check label.", inputMode: "guided", files: js('const noticeText = "Clinic  opens  Monday";\nconst cleanedNotice = noticeText.replaceAll("  ", " ");\nconst hasMonday = cleanedNotice.includes("Monday");\nconst label = "Notice ready: " + hasMonday;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "notice-cleanup-log-value", kind: "js-logs", values: ["Notice ready: true"], label: "It prints the clean-notice check label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s60({ id: "notice-letter-text", task: "Store a short barangay flood notice.", inputMode: "guided", files: js("// Store the flood notice below\n"), activeFile: "script.js", tests: [{ id: "notice-letter-text-value", kind: "js-value", expression: "noticeText", equals: "Flood alert", label: "noticeText has the flood notice" }], hints: [{ level: 1, text: "Put the two notice words inside quote marks." }], xp: 40 }),
+    s60({ id: "notice-letter-read", task: "Read the first letter of the notice.", inputMode: "guided", files: js('const noticeText = "Flood alert";\nconst firstLetter = ;\n'), activeFile: "script.js", highlightToken: "const firstLetter = ;", conceptIds: ["string-char-at"], tests: [{ id: "notice-letter-read-value", kind: "js-value", expression: "firstLetter", equals: "F", label: "firstLetter is F" }], hints: [{ level: 1, text: "Use the text method that reads one letter at a position." }], xp: 70 }),
+    s60({ id: "notice-letter-check", task: "Check whether the first letter is F.", inputMode: "guided", files: js('const noticeText = "Flood alert";\nconst firstLetter = noticeText.charAt(0);\nconst isFloodNotice = ;\n'), activeFile: "script.js", highlightToken: "const isFloodNotice = ;", tests: [{ id: "notice-letter-check-value", kind: "js-value", expression: "isFloodNotice", equals: true, label: "isFloodNotice is true" }], hints: [{ level: 1, text: "Compare firstLetter with F in quote marks." }], xp: 50 }),
+    s60({ id: "notice-letter-label", task: "Make a label for the flood-notice check.", inputMode: "guided", files: js('const noticeText = "Flood alert";\nconst firstLetter = noticeText.charAt(0);\nconst isFloodNotice = firstLetter === "F";\n'), activeFile: "script.js", tests: [{ id: "notice-letter-label-value", kind: "js-value", expression: "label", equals: "Flood notice: true", label: "The label says this is a flood notice" }], hints: [{ level: 1, text: "Join the fixed label words to isFloodNotice." }], xp: 50 }),
+    s60({ id: "notice-letter-log", task: "Print the flood-notice check label.", inputMode: "guided", files: js('const noticeText = "Flood alert";\nconst firstLetter = noticeText.charAt(0);\nconst isFloodNotice = firstLetter === "F";\nconst label = "Flood notice: " + isFloodNotice;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "notice-letter-log-value", kind: "js-logs", values: ["Flood notice: true"], label: "It prints the flood-notice check label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s61({ id: "notice-end-text", task: "Store a barangay clinic notice with spaces after it.", inputMode: "guided", files: js("// Store the clinic notice below\n"), activeFile: "script.js", tests: [{ id: "notice-end-text-value", kind: "js-value", expression: "noticeText", equals: "Clinic opens Monday  ", label: "noticeText keeps the spaces after the notice" }], hints: [{ level: 1, text: "Put the clinic notice inside quote marks." }], xp: 40 }),
+    s61({ id: "notice-end-clean", task: "Remove the spaces after the notice.", inputMode: "guided", files: js('const noticeText = "Clinic opens Monday  ";\nconst cleanedNotice = ;\n'), activeFile: "script.js", highlightToken: "const cleanedNotice = ;", conceptIds: ["string-trim-end"], tests: [{ id: "notice-end-clean-value", kind: "js-value", expression: "cleanedNotice", equals: "Clinic opens Monday", label: "cleanedNotice has no spaces after it" }], hints: [{ level: 1, text: "Use the text method that clears blank space from its end." }], xp: 70 }),
+    s61({ id: "notice-end-check", task: "Check whether the cleaned notice ends on Monday.", inputMode: "guided", files: js('const noticeText = "Clinic opens Monday  ";\nconst cleanedNotice = noticeText.trimEnd();\nconst endsOnMonday = ;\n'), activeFile: "script.js", highlightToken: "const endsOnMonday = ;", tests: [{ id: "notice-end-check-value", kind: "js-value", expression: "endsOnMonday", equals: true, label: "endsOnMonday is true" }], hints: [{ level: 1, text: "Ask cleanedNotice whether it ends with Monday." }], xp: 50 }),
+    s61({ id: "notice-end-label", task: "Make a label for the notice-end check.", inputMode: "guided", files: js('const noticeText = "Clinic opens Monday  ";\nconst cleanedNotice = noticeText.trimEnd();\nconst endsOnMonday = cleanedNotice.endsWith("Monday");\n'), activeFile: "script.js", tests: [{ id: "notice-end-label-value", kind: "js-value", expression: "label", equals: "Ends on Monday: true", label: "The label says the notice ends on Monday" }], hints: [{ level: 1, text: "Join the fixed label words to endsOnMonday." }], xp: 50 }),
+    s61({ id: "notice-end-log", task: "Print the notice-end check label.", inputMode: "guided", files: js('const noticeText = "Clinic opens Monday  ";\nconst cleanedNotice = noticeText.trimEnd();\nconst endsOnMonday = cleanedNotice.endsWith("Monday");\nconst label = "Ends on Monday: " + endsOnMonday;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "notice-end-log-value", kind: "js-logs", values: ["Ends on Monday: true"], label: "It prints the notice-end check label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s62({ id: "notice-start-text", task: "Store a barangay clinic notice with spaces before it.", inputMode: "guided", files: js("// Store the clinic notice below\n"), activeFile: "script.js", tests: [{ id: "notice-start-text-value", kind: "js-value", expression: "noticeText", equals: "  Clinic opens Monday", label: "noticeText keeps the spaces before the notice" }], hints: [{ level: 1, text: "Put the clinic notice inside quote marks." }], xp: 40 }),
+    s62({ id: "notice-start-clean", task: "Remove the spaces before the notice.", inputMode: "guided", files: js('const noticeText = "  Clinic opens Monday";\nconst cleanedNotice = ;\n'), activeFile: "script.js", highlightToken: "const cleanedNotice = ;", conceptIds: ["string-trim-start"], tests: [{ id: "notice-start-clean-value", kind: "js-value", expression: "cleanedNotice", equals: "Clinic opens Monday", label: "cleanedNotice has no spaces before it" }], hints: [{ level: 1, text: "Use the text method that clears blank space from its start." }], xp: 70 }),
+    s62({ id: "notice-start-check", task: "Check whether the cleaned notice starts with Clinic.", inputMode: "guided", files: js('const noticeText = "  Clinic opens Monday";\nconst cleanedNotice = noticeText.trimStart();\nconst startsWithClinic = ;\n'), activeFile: "script.js", highlightToken: "const startsWithClinic = ;", tests: [{ id: "notice-start-check-value", kind: "js-value", expression: "startsWithClinic", equals: true, label: "startsWithClinic is true" }], hints: [{ level: 1, text: "Ask cleanedNotice whether it starts with Clinic." }], xp: 50 }),
+    s62({ id: "notice-start-label", task: "Make a label for the notice-start check.", inputMode: "guided", files: js('const noticeText = "  Clinic opens Monday";\nconst cleanedNotice = noticeText.trimStart();\nconst startsWithClinic = cleanedNotice.startsWith("Clinic");\n'), activeFile: "script.js", tests: [{ id: "notice-start-label-value", kind: "js-value", expression: "label", equals: "Starts with Clinic: true", label: "The label says the notice starts with Clinic" }], hints: [{ level: 1, text: "Join the fixed label words to startsWithClinic." }], xp: 50 }),
+    s62({ id: "notice-start-log", task: "Print the notice-start check label.", inputMode: "guided", files: js('const noticeText = "  Clinic opens Monday";\nconst cleanedNotice = noticeText.trimStart();\nconst startsWithClinic = cleanedNotice.startsWith("Clinic");\nconst label = "Starts with Clinic: " + startsWithClinic;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "notice-start-log-value", kind: "js-logs", values: ["Starts with Clinic: true"], label: "It prints the notice-start check label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s63({ id: "notice-lower-text", task: "Store a barangay clinic notice in capital letters.", inputMode: "guided", files: js("// Store the clinic notice below\n"), activeFile: "script.js", tests: [{ id: "notice-lower-text-value", kind: "js-value", expression: "noticeText", equals: "CLINIC OPENS MONDAY", label: "noticeText has the capital-letter notice" }], hints: [{ level: 1, text: "Put all three notice words inside quote marks." }], xp: 40 }),
+    s63({ id: "notice-lower-read", task: "Make the notice use small letters.", inputMode: "guided", files: js('const noticeText = "CLINIC OPENS MONDAY";\nconst quietNotice = ;\n'), activeFile: "script.js", highlightToken: "const quietNotice = ;", conceptIds: ["string-to-lower-case"], tests: [{ id: "notice-lower-read-value", kind: "js-value", expression: "quietNotice", equals: "clinic opens monday", label: "quietNotice uses small letters" }], hints: [{ level: 1, text: "Use the text method that changes letters to small letters." }], xp: 70 }),
+    s63({ id: "notice-lower-check", task: "Check whether the small-letter notice names clinic.", inputMode: "guided", files: js('const noticeText = "CLINIC OPENS MONDAY";\nconst quietNotice = noticeText.toLowerCase();\nconst hasClinic = ;\n'), activeFile: "script.js", highlightToken: "const hasClinic = ;", tests: [{ id: "notice-lower-check-value", kind: "js-value", expression: "hasClinic", equals: true, label: "hasClinic is true" }], hints: [{ level: 1, text: "Ask quietNotice whether it includes clinic." }], xp: 50 }),
+    s63({ id: "notice-lower-label", task: "Make a label for the clinic-name check.", inputMode: "guided", files: js('const noticeText = "CLINIC OPENS MONDAY";\nconst quietNotice = noticeText.toLowerCase();\nconst hasClinic = quietNotice.includes("clinic");\n'), activeFile: "script.js", tests: [{ id: "notice-lower-label-value", kind: "js-value", expression: "label", equals: "Clinic named: true", label: "The label says clinic is named" }], hints: [{ level: 1, text: "Join the fixed label words to hasClinic." }], xp: 50 }),
+    s63({ id: "notice-lower-log", task: "Print the clinic-name check label.", inputMode: "guided", files: js('const noticeText = "CLINIC OPENS MONDAY";\nconst quietNotice = noticeText.toLowerCase();\nconst hasClinic = quietNotice.includes("clinic");\nconst label = "Clinic named: " + hasClinic;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "notice-lower-log-value", kind: "js-logs", values: ["Clinic named: true"], label: "It prints the clinic-name check label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s64({ id: "notice-last-text", task: "Store a short barangay clinic notice.", inputMode: "guided", files: js("// Store the clinic notice below\n"), activeFile: "script.js", tests: [{ id: "notice-last-text-value", kind: "js-value", expression: "noticeText", equals: "Clinic opens Monday", label: "noticeText has the clinic notice" }], hints: [{ level: 1, text: "Put the three notice words inside quote marks." }], xp: 40 }),
+    s64({ id: "notice-last-space", task: "Find the last space in the notice.", inputMode: "guided", files: js('const noticeText = "Clinic opens Monday";\nconst lastSpace = ;\n'), activeFile: "script.js", highlightToken: "const lastSpace = ;", conceptIds: ["string-last-index-of"], tests: [{ id: "notice-last-space-value", kind: "js-value", expression: "lastSpace", equals: 12, label: "lastSpace is 12" }], hints: [{ level: 1, text: "Use the text method that finds the last copy of a small piece." }], xp: 70 }),
+    s64({ id: "notice-last-word", task: "Read the word after the last space.", inputMode: "guided", files: js('const noticeText = "Clinic opens Monday";\nconst lastSpace = noticeText.lastIndexOf(" ");\nconst lastWord = ;\n'), activeFile: "script.js", highlightToken: "const lastWord = ;", tests: [{ id: "notice-last-word-value", kind: "js-value", expression: "lastWord", equals: "Monday", label: "lastWord is Monday" }], hints: [{ level: 1, text: "Read noticeText from one place after lastSpace." }], xp: 50 }),
+    s64({ id: "notice-last-label", task: "Make a label for the last notice word.", inputMode: "guided", files: js('const noticeText = "Clinic opens Monday";\nconst lastSpace = noticeText.lastIndexOf(" ");\nconst lastWord = noticeText.substring(lastSpace + 1);\n'), activeFile: "script.js", tests: [{ id: "notice-last-label-value", kind: "js-value", expression: "label", equals: "Last word: Monday", label: "The label names the last word" }], hints: [{ level: 1, text: "Join the fixed label words to lastWord." }], xp: 50 }),
+    s64({ id: "notice-last-log", task: "Print the last notice word label.", inputMode: "guided", files: js('const noticeText = "Clinic opens Monday";\nconst lastSpace = noticeText.lastIndexOf(" ");\nconst lastWord = noticeText.substring(lastSpace + 1);\nconst label = "Last word: " + lastWord;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "notice-last-log-value", kind: "js-logs", values: ["Last word: Monday"], label: "It prints the last word label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s65({ id: "notice-letters-text", task: "Store a short barangay flood notice.", inputMode: "guided", files: js("// Store the flood notice below\n"), activeFile: "script.js", tests: [{ id: "notice-letters-text-value", kind: "js-value", expression: "noticeText", equals: "Flood", label: "noticeText has the flood notice" }], hints: [{ level: 1, text: "Put the notice word inside quote marks." }], xp: 40 }),
+    s65({ id: "notice-letters-list", task: "Make a list of the notice letters.", inputMode: "guided", files: js('const noticeText = "Flood";\nconst letters = ;\n'), activeFile: "script.js", highlightToken: "const letters = ;", conceptIds: ["array-from"], tests: [{ id: "notice-letters-list-value", kind: "js-value", expression: "letters", equals: ["F", "l", "o", "o", "d"], label: "letters has every notice letter" }], hints: [{ level: 1, text: "Use the Array tool that turns text into a list." }], xp: 70 }),
+    s65({ id: "notice-letters-first", task: "Read the first letter in the list.", inputMode: "guided", files: js('const noticeText = "Flood";\nconst letters = Array.from(noticeText);\nconst firstLetter = ;\n'), activeFile: "script.js", highlightToken: "const firstLetter = ;", tests: [{ id: "notice-letters-first-value", kind: "js-value", expression: "firstLetter", equals: "F", label: "firstLetter is F" }], hints: [{ level: 1, text: "Use square brackets with 0 after letters." }], xp: 50 }),
+    s65({ id: "notice-letters-label", task: "Make a label for the first letter.", inputMode: "guided", files: js('const noticeText = "Flood";\nconst letters = Array.from(noticeText);\nconst firstLetter = letters[0];\n'), activeFile: "script.js", tests: [{ id: "notice-letters-label-value", kind: "js-value", expression: "label", equals: "First letter: F", label: "The label names the first letter" }], hints: [{ level: 1, text: "Join the fixed label words to firstLetter." }], xp: 50 }),
+    s65({ id: "notice-letters-log", task: "Print the first-letter label.", inputMode: "guided", files: js('const noticeText = "Flood";\nconst letters = Array.from(noticeText);\nconst firstLetter = letters[0];\nconst label = "First letter: " + firstLetter;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "notice-letters-log-value", kind: "js-logs", values: ["First letter: F"], label: "It prints the first-letter label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s66({ id: "seat-update-list", task: "Store three open seats for a barangay meeting.", inputMode: "guided", files: js("// Store the seat labels below\n"), activeFile: "script.js", tests: [{ id: "seat-update-list-value", kind: "js-value", expression: "seats", equals: ["Open", "Open", "Open"], label: "seats has three open labels" }], hints: [{ level: 1, text: "Use square brackets and quote each Open label." }], xp: 40 }),
+    s66({ id: "seat-update-fill", task: "Mark every seat as taken.", inputMode: "guided", files: js('const seats = ["Open", "Open", "Open"];\nconst updatedSeats = ;\n'), activeFile: "script.js", highlightToken: "const updatedSeats = ;", conceptIds: ["array-fill"], tests: [{ id: "seat-update-fill-value", kind: "js-value", expression: "updatedSeats", equals: ["Taken", "Taken", "Taken"], label: "updatedSeats marks every seat as taken" }], hints: [{ level: 1, text: "Use the list method that puts one value in every spot." }], xp: 70 }),
+    s66({ id: "seat-update-first", task: "Read the first updated seat label.", inputMode: "guided", files: js('const seats = ["Open", "Open", "Open"];\nconst updatedSeats = seats.fill("Taken");\nconst firstSeat = ;\n'), activeFile: "script.js", highlightToken: "const firstSeat = ;", tests: [{ id: "seat-update-first-value", kind: "js-value", expression: "firstSeat", equals: "Taken", label: "firstSeat is Taken" }], hints: [{ level: 1, text: "Use square brackets with 0 after updatedSeats." }], xp: 50 }),
+    s66({ id: "seat-update-label", task: "Make a label for the first updated seat.", inputMode: "guided", files: js('const seats = ["Open", "Open", "Open"];\nconst updatedSeats = seats.fill("Taken");\nconst firstSeat = updatedSeats[0];\n'), activeFile: "script.js", tests: [{ id: "seat-update-label-value", kind: "js-value", expression: "label", equals: "First seat: Taken", label: "The label names the first updated seat" }], hints: [{ level: 1, text: "Join the fixed label words to firstSeat." }], xp: 50 }),
+    s66({ id: "seat-update-log", task: "Print the first updated seat label.", inputMode: "guided", files: js('const seats = ["Open", "Open", "Open"];\nconst updatedSeats = seats.fill("Taken");\nconst firstSeat = updatedSeats[0];\nconst label = "First seat: " + firstSeat;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "seat-update-log-value", kind: "js-logs", values: ["First seat: Taken"], label: "It prints the first updated seat label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s67({ id: "seat-numbers-list", task: "Store three seat labels for a barangay meeting.", inputMode: "guided", files: js("// Store the seat labels below\n"), activeFile: "script.js", tests: [{ id: "seat-numbers-list-value", kind: "js-value", expression: "seats", equals: ["A", "B", "C"], label: "seats has three seat labels" }], hints: [{ level: 1, text: "Use square brackets and quote each seat letter." }], xp: 40 }),
+    s67({ id: "seat-numbers-make", task: "Make a list of the seat numbers.", inputMode: "guided", files: js('const seats = ["A", "B", "C"];\nconst seatNumbers = ;\n'), activeFile: "script.js", highlightToken: "const seatNumbers = ;", conceptIds: ["array-keys"], tests: [{ id: "seat-numbers-make-value", kind: "js-value", expression: "seatNumbers", equals: [0, 1, 2], label: "seatNumbers has all three seat numbers" }], hints: [{ level: 1, text: "Use Array.from with the list method that reads every position." }], xp: 70 }),
+    s67({ id: "seat-numbers-last", task: "Read the last seat number.", inputMode: "guided", files: js('const seats = ["A", "B", "C"];\nconst seatNumbers = Array.from(seats.keys());\nconst lastNumber = ;\n'), activeFile: "script.js", highlightToken: "const lastNumber = ;", tests: [{ id: "seat-numbers-last-value", kind: "js-value", expression: "lastNumber", equals: 2, label: "lastNumber is 2" }], hints: [{ level: 1, text: "Use square brackets with 2 after seatNumbers." }], xp: 50 }),
+    s67({ id: "seat-numbers-label", task: "Make a label for the last seat number.", inputMode: "guided", files: js('const seats = ["A", "B", "C"];\nconst seatNumbers = Array.from(seats.keys());\nconst lastNumber = seatNumbers[2];\n'), activeFile: "script.js", tests: [{ id: "seat-numbers-label-value", kind: "js-value", expression: "label", equals: "Last seat number: 2", label: "The label names the last seat number" }], hints: [{ level: 1, text: "Join the fixed label words to lastNumber." }], xp: 50 }),
+    s67({ id: "seat-numbers-log", task: "Print the last seat-number label.", inputMode: "guided", files: js('const seats = ["A", "B", "C"];\nconst seatNumbers = Array.from(seats.keys());\nconst lastNumber = seatNumbers[2];\nconst label = "Last seat number: " + lastNumber;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "seat-numbers-log-value", kind: "js-logs", values: ["Last seat number: 2"], label: "It prints the last seat-number label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s68({ id: "seat-pairs-list", task: "Store two seat labels for a barangay meeting.", inputMode: "guided", files: js("// Store the seat labels below\n"), activeFile: "script.js", tests: [{ id: "seat-pairs-list-value", kind: "js-value", expression: "seats", equals: ["A", "B"], label: "seats has both seat labels" }], hints: [{ level: 1, text: "Use square brackets and quote each seat letter." }], xp: 40 }),
+    s68({ id: "seat-pairs-make", task: "Make number-and-label pairs for the seats.", inputMode: "guided", files: js('const seats = ["A", "B"];\nconst seatPairs = ;\n'), activeFile: "script.js", highlightToken: "const seatPairs = ;", conceptIds: ["array-entries"], tests: [{ id: "seat-pairs-make-value", kind: "js-value", expression: "seatPairs", equals: [[0, "A"], [1, "B"]], label: "seatPairs has both number-and-label pairs" }], hints: [{ level: 1, text: "Use Array.from with the list method that reads each number and label together." }], xp: 70 }),
+    s68({ id: "seat-pairs-first", task: "Read the first seat pair.", inputMode: "guided", files: js('const seats = ["A", "B"];\nconst seatPairs = Array.from(seats.entries());\nconst firstPair = ;\n'), activeFile: "script.js", highlightToken: "const firstPair = ;", tests: [{ id: "seat-pairs-first-value", kind: "js-value", expression: "firstPair", equals: [0, "A"], label: "firstPair has seat number zero and label A" }], hints: [{ level: 1, text: "Use square brackets with 0 after seatPairs." }], xp: 50 }),
+    s68({ id: "seat-pairs-label", task: "Make a label for the first seat.", inputMode: "guided", files: js('const seats = ["A", "B"];\nconst seatPairs = Array.from(seats.entries());\nconst firstPair = seatPairs[0];\n'), activeFile: "script.js", tests: [{ id: "seat-pairs-label-value", kind: "js-value", expression: "label", equals: "First seat: A", label: "The label names the first seat" }], hints: [{ level: 1, text: "Join the fixed label words to the second part of firstPair." }], xp: 50 }),
+    s68({ id: "seat-pairs-log", task: "Print the first seat label.", inputMode: "guided", files: js('const seats = ["A", "B"];\nconst seatPairs = Array.from(seats.entries());\nconst firstPair = seatPairs[0];\nconst label = "First seat: " + firstPair[1];\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "seat-pairs-log-value", kind: "js-logs", values: ["First seat: A"], label: "It prints the first seat label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s69({ id: "seat-call-list", task: "Store three names in the barangay seat list.", inputMode: "guided", files: js("// Store the seat names below\n"), activeFile: "script.js", tests: [{ id: "seat-call-list-value", kind: "js-value", expression: "seats", equals: ["Ana", "Ben", "Cia"], label: "seats has all three names" }], hints: [{ level: 1, text: "Use square brackets and quote each name." }], xp: 40 }),
+    s69({ id: "seat-call-next", task: "Call the first name from the seat list.", inputMode: "guided", files: js('const seats = ["Ana", "Ben", "Cia"];\nconst nextSeat = ;\n'), activeFile: "script.js", highlightToken: "const nextSeat = ;", conceptIds: ["array-shift"], tests: [{ id: "seat-call-next-value", kind: "js-value", expression: "nextSeat", equals: "Ana", label: "nextSeat is Ana" }], hints: [{ level: 1, text: "Use the list method that takes its first item." }], xp: 70 }),
+    s69({ id: "seat-call-remaining", task: "Count the names left in the seat list.", inputMode: "guided", files: js('const seats = ["Ana", "Ben", "Cia"];\nconst nextSeat = seats.shift();\nconst remainingSeats = ;\n'), activeFile: "script.js", highlightToken: "const remainingSeats = ;", tests: [{ id: "seat-call-remaining-value", kind: "js-value", expression: "remainingSeats", equals: 2, label: "remainingSeats is 2" }], hints: [{ level: 1, text: "Use the length after a dot on seats." }], xp: 50 }),
+    s69({ id: "seat-call-label", task: "Make a label for the next seat name.", inputMode: "guided", files: js('const seats = ["Ana", "Ben", "Cia"];\nconst nextSeat = seats.shift();\nconst remainingSeats = seats.length;\n'), activeFile: "script.js", tests: [{ id: "seat-call-label-value", kind: "js-value", expression: "label", equals: "Next seat: Ana", label: "The label names the next seat" }], hints: [{ level: 1, text: "Join the fixed label words to nextSeat." }], xp: 50 }),
+    s69({ id: "seat-call-log", task: "Print the next seat label.", inputMode: "guided", files: js('const seats = ["Ana", "Ben", "Cia"];\nconst nextSeat = seats.shift();\nconst remainingSeats = seats.length;\nconst label = "Next seat: " + nextSeat;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "seat-call-log-value", kind: "js-logs", values: ["Next seat: Ana"], label: "It prints the next seat label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s70({ id: "seat-arrival-list", task: "Store two names in the barangay seat list.", inputMode: "guided", files: js("// Store the seat names below\n"), activeFile: "script.js", tests: [{ id: "seat-arrival-list-value", kind: "js-value", expression: "seats", equals: ["Ben", "Cia"], label: "seats has both names" }], hints: [{ level: 1, text: "Use square brackets and quote each name." }], xp: 40 }),
+    s70({ id: "seat-arrival-add", task: "Put Ana at the start of the seat list.", inputMode: "guided", files: js('const seats = ["Ben", "Cia"];\n'), activeFile: "script.js", conceptIds: ["array-unshift"], tests: [{ id: "seat-arrival-add-value", kind: "js-value", expression: "seats", equals: ["Ana", "Ben", "Cia"], label: "seats starts with Ana" }], hints: [{ level: 1, text: "Use the list method that adds one item to its start." }], xp: 70 }),
+    s70({ id: "seat-arrival-first", task: "Read the first seat after Ana arrives.", inputMode: "guided", files: js('const seats = ["Ben", "Cia"];\nseats.unshift("Ana");\nconst firstSeat = ;\n'), activeFile: "script.js", highlightToken: "const firstSeat = ;", tests: [{ id: "seat-arrival-first-value", kind: "js-value", expression: "firstSeat", equals: "Ana", label: "firstSeat is Ana" }], hints: [{ level: 1, text: "Use square brackets with 0 after seats." }], xp: 50 }),
+    s70({ id: "seat-arrival-label", task: "Make a label for the first seat.", inputMode: "guided", files: js('const seats = ["Ben", "Cia"];\nseats.unshift("Ana");\nconst firstSeat = seats[0];\n'), activeFile: "script.js", tests: [{ id: "seat-arrival-label-value", kind: "js-value", expression: "label", equals: "First seat: Ana", label: "The label names the first seat" }], hints: [{ level: 1, text: "Join the fixed label words to firstSeat." }], xp: 50 }),
+    s70({ id: "seat-arrival-log", task: "Print the first seat label.", inputMode: "guided", files: js('const seats = ["Ben", "Cia"];\nseats.unshift("Ana");\nconst firstSeat = seats[0];\nconst label = "First seat: " + firstSeat;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "seat-arrival-log-value", kind: "js-logs", values: ["First seat: Ana"], label: "It prints the first seat label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s71({ id: "seat-close-list", task: "Store three names in the barangay seat list.", inputMode: "guided", files: js("// Store the seat names below\n"), activeFile: "script.js", tests: [{ id: "seat-close-list-value", kind: "js-value", expression: "seats", equals: ["Ana", "Ben", "Cia"], label: "seats has all three names" }], hints: [{ level: 1, text: "Use square brackets and quote each name." }], xp: 40 }),
+    s71({ id: "seat-close-last", task: "Call the last name from the seat list.", inputMode: "guided", files: js('const seats = ["Ana", "Ben", "Cia"];\nconst lastSeat = ;\n'), activeFile: "script.js", highlightToken: "const lastSeat = ;", conceptIds: ["array-pop"], tests: [{ id: "seat-close-last-value", kind: "js-value", expression: "lastSeat", equals: "Cia", label: "lastSeat is Cia" }], hints: [{ level: 1, text: "Use the list method that takes its last item." }], xp: 70 }),
+    s71({ id: "seat-close-remaining", task: "Count the names left in the seat list.", inputMode: "guided", files: js('const seats = ["Ana", "Ben", "Cia"];\nconst lastSeat = seats.pop();\nconst remainingSeats = ;\n'), activeFile: "script.js", highlightToken: "const remainingSeats = ;", tests: [{ id: "seat-close-remaining-value", kind: "js-value", expression: "remainingSeats", equals: 2, label: "remainingSeats is 2" }], hints: [{ level: 1, text: "Use the length after a dot on seats." }], xp: 50 }),
+    s71({ id: "seat-close-label", task: "Make a label for the last seat name.", inputMode: "guided", files: js('const seats = ["Ana", "Ben", "Cia"];\nconst lastSeat = seats.pop();\nconst remainingSeats = seats.length;\n'), activeFile: "script.js", tests: [{ id: "seat-close-label-value", kind: "js-value", expression: "label", equals: "Last seat: Cia", label: "The label names the last seat" }], hints: [{ level: 1, text: "Join the fixed label words to lastSeat." }], xp: 50 }),
+    s71({ id: "seat-close-log", task: "Print the last seat label.", inputMode: "guided", files: js('const seats = ["Ana", "Ben", "Cia"];\nconst lastSeat = seats.pop();\nconst remainingSeats = seats.length;\nconst label = "Last seat: " + lastSeat;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "seat-close-log-value", kind: "js-logs", values: ["Last seat: Cia"], label: "It prints the last seat label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s72({ id: "seat-join-list", task: "Store two names in the barangay seat list.", inputMode: "guided", files: js("// Store the seat names below\n"), activeFile: "script.js", tests: [{ id: "seat-join-list-value", kind: "js-value", expression: "seats", equals: ["Ana", "Ben"], label: "seats has both names" }], hints: [{ level: 1, text: "Use square brackets and quote each name." }], xp: 40 }),
+    s72({ id: "seat-join-add", task: "Add Cia to the end of the seat list.", inputMode: "guided", files: js('const seats = ["Ana", "Ben"];\n'), activeFile: "script.js", conceptIds: ["array-push"], tests: [{ id: "seat-join-add-value", kind: "js-value", expression: "seats", equals: ["Ana", "Ben", "Cia"], label: "seats ends with Cia" }], hints: [{ level: 1, text: "Use the list method that adds one item to its end." }], xp: 70 }),
+    s72({ id: "seat-join-last", task: "Read the last seat after Cia joins.", inputMode: "guided", files: js('const seats = ["Ana", "Ben"];\nseats.push("Cia");\nconst lastSeat = ;\n'), activeFile: "script.js", highlightToken: "const lastSeat = ;", tests: [{ id: "seat-join-last-value", kind: "js-value", expression: "lastSeat", equals: "Cia", label: "lastSeat is Cia" }], hints: [{ level: 1, text: "Use square brackets with 2 after seats." }], xp: 50 }),
+    s72({ id: "seat-join-label", task: "Make a label for the last seat.", inputMode: "guided", files: js('const seats = ["Ana", "Ben"];\nseats.push("Cia");\nconst lastSeat = seats[2];\n'), activeFile: "script.js", tests: [{ id: "seat-join-label-value", kind: "js-value", expression: "label", equals: "Last seat: Cia", label: "The label names the last seat" }], hints: [{ level: 1, text: "Join the fixed label words to lastSeat." }], xp: 50 }),
+    s72({ id: "seat-join-log", task: "Print the last seat label.", inputMode: "guided", files: js('const seats = ["Ana", "Ben"];\nseats.push("Cia");\nconst lastSeat = seats[2];\nconst label = "Last seat: " + lastSeat;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "seat-join-log-value", kind: "js-logs", values: ["Last seat: Cia"], label: "It prints the last seat label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s73({ id: "seat-change-list", task: "Store three names in the barangay seat list.", inputMode: "guided", files: js("// Store the seat names below\n"), activeFile: "script.js", tests: [{ id: "seat-change-list-value", kind: "js-value", expression: "seats", equals: ["Ana", "Ben", "Cia"], label: "seats has all three names" }], hints: [{ level: 1, text: "Use square brackets and quote each name." }], xp: 40 }),
+    s73({ id: "seat-change-remove", task: "Remove Ben from the middle of the seat list.", inputMode: "guided", files: js('const seats = ["Ana", "Ben", "Cia"];\n'), activeFile: "script.js", conceptIds: ["array-splice"], tests: [{ id: "seat-change-remove-value", kind: "js-value", expression: "seats", equals: ["Ana", "Cia"], label: "seats keeps Ana and Cia" }], hints: [{ level: 1, text: "Use the list method that can remove one item from a chosen spot." }], xp: 70 }),
+    s73({ id: "seat-change-middle", task: "Read the middle seat after Ben leaves.", inputMode: "guided", files: js('const seats = ["Ana", "Ben", "Cia"];\nseats.splice(1, 1);\nconst middleSeat = ;\n'), activeFile: "script.js", highlightToken: "const middleSeat = ;", tests: [{ id: "seat-change-middle-value", kind: "js-value", expression: "middleSeat", equals: "Cia", label: "middleSeat is Cia" }], hints: [{ level: 1, text: "Use square brackets with 1 after seats." }], xp: 50 }),
+    s73({ id: "seat-change-label", task: "Make a label for the middle seat.", inputMode: "guided", files: js('const seats = ["Ana", "Ben", "Cia"];\nseats.splice(1, 1);\nconst middleSeat = seats[1];\n'), activeFile: "script.js", tests: [{ id: "seat-change-label-value", kind: "js-value", expression: "label", equals: "Middle seat: Cia", label: "The label names the middle seat" }], hints: [{ level: 1, text: "Join the fixed label words to middleSeat." }], xp: 50 }),
+    s73({ id: "seat-change-log", task: "Print the middle seat label.", inputMode: "guided", files: js('const seats = ["Ana", "Ben", "Cia"];\nseats.splice(1, 1);\nconst middleSeat = seats[1];\nconst label = "Middle seat: " + middleSeat;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "seat-change-log-value", kind: "js-logs", values: ["Middle seat: Cia"], label: "It prints the middle seat label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s74({ id: "seat-duplicate-list", task: "Store three names in the barangay seat list.", inputMode: "guided", files: js("// Store the seat names below\n"), activeFile: "script.js", tests: [{ id: "seat-duplicate-list-value", kind: "js-value", expression: "seats", equals: ["Ana", "Ben", "Ana"], label: "seats has both Ana names" }], hints: [{ level: 1, text: "Use square brackets and quote each name." }], xp: 40 }),
+    s74({ id: "seat-duplicate-last", task: "Find the last place where Ana appears in the seat list.", inputMode: "guided", files: js('const seats = ["Ana", "Ben", "Ana"];\nconst lastAna = ;\n'), activeFile: "script.js", highlightToken: "const lastAna = ;", conceptIds: ["array-last-index-of"], tests: [{ id: "seat-duplicate-last-value", kind: "js-value", expression: "lastAna", equals: 2, label: "lastAna is 2" }], hints: [{ level: 1, text: "Use the list method that finds an item's final position." }], xp: 70 }),
+    s74({ id: "seat-duplicate-number", task: "Turn the last list place into a seat number.", inputMode: "guided", files: js('const seats = ["Ana", "Ben", "Ana"];\nconst lastAna = seats.lastIndexOf("Ana");\nconst seatNumber = ;\n'), activeFile: "script.js", highlightToken: "const seatNumber = ;", tests: [{ id: "seat-duplicate-number-value", kind: "js-value", expression: "seatNumber", equals: 3, label: "seatNumber is 3" }], hints: [{ level: 1, text: "Add one to lastAna." }], xp: 50 }),
+    s74({ id: "seat-duplicate-label", task: "Make a label for Ana's last seat.", inputMode: "guided", files: js('const seats = ["Ana", "Ben", "Ana"];\nconst lastAna = seats.lastIndexOf("Ana");\nconst seatNumber = lastAna + 1;\n'), activeFile: "script.js", tests: [{ id: "seat-duplicate-label-value", kind: "js-value", expression: "label", equals: "Last Ana seat: 3", label: "The label names Ana's last seat" }], hints: [{ level: 1, text: "Join the fixed label words to seatNumber." }], xp: 50 }),
+    s74({ id: "seat-duplicate-log", task: "Print Ana's last seat label.", inputMode: "guided", files: js('const seats = ["Ana", "Ben", "Ana"];\nconst lastAna = seats.lastIndexOf("Ana");\nconst seatNumber = lastAna + 1;\nconst label = "Last Ana seat: " + seatNumber;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "seat-duplicate-log-value", kind: "js-logs", values: ["Last Ana seat: 3"], label: "It prints Ana's last seat label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s75({ id: "seat-final-match-list", task: "Store three seat statuses for a barangay meeting.", inputMode: "guided", files: js("// Store the seat statuses below\n"), activeFile: "script.js", tests: [{ id: "seat-final-match-list-value", kind: "js-value", expression: "seats", equals: ["Open", "Taken", "Open"], label: "seats has all three statuses" }], hints: [{ level: 1, text: "Use square brackets and quote each seat status." }], xp: 40 }),
+    s75({ id: "seat-final-match-find", task: "Find the final open seat status in the list.", inputMode: "guided", files: js('const seats = ["Open", "Taken", "Open"];\nconst lastOpen = ;\n'), activeFile: "script.js", highlightToken: "const lastOpen = ;", conceptIds: ["array-find-last"], tests: [{ id: "seat-final-match-find-value", kind: "js-value", expression: "lastOpen", equals: "Open", label: "lastOpen is the final Open status" }], hints: [{ level: 1, text: "Use the list method that finds the final item matching a check." }], xp: 70 }),
+    s75({ id: "seat-final-match-label", task: "Make a label for the final open seat.", inputMode: "guided", files: js('const seats = ["Open", "Taken", "Open"];\nconst lastOpen = seats.findLast((seat) => seat === "Open");\n'), activeFile: "script.js", tests: [{ id: "seat-final-match-label-value", kind: "js-value", expression: "label", equals: "Last open seat: Open", label: "The label names the final open seat" }], hints: [{ level: 1, text: "Join the fixed label words to lastOpen." }], xp: 50 }),
+    s75({ id: "seat-final-match-loud", task: "Make the seat label use capital letters.", inputMode: "guided", files: js('const seats = ["Open", "Taken", "Open"];\nconst lastOpen = seats.findLast((seat) => seat === "Open");\nconst label = "Last open seat: " + lastOpen;\n'), activeFile: "script.js", tests: [{ id: "seat-final-match-loud-value", kind: "js-value", expression: "loudLabel", equals: "LAST OPEN SEAT: OPEN", label: "loudLabel uses capital letters" }], hints: [{ level: 1, text: "Use the uppercase text method after label." }], xp: 50 }),
+    s75({ id: "seat-final-match-log", task: "Print the capital seat label.", inputMode: "guided", files: js('const seats = ["Open", "Taken", "Open"];\nconst lastOpen = seats.findLast((seat) => seat === "Open");\nconst label = "Last open seat: " + lastOpen;\nconst loudLabel = label.toUpperCase();\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "seat-final-match-log-value", kind: "js-logs", values: ["LAST OPEN SEAT: OPEN"], label: "It prints the capital seat label" }], hints: [{ level: 1, text: "Put loudLabel inside console.log." }], xp: 50 }),
+    s76({ id: "seat-final-position-list", task: "Store three seat statuses for a barangay meeting.", inputMode: "guided", files: js("// Store the seat statuses below\n"), activeFile: "script.js", tests: [{ id: "seat-final-position-list-value", kind: "js-value", expression: "seats", equals: ["Open", "Taken", "Open"], label: "seats has all three statuses" }], hints: [{ level: 1, text: "Use square brackets and quote each seat status." }], xp: 40 }),
+    s76({ id: "seat-final-position-find", task: "Find the position of the final open seat status.", inputMode: "guided", files: js('const seats = ["Open", "Taken", "Open"];\nconst lastOpenIndex = ;\n'), activeFile: "script.js", highlightToken: "const lastOpenIndex = ;", conceptIds: ["array-find-last-index"], tests: [{ id: "seat-final-position-find-value", kind: "js-value", expression: "lastOpenIndex", equals: 2, label: "lastOpenIndex is 2" }], hints: [{ level: 1, text: "Use the list method that finds the final matching item's position." }], xp: 70 }),
+    s76({ id: "seat-final-position-number", task: "Turn the final position into a seat number.", inputMode: "guided", files: js('const seats = ["Open", "Taken", "Open"];\nconst lastOpenIndex = seats.findLastIndex((seat) => seat === "Open");\nconst seatNumber = ;\n'), activeFile: "script.js", highlightToken: "const seatNumber = ;", tests: [{ id: "seat-final-position-number-value", kind: "js-value", expression: "seatNumber", equals: 3, label: "seatNumber is 3" }], hints: [{ level: 1, text: "Add one to lastOpenIndex." }], xp: 50 }),
+    s76({ id: "seat-final-position-label", task: "Make a label for the final open seat number.", inputMode: "guided", files: js('const seats = ["Open", "Taken", "Open"];\nconst lastOpenIndex = seats.findLastIndex((seat) => seat === "Open");\nconst seatNumber = lastOpenIndex + 1;\n'), activeFile: "script.js", tests: [{ id: "seat-final-position-label-value", kind: "js-value", expression: "label", equals: "Final open seat number: 3", label: "The label names the final open seat number" }], hints: [{ level: 1, text: "Join the fixed label words to seatNumber." }], xp: 50 }),
+    s76({ id: "seat-final-position-log", task: "Print the final open seat label.", inputMode: "guided", files: js('const seats = ["Open", "Taken", "Open"];\nconst lastOpenIndex = seats.findLastIndex((seat) => seat === "Open");\nconst seatNumber = lastOpenIndex + 1;\nconst label = "Final open seat number: " + seatNumber;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "seat-final-position-log-value", kind: "js-logs", values: ["Final open seat number: 3"], label: "It prints the final open seat label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s77({ id: "desk-safe-object", task: "Store a barangay health desk phone number.", inputMode: "guided", files: js("// Store the desk details below\n"), activeFile: "script.js", tests: [{ id: "desk-safe-object-value", kind: "js-value", expression: "desk", equals: { health: { phone: "117" } }, label: "desk has the health phone number" }], hints: [{ level: 1, text: "Put health around phone, then put both inside desk." }], xp: 40 }),
+    s77({ id: "desk-safe-phone", task: "Read the health phone number safely.", inputMode: "guided", files: js('const desk = { health: { phone: "117" } };\nconst healthPhone = ;\n'), activeFile: "script.js", highlightToken: "const healthPhone = ;", conceptIds: ["optional-chaining"], tests: [{ id: "desk-safe-phone-value", kind: "js-value", expression: "healthPhone", equals: "117", label: "healthPhone is 117" }], hints: [{ level: 1, text: "Follow health with the safe dot, then phone." }], xp: 70 }),
+    s77({ id: "desk-safe-label", task: "Make a label for the health phone number.", inputMode: "guided", files: js('const desk = { health: { phone: "117" } };\nconst healthPhone = desk.health?.phone;\n'), activeFile: "script.js", tests: [{ id: "desk-safe-label-value", kind: "js-value", expression: "label", equals: "Health phone: 117", label: "The label names the health phone" }], hints: [{ level: 1, text: "Join the fixed label words to healthPhone." }], xp: 50 }),
+    s77({ id: "desk-safe-loud", task: "Make the health phone label use capital letters.", inputMode: "guided", files: js('const desk = { health: { phone: "117" } };\nconst healthPhone = desk.health?.phone;\nconst label = "Health phone: " + healthPhone;\n'), activeFile: "script.js", tests: [{ id: "desk-safe-loud-value", kind: "js-value", expression: "loudLabel", equals: "HEALTH PHONE: 117", label: "loudLabel uses capital letters" }], hints: [{ level: 1, text: "Use the uppercase text method after label." }], xp: 50 }),
+    s77({ id: "desk-safe-log", task: "Print the capital health phone label.", inputMode: "guided", files: js('const desk = { health: { phone: "117" } };\nconst healthPhone = desk.health?.phone;\nconst label = "Health phone: " + healthPhone;\nconst loudLabel = label.toUpperCase();\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "desk-safe-log-value", kind: "js-logs", values: ["HEALTH PHONE: 117"], label: "It prints the capital health phone label" }], hints: [{ level: 1, text: "Put loudLabel inside console.log." }], xp: 50 }),
+    s78({ id: "desk-fallback-object", task: "Store an empty barangay desk record.", inputMode: "guided", files: js("// Store the desk record below\n"), activeFile: "script.js", tests: [{ id: "desk-fallback-object-value", kind: "js-value", expression: "desk", equals: {}, label: "desk is an empty record" }], hints: [{ level: 1, text: "Use curly brackets for an empty record." }], xp: 40 }),
+    s78({ id: "desk-fallback-phone", task: "Show a helpful phone message when no health phone is listed.", inputMode: "guided", files: js('const desk = {};\nconst healthPhone = ;\n'), activeFile: "script.js", highlightToken: "const healthPhone = ;", conceptIds: ["nullish-coalescing"], tests: [{ id: "desk-fallback-phone-value", kind: "js-value", expression: "healthPhone", equals: "No number listed", label: "healthPhone gives the helpful fallback message" }], hints: [{ level: 1, text: "Read the safe health phone, then use two question marks before the fallback words." }], xp: 70 }),
+    s78({ id: "desk-fallback-label", task: "Make a label for the fallback phone message.", inputMode: "guided", files: js('const desk = {};\nconst healthPhone = desk.health?.phone ?? "No number listed";\n'), activeFile: "script.js", tests: [{ id: "desk-fallback-label-value", kind: "js-value", expression: "label", equals: "Health phone: No number listed", label: "The label keeps the helpful fallback message" }], hints: [{ level: 1, text: "Join the fixed label words to healthPhone." }], xp: 50 }),
+    s78({ id: "desk-fallback-loud", task: "Make the fallback label use capital letters.", inputMode: "guided", files: js('const desk = {};\nconst healthPhone = desk.health?.phone ?? "No number listed";\nconst label = "Health phone: " + healthPhone;\n'), activeFile: "script.js", tests: [{ id: "desk-fallback-loud-value", kind: "js-value", expression: "loudLabel", equals: "HEALTH PHONE: NO NUMBER LISTED", label: "loudLabel uses capital letters" }], hints: [{ level: 1, text: "Use the uppercase text method after label." }], xp: 50 }),
+    s78({ id: "desk-fallback-log", task: "Print the capital fallback label.", inputMode: "guided", files: js('const desk = {};\nconst healthPhone = desk.health?.phone ?? "No number listed";\nconst label = "Health phone: " + healthPhone;\nconst loudLabel = label.toUpperCase();\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "desk-fallback-log-value", kind: "js-logs", values: ["HEALTH PHONE: NO NUMBER LISTED"], label: "It prints the capital fallback label" }], hints: [{ level: 1, text: "Put loudLabel inside console.log." }], xp: 50 }),
+    s79({ id: "contact-type-phone", task: "Store a barangay hotline number as text.", inputMode: "guided", files: js("// Store the hotline number below\n"), activeFile: "script.js", tests: [{ id: "contact-type-phone-value", kind: "js-value", expression: "hotline", equals: "117", label: "hotline is the text 117" }], hints: [{ level: 1, text: "Put 117 inside quote marks." }], xp: 40 }),
+    s79({ id: "contact-type-check", task: "Check what kind of value the hotline is.", inputMode: "guided", files: js('const hotline = "117";\nconst hotlineType = ;\n'), activeFile: "script.js", highlightToken: "const hotlineType = ;", conceptIds: ["typeof-operator"], tests: [{ id: "contact-type-check-value", kind: "js-value", expression: "hotlineType", equals: "string", label: "hotlineType is string" }], hints: [{ level: 1, text: "Put typeof before hotline." }], xp: 70 }),
+    s79({ id: "contact-type-label", task: "Make a label for the hotline value kind.", inputMode: "guided", files: js('const hotline = "117";\nconst hotlineType = typeof hotline;\n'), activeFile: "script.js", tests: [{ id: "contact-type-label-value", kind: "js-value", expression: "label", equals: "Hotline type: string", label: "The label names the hotline value kind" }], hints: [{ level: 1, text: "Join the fixed label words to hotlineType." }], xp: 50 }),
+    s79({ id: "contact-type-loud", task: "Make the hotline type label use capital letters.", inputMode: "guided", files: js('const hotline = "117";\nconst hotlineType = typeof hotline;\nconst label = "Hotline type: " + hotlineType;\n'), activeFile: "script.js", tests: [{ id: "contact-type-loud-value", kind: "js-value", expression: "loudLabel", equals: "HOTLINE TYPE: STRING", label: "loudLabel uses capital letters" }], hints: [{ level: 1, text: "Use the uppercase text method after label." }], xp: 50 }),
+    s79({ id: "contact-type-log", task: "Print the capital hotline type label.", inputMode: "guided", files: js('const hotline = "117";\nconst hotlineType = typeof hotline;\nconst label = "Hotline type: " + hotlineType;\nconst loudLabel = label.toUpperCase();\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "contact-type-log-value", kind: "js-logs", values: ["HOTLINE TYPE: STRING"], label: "It prints the capital hotline type label" }], hints: [{ level: 1, text: "Put loudLabel inside console.log." }], xp: 50 }),
+    s80({ id: "contact-card-pairs", task: "Store the office and phone as two name-and-value pairs.", inputMode: "guided", files: js("// Store the contact pairs below\n"), activeFile: "script.js", tests: [{ id: "contact-card-pairs-value", kind: "js-value", expression: "pairs", equals: [["office", "Barangay Hall"], ["phone", "117"]], label: "pairs has the office and phone details" }], hints: [{ level: 1, text: "Use an outer pair of square brackets, then one pair for each contact detail." }], xp: 40 }),
+    s80({ id: "contact-card-build", task: "Make a contact record from the name-and-value pairs.", inputMode: "guided", files: js('const pairs = [["office", "Barangay Hall"], ["phone", "117"]];\nconst contact = ;\n'), activeFile: "script.js", highlightToken: "const contact = ;", conceptIds: ["object-from-entries"], tests: [{ id: "contact-card-build-value", kind: "js-value", expression: "contact", equals: { office: "Barangay Hall", phone: "117" }, label: "contact has the office and phone details" }], hints: [{ level: 1, text: "Ask Object to make a record from the pairs." }], xp: 70 }),
+    s80({ id: "contact-card-phone", task: "Read the phone number from the contact record.", inputMode: "guided", files: js('const pairs = [["office", "Barangay Hall"], ["phone", "117"]];\nconst contact = Object.fromEntries(pairs);\nconst phone = ;\n'), activeFile: "script.js", highlightToken: "const phone = ;", tests: [{ id: "contact-card-phone-value", kind: "js-value", expression: "phone", equals: "117", label: "phone is 117" }], hints: [{ level: 1, text: "Use a dot, then phone, after contact." }], xp: 50 }),
+    s80({ id: "contact-card-label", task: "Make a label for the contact phone number.", inputMode: "guided", files: js('const pairs = [["office", "Barangay Hall"], ["phone", "117"]];\nconst contact = Object.fromEntries(pairs);\nconst phone = contact.phone;\nconst label = ;\n'), activeFile: "script.js", highlightToken: "const label = ;", tests: [{ id: "contact-card-label-value", kind: "js-value", expression: "label", equals: "Contact phone: 117", label: "The label names the contact phone" }], hints: [{ level: 1, text: "Join the fixed label words to phone." }], xp: 50 }),
+    s80({ id: "contact-card-log", task: "Print the contact phone label.", inputMode: "guided", files: js('const pairs = [["office", "Barangay Hall"], ["phone", "117"]];\nconst contact = Object.fromEntries(pairs);\nconst phone = contact.phone;\nconst label = "Contact phone: " + phone;\n\n// Print the label below\n'), activeFile: "script.js", tests: [{ id: "contact-card-log-value", kind: "js-logs", values: ["Contact phone: 117"], label: "It prints the contact phone label" }], hints: [{ level: 1, text: "Put label inside console.log." }], xp: 50 }),
+    s81({ id: "rain-plan-weather", task: "Store whether rain is falling. Make isRaining hold true.", inputMode: "guided", files: js("// Store the weather answer below\n"), activeFile: "script.js", tests: [{ id: "rain-plan-weather-value", kind: "js-value", expression: "isRaining", equals: true, label: "isRaining is true" }], hints: [{ level: 1, text: "Use const, then isRaining, then the true value." }], xp: 40 }),
+    s81({ id: "rain-plan-choice", task: "Choose a rain plan in one line. Use Bring an umbrella when it is raining, otherwise use Walk outside.", inputMode: "guided", files: js('const isRaining = true;\nconst plan = ;\n'), activeFile: "script.js", highlightToken: "const plan = ;", conceptIds: ["conditional-expression"], tests: [{ id: "rain-plan-choice-value", kind: "js-value", expression: "plan", equals: "Bring an umbrella", label: "plan says Bring an umbrella" }], hints: [{ level: 1, text: "Use the short choice pattern: a condition, question mark, first choice, then colon and second choice." }], xp: 70 }),
+    s81({ id: "rain-plan-message", task: "Make a message that starts with Plan:.", inputMode: "guided", files: js('const isRaining = true;\nconst plan = isRaining ? "Bring an umbrella" : "Walk outside";\nconst message = ;\n'), activeFile: "script.js", highlightToken: "const message = ;", tests: [{ id: "rain-plan-message-value", kind: "js-value", expression: "message", equals: "Plan: Bring an umbrella", label: "message names the rain plan" }], hints: [{ level: 1, text: "Join the fixed words Plan: and the plan value." }], xp: 50 }),
+    s81({ id: "rain-plan-loud", task: "Make the rain-plan message use capital letters.", inputMode: "guided", files: js('const isRaining = true;\nconst plan = isRaining ? "Bring an umbrella" : "Walk outside";\nconst message = "Plan: " + plan;\nconst loudMessage = ;\n'), activeFile: "script.js", highlightToken: "const loudMessage = ;", tests: [{ id: "rain-plan-loud-value", kind: "js-value", expression: "loudMessage", equals: "PLAN: BRING AN UMBRELLA", label: "loudMessage uses capital letters" }], hints: [{ level: 1, text: "Use the uppercase text method after message." }], xp: 50 }),
+    s81({ id: "rain-plan-log", task: "Print the capital rain-plan message.", inputMode: "guided", files: js('const isRaining = true;\nconst plan = isRaining ? "Bring an umbrella" : "Walk outside";\nconst message = "Plan: " + plan;\nconst loudMessage = message.toUpperCase();\n\n// Print the message below\n'), activeFile: "script.js", tests: [{ id: "rain-plan-log-value", kind: "js-logs", values: ["PLAN: BRING AN UMBRELLA"], label: "It prints the capital rain-plan message" }], hints: [{ level: 1, text: "Put loudMessage inside console.log." }], xp: 50 }),
+    s82({ id: "desk-entry-id", task: "Store whether the visitor has an ID. Make hasID hold true.", inputMode: "guided", files: js("// Store the ID check below\n"), activeFile: "script.js", tests: [{ id: "desk-entry-id-value", kind: "js-value", expression: "hasID", equals: true, label: "hasID is true" }], hints: [{ level: 1, text: "Use const, then hasID, then the true value." }], xp: 40 }),
+    s82({ id: "desk-entry-open", task: "Store whether the desk is open. Make isDeskOpen hold true.", inputMode: "guided", files: js("const hasID = true;\n"), activeFile: "script.js", tests: [{ id: "desk-entry-open-value", kind: "js-value", expression: "isDeskOpen", equals: true, label: "isDeskOpen is true" }], hints: [{ level: 1, text: "Use const, then isDeskOpen, then the true value." }], xp: 40 }),
+    s82({ id: "desk-entry-check", task: "Check whether the visitor can enter. Both the ID and the open desk must be true.", inputMode: "guided", files: js("const hasID = true;\nconst isDeskOpen = true;\nconst canEnter = ;\n"), activeFile: "script.js", highlightToken: "const canEnter = ;", conceptIds: ["logical-and"], tests: [{ id: "desk-entry-check-value", kind: "js-value", expression: "canEnter", equals: true, label: "canEnter is true" }], hints: [{ level: 1, text: "Place two ampersands between hasID and isDeskOpen." }], xp: 70 }),
+    s82({ id: "desk-entry-message", task: "Make a message that starts with Can enter:.", inputMode: "guided", files: js("const hasID = true;\nconst isDeskOpen = true;\nconst canEnter = hasID && isDeskOpen;\nconst message = ;\n"), activeFile: "script.js", highlightToken: "const message = ;", tests: [{ id: "desk-entry-message-value", kind: "js-value", expression: "message", equals: "Can enter: true", label: "message says the visitor can enter" }], hints: [{ level: 1, text: "Join the fixed words Can enter: and canEnter." }], xp: 50 }),
+    s82({ id: "desk-entry-log", task: "Print the desk-entry message.", inputMode: "guided", files: js("const hasID = true;\nconst isDeskOpen = true;\nconst canEnter = hasID && isDeskOpen;\nconst message = \"Can enter: \" + canEnter;\n\n// Print the message below\n"), activeFile: "script.js", tests: [{ id: "desk-entry-log-value", kind: "js-logs", values: ["Can enter: true"], label: "It prints the desk-entry message" }], hints: [{ level: 1, text: "Put message inside console.log." }], xp: 50 }),
+    s83({ id: "help-desk-health", task: "Store that the health desk is closed. Make hasHealthDesk hold false.", inputMode: "guided", files: js("// Store the health-desk answer below\n"), activeFile: "script.js", tests: [{ id: "help-desk-health-value", kind: "js-value", expression: "hasHealthDesk", equals: false, label: "hasHealthDesk is false" }], hints: [{ level: 1, text: "Use const, then hasHealthDesk, then the false value." }], xp: 40 }),
+    s83({ id: "help-desk-service", task: "Store that the service desk is open. Make hasServiceDesk hold true.", inputMode: "guided", files: js("const hasHealthDesk = false;\n"), activeFile: "script.js", tests: [{ id: "help-desk-service-value", kind: "js-value", expression: "hasServiceDesk", equals: true, label: "hasServiceDesk is true" }], hints: [{ level: 1, text: "Use const, then hasServiceDesk, then the true value." }], xp: 40 }),
+    s83({ id: "help-desk-check", task: "Check whether help is available. One open desk is enough.", inputMode: "guided", files: js("const hasHealthDesk = false;\nconst hasServiceDesk = true;\nconst canAskForHelp = ;\n"), activeFile: "script.js", highlightToken: "const canAskForHelp = ;", conceptIds: ["logical-or"], tests: [{ id: "help-desk-check-value", kind: "js-value", expression: "canAskForHelp", equals: true, label: "canAskForHelp is true" }], hints: [{ level: 1, text: "Place two vertical lines between hasHealthDesk and hasServiceDesk." }], xp: 70 }),
+    s83({ id: "help-desk-message", task: "Make a message that starts with Help desk available:.", inputMode: "guided", files: js("const hasHealthDesk = false;\nconst hasServiceDesk = true;\nconst canAskForHelp = hasHealthDesk || hasServiceDesk;\nconst message = ;\n"), activeFile: "script.js", highlightToken: "const message = ;", tests: [{ id: "help-desk-message-value", kind: "js-value", expression: "message", equals: "Help desk available: true", label: "message says help is available" }], hints: [{ level: 1, text: "Join the fixed words Help desk available: and canAskForHelp." }], xp: 50 }),
+    s83({ id: "help-desk-log", task: "Print the help-desk message.", inputMode: "guided", files: js("const hasHealthDesk = false;\nconst hasServiceDesk = true;\nconst canAskForHelp = hasHealthDesk || hasServiceDesk;\nconst message = \"Help desk available: \" + canAskForHelp;\n\n// Print the message below\n"), activeFile: "script.js", tests: [{ id: "help-desk-log-value", kind: "js-logs", values: ["Help desk available: true"], label: "It prints the help-desk message" }], hints: [{ level: 1, text: "Put message inside console.log." }], xp: 50 }),
+    s84({ id: "desk-closed-open", task: "Store that the barangay desk is closed. Make isDeskOpen hold false.", inputMode: "guided", files: js("// Store the desk answer below\n"), activeFile: "script.js", tests: [{ id: "desk-closed-open-value", kind: "js-value", expression: "isDeskOpen", equals: false, label: "isDeskOpen is false" }], hints: [{ level: 1, text: "Use const, then isDeskOpen, then the false value." }], xp: 40 }),
+    s84({ id: "desk-closed-check", task: "Check whether the desk is closed.", inputMode: "guided", files: js("const isDeskOpen = false;\nconst isDeskClosed = ;\n"), activeFile: "script.js", highlightToken: "const isDeskClosed = ;", conceptIds: ["logical-not"], tests: [{ id: "desk-closed-check-value", kind: "js-value", expression: "isDeskClosed", equals: true, label: "isDeskClosed is true" }], hints: [{ level: 1, text: "Put an exclamation mark before isDeskOpen." }], xp: 70 }),
+    s84({ id: "desk-closed-message", task: "Make a message that starts with Desk closed:.", inputMode: "guided", files: js("const isDeskOpen = false;\nconst isDeskClosed = !isDeskOpen;\nconst message = ;\n"), activeFile: "script.js", highlightToken: "const message = ;", tests: [{ id: "desk-closed-message-value", kind: "js-value", expression: "message", equals: "Desk closed: true", label: "message says the desk is closed" }], hints: [{ level: 1, text: "Join the fixed words Desk closed: and isDeskClosed." }], xp: 50 }),
+    s84({ id: "desk-closed-reminder", task: "Add a polite return-later reminder to the message.", inputMode: "guided", files: js("const isDeskOpen = false;\nconst isDeskClosed = !isDeskOpen;\nconst message = \"Desk closed: \" + isDeskClosed;\nconst reminder = ;\n"), activeFile: "script.js", highlightToken: "const reminder = ;", tests: [{ id: "desk-closed-reminder-value", kind: "js-value", expression: "reminder", equals: "Desk closed: true. Please return later.", label: "reminder adds the return-later words" }], hints: [{ level: 1, text: "Join message and the text . Please return later." }], xp: 50 }),
+    s84({ id: "desk-closed-log", task: "Print the desk reminder.", inputMode: "guided", files: js("const isDeskOpen = false;\nconst isDeskClosed = !isDeskOpen;\nconst message = \"Desk closed: \" + isDeskClosed;\nconst reminder = message + \". Please return later.\";\n\n// Print the reminder below\n"), activeFile: "script.js", tests: [{ id: "desk-closed-log-value", kind: "js-logs", values: ["Desk closed: true. Please return later."], label: "It prints the desk reminder" }], hints: [{ level: 1, text: "Put reminder inside console.log." }], xp: 50 }),
   ],
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { copy, type Diagram, type Register } from "@/lib/lesson-ir";
+import { type Diagram } from "@/lib/lesson-ir";
 
 /**
  * Renders an authored diagram from structured data.
@@ -19,7 +19,7 @@ const NODE_H = 56;
 const GAP_X = 42;
 const GAP_Y = 46;
 
-export function DiagramView({ diagram, register }: { diagram: Diagram; register: Register }) {
+export function DiagramView({ diagram }: { diagram: Diagram }) {
   const cols = Math.max(1, diagram.columns);
   const rows = Math.ceil(diagram.nodes.length / cols);
 
@@ -44,7 +44,7 @@ export function DiagramView({ diagram, register }: { diagram: Diagram; register:
           width={width + 16}
           height={height + 16}
           role="img"
-          aria-label={copy(diagram.alt, register)}
+          aria-label={diagram.alt}
           className="max-w-full"
         >
           <defs>
@@ -56,7 +56,7 @@ export function DiagramView({ diagram, register }: { diagram: Diagram; register:
               refY="4"
               orient="auto"
             >
-              <path d="M0,0 L8,4 L0,8 Z" fill="#96a1af" />
+              <path d="M0,0 L8,4 L0,8 Z" fill="var(--color-ash)" />
             </marker>
           </defs>
 
@@ -78,7 +78,7 @@ export function DiagramView({ diagram, register }: { diagram: Diagram; register:
                   y1={y1}
                   x2={x2}
                   y2={y2}
-                  stroke="#96a1af"
+                  stroke="var(--color-ash)"
                   strokeWidth="1.5"
                   markerEnd="url(#arrowhead)"
                 />
@@ -87,7 +87,7 @@ export function DiagramView({ diagram, register }: { diagram: Diagram; register:
                     x={(x1 + x2) / 2}
                     y={(y1 + y2) / 2 - 6}
                     textAnchor="middle"
-                    fill="#96a1af"
+                    fill="var(--color-ash)"
                     fontSize="11"
                     fontFamily="var(--font-mono)"
                   >
@@ -110,9 +110,9 @@ export function DiagramView({ diagram, register }: { diagram: Diagram; register:
                   y={p.y}
                   width={NODE_W}
                   height={NODE_H}
-                  rx="8"
-                  fill={accent ? "rgba(255,106,31,0.10)" : "#12161c"}
-                  stroke={accent ? "#ff6a1f" : ghost ? "#242c36" : "#3a4553"}
+                  rx="4"
+                  fill={accent ? "color-mix(in srgb, var(--color-voltage) 10%, var(--color-panel))" : "var(--color-panel)"}
+                  stroke={accent ? "var(--color-voltage)" : ghost ? "var(--color-hairline)" : "var(--color-ash)"}
                   strokeWidth={accent ? 2 : 1.5}
                   strokeDasharray={ghost ? "4 4" : undefined}
                 />
@@ -120,7 +120,7 @@ export function DiagramView({ diagram, register }: { diagram: Diagram; register:
                   x={p.x + NODE_W / 2}
                   y={p.y + (n.note ? NODE_H / 2 - 4 : NODE_H / 2 + 4)}
                   textAnchor="middle"
-                  fill={accent ? "#ff6a1f" : ghost ? "#96a1af" : "#f2f5f8"}
+                  fill={accent ? "var(--color-voltage)" : ghost ? "var(--color-ash)" : "var(--color-chalk)"}
                   fontSize="13"
                   fontWeight={accent ? 700 : 500}
                 >
@@ -131,7 +131,7 @@ export function DiagramView({ diagram, register }: { diagram: Diagram; register:
                     x={p.x + NODE_W / 2}
                     y={p.y + NODE_H / 2 + 14}
                     textAnchor="middle"
-                    fill="#96a1af"
+                    fill="var(--color-ash)"
                     fontSize="11"
                     fontFamily="var(--font-mono)"
                   >

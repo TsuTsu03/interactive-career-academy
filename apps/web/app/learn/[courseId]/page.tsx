@@ -12,7 +12,7 @@ export function generateStaticParams(): Params[] {
 export async function generateMetadata({ params }: { params: Promise<Params> }) {
   const { courseId } = await params;
   const course = courseById(courseId);
-  return { title: course ? `${course.title} — Academy` : "Academy" };
+  return { title: course ? `${course.title} — CodeDaddy` : "CodeDaddy" };
 }
 
 export default async function Page({ params }: { params: Promise<Params> }) {

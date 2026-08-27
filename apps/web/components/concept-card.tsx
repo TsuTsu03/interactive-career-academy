@@ -1,9 +1,10 @@
 "use client";
 
+import { Icon } from "@/components/icon";
 import { useState } from "react";
 import { DiagramView } from "./diagram";
 import { buildDocument } from "@/lib/grading";
-import { copy, type Concept, type Register } from "@/lib/lesson-ir";
+import { type Concept } from "@/lib/lesson-ir";
 
 /**
  * Introduces one new idea in four forms before the learner is asked to use it.
@@ -17,25 +18,23 @@ import { copy, type Concept, type Register } from "@/lib/lesson-ir";
  */
 export function ConceptCard({
   concept,
-  register,
   onSpeak,
 }: {
   concept: Concept;
-  register: Register;
   onSpeak: (text: string) => void;
 }) {
   const [open, setOpen] = useState(true);
 
   const spoken = [
     concept.term,
-    copy(concept.definition, register),
-    copy(concept.analogy, register),
+    concept.definition,
+    concept.analogy,
   ].join(". ");
 
   return (
     <section className="mb-5 overflow-hidden rounded-xl border border-plasma/30 bg-panel">
       <div className="flex items-center gap-2 border-b border-hairline bg-plasma/[0.07] px-4 py-2.5">
-        <span className="text-[10px] uppercase tracking-widest text-plasma">New word</span>
+        <span className="text-[10px] uppercase tracking-widest text-plasma">A new idea before you use it</span>
         <code className="font-mono text-[13px] font-bold text-chalk">{concept.term}</code>
 
         <button
@@ -44,9 +43,7 @@ export function ConceptCard({
           aria-label={`Read the explanation of ${concept.term} out loud`}
           className="ml-auto flex h-7 w-7 items-center justify-center rounded-full border border-plasma/50 text-plasma transition-transform active:scale-95"
         >
-          <span aria-hidden="true" className="text-xs">
-            ♪
-          </span>
+          <Icon name="volume_up" size={15} />
         </button>
         <button
           type="button"
@@ -62,36 +59,34 @@ export function ConceptCard({
         <div className="space-y-4 px-4 py-4">
           {/* 1. What it is */}
           <p className="text-[17px] leading-relaxed text-chalk">
-            {copy(concept.definition, register)}
+            {concept.definition}
           </p>
 
           {/* 2. Something from ordinary life that works the same way */}
           <div className="rounded-lg border-l-2 border-gold bg-raised px-3 py-2.5">
             <div className="mb-1 text-[10px] uppercase tracking-widest text-gold">
-              Think of it like
+              A familiar way to picture it
             </div>
             <p className="text-[15px] leading-relaxed text-ash">
-              {copy(concept.analogy, register)}
+              {concept.analogy}
             </p>
           </div>
 
           {/* 3. The picture */}
           {concept.visual.kind === "diagram" ? (
-            <DiagramView diagram={concept.visual.diagram} register={register} />
+            <DiagramView diagram={concept.visual.diagram} />
           ) : (
             <LiveDemo
               files={concept.visual.files}
-              caption={copy(concept.visual.caption, register)}
+              caption={concept.visual.caption}
             />
           )}
 
           {/* 4. What they are about to do that proves it */}
           <div className="flex items-start gap-2 border-t border-hairline pt-3">
-            <span aria-hidden="true" className="mt-0.5 text-acid">
-              →
-            </span>
+            <Icon name="arrow_forward" size={17} className="mt-0.5 text-secondary" />
             <p className="text-[15px] leading-relaxed text-acid">
-              {copy(concept.proof, register)}
+              {concept.proof}
             </p>
           </div>
         </div>

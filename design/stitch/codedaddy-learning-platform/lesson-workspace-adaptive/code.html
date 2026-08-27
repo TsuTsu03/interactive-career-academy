@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CodeDaddy - Active Lesson Workspace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "on-primary-dark": "#002576",
+                            "outline-variant": "#444651",
+                            "surface-container-low": "#0f172a",
+                            "secondary-dark": "#79f7ea",
+                            "primary-fixed": "#dce1ff",
+                            "on-primary-fixed": "#00164f",
+                            "error": "#ffb4ab",
+                            "surface": "#0f172a",
+                            "tertiary-fixed": "#ffdbd1",
+                            "error-dark": "#ffb4ab",
+                            "tertiary-container": "#5a1301",
+                            "primary-fixed-dim": "#b6c4ff",
+                            "secondary-container": "#006861",
+                            "on-surface-variant": "#94a3b8",
+                            "primary-container": "#002576",
+                            "surface-container-high": "#292a2f",
+                            "on-error-dark": "#690005",
+                            "on-surface": "#f8fafc",
+                            "tertiary-fixed-dim": "#ffb5a1",
+                            "surface-container": "#1e1f25",
+                            "surface-container-highest": "#475569",
+                            "on-background": "#e3e1e9",
+                            "background": "#121318",
+                            "on-primary": "#062979",
+                            "on-tertiary-fixed-variant": "#7d2c16",
+                            "inverse-surface": "#e3e1e9",
+                            "on-tertiary-container": "#e0775b",
+                            "primary-dark": "#b6c4ff",
+                            "on-primary-container": "#7991e5",
+                            "surface-tint": "#b6c4ff",
+                            "on-error": "#690005",
+                            "secondary-fixed-dim": "#84d5cc",
+                            "on-tertiary": "#5e1603",
+                            "secondary-fixed": "#a0f1e8",
+                            "primary": "#b6c4ff",
+                            "surface-bright": "#1e293b",
+                            "inverse-on-surface": "#181c1e",
+                            "on-secondary-fixed": "#00201d",
+                            "inverse-primary": "#415aaa",
+                            "surface-dim": "#0a0f1d",
+                            "surface-variant": "#34343a",
+                            "on-secondary-dark": "#003733",
+                            "on-error-container": "#ffdad6",
+                            "surface-container-lowest": "#0d0e13",
+                            "on-secondary": "#003733",
+                            "on-tertiary-fixed": "#3b0800",
+                            "on-secondary-fixed-variant": "#00504a",
+                            "on-secondary-container": "#92e3da",
+                            "error-container": "#93000a",
+                            "outline": "#475569",
+                            "on-primary-fixed-variant": "#274191",
+                            "secondary": "#84d5cc",
+                            "tertiary": "#ffb5a1"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.125rem",
+                            "lg": "0.25rem",
+                            "xl": "0.5rem",
+                            "full": "0.75rem"
+                    },
+                    "spacing": {
+                            "base": "4px",
+                            "gutter": "16px",
+                            "pane-gap": "2px",
+                            "margin-desktop": "32px",
+                            "touch-target": "44px",
+                            "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                            "label-caps": ["Inter"],
+                            "body-md": ["Inter"],
+                            "headline-lg-mobile": ["Inter"],
+                            "headline-md": ["Inter"],
+                            "body-lg": ["Inter"],
+                            "headline-lg": ["Inter"],
+                            "label-code": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                            "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                            "label-code": ["14px", { "lineHeight": "20px", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .resizer {
+            width: 2px;
+            background-color: theme('colors.surface-variant');
+            cursor: col-resize;
+            transition: background-color 0.2s;
+        }
+        .resizer:hover, .resizer:active {
+            background-color: theme('colors.primary');
+        }
+        
+        /* Syntax highlighting */
+        .token.tag { color: #002576; }
+        .token.attr-name { color: #006a63; }
+        .token.string { color: #3b2b00; }
+        .token.punctuation { color: #444653; }
+        
+        /* Dark mode syntax highlighting */
+        html.dark .token.tag { color: theme('colors.primary-dark'); }
+        html.dark .token.attr-name { color: theme('colors.secondary'); }
+        html.dark .token.string { color: theme('colors.tertiary'); }
+        html.dark .token.punctuation { color: theme('colors.on-surface-variant'); }
+    </style>
+</head>
+<body class="bg-background text-on-background h-screen flex flex-col overflow-hidden font-body-md transition-colors duration-200">
+<!-- TopNavBar -->
+<nav class="bg-surface font-body-md text-body-md docked full-width top-0 border-b border-outline-variant flex justify-between items-center w-full px-margin-desktop h-touch-target shrink-0 transition-colors duration-200">
+<div class="flex items-center gap-gutter">
+<div class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">code</span>
+                CodeDaddy
+            </div>
+<div class="h-4 w-px bg-outline-variant mx-2"></div>
+<div class="text-on-surface-variant text-sm font-label-caps tracking-widest uppercase">Building a Sari-Sari Store</div>
+</div>
+<div class="hidden md:flex gap-gutter h-full items-end">
+<a class="text-on-surface-variant hover:text-primary transition-colors pb-1" href="#">Curriculum</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors pb-1" href="#">Portfolio</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors pb-1" href="#">Learner Profile</a>
+</div>
+<div class="flex items-center gap-base">
+<button aria-label="Toggle Theme" class="p-2 text-on-surface-variant hover:bg-surface-variant rounded-full transition-colors flex items-center justify-center" onclick="document.documentElement.classList.toggle('dark')">
+<span class="material-symbols-outlined dark:hidden">dark_mode</span>
+<span class="material-symbols-outlined hidden dark:block">light_mode</span>
+</button>
+<button class="px-4 py-2 font-label-caps text-label-caps text-primary hover:bg-surface-variant rounded transition-colors uppercase">Resume</button>
+<button class="px-4 py-2 font-label-caps text-label-caps bg-primary text-on-primary hover:bg-primary-container rounded transition-colors uppercase">Start Coding</button>
+</div>
+</nav>
+<!-- Workspace Area -->
+<div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-low text-primary font-label-caps text-label-caps docked left-0 h-full w-16 md:w-64 border-r border-outline-variant flex flex-col py-gutter px-base shrink-0 z-10 transition-colors duration-200">
+<div class="hidden md:block mb-gutter px-2">
+<div class="font-headline-md text-headline-md text-primary truncate">Project Workspace</div>
+<div class="text-on-surface-variant text-xs mt-1">Step 4 of 20</div>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<a class="bg-primary-container text-on-primary-container rounded-lg flex items-center p-2 gap-3 group active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">description</span>
+<span class="hidden md:inline uppercase tracking-widest">Instructions</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant transition-colors rounded-lg flex items-center p-2 gap-3 group" href="#">
+<span class="material-symbols-outlined">lightbulb</span>
+<span class="hidden md:inline uppercase tracking-widest">Concept</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant transition-colors rounded-lg flex items-center p-2 gap-3 group" href="#">
+<span class="material-symbols-outlined">folder</span>
+<span class="hidden md:inline uppercase tracking-widest">Files</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant transition-colors rounded-lg flex items-center p-2 gap-3 group" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="hidden md:inline uppercase tracking-widest">Output</span>
+</a>
+</nav>
+<div class="mt-auto pt-gutter border-t border-outline-variant">
+<button class="w-full py-2 flex items-center justify-center gap-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">map</span>
+<span class="hidden md:inline uppercase tracking-widest">Exit to Map</span>
+</button>
+</div>
+</aside>
+<!-- Main Workspace Panes -->
+<main class="flex-1 flex flex-col md:flex-row overflow-hidden bg-surface-variant transition-colors duration-200">
+<!-- Instructions Pane -->
+<section class="flex-1 flex flex-col min-w-[250px] max-w-[400px] bg-surface h-full border-r border-outline-variant overflow-y-auto transition-colors duration-200">
+<div class="p-gutter flex-1 flex flex-col">
+<div class="mb-gutter">
+<span class="inline-block px-2 py-1 bg-tertiary-container text-on-tertiary font-label-caps text-label-caps rounded mb-2 uppercase">Current Task</span>
+<h1 class="font-headline-md text-headline-md text-on-surface mb-2">Add a price list to the sari-sari store page</h1>
+<p class="text-on-surface-variant text-body-md mb-4">
+                            Let's list out some common items sold at a sari-sari store. We'll use an unordered list (<code>&lt;ul&gt;</code>) and list items (<code>&lt;li&gt;</code>) to structure this data clearly.
+                        </p>
+</div>
+<div class="bg-surface-container-low border border-outline-variant rounded p-gutter mb-gutter">
+<h3 class="font-bold text-on-surface mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">task_alt</span>
+                            Instructions
+                        </h3>
+<ol class="list-decimal list-inside text-on-surface-variant space-y-2">
+<li>Below the descriptive paragraph, create an unordered list using the <code>&lt;ul&gt;</code> tag.</li>
+<li>Inside the <code>&lt;ul&gt;</code>, add at least three <code>&lt;li&gt;</code> elements.</li>
+<li>Add items like "Chichiria - ₱10", "Softdrinks - ₱20", or "Shampoo Sachet - ₱8".</li>
+</ol>
+</div>
+<div class="mt-auto pt-gutter">
+<div class="border-t border-outline-variant pt-4">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mb-3">Checks</h4>
+<ul class="space-y-2">
+<li class="flex items-center gap-2 text-secondary text-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Added &lt;ul&gt; tag</span>
+</li>
+<li class="flex items-center gap-2 text-on-surface-variant text-sm opacity-50">
+<span class="material-symbols-outlined">radio_button_unchecked</span>
+<span>Added at least 3 &lt;li&gt; tags</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="p-gutter border-t border-outline-variant bg-surface-container-lowest">
+<button class="w-full py-2 border border-outline-variant text-on-surface hover:bg-surface-variant rounded flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined">help</span>
+                        Get a Hint
+                    </button>
+</div>
+</section>
+<div class="resizer hidden md:block"></div>
+<!-- Code Editor Pane -->
+<section class="flex-[1.5] flex flex-col min-w-[300px] bg-background h-full overflow-hidden transition-colors duration-200">
+<div class="flex items-center bg-surface-container border-b border-outline-variant overflow-x-auto no-scrollbar">
+<button class="px-4 py-2 border-r border-outline-variant bg-surface text-primary font-label-code text-label-code border-t-2 border-t-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">html</span>
+                        index.html
+                    </button>
+<button class="px-4 py-2 border-r border-outline-variant text-on-surface-variant hover:bg-surface-variant font-label-code text-label-code flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm">css</span>
+                        styles.css
+                    </button>
+</div>
+<div class="flex-1 overflow-y-auto p-4 font-label-code text-label-code bg-surface-container-lowest">
+<pre class="m-0"><code class="language-html"><span class="token punctuation">&lt;!DOCTYPE html&gt;</span>
+<span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token punctuation">=</span><span class="token string">"en"</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">&gt;</span>
+    <span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token punctuation">=</span><span class="token string">"UTF-8"</span><span class="token punctuation">&gt;</span>
+    <span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">&gt;</span>Lola's Sari-Sari Store<span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">&gt;</span>
+    <span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token punctuation">=</span><span class="token string">"stylesheet"</span> <span class="token attr-name">href</span><span class="token punctuation">=</span><span class="token string">"styles.css"</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">&gt;</span>
+    <span class="token tag"><span class="token punctuation">&lt;</span>header</span><span class="token punctuation">&gt;</span>
+        <span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">&gt;</span>Welcome to Lola's Sari-Sari Store<span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">&gt;</span>
+    <span class="token tag"><span class="token punctuation">&lt;/</span>header</span><span class="token punctuation">&gt;</span>
+    
+    <span class="token tag"><span class="token punctuation">&lt;</span>main</span><span class="token punctuation">&gt;</span>
+        <span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span>Your neighborhood stop for daily essentials. Open from 6 AM to 9 PM!<span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span>
+
+        <span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">&gt;</span>Price List<span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">&gt;</span>
+        <span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">&gt;</span>
+            <span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">&gt;</span>Chichiria - ₱10<span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">&gt;</span>
+            <span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">&gt;</span>Softdrinks - ₱20<span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">&gt;</span>
+            <span class="token punctuation">&lt;!-- Add one more item here --&gt;</span>
+            <span class="animate-pulse bg-primary-fixed opacity-20 w-32 h-5 inline-block align-middle rounded"></span>
+        <span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">&gt;</span>
+    <span class="token tag"><span class="token punctuation">&lt;/</span>main</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">&gt;</span>
+<span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">&gt;</span></code></pre>
+</div>
+</section>
+<div class="resizer hidden md:block"></div>
+<!-- Preview Pane -->
+<section class="flex-1 flex flex-col min-w-[250px] bg-surface h-full border-l border-outline-variant overflow-hidden transition-colors duration-200">
+<div class="flex items-center justify-between p-2 bg-surface-container border-b border-outline-variant">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest px-2">Live Preview</span>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 rounded hover:bg-surface-variant">
+<span class="material-symbols-outlined text-sm">open_in_new</span>
+</button>
+</div>
+<div class="flex-1 bg-white p-6 overflow-y-auto">
+<!-- Simulated iframe content -->
+<div class="font-sans text-gray-800 border-2 border-dashed border-gray-200 p-4 rounded-lg bg-gray-50 h-full">
+<h1 class="text-2xl font-bold mb-4 text-blue-900 border-b pb-2">Welcome to Lola's Sari-Sari Store</h1>
+<p class="mb-4">Your neighborhood stop for daily essentials. Open from 6 AM to 9 PM!</p>
+<h2 class="text-xl font-semibold mb-2 mt-6">Price List</h2>
+<ul class="list-disc pl-6 space-y-1">
+<li>Chichiria - ₱10</li>
+<li>Softdrinks - ₱20</li>
+</ul>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Bottom Status Bar -->
+<footer class="bg-surface border-t border-outline-variant h-12 shrink-0 flex items-center justify-between px-gutter w-full transition-colors duration-200">
+<div class="flex items-center gap-4 text-sm text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span>Saved</span>
+</div>
+<div class="hidden sm:block h-3 w-px bg-outline-variant"></div>
+<div class="hidden sm:flex items-center gap-2">
+<span>Progress: 20%</span>
+<div class="w-24 h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-1/5 rounded-full"></div>
+</div>
+</div>
+</div>
+<button class="px-6 py-1.5 bg-primary text-on-primary font-bold rounded-lg hover:bg-primary-container transition-colors flex items-center gap-2 shadow-sm active:scale-95 duration-150">
+<span class="material-symbols-outlined text-sm">play_arrow</span>
+            Run Code
+        </button>
+</footer>
+</body></html>

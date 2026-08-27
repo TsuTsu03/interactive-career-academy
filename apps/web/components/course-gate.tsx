@@ -1,33 +1,29 @@
 "use client";
 
+import { Icon } from "@/components/icon";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Workspace } from "@/components/workspace";
 import { courseById } from "@/content/curriculum";
-import { copy, type Copy, type Course, type Register } from "@/lib/lesson-ir";
+import { copy, type Copy, type Course } from "@/lib/lesson-ir";
 import { courseProgressFromStorage, courseStorageKey } from "@/lib/progress";
 
 const GATE_COPY = {
-  loading: { simple: "Checking course progress", standard: "Checking prerequisites" },
-  locked: { simple: "This course is locked.", standard: "This course is still locked." },
-  requirement: {
-    simple: "Finish the course before this one.",
-    standard: "Complete the required course before starting this one.",
-  },
-  returnToMap: { simple: "VIEW COURSE MAP", standard: "VIEW COURSE MAP" },
+  loading: "Checking course progress",
+  locked: "This course is locked.",
+  requirement: "Finish the course before this one.",
+  returnToMap: "VIEW COURSE MAP",
 } satisfies Record<string, Copy>;
 
 interface GateState {
   ready: boolean;
   unlocked: boolean;
-  register: Register;
 }
 
 export function CourseGate({ course }: { course: Course }) {
   const [state, setState] = useState<GateState>({
     ready: false,
     unlocked: false,
-    register: "simple",
   });
 
   useEffect(() => {
@@ -47,7 +43,6 @@ export function CourseGate({ course }: { course: Course }) {
       ready: true,
       unlocked:
         requirements.length === course.requires.length && progress.every((item) => item.isComplete),
-      register: progress.find((item) => item.hasSession)?.register ?? "simple",
     });
   }, [course]);
 
@@ -57,8 +52,8 @@ export function CourseGate({ course }: { course: Course }) {
     <main className="mx-auto flex min-h-[100dvh] max-w-[720px] items-center px-5 py-12 sm:px-6">
       <section className="w-full rounded-2xl border border-hairline bg-panel p-6 sm:p-8" aria-live="polite">
         <div className="flex items-center gap-2 font-mono text-[12px] text-ash">
-          <span aria-hidden="true">{state.ready ? "×" : "·"}</span>
-          <span>{copy(state.ready ? GATE_COPY.locked : GATE_COPY.loading, state.register)}</span>
+          <Icon name={state.ready ? "lock" : "radio_button_unchecked"} size={16} />
+          <span>{copy(state.ready ? GATE_COPY.locked : GATE_COPY.loading)}</span>
         </div>
         {state.ready ? (
           <>
@@ -66,14 +61,14 @@ export function CourseGate({ course }: { course: Course }) {
               {course.title}
             </h1>
             <p className="mt-3 max-w-[54ch] text-[16px] leading-relaxed text-ash">
-              {copy(GATE_COPY.requirement, state.register)}
+              {copy(GATE_COPY.requirement)}
             </p>
             <Link
-              href="/"
-              className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-lg bg-voltage px-5 py-3 font-bold text-void transition-transform active:scale-[0.98]"
+              href="/curriculum"
+              className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-lg bg-voltage px-5 py-3 font-bold text-on-voltage transition-transform active:scale-[0.98]"
             >
-              {copy(GATE_COPY.returnToMap, state.register)}
-              <span aria-hidden="true">→</span>
+              {copy(GATE_COPY.returnToMap)}
+              <Icon name="arrow_forward" size={16} />
             </Link>
           </>
         ) : null}

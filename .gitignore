@@ -9,3 +9,8 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
+
+# Codex autonomous loop runtime artifacts — logs and the stop-control file,
+# not source. See CODEX_LOOP_PROMPT.md and run-codex-loop.ps1.
+.codex-loop-logs/
+STOP_LOOP

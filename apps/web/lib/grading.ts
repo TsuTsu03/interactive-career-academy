@@ -8,13 +8,8 @@ export interface TestResult {
   label: Copy;
   status: TestStatus;
   /**
-   * Plain-language statement of what is wrong, authored in both registers.
-   * Never "Test 3 failed".
-   *
-   * Both registers are carried rather than one baked string so that switching
-   * reading level re-translates everything already on screen. A learner who
-   * hits Simple because they did not understand the error must not be left
-   * staring at the Standard wording of it.
+   * Plain-language statement of what is wrong in the product's one patient
+   * teaching voice. Never "Test 3 failed"; tell the learner what to inspect.
    */
   message?: Copy;
   expected?: string;
@@ -176,10 +171,7 @@ function runDomTest(doc: Document, win: Window, spec: TestSpec): TestResult | nu
     id: spec.id,
     label,
     status: "failed",
-    message: {
-      simple: `Your page has no ${describe(selector)} yet. Add one.`,
-      standard: `No element matching \`${selector}\` was found in the document.`,
-    },
+    message: `We could not find a ${describe(selector)} on the page yet. Go back to the file named in the step, add that element once, then press Run again so we can check the result together.`,
   });
 
   switch (spec.kind) {
@@ -197,10 +189,7 @@ function runDomTest(doc: Document, win: Window, spec: TestSpec): TestResult | nu
         status: "failed",
         expected: String(spec.atLeast),
         actual: String(n),
-        message: {
-          simple: `You need ${spec.atLeast} of them. Right now you have ${n}.`,
-          standard: `Expected at least ${spec.atLeast} \`${spec.selector}\` elements, found ${n}.`,
-        },
+        message: `This step needs at least ${spec.atLeast} of those elements, and the page has ${n} right now. Count the matching elements in your HTML, add the missing one if needed, then press Run again.`,
       };
     }
 
@@ -214,10 +203,7 @@ function runDomTest(doc: Document, win: Window, spec: TestSpec): TestResult | nu
         id: spec.id,
         label,
         status: "failed",
-        message: {
-          simple: `Your ${describe(spec.selector)} is empty. Put some words inside it.`,
-          standard: `The \`${spec.selector}\` element has no text content.`,
-        },
+        message: `The ${describe(spec.selector)} is on the page, which is a good start, but it does not contain text yet. Put the requested words between its opening and closing tags, then run the check again.`,
       };
     }
 
@@ -232,10 +218,7 @@ function runDomTest(doc: Document, win: Window, spec: TestSpec): TestResult | nu
         status: "failed",
         expected: spec.value,
         actual: text || "(empty)",
-        message: {
-          simple: `The words should be "${spec.value}".`,
-          standard: `Expected text content "${spec.value}".`,
-        },
+        message: `Look closely at the text inside this element. For this step, it should read "${spec.value}". Update only that text, then press Run again to confirm it.`,
       };
     }
 
@@ -252,10 +235,7 @@ function runDomTest(doc: Document, win: Window, spec: TestSpec): TestResult | nu
         status: "failed",
         expected: `contains "${spec.value}"`,
         actual: text || "(empty)",
-        message: {
-          simple: `It should include the words "${spec.value}".`,
-          standard: `Expected the text to contain "${spec.value}".`,
-        },
+        message: `This text needs to include "${spec.value}". Compare the wording in your file with the instruction, add the missing words without changing unrelated code, then run the check again.`,
       };
     }
 
@@ -268,10 +248,7 @@ function runDomTest(doc: Document, win: Window, spec: TestSpec): TestResult | nu
         id: spec.id,
         label,
         status: "failed",
-        message: {
-          simple: `Your ${describe(spec.selector)} needs a ${spec.attr}. Fill it in.`,
-          standard: `The \`${spec.attr}\` attribute is missing or empty.`,
-        },
+        message: `The ${describe(spec.selector)} needs a ${spec.attr} value before the browser can use it correctly. Find that attribute in your markup, fill in the value requested by the step, then press Run again.`,
       };
     }
 
@@ -286,10 +263,7 @@ function runDomTest(doc: Document, win: Window, spec: TestSpec): TestResult | nu
         status: "failed",
         expected: spec.value,
         actual: v || "(nothing)",
-        message: {
-          simple: `The ${spec.attr} should be "${spec.value}".`,
-          standard: `Expected \`${spec.attr}="${spec.value}"\`.`,
-        },
+        message: `Check the ${spec.attr} value on this element. This step expects "${spec.value}". Replace only that value, then press Run again to see whether the browser now receives the right instruction.`,
       };
     }
 
@@ -308,10 +282,7 @@ function runDomTest(doc: Document, win: Window, spec: TestSpec): TestResult | nu
         status: "failed",
         expected: want,
         actual: got,
-        message: {
-          simple: `Right now it is ${got}. It should be ${want}.`,
-          standard: `Computed \`${spec.prop}\` is ${got}, expected ${want}.`,
-        },
+        message: `The browser is currently reading this as ${got}, but this step is asking for ${want}. Find the related CSS rule, adjust the value carefully, then press Run again to compare the new result.`,
       };
     }
 
@@ -350,14 +321,9 @@ function runJsTest(spec: TestSpec, run: JsRunResult, idx: { expr: number; call: 
     id: spec.id,
     label,
     status: "failed",
-    message: {
-      simple: run.timedOut
-        ? "Your code never stopped running. Look for a loop with no end."
-        : `Your code stopped with an error: ${run.error ?? "unknown"}`,
-      standard: run.timedOut
-        ? "Execution exceeded the time limit. Check for a non-terminating loop."
-        : `The script threw: ${run.error ?? "unknown error"}`,
-    },
+    message: run.timedOut
+        ? "Your code kept running and the checker had to stop it. Look for a loop whose condition never becomes false or whose counter never changes, fix that one loop, then press Run again."
+        : `Your code stopped before the check could finish: ${run.error ?? "unknown"}. Read the error from left to right, find the named line or variable in your file, make one correction, then try Run again.`,
   });
 
   switch (spec.kind) {
@@ -380,16 +346,9 @@ function runJsTest(spec: TestSpec, run: JsRunResult, idx: { expr: number; call: 
         status: "failed",
         expected: want.join(" ⏎ "),
         actual: got.length ? got.join(" ⏎ ") : "(nothing printed)",
-        message: {
-          simple:
-            got.length === 0
-              ? "Your code did not print anything. Use console.log."
-              : `You printed ${got[0]}. It should print ${want[0]}.`,
-          standard:
-            got.length === 0
-              ? "No console output was produced."
-              : `Expected console output ${JSON.stringify(want)}, received ${JSON.stringify(got)}.`,
-        },
+        message: got.length === 0
+              ? "Your code ran, but it did not print anything for the checker to read. Add a console.log for the value named in the instruction, then press Run again and look for that output in the preview."
+              : `Your first printed value is ${got[0]}, while this step expects ${want[0]}. Trace the value back to the line that creates it, correct that one line, then press Run again.`,
       };
     }
 
@@ -403,10 +362,7 @@ function runJsTest(spec: TestSpec, run: JsRunResult, idx: { expr: number; call: 
         status: "failed",
         expected: show(spec.equals),
         actual: show(got),
-        message: {
-          simple: `\`${spec.expression}\` is ${show(got)}. It should be ${show(spec.equals)}.`,
-          standard: `Expected \`${spec.expression}\` to equal ${show(spec.equals)}, got ${show(got)}.`,
-        },
+        message: `The checker read \`${spec.expression}\` as ${show(got)}, but this step expects ${show(spec.equals)}. Inspect the variable or expression that produces that value, make one focused correction, then press Run again.`,
       };
     }
 
@@ -421,10 +377,7 @@ function runJsTest(spec: TestSpec, run: JsRunResult, idx: { expr: number; call: 
         status: "failed",
         expected: show(spec.equals),
         actual: show(got),
-        message: {
-          simple: `${call} gave ${show(got)}. It should give ${show(spec.equals)}.`,
-          standard: `Expected \`${call}\` to return ${show(spec.equals)}, got ${show(got)}.`,
-        },
+        message: `${call} returned ${show(got)}, but this step expects ${show(spec.equals)}. Read the function body and its input carefully, adjust the part that produces the wrong value, then press Run again.`,
       };
     }
 
@@ -578,10 +531,7 @@ export async function gradeStep(
         id: spec.id,
         label: spec.label,
         status: "failed" as const,
-        message: {
-          simple: "This check could not run. Press Run it again.",
-          standard: `No grader is registered for test kind "${spec.kind}".`,
-        },
+        message: "This particular check could not finish. Your work is still here. Press Run again; if it happens again, review the instruction and make sure the required file still has valid code.",
       };
     });
   } finally {

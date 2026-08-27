@@ -6,13 +6,11 @@
  * See PLAN.md sections 5 and 8.
  */
 
-export type Register = "simple" | "standard";
-
-/** Text authored twice: once for a total beginner, once for someone with exposure. */
-export interface Copy {
-  simple: string;
-  standard: string;
-}
+/**
+ * One clear, patient learner-facing voice. `Copy` remains as a semantic alias
+ * so lesson fields stay easy to identify, not as a second rendering system.
+ */
+export type Copy = string;
 
 /* ------------------------------------------------------------------ */
 /* Concepts                                                            */
@@ -197,26 +195,55 @@ export interface Step {
    */
   solution?: Record<string, string>;
   /**
-   * Concepts introduced for the first time by this step. Shown above the task
-   * before the learner is asked to do anything, so a new word is never used
-   * before it has been explained. Most steps introduce none.
+   * Ids of concepts introduced for the first time by this step, resolved
+   * against the global registry in `content/concepts.ts`. Shown above the
+   * task before the learner is asked to do anything, so a new word is never
+   * used before it has been explained. Most steps introduce none.
+   *
+   * Concepts are global, not per-course, because the same word (e.g.
+   * "class") can recur in a later course. A shared id means it is defined
+   * once, reviewed once, and never drifts into two different wordings.
+   * PLAN.md section 5.
    */
-  concepts?: Concept[];
+  conceptIds?: string[];
   /** Authored estimate in minutes, used for pacing and for the harness. */
   estimatedMinutes?: number;
+  /** The project (within this course) this step belongs to. See `Project`. */
+  projectId: string;
 }
 
 /**
- * A course is one project built across many small steps, the way
+ * One finished, shareable build within a course. A course is many small
+ * projects, freeCodeCamp style, not one project stretched across thousands
+ * of steps: nobody survives step 900 of the same card. The learner never
+ * starts a project from a blank file — each step begins where the last one
+ * ended, but that continuity is scoped to the project, not the whole course.
+ *
+ * Finishing a project is a milestone: a named completion moment and a
+ * shareable artifact, not a gate. Projects do not lock each other beyond the
+ * course's existing linear step order, and they do not themselves issue a
+ * certificate — only the five independent capstone projects behind the v1
+ * Front-End Development certificate do that. PLAN.md sections 4 and 6.
+ */
+export interface Project {
+  id: string;
+  /** "Sari-Sari Store Page" — shown on the course map and the completion screen. */
+  title: string;
+}
+
+/**
+ * A course is many small projects built across many small steps, the way
  * freeCodeCamp structures its curriculum. The learner never starts from a
- * blank file mid-course: each step begins where the last one ended.
+ * blank file mid-project: each step begins where the last one ended.
  */
 export interface Course {
   id: string;
   /** "Learn HTML by Building a Sari-Sari Store Page" */
   title: string;
-  /** The thing being built, for the map: "Sari-Sari Store Page" */
+  /** The first project's name, for the map: "Sari-Sari Store Page" */
   project: string;
+  /** Every project in this course, in order. Every step's `projectId` must match one. */
+  projects: Project[];
   order: number;
   summary: Copy;
   /** Course ids that should be finished first. */
@@ -231,8 +258,8 @@ export interface Curriculum {
   courses: Course[];
 }
 
-export function copy(c: Copy, register: Register): string {
-  return register === "simple" ? c.simple : c.standard;
+export function copy(c: Copy): string {
+  return c;
 }
 
 export function totalXp(course: Course): number {

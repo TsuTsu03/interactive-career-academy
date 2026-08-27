@@ -63,7 +63,11 @@ export function CountUp({
   return <span className={`tnum ${className}`}>{shown.toLocaleString()}</span>;
 }
 
-const PARTICLE_COLOURS = ["#c6f24e", "#ff6a1f", "#ffc93d"];
+const PARTICLE_COLOURS = [
+  "var(--color-voltage)",
+  "var(--color-acid)",
+  "var(--color-gold)",
+];
 
 /**
  * A reward burst. Plain absolutely-positioned divs animating transform and

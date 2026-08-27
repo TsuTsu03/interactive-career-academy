@@ -3,30 +3,30 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BlockTray } from "./block-tray";
+import { Icon, type IconName } from "@/components/icon";
 import { ConceptCard } from "./concept-card";
 import { CodeEditor } from "./code-editor";
 import { Hud, LEVEL_STEP, rankFor, type GameState } from "./hud";
 import { ParticleBurst } from "./juice";
 import { Preview } from "./preview";
 import { RankUp } from "./rank-up";
+import { curriculum } from "@/content/curriculum";
+import { resolveConcepts } from "@/content/concepts";
 import { gradeStep, type TestResult } from "@/lib/grading";
-import { copy, type Course, type Register } from "@/lib/lesson-ir";
+import { type Course, type Step } from "@/lib/lesson-ir";
 import {
   applyChallengeProgress,
   freshChallengeState,
-  isComplete,
   restoreChallengeState,
-  todaysChallenges,
   type ChallengeState,
 } from "@/lib/challenges";
-import { courseStorageKey, normalizeCompletedStepIds } from "@/lib/progress";
 import {
-  enrollStepConcepts,
-  freshReviewState,
-  restoreReviewState,
-  todayKey,
-  type ReviewState,
-} from "@/lib/review";
+  courseStorageKey,
+  loadGlobalReviewState,
+  normalizeCompletedStepIds,
+  saveGlobalReviewState,
+} from "@/lib/progress";
+import { enrollStepConcepts, freshReviewState, todayKey, type ReviewState } from "@/lib/review";
 import {
   freshSubmissionDraft,
   restoreSubmissionDraft,
@@ -43,10 +43,28 @@ const INITIAL: GameState = {
 
 type Phase = "editing" | "running" | "passed" | "failed";
 
-const VIEW_COURSE_MAP = {
-  simple: "VIEW COURSE MAP",
-  standard: "VIEW COURSE MAP",
-} as const;
+const VIEW_COURSE_MAP = "VIEW COURSE MAP" as const;
+
+/** The Stitch workspace rail. Icons carry it at tablet width; labels return at lg. */
+const RAIL_LINKS: { href: string; icon: IconName; label: string }[] = [
+  { href: "#workspace-instructions", icon: "description", label: "Instructions" },
+  { href: "#workspace-concepts", icon: "lightbulb", label: "Concept" },
+  { href: "#workspace-files", icon: "folder", label: "Files" },
+  { href: "#workspace-output", icon: "terminal", label: "Output" },
+];
+
+function guidanceFor(step: Step): string {
+  switch (step.inputMode) {
+    case "tap-to-build":
+      return "Start by reading the instruction and looking at the empty place in the code. Choose the one block that belongs there, then press Run. The checker will show whether that small building block created the result we are practicing.";
+    case "fill-blank":
+      return "The structure is already here to help you. Find the blank or placeholder named in the instruction, fill in only that missing piece, then press Run. Read each check as feedback about that one part of your code.";
+    case "guided":
+      return "Take this one change at a time. Look for the file and line named in the instruction, make the requested edit, then press Run. If a check does not pass yet, use its message to decide what to inspect before changing anything else.";
+    default:
+      return "You have room to write this yourself, but you do not need to guess. Read the instruction closely, make one focused change, then press Run. The checks are here to guide your next attempt, not to punish a first draft.";
+  }
+}
 
 /**
  * Everything that survives a reload, held as one object.
@@ -58,12 +76,10 @@ const VIEW_COURSE_MAP = {
 interface Session {
   game: GameState;
   stepIdx: number;
-  register: Register;
   files: Record<string, string>;
   activeFile: string;
   challenges: ChallengeState;
   completedSteps: string[];
-  review: ReviewState;
   submissionDraft: SubmissionDraft;
 }
 
@@ -71,14 +87,12 @@ function initialSession(course: Course): Session {
   return {
     game: INITIAL,
     stepIdx: 0,
-    register: "simple",
     files: course.steps[0].files,
     activeFile: course.steps[0].activeFile,
     // Stable placeholder for SSR. The mount effect replaces it with today's
     // state, so rendering never reads the clock.
     challenges: freshChallengeState("1970-1-1"),
     completedSteps: [],
-    review: freshReviewState(),
     submissionDraft: freshSubmissionDraft(),
   };
 }
@@ -104,12 +118,10 @@ function loadSession(course: Course): Session | null {
     return {
       game: saved.game ?? INITIAL,
       stepIdx: saved.stepIdx,
-      register: saved.register === "standard" ? "standard" : "simple",
       files: saved.files ?? step.files,
       activeFile: saved.activeFile ?? step.activeFile,
       challenges: restoreChallengeState(saved.challenges),
       completedSteps,
-      review: restoreReviewState(saved.review, course, completedSteps, todayKey()),
       submissionDraft: restoreSubmissionDraft(saved.submissionDraft),
     };
   } catch {
@@ -120,7 +132,7 @@ function loadSession(course: Course): Session | null {
 
 export function Workspace({ course }: { course: Course }) {
   const [session, setSession] = useState<Session>(() => initialSession(course));
-  const { game, stepIdx, register, files, activeFile } = session;
+  const { game, stepIdx, files, activeFile } = session;
 
   const setGame = useCallback(
     (next: GameState | ((g: GameState) => GameState)) =>
@@ -128,10 +140,6 @@ export function Workspace({ course }: { course: Course }) {
         ...s,
         game: typeof next === "function" ? next(s.game) : next,
       })),
-    [],
-  );
-  const setRegister = useCallback(
-    (r: Register) => setSession((s) => ({ ...s, register: r })),
     [],
   );
   const setFiles = useCallback(
@@ -156,7 +164,68 @@ export function Workspace({ course }: { course: Course }) {
   } | null>(null);
   const [shake, setShake] = useState(false);
   const [rankUp, setRankUp] = useState<string | null>(null);
+  const [review, setReview] = useState<ReviewState>(freshReviewState());
   const liveRef = useRef<HTMLDivElement>(null);
+
+  // Pane sizing. The Stitch workspace lets the learner tune the split with the
+  // 2px dividers, so the widths live in state instead of fixed classes.
+  const [instructionWidth, setInstructionWidth] = useState(340);
+  const [editorRatio, setEditorRatio] = useState(1.45);
+  const [wideLayout, setWideLayout] = useState(false);
+  const [splitLayout, setSplitLayout] = useState(false);
+  const outerRef = useRef<HTMLDivElement>(null);
+  const paneRowRef = useRef<HTMLDivElement>(null);
+
+  // Inline pane sizes only make sense once the panes sit side by side; in the
+  // stacked layout a flex-basis would set heights instead.
+  useEffect(() => {
+    const wide = window.matchMedia("(min-width: 1024px)");
+    const split = window.matchMedia("(min-width: 768px)");
+    const sync = () => {
+      setWideLayout(wide.matches);
+      setSplitLayout(split.matches);
+    };
+    sync();
+    wide.addEventListener("change", sync);
+    split.addEventListener("change", sync);
+    return () => {
+      wide.removeEventListener("change", sync);
+      split.removeEventListener("change", sync);
+    };
+  }, []);
+
+  const dragInstruction = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+    const container = outerRef.current;
+    if (!container) return;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    const left = container.getBoundingClientRect().left;
+    const railWidth = container.firstElementChild?.getBoundingClientRect().width ?? 0;
+    const move = (e: PointerEvent) =>
+      setInstructionWidth(clamp(e.clientX - left - railWidth, 260, 460));
+    const stop = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", stop);
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", stop);
+  }, []);
+
+  const dragEditor = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+    const row = paneRowRef.current;
+    if (!row) return;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    const move = (e: PointerEvent) => {
+      const box = row.getBoundingClientRect();
+      const editorPart = clamp(e.clientX - box.left, 240, box.width - 240);
+      setEditorRatio(clamp(editorPart / Math.max(box.width - editorPart, 1), 0.5, 3.5));
+    };
+    const stop = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", stop);
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", stop);
+  }, []);
 
   const step = course.steps[stepIdx];
   const total = course.steps.length;
@@ -181,6 +250,7 @@ export function Workspace({ course }: { course: Course }) {
         challenges: freshChallengeState(),
       },
     );
+    setReview(loadGlobalReviewState(curriculum));
   }, [course]);
 
   useEffect(() => {
@@ -193,6 +263,13 @@ export function Workspace({ course }: { course: Course }) {
     }, 400);
     return () => clearTimeout(t);
   }, [session, course.id]);
+
+  // Review is its own atomic record spanning every course (AGENTS.md 1.6,
+  // amended), so it is persisted separately from the per-course session.
+  useEffect(() => {
+    const t = setTimeout(() => saveGlobalReviewState(review), 400);
+    return () => clearTimeout(t);
+  }, [review]);
 
   useEffect(() => {
     if (!challengeNotice) return;
@@ -223,13 +300,11 @@ export function Workspace({ course }: { course: Course }) {
           id: t.id,
           label: t.label,
           status: "failed" as const,
-          message: {
-            simple: "Something went wrong on our side. Press Run it again.",
-            standard: "The checker could not run. Press Run it again.",
-          },
+          message:
+            "The checker could not finish this attempt. Your code is still saved. Press Run again, and if the problem repeats, review the file named in the instruction before trying once more.",
         })),
       );
-      announce("The checker could not run. Try again.");
+      announce("The checker could not finish. Your code is still saved; press Run again when you are ready.");
       return;
     }
 
@@ -284,11 +359,11 @@ export function Workspace({ course }: { course: Course }) {
           completedSteps: firstClear
             ? [...sess.completedSteps, step.id]
             : sess.completedSteps,
-          review: firstClear
-            ? enrollStepConcepts(sess.review, step, todayKey())
-            : sess.review,
         };
       });
+      if (firstClear) {
+        setReview((r) => enrollStepConcepts(r, course.id, step, todayKey()));
+      }
 
       if (challengeUpdate.completed.length > 0) {
         setChallengeNotice((notice) => ({
@@ -311,14 +386,13 @@ export function Workspace({ course }: { course: Course }) {
       if (game.combo > 1) setGame((g) => ({ ...g, combo: 1 }));
       const firstFail = graded.find((g) => g.status === "failed");
       announce(
-        firstFail?.message ? copy(firstFail.message, register) : "Some checks did not pass.",
+        firstFail?.message ? firstFail.message : "Some checks did not pass.",
       );
     }
   }, [
     phase,
     step,
     files,
-    register,
     game.combo,
     game.xp,
     game.level,
@@ -327,6 +401,7 @@ export function Workspace({ course }: { course: Course }) {
     session.challenges,
     session.completedSteps,
     setGame,
+    course.id,
   ]);
 
   function announce(msg: string) {
@@ -389,19 +464,6 @@ export function Workspace({ course }: { course: Course }) {
   /* Derived                                                             */
   /* ------------------------------------------------------------------ */
 
-  const activeChallenge = useMemo(() => {
-    const c = session.challenges;
-    if (c.day === "1970-1-1") return null;
-    const pick =
-      todaysChallenges(c.day).find((ch) => !isComplete(c, ch)) ?? todaysChallenges(c.day)[0];
-    return {
-      label: copy(pick.title, register),
-      done: Math.min(c.progress[pick.id] ?? 0, pick.target),
-      target: pick.target,
-      complete: isComplete(c, pick),
-    };
-  }, [session.challenges, register]);
-
   const passedCount = results.filter((r) => r.status === "passed").length;
   const failed = results.filter((r) => r.status === "failed");
   const errorLine = useMemo(() => {
@@ -437,29 +499,29 @@ export function Workspace({ course }: { course: Course }) {
   );
 
   const fileNames = Object.keys(step.files);
+  const currentProject = course.projects.find((project) => project.id === step.projectId);
+  const projectSteps = course.steps.filter((candidate) => candidate.projectId === step.projectId);
+  const projectStepIndex = projectSteps.findIndex((candidate) => candidate.id === step.id);
+  const courseCompletion = Math.round((session.completedSteps.length / total) * 100);
 
   return (
-    <div className="relative flex h-[100dvh] flex-col overflow-hidden bg-void">
+    <div className="relative flex h-[100dvh] flex-col overflow-x-hidden overflow-y-auto bg-void lg:overflow-hidden">
       <div ref={liveRef} aria-live="polite" className="sr-only" />
 
       <Hud
-        state={game}
-        breadcrumb={course.project}
-        gainFire={gain.fire}
-        gainAmount={gain.amount}
-        challenge={activeChallenge ?? undefined}
+        breadcrumb={currentProject?.title ?? course.project}
       />
 
       {challengeNotice ? (
         <div
           key={challengeNotice.fire}
-          className="animate-toast absolute right-4 top-16 z-30 flex items-center gap-3 rounded-lg border border-acid/50 bg-panel px-4 py-3 shadow-lg"
+          className="animate-toast absolute right-4 top-16 z-30 flex items-center gap-3 border border-acid/50 bg-panel px-4 py-3"
         >
           <span
             aria-hidden="true"
-            className="flex h-7 w-7 items-center justify-center rounded-full bg-acid font-bold text-void"
+            className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary text-on-secondary"
           >
-            ✓
+            <Icon name="check" size={16} />
           </span>
           <div>
             <div className="font-mono text-[11px] uppercase tracking-widest text-acid">
@@ -475,74 +537,116 @@ export function Workspace({ course }: { course: Course }) {
             type="button"
             aria-label="Dismiss challenge message"
             onClick={() => setChallengeNotice(null)}
-            className="ml-1 flex h-7 w-7 items-center justify-center rounded text-ash hover:bg-raised hover:text-chalk"
+            className="ml-1 flex h-7 w-7 items-center justify-center rounded text-on-surface-variant hover:bg-surface-variant hover:text-on-surface"
           >
-            <span aria-hidden="true">×</span>
+            <Icon name="close" size={16} />
           </button>
         </div>
       ) : null}
 
-      <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
+      <div ref={outerRef} className="flex flex-col pb-12 lg:min-h-0 lg:flex-1 lg:flex-row">
+        <aside
+          className="z-10 hidden w-16 shrink-0 flex-col border-r border-outline-variant bg-surface-container-low px-1 py-gutter md:flex lg:w-64 lg:px-2"
+          aria-label="Workspace sections"
+        >
+          <div className="mb-gutter hidden px-2 lg:block">
+            <p className="truncate text-headline-md text-primary">Project Workspace</p>
+            <p className="mt-1 text-xs text-on-surface-variant">
+              Step {projectStepIndex + 1} of {projectSteps.length}
+            </p>
+          </div>
+          <nav className="flex flex-1 flex-col gap-2">
+            {RAIL_LINKS.map((item, index) => (
+              <a
+                key={item.href}
+                href={item.href}
+                title={item.label}
+                className={`flex min-h-11 items-center justify-center gap-3 rounded-lg p-2 text-label-caps uppercase tracking-widest transition-colors lg:justify-start ${
+                  index === 0
+                    ? "bg-primary-container text-on-primary-container"
+                    : "text-on-surface-variant hover:bg-surface-variant hover:text-primary"
+                }`}
+              >
+                <Icon name={item.icon} size={22} filled={index === 0} />
+                <span className="hidden lg:inline">{item.label}</span>
+              </a>
+            ))}
+          </nav>
+          <Link
+            href="/curriculum"
+            className="mt-auto flex min-h-11 items-center justify-center gap-2 border-t border-outline-variant pt-gutter text-label-caps uppercase tracking-widest text-on-surface-variant transition-colors hover:text-primary"
+          >
+            <Icon name="map" size={22} />
+            <span className="hidden lg:inline">Exit to Map</span>
+          </Link>
+        </aside>
+
         {/* ---------------- Instruction rail ---------------- */}
-        <aside className="flex w-full shrink-0 flex-col overflow-y-auto border-b border-hairline p-5 lg:w-[26%] lg:border-b-0 lg:border-r">
+        <aside
+          id="workspace-instructions"
+          style={wideLayout ? { flexBasis: instructionWidth, maxWidth: instructionWidth } : undefined}
+          className="flex w-full shrink-0 flex-col border-b border-outline-variant bg-surface p-gutter lg:overflow-y-auto lg:border-b-0"
+        >
+          <div className="-mx-4 -mt-4 mb-4 border-b border-hairline bg-raised px-4 py-3 lg:hidden">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-voltage">Project workspace</p>
+            <p className="mt-1 truncate text-[13px] font-semibold text-chalk">{currentProject?.title ?? course.project}</p>
+          </div>
           <div className="mb-3 flex items-center gap-3">
             <span className="font-mono text-[13px] font-bold uppercase tracking-wider text-voltage">
-              Step {step.index} of {total}
+              Step {projectStepIndex + 1} of {projectSteps.length}
             </span>
             <div className="flex flex-1 gap-1" aria-hidden="true">
-              {course.steps.map((s, i) => (
+              {projectSteps.map((s, i) => (
                 <span
                   key={s.id}
-                  className={`h-1 flex-1 rounded-full ${
-                    i < stepIdx ? "bg-acid" : i === stepIdx ? "bg-voltage" : "bg-hairline"
+                  className={`h-1 flex-1 ${
+                    i < projectStepIndex ? "bg-acid" : i === projectStepIndex ? "bg-voltage" : "bg-hairline"
                   }`}
                 />
               ))}
             </div>
           </div>
 
-          {step.concepts?.map((c) => (
-            <ConceptCard key={c.id} concept={c} register={register} onSpeak={speak} />
-          ))}
-
-          <div className="mb-4 flex items-start gap-3">
-            <p className="flex-1 text-[18px] leading-relaxed text-chalk">
-              {copy(step.task, register)}
-            </p>
-            <button
-              type="button"
-              onClick={() => speak(copy(step.task, register))}
-              aria-label="Read this out loud"
-              className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-voltage/60 text-voltage transition-transform active:scale-95"
-            >
-              <span aria-hidden="true" className="text-sm">
-                ♪
-              </span>
-            </button>
-          </div>
-
-          {/* Register toggle */}
-          <div
-            className="mb-6 inline-flex self-start rounded-full border border-hairline bg-panel p-0.5"
-            role="group"
-            aria-label="Reading level"
-          >
-            {(["simple", "standard"] as const).map((r) => (
-              <button
-                key={r}
-                type="button"
-                onClick={() => setRegister(r)}
-                aria-pressed={register === r}
-                className={`rounded-full px-3 py-1 text-xs capitalize transition-colors ${
-                  register === r ? "bg-voltage font-bold text-void" : "text-ash"
-                }`}
-              >
-                {r}
-              </button>
+          <div id="workspace-concepts">
+            {resolveConcepts(step.conceptIds).map((c) => (
+              <ConceptCard key={c.id} concept={c} onSpeak={speak} />
             ))}
           </div>
 
-          <div className="mb-2 text-[10px] uppercase tracking-widest text-ash">What to check</div>
+          <div className="mb-4 flex items-start gap-3">
+            <div className="flex-1">
+              <p className="inline-block rounded bg-tertiary-container px-2 py-1 text-label-caps uppercase text-on-tertiary">Current Task</p>
+              <p className="mt-2 text-[20px] font-semibold leading-snug text-chalk">{step.task}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => speak(step.task)}
+              aria-label="Read this out loud"
+              className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded border border-primary/60 text-primary transition-transform active:scale-95"
+            >
+              <Icon name="volume_up" size={16} />
+            </button>
+          </div>
+
+          <section
+            aria-labelledby="approach-heading"
+            className="mb-6 border border-plasma/30 bg-raised p-3.5"
+          >
+            <h2
+              id="approach-heading"
+              className="font-mono text-[10px] uppercase tracking-widest text-plasma"
+            >
+              Take your time with this step
+            </h2>
+            <p className="mt-2 text-[14px] leading-relaxed text-ash">{guidanceFor(step)}</p>
+          </section>
+
+          <div className="mb-2 text-[10px] uppercase tracking-widest text-ash">What the checker will look for</div>
+          <p className="mb-3 text-[13px] leading-relaxed text-ash">
+            These checks are clues, not a score. After you press Run, read the first unfinished
+            check slowly, compare it with your code, and make one thoughtful change before trying
+            again.
+          </p>
           <ul className="mb-6 space-y-2">
             {step.tests.map((t) => {
               const res = results.find((r) => r.id === t.id);
@@ -559,7 +663,7 @@ export function Workspace({ course }: { course: Course }) {
                           : "text-ash"
                     }
                   >
-                    {copy(t.label, register)}
+                    {t.label}
                   </span>
                 </li>
               );
@@ -567,12 +671,15 @@ export function Workspace({ course }: { course: Course }) {
           </ul>
 
           {phase === "failed" && failed[0]?.message ? (
-            <div className="mb-4 rounded-lg border-l-2 border-strike bg-raised p-3">
+            <div className="mb-4 border border-strike/40 border-l-4 bg-raised p-3">
+              <p className="mb-1 font-mono text-[10px] uppercase tracking-widest text-strike">
+                Here is the next thing to inspect
+              </p>
               <p className="text-[15px] leading-relaxed text-chalk">
-                {copy(failed[0].message, register)}
+                {failed[0].message}
               </p>
               {failed[0].expected ? (
-                <div className="mt-3 grid grid-cols-2 gap-3 rounded bg-void p-2.5 font-mono text-[12px]">
+                <div className="mt-3 grid grid-cols-2 gap-3 border border-hairline bg-void p-2.5 font-mono text-[12px]">
                   <div>
                     <div className="mb-1 text-[9px] uppercase tracking-widest text-ash">
                       Should be
@@ -596,7 +703,7 @@ export function Workspace({ course }: { course: Course }) {
               <p className="mt-1 text-[15px] text-ash">
                 {isLast
                   ? "Course complete. You built the whole thing."
-                  : `Next: ${copy(course.steps[stepIdx + 1].task, register)}`}
+                  : `Next: ${course.steps[stepIdx + 1].task}`}
               </p>
             </div>
           ) : null}
@@ -604,12 +711,16 @@ export function Workspace({ course }: { course: Course }) {
           <div className="mt-auto space-y-2 pt-4">
             {hintLevel > 0 ? (
               <div className="space-y-2">
+                <p className="text-[13px] leading-relaxed text-ash">
+                  Use each hint as a direction to investigate, then return to your own code and
+                  try the change yourself.
+                </p>
                 {step.hints.slice(0, hintLevel).map((h) => (
                   <p
                     key={h.level}
                     className="rounded border border-hairline bg-panel p-2.5 text-[14px] text-ash"
                   >
-                    {copy(h.text, register)}
+                    {h.text}
                   </p>
                 ))}
               </div>
@@ -621,41 +732,63 @@ export function Workspace({ course }: { course: Course }) {
                   setHintLevel((n) => n + 1);
                   setUsedHint(true);
                 }}
-                className="rounded-lg border border-hairline px-3 py-1.5 text-sm text-ash transition-colors hover:border-ash/60 hover:text-chalk"
+                className="flex min-h-11 w-full items-center justify-center gap-2 rounded border border-outline-variant text-on-surface transition-colors hover:bg-surface-variant"
               >
-                Show a hint
+                <Icon name="help" size={18} />
+                Get a Hint
               </button>
             ) : null}
             <button
               type="button"
               onClick={resetStep}
-              className="block text-xs text-ash/70 underline-offset-2 hover:text-ash hover:underline"
+              className="flex min-h-9 items-center gap-1.5 text-xs text-on-surface-variant underline-offset-2 hover:text-on-surface hover:underline"
             >
+              <Icon name="refresh" size={14} />
               Reset this step
             </button>
           </div>
         </aside>
 
         {/* ---------------- Editor + preview ---------------- */}
-        <div className="flex min-h-0 flex-1 flex-col">
-          <div className="flex min-h-0 flex-1 flex-col md:flex-row">
+        <div
+          role="separator"
+          aria-orientation="vertical"
+          aria-label="Resize the instruction pane"
+          aria-valuenow={Math.round(instructionWidth)}
+          aria-valuemin={260}
+          aria-valuemax={460}
+          tabIndex={0}
+          onPointerDown={dragInstruction}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowLeft") setInstructionWidth((w) => clamp(w - 16, 260, 460));
+            if (event.key === "ArrowRight") setInstructionWidth((w) => clamp(w + 16, 260, 460));
+          }}
+          className="pane-resizer hidden lg:block"
+        />
+
+        <div className="flex min-h-[720px] flex-col lg:min-h-0 lg:flex-1">
+          <div ref={paneRowRef} className="flex min-h-0 flex-1 flex-col md:flex-row">
             {/* Editor */}
             <section
-              className="flex min-h-0 flex-1 flex-col border-b border-hairline md:border-b-0 md:border-r"
+              id="workspace-files"
+              style={splitLayout ? { flexGrow: editorRatio, flexBasis: 0 } : undefined}
+              className="flex min-h-0 flex-1 flex-col border-b border-outline-variant bg-surface md:border-b-0"
               aria-label="Code editor"
             >
-              <div className="flex h-9 shrink-0 items-center gap-1 border-b border-hairline bg-panel px-2">
+              <div className="no-scrollbar flex h-10 shrink-0 items-center overflow-x-auto border-b border-outline-variant bg-surface-container">
                 {fileNames.map((f) => (
                   <button
                     key={f}
                     type="button"
                     onClick={() => setActiveFile(f)}
-                    className={`h-full border-b-2 px-3 font-mono text-xs transition-colors ${
+                    aria-pressed={activeFile === f}
+                    className={`flex h-full shrink-0 items-center gap-2 border-r border-t-2 border-outline-variant px-4 font-mono text-[13px] transition-colors ${
                       activeFile === f
-                        ? "border-voltage text-chalk"
-                        : "border-transparent text-ash hover:text-chalk"
+                        ? "border-t-primary bg-surface text-primary"
+                        : "border-t-transparent text-on-surface-variant hover:bg-surface-variant"
                     }`}
                   >
+                    <Icon name={fileIcon(f)} size={16} />
                     {f}
                   </button>
                 ))}
@@ -683,8 +816,24 @@ export function Workspace({ course }: { course: Course }) {
               ) : null}
             </section>
 
+            <div
+              role="separator"
+              aria-orientation="vertical"
+              aria-label="Resize the editor and preview panes"
+              aria-valuenow={Math.round(editorRatio * 100)}
+              aria-valuemin={50}
+              aria-valuemax={350}
+              tabIndex={0}
+              onPointerDown={dragEditor}
+              onKeyDown={(event) => {
+                if (event.key === "ArrowLeft") setEditorRatio((r) => clamp(r - 0.1, 0.5, 3.5));
+                if (event.key === "ArrowRight") setEditorRatio((r) => clamp(r + 0.1, 0.5, 3.5));
+              }}
+              className="pane-resizer hidden md:block"
+            />
+
             {/* Preview */}
-            <div className="flex min-h-0 flex-1 flex-col">
+            <div id="workspace-output" className="flex min-h-0 flex-1 flex-col bg-surface">
               <Preview
                 files={files}
                 kind={step.kind}
@@ -695,109 +844,68 @@ export function Workspace({ course }: { course: Course }) {
 
           {/* ---------------- Action bar ---------------- */}
           <div
-            className={`flex shrink-0 items-center gap-4 border-t border-hairline bg-raised px-4 py-3 ${
+            className={`fixed inset-x-0 bottom-0 z-20 flex h-12 shrink-0 items-center gap-4 border-t border-hairline bg-panel px-3 sm:px-4 lg:absolute ${
               shake ? "animate-shake" : ""
             }`}
           >
-            {/* Combo */}
-            <div className="relative w-16 shrink-0 text-center">
-              {burst > 0 ? <ParticleBurst key={`burst-${burst}`} count={14} /> : null}
-              <div
-                key={`combo-${game.combo}`}
-                className={`animate-punch font-mono text-[28px] font-bold leading-none ${
-                  game.combo > 1 ? "text-voltage" : "text-ash/50"
-                }`}
-              >
-                x{game.combo}
-              </div>
-              <div className="mt-1 h-0.5 w-full overflow-hidden rounded-full bg-hairline">
-                <div
-                  className="h-full bg-voltage transition-[width] duration-500"
-                  style={{ width: `${(game.combo / 5) * 100}%` }}
-                />
+            <div className="flex shrink-0 items-center gap-2 text-[13px] text-on-surface-variant">
+              <Icon name="check_circle" size={16} />
+              <span>Saved</span>
+            </div>
+            <div className="hidden items-center gap-2 text-[11px] text-ash sm:flex">
+              <span>Progress: {courseCompletion}%</span>
+              <div className="h-1.5 w-24 overflow-hidden rounded-full bg-hairline" role="progressbar" aria-label="Course progress" aria-valuenow={courseCompletion} aria-valuemin={0} aria-valuemax={100}>
+                <div className="h-full rounded-full bg-acid transition-[width]" style={{ width: `${courseCompletion}%` }} />
               </div>
             </div>
-
-            {/* Run */}
-            {phase === "passed" ? isLast ? (
-              <Link
-                href="/"
-                onNavigate={() => {
-                  try {
-                    localStorage.setItem(courseStorageKey(course.id), JSON.stringify(session));
-                  } catch {
-                    // Navigation still works if browser storage is unavailable.
-                  }
-                }}
-                className="glow-acid flex h-13 items-center gap-3 rounded-lg bg-acid px-6 py-3 font-bold text-void transition-transform duration-150 active:scale-[0.98]"
-              >
-                {copy(VIEW_COURSE_MAP, register)}
-                <span aria-hidden="true">→</span>
-              </Link>
-            ) : (
-              <button
-                type="button"
-                onClick={goNext}
-                className="glow-acid flex h-13 items-center gap-3 rounded-lg bg-acid px-6 py-3 font-bold text-void transition-transform duration-150 active:scale-[0.98]"
-              >
-                NEXT STEP
-                <kbd className="rounded bg-void/20 px-1.5 py-0.5 font-mono text-[11px]">⏎</kbd>
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => void run()}
-                disabled={phase === "running"}
-                className="glow-voltage flex h-13 items-center gap-3 rounded-lg bg-voltage px-6 py-3 font-bold text-void transition-transform duration-150 active:scale-[0.98] disabled:opacity-60"
-              >
-                {phase === "running" ? "RUNNING…" : "RUN IT"}
-                <kbd className="rounded bg-void/20 px-1.5 py-0.5 font-mono text-[11px]">⌘⏎</kbd>
-              </button>
-            )}
-
-            {/* Test rows */}
-            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-5 gap-y-1">
+            <div className="min-w-0 flex-1 truncate text-[12px] text-ash">
               {results.length > 0 ? (
-                <span className="font-mono text-[13px] text-chalk">
-                  {passedCount} of {results.length} passed
+                <span className={`flex items-center gap-1.5 ${phase === "passed" ? "text-secondary" : phase === "failed" ? "text-error" : "text-on-surface-variant"}`}>
+                  <Icon
+                    name={phase === "passed" ? "check_circle" : phase === "failed" ? "close" : "radio_button_unchecked"}
+                    size={14}
+                    filled={phase === "passed"}
+                  />
+                  {passedCount} of {results.length} checks passed
                 </span>
               ) : (
-                <span className="text-[13px] text-ash">
-                  Nothing has run yet. Press Run it.
-                </span>
+                <span>Ready. Make one change, then run the checks.</span>
               )}
-              {results.map((r, i) => (
-                <span
-                  key={r.id}
-                  className="animate-row-in flex items-center gap-1.5"
-                  style={{ animationDelay: `${i * 40}ms` }}
-                >
-                  <StatusGlyph status={r.status} />
-                  <code className="font-mono text-[12px] text-ash">{r.id}</code>
-                  <span
-                    className={`text-[12px] ${
-                      r.status === "passed"
-                        ? "text-acid"
-                        : r.status === "failed"
-                          ? "text-strike"
-                          : "text-ash/60"
-                    }`}
-                  >
-                    {r.status === "passed"
-                      ? "Passed"
-                      : r.status === "failed"
-                        ? "Failed"
-                        : "Waiting"}
-                  </span>
-                </span>
-              ))}
             </div>
-
             {phase === "passed" ? (
-              <span className="shrink-0 rounded border border-acid/40 bg-acid/10 px-2 py-1 font-mono text-[12px] font-bold text-acid">
+              <span className="hidden shrink-0 rounded border border-acid/40 bg-acid/10 px-2 py-1 font-mono text-[11px] font-bold text-acid md:inline-flex">
                 {gain.amount > 0 ? `+${gain.amount} XP` : "Reward already earned"}
               </span>
             ) : null}
+            <div className="relative shrink-0">
+              {burst > 0 ? <ParticleBurst key={`burst-${burst}`} count={14} /> : null}
+              {phase === "passed" ? isLast ? (
+                <Link
+                  href="/curriculum"
+                  onNavigate={() => {
+                    try {
+                      localStorage.setItem(courseStorageKey(course.id), JSON.stringify(session));
+                    } catch {
+                      // Navigation still works if browser storage is unavailable.
+                    }
+                  }}
+                  className="flex h-9 items-center gap-2 rounded-lg bg-secondary px-6 font-bold text-on-secondary transition-transform duration-150 active:scale-95"
+                >
+                  {VIEW_COURSE_MAP}
+                  <Icon name="arrow_forward" size={18} />
+                </Link>
+              ) : (
+                <button type="button" onClick={goNext} className="flex h-9 items-center gap-2 rounded-lg bg-secondary px-6 font-bold text-on-secondary transition-transform duration-150 active:scale-95">
+                  Next Step
+                  <Icon name="arrow_forward" size={18} />
+                </button>
+              ) : (
+                <button type="button" onClick={() => void run()} disabled={phase === "running"} className="flex h-9 items-center gap-2 rounded-lg bg-primary px-6 font-bold text-on-primary transition-transform duration-150 hover:bg-primary-container active:scale-95 disabled:opacity-60">
+                  <Icon name="play_arrow" size={18} />
+                  {phase === "running" ? "Running" : "Run Code"}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -810,31 +918,24 @@ export function Workspace({ course }: { course: Course }) {
 /** Status is never colour alone: every state has its own glyph and a word. */
 function StatusGlyph({ status }: { status: "waiting" | "passed" | "failed" }) {
   if (status === "passed") {
-    return (
-      <span
-        aria-hidden="true"
-        className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-acid text-[10px] font-bold text-void"
-      >
-        ✓
-      </span>
-    );
+    return <Icon name="check_circle" size={18} filled className="mt-0.5 text-secondary" />;
   }
   if (status === "failed") {
-    return (
-      <span
-        aria-hidden="true"
-        className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-strike text-[10px] font-bold text-void"
-      >
-        ✕
-      </span>
-    );
+    return <Icon name="close" size={18} className="mt-0.5 text-error" />;
   }
   return (
-    <span
-      aria-hidden="true"
-      className="h-4 w-4 shrink-0 rounded-full border-2 border-hairline"
-    />
+    <Icon name="radio_button_unchecked" size={18} className="mt-0.5 text-on-surface-variant opacity-50" />
   );
+}
+
+function fileIcon(file: string): IconName {
+  if (file.endsWith(".css")) return "css";
+  if (file.endsWith(".js")) return "javascript";
+  return "html";
+}
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value));
 }
 
 function editorLanguage(file: string): "html" | "css" | "js" {

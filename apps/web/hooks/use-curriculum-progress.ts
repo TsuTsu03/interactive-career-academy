@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { curriculum } from "@/content/curriculum";
-import type { Register } from "@/lib/lesson-ir";
 import {
   courseProgressFromStorage,
   courseStorageKey,
@@ -20,7 +19,6 @@ function emptyProgress(): ProgressByCourse {
 export function useCurriculumProgress() {
   const [state, setState] = useState({
     ready: false,
-    register: "simple" as Register,
     progress: emptyProgress(),
   });
 
@@ -31,8 +29,7 @@ export function useCurriculumProgress() {
         courseProgressFromStorage(course, localStorage.getItem(courseStorageKey(course.id))),
       ]),
     );
-    const register = Object.values(progress).find((item) => item.hasSession)?.register ?? "simple";
-    setState((current) => ({ ...current, ready: true, register, progress }));
+    setState((current) => ({ ...current, ready: true, progress }));
   }, []);
 
   useEffect(() => {
@@ -41,10 +38,5 @@ export function useCurriculumProgress() {
     refresh();
   }, [refresh]);
 
-  const setRegister = useCallback(
-    (register: Register) => setState((current) => ({ ...current, register })),
-    [],
-  );
-
-  return { ...state, refresh, setRegister };
+  return { ...state, refresh };
 }

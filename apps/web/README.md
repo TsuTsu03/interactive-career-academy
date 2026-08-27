@@ -1,58 +1,61 @@
-# Academy — learning kernel
+# CodeDaddy web app
 
-Release 1 from `ARCHITECTURE_PLAN_V2.md`: one lesson, done properly. Next.js 16, React 19, Tailwind v4.
+CodeDaddy is a browser-based, project-led front-end learning platform. The current v1 frontend teaches HTML, CSS, JavaScript, and Tailwind CSS through small steps and practical projects rooted in everyday Filipino life.
 
 ```bash
 npm --prefix apps/web run dev
 ```
 
-Open http://localhost:3000.
+Open [http://localhost:3000](http://localhost:3000).
 
-## What is here
+## Main routes
 
-A working freeCodeCamp-style step workspace for the lesson **Make a webpage** — ten steps that build a real HTML/CSS page, with tap-to-build blocks, live preview, deterministic grading, and the full game layer (XP, combo, streak, ranks).
+| Route | Purpose |
+|---|---|
+| `/` | Public CodeDaddy landing page |
+| `/dashboard` | Learner home using locally saved progress |
+| `/curriculum` | Course and progress map |
+| `/learn/[courseId]` | Three-part lesson workspace |
+| `/projects` | Learner project portfolio |
+| `/review` | Spaced review session |
+| `/certificate` | Honest certificate readiness state |
+| `/account` | Account connection state |
+| `/harness` | Curriculum authoring and regression harness |
+
+## Product structure
 
 | Path | Role |
 |---|---|
-| `lib/lesson-ir.ts` | The lesson intermediate representation. Closed variant types, so authored content can never smuggle executable code into the runtime |
-| `lib/grading.ts` | Deterministic assertions run against the learner's rendered output |
-| `content/make-a-webpage.ts` | The lesson itself, as data |
-| `components/workspace.tsx` | Three-column workspace, session state, run loop |
-| `components/code-editor.tsx` | Textarea + syntax highlight layer |
-| `components/preview.tsx` | The learner's live output |
-| `components/block-tray.tsx` | Tap-to-build input |
-| `components/hud.tsx`, `juice.tsx`, `rank-up.tsx` | The game layer |
+| `content/*-course.ts` | Course, project, and step data |
+| `content/concepts.ts` | Shared concepts with four teaching representations |
+| `lib/lesson-ir.ts` | Closed lesson and test data types |
+| `lib/grading.ts` | Deterministic browser-side assertions |
+| `lib/js-runner.ts` | Sandboxed JavaScript execution |
+| `lib/harness.ts` | Curriculum integrity checks |
+| `components/workspace.tsx` | Lesson state, instructions, editor, preview, and run loop |
+| `components/learner-home.tsx` | Local-progress dashboard |
+| `components/product-nav.tsx` | Shared responsive learner navigation |
+| `app/globals.css` | Manila Modernist design tokens and responsive themes |
 
-## Two iframes, on purpose
+## Iframe security
 
-This is the security core of the product and the easiest thing to break by accident.
+The iframe sandboxes are the security boundary and must stay separate.
 
-| Frame | Sandbox | Why |
+| Frame | Sandbox | Reason |
 |---|---|---|
-| **Preview** (`preview.tsx`) | `allow-scripts` | Learner code runs. It never gets `allow-same-origin`, because the two flags together let sandboxed content remove its own sandbox |
-| **Grader** (`grading.ts`) | `allow-same-origin` | The parent reads computed styles. Script execution is off, so the same-origin grant cannot be used to escape |
+| Preview and concept demo | `allow-scripts` | Learner or authored code can run without same-origin access |
+| Grader | `allow-same-origin` | The parent can inspect output while script execution remains off |
+| JavaScript runner | `allow-scripts` | Code runs in an opaque origin and communicates through `postMessage` |
 
-Never add `allow-same-origin` to the preview frame.
-
-Grading is currently client-side and is therefore **formative only**. Per `ARCHITECTURE_AUDIT_REPORT.md` P0-01, a client-reported pass can be forged and must never back a credential. Certificate evidence needs the platform-controlled CI verifier described in `ARCHITECTURE_PLAN_V2.md` section 4.2.
-
-## Two things that must never regress
-
-Both were real bugs found during the first build, and both have the same root cause.
-
-**`requestAnimationFrame` is not a guarantee.** A backgrounded or non-compositing tab never fires it. Relying on it left grading hung in "RUNNING…" forever and left the XP counter showing a stale number rather than merely skipping its animation. Both now race rAF against a timer. Any new animation that carries a *value* rather than only motion needs the same guard.
-
-**Copy is rendered, not baked.** Failure messages carry both registers and are translated at render time, so hitting Simple re-translates everything already on screen. A learner who switches reading level because they did not understand the error must not be left staring at the wording they could not read.
+Never combine `allow-scripts` and `allow-same-origin` on one iframe.
 
 ## Deliberate constraints
 
-- Animation is `transform`/`opacity` only; no canvas, no animation library. Glow is a static `box-shadow`. The target machine is a shared 4 GB laptop
-- Particle scatter is derived from the index, not `Math.random`, so rendering stays pure
-- `prefers-reduced-motion` collapses every celebration to a crossfade with no loss of information
-- Status never uses colour alone; every state carries a glyph and a word
-- The editor is a real `<textarea>`, so keyboard, selection, and screen reader support come for free
-- Session state is one object, so a reload can never restore progress without its matching code
+- The frontend has no added UI, editor, state, or animation package.
+- The editor remains a real `textarea` for keyboard and assistive-technology support.
+- Meaningful values race animation frames against a timer so background tabs cannot leave stale state.
+- Status always uses a word and an icon, never colour alone.
+- Course code, position, and completed steps persist as one atomic browser record.
+- Account sync, authentication providers, backend verification, and production certificates remain disconnected until the frontend scope is frozen.
 
-## Not built yet
-
-Skill map, leagues, quests, chests, boss challenges, achievements, command palette, landing page, and the public logged-out lesson page are specified in `design/STITCH_PROMPTS.md` but not implemented. There is no backend, no auth, and no persistence beyond `localStorage`.
+The authoritative product decisions are in the repository root `PLAN.md`. The visual system is documented in `design/DESIGN.md`, and the downloaded Google Stitch reference package is in `design/stitch/codedaddy-learning-platform/`.

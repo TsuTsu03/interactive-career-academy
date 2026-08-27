@@ -22,25 +22,25 @@ export interface Challenge {
 export const CHALLENGES: Challenge[] = [
   {
     id: "steps",
-    title: { simple: "Finish 5 steps", standard: "Complete 5 steps" },
+    title: "Finish 5 steps",
     target: 5,
     xp: 100,
   },
   {
     id: "no-hints",
-    title: { simple: "Pass 3 steps with no hints", standard: "Clear 3 steps unaided" },
+    title: "Pass 3 steps with no hints",
     target: 3,
     xp: 150,
   },
   {
     id: "combo",
-    title: { simple: "Reach a x3 combo", standard: "Reach a x3 combo" },
+    title: "Reach a x3 combo",
     target: 3,
     xp: 120,
   },
   {
     id: "fix",
-    title: { simple: "Fix 3 failing checks", standard: "Turn 3 failing tests green" },
+    title: "Fix 3 failing checks",
     target: 3,
     xp: 120,
   },

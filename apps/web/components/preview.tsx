@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Icon } from "@/components/icon";
 import { buildConsoleDocument, buildDocument } from "@/lib/grading";
 import type { StepKind } from "@/lib/lesson-ir";
 
@@ -43,31 +44,52 @@ export function Preview({
 
   const ring =
     flash === "pass"
-      ? "ring-2 ring-acid glow-acid"
+      ? "ring-2 ring-secondary"
       : flash === "fail"
-        ? "ring-2 ring-strike/60"
-        : "ring-1 ring-hairline";
+        ? "ring-2 ring-error/60"
+        : "ring-1 ring-outline-variant";
 
   return (
     <section
-      className="flex min-h-0 flex-1 flex-col bg-panel"
+      className="flex min-h-0 flex-1 flex-col bg-surface"
       aria-label={kind === "js" ? "Console output" : "Live preview"}
     >
-      <div className="flex h-9 shrink-0 items-center gap-2 border-b border-hairline px-3">
-        <span className="h-1.5 w-1.5 rounded-full bg-plasma" aria-hidden="true" />
-        <span className="text-[10px] uppercase tracking-widest text-ash">
-          {kind === "js" ? "Console" : "Your page"}
+      <div className="flex h-10 shrink-0 items-center gap-2 border-b border-outline-variant bg-surface-container px-2">
+        <span className="px-2 text-label-caps uppercase tracking-widest text-on-surface-variant">
+          {kind === "js" ? "Console output" : "Live Preview"}
         </span>
-        <span className="ml-auto font-mono text-[10px] text-ash/60">live</span>
+        <button
+          type="button"
+          onClick={() => openInNewTab(srcDoc)}
+          title="Open this preview in a new tab"
+          aria-label="Open this preview in a new tab"
+          className="ml-auto flex h-8 w-8 items-center justify-center rounded text-on-surface-variant transition-colors hover:bg-surface-variant hover:text-primary"
+        >
+          <Icon name="open_in_new" size={16} />
+        </button>
       </div>
-      <div className="min-h-0 flex-1 p-3">
+      <div className="min-h-0 flex-1 bg-surface p-3 sm:p-5">
         <iframe
           title={kind === "js" ? "Console output" : "Your page preview"}
           sandbox="allow-scripts"
           srcDoc={srcDoc}
-          className={`h-full w-full rounded-lg bg-white transition-shadow duration-300 ${ring}`}
+          className={`h-full w-full bg-white transition-shadow duration-300 ${ring}`}
         />
       </div>
     </section>
   );
+}
+
+/**
+ * Opens the learner's rendered page in its own tab.
+ *
+ * The document is handed over as a blob so the new tab shows exactly what the
+ * preview pane shows, without the platform serving learner code from its own
+ * origin.
+ */
+function openInNewTab(srcDoc: string) {
+  const url = URL.createObjectURL(new Blob([srcDoc], { type: "text/html" }));
+  window.open(url, "_blank", "noopener,noreferrer");
+  // The tab keeps its own copy once loaded, so the handle can be released.
+  setTimeout(() => URL.revokeObjectURL(url), 60_000);
 }
