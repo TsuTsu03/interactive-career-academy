@@ -753,6 +753,14 @@ const STORE_RECEIPT_INTRO_BODY = `    <h2>Sari-Sari Store Receipt</h2>
 const STORE_RECEIPT_ELEMENT_SLOT = slotPage(`${STORE_RECEIPT_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
 const STORE_RECEIPT_ELEMENT_BODY = `${STORE_RECEIPT_INTRO_BODY}    <pre></pre>\n`;
 
+const STOCK_LIST_TITLE_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const STOCK_LIST_TITLE_BODY = `    <h2></h2>\n`;
+const STOCK_LIST_HEADING_BODY = `    <h2>Pharmacy Stock List</h2>\n`;
+const STOCK_LIST_INTRO_BODY = `    <h2>Pharmacy Stock List</h2>
+    <p>A list of water bills for the barangay.</p>\n`;
+const STOCK_LIST_ELEMENT_SLOT = slotPage(`${STOCK_LIST_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
+const STOCK_LIST_ELEMENT_BODY = `${STOCK_LIST_INTRO_BODY}    <thead></thead>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1259,6 +1267,11 @@ const references = {
   "store-receipt-copy": { estimatedMinutes: 4, solution: solved(STORE_RECEIPT_INTRO_BODY) },
   "store-receipt-pre": { estimatedMinutes: 5, solution: solvedSlot(STORE_RECEIPT_ELEMENT_SLOT, "<pre></pre>") },
   "store-receipt-pre-text": { estimatedMinutes: 4, solution: solved(`${STORE_RECEIPT_INTRO_BODY}    <pre>Pre keeps it just like that.</pre>\n`) },
+  "stock-list-title": { estimatedMinutes: 4, solution: solvedSlot(STOCK_LIST_TITLE_SLOT, "<h2></h2>") },
+  "stock-list-heading": { estimatedMinutes: 4, solution: solved(STOCK_LIST_HEADING_BODY) },
+  "stock-list-copy": { estimatedMinutes: 4, solution: solved(STOCK_LIST_INTRO_BODY) },
+  "stock-list-thead": { estimatedMinutes: 5, solution: solvedSlot(STOCK_LIST_ELEMENT_SLOT, "<thead></thead>") },
+  "stock-list-thead-text": { estimatedMinutes: 4, solution: solved(`${STOCK_LIST_INTRO_BODY}    <thead>thMonthth</thead>\n`) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1294,6 +1307,7 @@ const PROJECT_30_ID = "barangay-sari-sari-store";
 const PROJECT_31_ID = "sari-sari-store";
 const PROJECT_32_ID = "barangay-water-bill";
 const PROJECT_33_ID = "sari-sari-store-receipt";
+const PROJECT_34_ID = "pharmacy-stock-list";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1496,6 +1510,11 @@ const s33 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_33_ID };
 };
 
+const s34 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_34_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1535,6 +1554,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_31_ID, title: "Sari-Sari Store Prices" },
     { id: PROJECT_32_ID, title: "Barangay Water Bill" },
     { id: PROJECT_33_ID, title: "Sari-Sari Store Receipt" },
+    { id: PROJECT_34_ID, title: "Pharmacy Stock List" },
   ],
   kind: "web",
   requires: [],
@@ -4433,5 +4453,10 @@ export const htmlCourse: Course = {
     s33({ id: "store-receipt-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(STORE_RECEIPT_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "store-receipt-copy-text", kind: "text-equals", selector: "p", value: "See how pre keeps the spaces and line breaks in this laundry shop receipt.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write See how pre keeps the spaces and line breaks in this laundry shop receipt." }], xp: 40 }),
     s33({ id: "store-receipt-pre", task: "Add a place for the preformatted text.", inputMode: "tap-to-build", files: { "index.html": STORE_RECEIPT_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: STORE_RECEIPT_ELEMENT_SLOT.slotLine, blocks: ["<pre></pre>","<p></p>","<div></div>","<note></note>"], correctBlock: "<pre></pre>", conceptIds: ["pre-element"], tests: [{ id: "store-receipt-pre-exists", kind: "exists", selector: "pre", label: "The preformatted text has a place" }], hints: [{ level: 1, text: "Add the element that marks a preformatted text." }, { level: 2, text: "Use pre for the preformatted text." }], xp: 50 }),
     s33({ id: "store-receipt-pre-text", task: "Write Pre keeps it just like that. inside it.", inputMode: "guided", files: solved(STORE_RECEIPT_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<pre></pre>", tests: [{ id: "store-receipt-pre-text-set", kind: "text-equals", selector: "pre", value: "Pre keeps it just like that.", label: "The preformatted text shows its words" }], hints: [{ level: 1, text: "Write the words inside the pre tags." }, { level: 2, text: "Use Pre keeps it just like that. exactly." }], xp: 40 }),
+    s34({ id: "stock-list-title", task: "Start the pharmacy stock list with a smaller heading.", inputMode: "tap-to-build", files: { "index.html": STOCK_LIST_TITLE_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: STOCK_LIST_TITLE_SLOT.slotLine, blocks: ["<h2></h2>", "<p></p>", "<h1></h1>", "<thead></thead>"], correctBlock: "<h2></h2>", tests: [{ id: "stock-list-title-exists", kind: "exists", selector: "h2", label: "The page has a heading" }], hints: [{ level: 1, text: "Add a level-two heading in the blank line." }, { level: 2, text: "Use h2 for this smaller heading." }], xp: 40 }),
+    s34({ id: "stock-list-heading", task: "Name the heading Pharmacy Stock List.", inputMode: "guided", files: solved(STOCK_LIST_TITLE_BODY), activeFile: "index.html", highlightToken: "<h2></h2>", tests: [{ id: "stock-list-heading-text", kind: "text-equals", selector: "h2", value: "Pharmacy Stock List", label: "The page has its name" }], hints: [{ level: 1, text: "Write the page name between the heading tags." }, { level: 2, text: "Use Pharmacy Stock List exactly." }], xp: 40 }),
+    s34({ id: "stock-list-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(STOCK_LIST_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "stock-list-copy-text", kind: "text-equals", selector: "p", value: "A list of water bills for the barangay.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write A list of water bills for the barangay." }], xp: 40 }),
+    s34({ id: "stock-list-thead", task: "Add a place for the table head.", inputMode: "tap-to-build", files: { "index.html": STOCK_LIST_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: STOCK_LIST_ELEMENT_SLOT.slotLine, blocks: ["<thead></thead>","<p></p>","<div></div>","<note></note>"], correctBlock: "<thead></thead>", conceptIds: ["thead-element"], tests: [{ id: "stock-list-thead-exists", kind: "exists", selector: "thead", label: "The table head has a place" }], hints: [{ level: 1, text: "Add the element that marks a table head." }, { level: 2, text: "Use thead for the table head." }], xp: 50 }),
+    s34({ id: "stock-list-thead-text", task: "Write thMonthth inside it.", inputMode: "guided", files: solved(STOCK_LIST_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<thead></thead>", tests: [{ id: "stock-list-thead-text-set", kind: "text-equals", selector: "thead", value: "thMonthth", label: "The table head shows its words" }], hints: [{ level: 1, text: "Write the words inside the thead tags." }, { level: 2, text: "Use thMonthth exactly." }], xp: 40 }),
   ],
 };

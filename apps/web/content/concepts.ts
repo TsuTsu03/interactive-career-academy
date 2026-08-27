@@ -2334,6 +2334,14 @@ export const concepts: Record<string, Concept> = {
     visual: { kind: "diagram", diagram: { alt: "Laundry shop receipt with neatly spaced and broken lines.", columns: 3, nodes: [{ id: "words", label: "Pre keeps it just like that.", note: "plain words", tone: "ghost" }, { id: "tag", label: "pre", note: "preformatted text", tone: "accent" }, { id: "result", label: "Preformatted text", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
     proof: "You will mark the words 'Pre keeps it just like that.' on the receipt.",
   },
+  "thead-element": {
+    id: "thead-element",
+    term: "thead element",
+    definition: "The thead element groups the header rows of a table.",
+    analogy: "The table's header like a title card in a movie.",
+    visual: { kind: "diagram", diagram: { alt: "A table with a header row and several data rows, labeled Month.", columns: 3, nodes: [{ id: "words", label: "thMonthth", note: "plain words", tone: "ghost" }, { id: "tag", label: "thead", note: "table head", tone: "accent" }, { id: "result", label: "Table head", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
+    proof: "You will mark the words Month on the table header row.",
+  },
 };
 
 export function conceptById(id: string): Concept | undefined {
