@@ -45,6 +45,9 @@ const JEEPNEY_TERMINAL_HTML = "<button id=\"action\">Change View</button>\n<p id
 /* dom-topic: read-input */
 const TURO_TURO_HTML = "<label for=\"who\">Name Box</label>\n<input id=\"who\" value=\"\">\n<p id=\"greeting\"></p>";
 
+/* dom-topic: create-element */
+const BARANGAY_HEALTH_HTML = "<h2 id=\"list-title\">Add Item</h2>\n<ul id=\"items\"></ul>\n<p id=\"count\"></p>";
+
 /** Authored proof for every step. Missing entries stop the course from loading. */
 const references = {
   "barangay-help-1": { estimatedMinutes: 4, solution: page(BARANGAY_HELP_HTML, "const title = document.querySelector(\"#notice-title\");\n") },
@@ -72,6 +75,11 @@ const references = {
   "turo-turo-3": { estimatedMinutes: 4, solution: page(TURO_TURO_HTML, "const field = document.querySelector(\"#who\");\nconst greeting = document.querySelector(\"#greeting\");\nfield.addEventListener(\"input\", function () {\n  greeting.textContent = \"Hello, \" + field.value;\n});\n") },
   "turo-turo-4": { estimatedMinutes: 4, solution: page(TURO_TURO_HTML, "const field = document.querySelector(\"#who\");\nconst greeting = document.querySelector(\"#greeting\");\nfield.addEventListener(\"input\", function () {\n  greeting.textContent = \"Hello, \" + field.value;\n});\nfield.setAttribute(\"placeholder\", \"Your name\");\n") },
   "turo-turo-5": { estimatedMinutes: 4, solution: page(TURO_TURO_HTML, "const field = document.querySelector(\"#who\");\nconst greeting = document.querySelector(\"#greeting\");\nfield.addEventListener(\"input\", function () {\n  greeting.textContent = \"Hello, \" + field.value;\n});\nfield.setAttribute(\"placeholder\", \"Your name\");\ngreeting.setAttribute(\"aria-live\", \"polite\");\n") },
+  "barangay-health-1": { estimatedMinutes: 4, solution: page(BARANGAY_HEALTH_HTML, "const list = document.querySelector(\"#items\");\n") },
+  "barangay-health-2": { estimatedMinutes: 4, solution: page(BARANGAY_HEALTH_HTML, "const list = document.querySelector(\"#items\");\nconst item = document.createElement(\"li\");\n") },
+  "barangay-health-3": { estimatedMinutes: 4, solution: page(BARANGAY_HEALTH_HTML, "const list = document.querySelector(\"#items\");\nconst item = document.createElement(\"li\");\nitem.textContent = \"Name\";\n") },
+  "barangay-health-4": { estimatedMinutes: 4, solution: page(BARANGAY_HEALTH_HTML, "const list = document.querySelector(\"#items\");\nconst item = document.createElement(\"li\");\nitem.textContent = \"Name\";\nlist.appendChild(item);\n") },
+  "barangay-health-5": { estimatedMinutes: 4, solution: page(BARANGAY_HEALTH_HTML, "const list = document.querySelector(\"#items\");\nconst item = document.createElement(\"li\");\nitem.textContent = \"Name\";\nlist.appendChild(item);\ndocument.querySelector(\"#count\").textContent = list.children.length + \" item\";\n") },
 } satisfies Record<string, StepReference>;
 const PROJECT_1_ID = "barangay-help";
 const s1 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for DOM step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_1_ID }; };
@@ -88,13 +96,16 @@ const s4 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const r
 const PROJECT_5_ID = "turo-turo";
 const s5 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for DOM step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_5_ID }; };
 
+const PROJECT_6_ID = "barangay-health";
+const s6 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for DOM step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_6_ID }; };
+
 
 export const domCourse: Course = {
   id: "dom-basics",
   order: 5,
   title: "Learn JavaScript on a Page by Building Barangay Screens",
   project: "Barangay Notice",
-  projects: [ { id: PROJECT_1_ID, title: "Barangay Help" }, { id: PROJECT_2_ID, title: "Sari Sari" }, { id: PROJECT_3_ID, title: "Palengke Stall" }, { id: PROJECT_4_ID, title: "Jeepney Terminal" }, { id: PROJECT_5_ID, title: "Turo Turo" } ],
+  projects: [ { id: PROJECT_1_ID, title: "Barangay Help" }, { id: PROJECT_2_ID, title: "Sari Sari" }, { id: PROJECT_3_ID, title: "Palengke Stall" }, { id: PROJECT_4_ID, title: "Jeepney Terminal" }, { id: PROJECT_5_ID, title: "Turo Turo" }, { id: PROJECT_6_ID, title: "Barangay Health" } ],
   kind: "web",
   requires: ["js-basics"],
   summary:
@@ -125,6 +136,11 @@ export const domCourse: Course = {
     s5({ id: "turo-turo-3", task: "Greet whoever is typing, as they type.", inputMode: "guided", files: page(TURO_TURO_HTML, "const field = document.querySelector(\"#who\");\nconst greeting = document.querySelector(\"#greeting\");\nfield.addEventListener(\"input\", function () {\n  greeting.textContent = ;\n});\n"), activeFile: "script.js", highlightToken: "greeting.textContent = ;", tests: [{ id: "turo-turo-3-check", label: "#greeting reads Hello, Juan once Juan is typed", kind: "page-input-text-equals", selector: "#greeting", type: "Juan", value: "Hello, Juan" }], hints: [{ level: 1, text: "A box keeps what was typed in its value property." }, { level: 2, text: "Write \"Hello, \" + field.value after the equals sign." }], xp: 50 }),
     s5({ id: "turo-turo-4", task: "Show a hint inside the empty box.", inputMode: "guided", files: page(TURO_TURO_HTML, "const field = document.querySelector(\"#who\");\nconst greeting = document.querySelector(\"#greeting\");\nfield.addEventListener(\"input\", function () {\n  greeting.textContent = \"Hello, \" + field.value;\n});\nfield.setAttribute(\"placeholder\", );\n"), activeFile: "script.js", highlightToken: "setAttribute(\"placeholder\", );", tests: [{ id: "turo-turo-4-check", label: "#who has placeholder set to Your name", kind: "page-attr-equals", selector: "#who", attr: "placeholder", value: "Your name" }], hints: [{ level: 1, text: "The hint goes in quotes as the second value." }, { level: 2, text: "Write \"Your name\" as the second value." }], xp: 50 }),
     s5({ id: "turo-turo-5", task: "Let a screen reader read the greeting without interrupting.", inputMode: "guided", files: page(TURO_TURO_HTML, "const field = document.querySelector(\"#who\");\nconst greeting = document.querySelector(\"#greeting\");\nfield.addEventListener(\"input\", function () {\n  greeting.textContent = \"Hello, \" + field.value;\n});\nfield.setAttribute(\"placeholder\", \"Your name\");\ngreeting.setAttribute(\"aria-live\", );\n"), activeFile: "script.js", highlightToken: "setAttribute(\"aria-live\", );", tests: [{ id: "turo-turo-5-check", label: "#greeting has aria-live set to polite", kind: "page-attr-equals", selector: "#greeting", attr: "aria-live", value: "polite" }], hints: [{ level: 1, text: "The politeness setting goes in quotes as the second value." }, { level: 2, text: "Write \"polite\" as the second value." }], xp: 50 }),
+    s6({ id: "barangay-health-1", task: "Find the empty list.", inputMode: "guided", files: page(BARANGAY_HEALTH_HTML, "const list = ;\n"), activeFile: "script.js", highlightToken: "const list = ;", tests: [{ id: "barangay-health-1-check", label: "#items is on the page", kind: "page-exists", selector: "#items" }], hints: [{ level: 1, text: "Ask the document for the element with that id." }, { level: 2, text: "Write document.querySelector(\"#items\") after the equals sign." }], xp: 50 }),
+    s6({ id: "barangay-health-2", task: "Make a new list item, not yet on the page.", inputMode: "guided", files: page(BARANGAY_HEALTH_HTML, "const list = document.querySelector(\"#items\");\nconst item = document.createElement();;\n"), activeFile: "script.js", highlightToken: "const item = document.createElement();;", tests: [{ id: "barangay-health-2-check", label: "#items is on the page", kind: "page-exists", selector: "#items" }], hints: [{ level: 1, text: "The tag name goes in quotes inside the brackets." }, { level: 2, text: "Write document.createElement(\"li\") after the equals sign." }], xp: 50 }),
+    s6({ id: "barangay-health-3", task: "Put the words into the new item.", inputMode: "guided", files: page(BARANGAY_HEALTH_HTML, "const list = document.querySelector(\"#items\");\nconst item = document.createElement(\"li\");\nitem.textContent = ;\n"), activeFile: "script.js", highlightToken: "item.textContent = ;", tests: [{ id: "barangay-health-3-check", label: "#items is on the page", kind: "page-exists", selector: "#items" }], hints: [{ level: 1, text: "Put the words in quotes." }, { level: 2, text: "Write \"Name\" after the equals sign." }], xp: 50 }),
+    s6({ id: "barangay-health-4", task: "Put the new item onto the page, inside the list.", inputMode: "guided", files: page(BARANGAY_HEALTH_HTML, "const list = document.querySelector(\"#items\");\nconst item = document.createElement(\"li\");\nitem.textContent = \"Name\";\nlist.appendChild();\n"), activeFile: "script.js", highlightToken: "appendChild();", tests: [{ id: "barangay-health-4-check", label: "#items li reads Name", kind: "page-text-equals", selector: "#items li", value: "Name" }], hints: [{ level: 1, text: "Name the element you are adding." }, { level: 2, text: "Write item inside the brackets." }], xp: 50 }),
+    s6({ id: "barangay-health-5", task: "Show how many items the list now holds.", inputMode: "guided", files: page(BARANGAY_HEALTH_HTML, "const list = document.querySelector(\"#items\");\nconst item = document.createElement(\"li\");\nitem.textContent = \"Name\";\nlist.appendChild(item);\ndocument.querySelector(\"#count\").textContent = ;\n"), activeFile: "script.js", highlightToken: "\"#count\").textContent = ;", tests: [{ id: "barangay-health-5-check", label: "#count reads 1 item", kind: "page-text-equals", selector: "#count", value: "1 item" }], hints: [{ level: 1, text: "A list reports how many children it has." }, { level: 2, text: "Write list.children.length + \" item\" after the equals sign." }], xp: 50 }),
   ],
 };
 
