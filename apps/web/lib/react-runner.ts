@@ -30,16 +30,60 @@ export interface ReactRunResult {
   timedOut?: boolean;
 }
 
-/** Fixed shell. Learner code arrives later as message data, never HTML. */
-export function reactRunnerDocument(): string {
+/**
+ * The runtime, fetched once and shared by every frame.
+ *
+ * It cannot be loaded with `<script src="/react-runtime.js">` from inside the
+ * frame. A `srcdoc` frame sandboxed to `allow-scripts` has an **opaque
+ * origin**, and a relative URL has nothing to resolve against there, so the
+ * request 404s, React never arrives, and the frame never sends its ready
+ * signal. Every React check then fails for a reason that has nothing to do
+ * with the learner - 39 of 60 steps, until the authoring harness caught it.
+ *
+ * So the parent fetches it on its own origin, where the URL resolves, and the
+ * source is inlined into the frame instead.
+ */
+let runtimeSource: Promise<string> | null = null;
+
+function loadRuntime(): Promise<string> {
+  if (!runtimeSource) {
+    runtimeSource = fetch("/react-runtime.js")
+      .then((res) => {
+        if (!res.ok) throw new Error(`react-runtime.js returned ${res.status}`);
+        return res.text();
+      })
+      .catch((err) => {
+        // Do not cache a failure: a later run should try again rather than
+        // inherit a transient network error forever.
+        runtimeSource = null;
+        throw err;
+      });
+  }
+  return runtimeSource;
+}
+
+/**
+ * Fixed shell. Learner code arrives later as message data, never HTML.
+ *
+ * `source` is the runtime, inlined. Its closing script tags are broken up
+ * because the whole document is itself parsed as HTML: an unescaped
+ * `</script>` inside would end the block early and leave the rest as text.
+ */
+export function reactRunnerDocument(source = ""): string {
+  const runtime = source.replace(/<\/script/gi, "<\/script");
   return `<!doctype html><html><head><meta charset="utf-8"><style>
     body { margin: 0; padding: 24px; font-family: system-ui, sans-serif; color: #0f172a; }
     #react-status { color: #475569; font-size: 14px; }
   </style></head><body>
     <p id="react-status" role="status">Waiting for your component…</p>
     <div id="react-root"></div>
-    <script src="/react-runtime.js"><\/script>
+    <script>${runtime}<\/script>
   </body></html>`;
+}
+
+/** Resolves to a runner document with the runtime already inlined. */
+export async function reactRunnerDocumentAsync(): Promise<string> {
+  return reactRunnerDocument(await loadRuntime());
 }
 
 /**
@@ -104,7 +148,13 @@ export function runLearnerReact(
       });
     }, RUN_TIMEOUT_MS);
 
-    frame.srcdoc = reactRunnerDocument();
-    document.body.appendChild(frame);
+    loadRuntime()
+      .then((source) => {
+        frame.srcdoc = reactRunnerDocument(source);
+        document.body.appendChild(frame);
+      })
+      .catch((err) => {
+        finish({ ok: false, checks: [], error: `React could not be loaded: ${String(err.message ?? err)}` });
+      });
   });
 }

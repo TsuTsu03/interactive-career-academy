@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/icon";
 import { buildConsoleDocument, buildDocument } from "@/lib/grading";
 import type { StepKind } from "@/lib/lesson-ir";
-import { reactRunnerDocument } from "@/lib/react-runner";
+import { reactRunnerDocumentAsync } from "@/lib/react-runner";
 
 const REACT_PREVIEW_TIMEOUT_MS = 4000;
 
@@ -113,6 +113,21 @@ function ReactPreview({
   const [runtimeKey, setRuntimeKey] = useState(0);
   const codeRef = useRef(files["app.js"] ?? "");
 
+  // The runtime is inlined rather than linked. This frame has an opaque
+  // origin, so a relative `<script src>` inside it has nothing to resolve
+  // against and 404s; the parent fetches it on its own origin instead. See
+  // lib/react-runner.ts.
+  const [runnerDoc, setRunnerDoc] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    let live = true;
+    reactRunnerDocumentAsync().then((doc) => {
+      if (live) setRunnerDoc(doc);
+    });
+    return () => {
+      live = false;
+    };
+  }, []);
+
   const send = () => {
     if (!readyRef.current) return;
     requestRef.current += 1;
@@ -179,7 +194,7 @@ function ReactPreview({
           ref={frameRef}
           title="Your React component preview"
           sandbox="allow-scripts"
-          srcDoc={reactRunnerDocument()}
+          srcDoc={runnerDoc}
           className={`h-full w-full bg-white ${ring}`}
         />
       </div>
