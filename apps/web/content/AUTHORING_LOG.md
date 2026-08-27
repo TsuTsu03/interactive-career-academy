@@ -2850,3 +2850,13 @@ added to catch mechanically instead of by review.
 **How:** `tools/tw-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. This course ships the hand-written CSS rule each utility compiles to, so the class, the rule, and the expected computed value are all curated in `tools/tw-topics.mjs`. A guessed rule would teach the wrong CSS under the right class name. The model supplied only the words on the page.
 
 **Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 73 steps.
+
+---
+
+## 2026-08-27 - Tailwind course, project 14 (local model)
+
+**What got made:** Rice Retailer, five steps teaching utilities that shape a small label.
+
+**How:** `tools/tw-author.mjs` with `qwen2.5-coder-7b-instruct` served locally. This course ships the hand-written CSS rule each utility compiles to, so the class, the rule, and the expected computed value are all curated in `tools/tw-topics.mjs`. A guessed rule would teach the wrong CSS under the right class name. The model supplied only the words on the page.
+
+**Verification performed:** TypeScript and ESLint both clean. Browser harness checks remain queued in `PENDING_QA.md` per the owner ruling of 2026-08-25. Course is at 78 steps.
