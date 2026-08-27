@@ -2318,6 +2318,14 @@ export const concepts: Record<string, Concept> = {
     visual: { kind: "diagram", diagram: { alt: "A list of products with one item marked as 'Discounted!'", columns: 3, nodes: [{ id: "words", label: "Discounted!", note: "plain words", tone: "ghost" }, { id: "tag", label: "em", note: "stressed word", tone: "accent" }, { id: "result", label: "Stressed word", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
     proof: "You will mark the word 'Discounted' on the product list. It shows the price is lower now.",
   },
+  "span-element": {
+    id: "span-element",
+    term: "span element",
+    definition: "The span element marks a small piece of text so it can be styled, without giving it any meaning.",
+    analogy: "Underlining important words in a recipe.",
+    visual: { kind: "diagram", diagram: { alt: "A sample water bill with 'Metered Amount' underlined.", columns: 3, nodes: [{ id: "words", label: "Metered Amount", note: "plain words", tone: "ghost" }, { id: "tag", label: "span", note: "small piece of text", tone: "accent" }, { id: "result", label: "Small piece of text", note: "shown to readers", tone: "box" }], arrows: [{ from: "words", to: "tag" }, { from: "tag", to: "result" }] } },
+    proof: "Mark the words 'Metered Amount' on your water bill.",
+  },
 };
 
 export function conceptById(id: string): Concept | undefined {

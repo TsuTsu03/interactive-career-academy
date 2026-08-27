@@ -737,6 +737,14 @@ const STORE_PRICES_INTRO_BODY = `    <h2>Sari-Sari Store Prices</h2>
 const STORE_PRICES_ELEMENT_SLOT = slotPage(`${STORE_PRICES_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
 const STORE_PRICES_ELEMENT_BODY = `${STORE_PRICES_INTRO_BODY}    <em></em>\n`;
 
+const WATER_BILL_TITLE_SLOT = slotPage("    @@SLOT@@\n", "@@SLOT@@");
+const WATER_BILL_TITLE_BODY = `    <h2></h2>\n`;
+const WATER_BILL_HEADING_BODY = `    <h2>Barangay Water Bill</h2>\n`;
+const WATER_BILL_INTRO_BODY = `    <h2>Barangay Water Bill</h2>
+    <p>Learn how to highlight text on a water bill for easier reading.</p>\n`;
+const WATER_BILL_ELEMENT_SLOT = slotPage(`${WATER_BILL_INTRO_BODY}    @@SLOT@@\n`, "@@SLOT@@");
+const WATER_BILL_ELEMENT_BODY = `${WATER_BILL_INTRO_BODY}    <span></span>\n`;
+
 const references = {
   "h1-block": { estimatedMinutes: 3, solution: solved("    <h1></h1>\n") },
   "h1-text": {
@@ -1233,6 +1241,11 @@ const references = {
   "store-prices-copy": { estimatedMinutes: 4, solution: solved(STORE_PRICES_INTRO_BODY) },
   "store-prices-em": { estimatedMinutes: 5, solution: solvedSlot(STORE_PRICES_ELEMENT_SLOT, "<em></em>") },
   "store-prices-em-text": { estimatedMinutes: 4, solution: solved(`${STORE_PRICES_INTRO_BODY}    <em>Discounted!</em>\n`) },
+  "water-bill-title": { estimatedMinutes: 4, solution: solvedSlot(WATER_BILL_TITLE_SLOT, "<h2></h2>") },
+  "water-bill-heading": { estimatedMinutes: 4, solution: solved(WATER_BILL_HEADING_BODY) },
+  "water-bill-copy": { estimatedMinutes: 4, solution: solved(WATER_BILL_INTRO_BODY) },
+  "water-bill-span": { estimatedMinutes: 5, solution: solvedSlot(WATER_BILL_ELEMENT_SLOT, "<span></span>") },
+  "water-bill-span-text": { estimatedMinutes: 4, solution: solved(`${WATER_BILL_INTRO_BODY}    <span>Metered Amount</span>\n`) },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "sari-sari-store-page";
@@ -1266,6 +1279,7 @@ const PROJECT_28_ID = "barangay-health-center";
 const PROJECT_29_ID = "barangay-jeepney-route";
 const PROJECT_30_ID = "barangay-sari-sari-store";
 const PROJECT_31_ID = "sari-sari-store";
+const PROJECT_32_ID = "barangay-water-bill";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -1458,6 +1472,11 @@ const s31 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_31_ID };
 };
 
+const s32 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
+  const reference = references[step.id as keyof typeof references];
+  return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_32_ID };
+};
+
 export const htmlCourse: Course = {
   id: "html-basics",
   order: 1,
@@ -1495,6 +1514,7 @@ export const htmlCourse: Course = {
     { id: PROJECT_29_ID, title: "Jeepney Route Notice" },
     { id: PROJECT_30_ID, title: "Barangay Sari-Sari Store" },
     { id: PROJECT_31_ID, title: "Sari-Sari Store Prices" },
+    { id: PROJECT_32_ID, title: "Barangay Water Bill" },
   ],
   kind: "web",
   requires: [],
@@ -4383,5 +4403,10 @@ export const htmlCourse: Course = {
     s31({ id: "store-prices-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(STORE_PRICES_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "store-prices-copy-text", kind: "text-equals", selector: "p", value: "Check out the prices of our products at the Sari-Sari store.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write Check out the prices of our products at the Sari-Sari store." }], xp: 40 }),
     s31({ id: "store-prices-em", task: "Add a place for the stressed word.", inputMode: "tap-to-build", files: { "index.html": STORE_PRICES_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: STORE_PRICES_ELEMENT_SLOT.slotLine, blocks: ["<em></em>","<p></p>","<div></div>","<note></note>"], correctBlock: "<em></em>", conceptIds: ["em-element"], tests: [{ id: "store-prices-em-exists", kind: "exists", selector: "em", label: "The stressed word has a place" }], hints: [{ level: 1, text: "Add the element that marks a stressed word." }, { level: 2, text: "Use em for the stressed word." }], xp: 50 }),
     s31({ id: "store-prices-em-text", task: "Write Discounted! inside it.", inputMode: "guided", files: solved(STORE_PRICES_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<em></em>", tests: [{ id: "store-prices-em-text-set", kind: "text-equals", selector: "em", value: "Discounted!", label: "The stressed word shows its words" }], hints: [{ level: 1, text: "Write the words inside the em tags." }, { level: 2, text: "Use Discounted! exactly." }], xp: 40 }),
+    s32({ id: "water-bill-title", task: "Start the barangay water bill with a smaller heading.", inputMode: "tap-to-build", files: { "index.html": WATER_BILL_TITLE_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: WATER_BILL_TITLE_SLOT.slotLine, blocks: ["<h2></h2>", "<p></p>", "<h1></h1>", "<span></span>"], correctBlock: "<h2></h2>", tests: [{ id: "water-bill-title-exists", kind: "exists", selector: "h2", label: "The page has a heading" }], hints: [{ level: 1, text: "Add a level-two heading in the blank line." }, { level: 2, text: "Use h2 for this smaller heading." }], xp: 40 }),
+    s32({ id: "water-bill-heading", task: "Name the heading Barangay Water Bill.", inputMode: "guided", files: solved(WATER_BILL_TITLE_BODY), activeFile: "index.html", highlightToken: "<h2></h2>", tests: [{ id: "water-bill-heading-text", kind: "text-equals", selector: "h2", value: "Barangay Water Bill", label: "The page has its name" }], hints: [{ level: 1, text: "Write the page name between the heading tags." }, { level: 2, text: "Use Barangay Water Bill exactly." }], xp: 40 }),
+    s32({ id: "water-bill-copy", task: "Add the opening sentence below the heading.", inputMode: "guided", files: solved(WATER_BILL_HEADING_BODY), activeFile: "index.html", highlightToken: "</h2>", tests: [{ id: "water-bill-copy-text", kind: "text-equals", selector: "p", value: "Learn how to highlight text on a water bill for easier reading.", label: "The opening sentence is on the page" }], hints: [{ level: 1, text: "Add one paragraph below the heading." }, { level: 2, text: "Write Learn how to highlight text on a water bill for easier reading." }], xp: 40 }),
+    s32({ id: "water-bill-span", task: "Add a place for the small piece of text.", inputMode: "tap-to-build", files: { "index.html": WATER_BILL_ELEMENT_SLOT.page, "styles.css": "" }, activeFile: "index.html", slotLine: WATER_BILL_ELEMENT_SLOT.slotLine, blocks: ["<span></span>","<p></p>","<div></div>","<note></note>"], correctBlock: "<span></span>", conceptIds: ["span-element"], tests: [{ id: "water-bill-span-exists", kind: "exists", selector: "span", label: "The small piece of text has a place" }], hints: [{ level: 1, text: "Add the element that marks a small piece of text." }, { level: 2, text: "Use span for the small piece of text." }], xp: 50 }),
+    s32({ id: "water-bill-span-text", task: "Write Metered Amount inside it.", inputMode: "guided", files: solved(WATER_BILL_ELEMENT_BODY), activeFile: "index.html", highlightToken: "<span></span>", tests: [{ id: "water-bill-span-text-set", kind: "text-equals", selector: "span", value: "Metered Amount", label: "The small piece of text shows its words" }], hints: [{ level: 1, text: "Write the words inside the span tags." }, { level: 2, text: "Use Metered Amount exactly." }], xp: 40 }),
   ],
 };
