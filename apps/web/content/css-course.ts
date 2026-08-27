@@ -129,6 +129,13 @@ const TERMINAL_TIMETABLE_HTML = `<article class="info-card">
 </article>`;
 const solvedTerminalTimetable = (styles: string): Record<string, string> => ({ "index.html": TERMINAL_TIMETABLE_HTML, "styles.css": css(styles) });
 
+/* css-topic: flex-row */
+const STORE_PRICE_HTML = `<div class="price-row">
+  <span class="price-name">Product</span>
+  <span class="price-amount">Price</span>
+</div>`;
+const solvedStorePrice = (styles: string): Record<string, string> => ({ "index.html": STORE_PRICE_HTML, "styles.css": css(styles) });
+
 /** Authored proof for every step. Missing entries stop the course from loading. */
 const references = {
   "first-rule": {
@@ -309,6 +316,11 @@ const references = {
   "terminal-timetable-color": { estimatedMinutes: 4, solution: solvedTerminalTimetable(".info-card {\n  font-size: 18px;\n  line-height: 1.6;\n  color: #1f2937;\n}") },
   "terminal-timetable-font-weight": { estimatedMinutes: 4, solution: solvedTerminalTimetable(".info-card {\n  font-size: 18px;\n  line-height: 1.6;\n  color: #1f2937;\n  font-weight: 500;\n}") },
   "terminal-timetable-letter-spacing": { estimatedMinutes: 4, solution: solvedTerminalTimetable(".info-card {\n  font-size: 18px;\n  line-height: 1.6;\n  color: #1f2937;\n  font-weight: 500;\n  letter-spacing: 0.2px;\n}") },
+  "store-price-display": { estimatedMinutes: 4, solution: solvedStorePrice(".price-row {\n  display: flex;\n}") },
+  "store-price-justify-content": { estimatedMinutes: 4, solution: solvedStorePrice(".price-row {\n  display: flex;\n  justify-content: space-between;\n}") },
+  "store-price-align-items": { estimatedMinutes: 4, solution: solvedStorePrice(".price-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}") },
+  "store-price-gap": { estimatedMinutes: 4, solution: solvedStorePrice(".price-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 12px;\n}") },
+  "store-price-padding": { estimatedMinutes: 4, solution: solvedStorePrice(".price-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 12px;\n  padding: 12px;\n}") },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "jeepney-route-card";
@@ -332,6 +344,7 @@ const PROJECT_18_ID = "barangay-night-notice";
 const PROJECT_19_ID = "sari-sari-store";
 const PROJECT_20_ID = "barangay-curfew-notice";
 const PROJECT_21_ID = "jeepney-terminal-timetable";
+const PROJECT_22_ID = "sari-sari-store-price";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -362,12 +375,14 @@ const s20 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const 
 
 const s21 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_21_ID }; };
 
+const s22 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_22_ID }; };
+
 export const cssCourse: Course = {
   id: "css-basics",
   order: 2,
   title: "Learn CSS by Building a Jeepney Route Card",
   project: "Jeepney Route Card",
-  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }],
+  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }, { id: PROJECT_22_ID, title: "Sari Sari Store Price" }],
   kind: "web",
   requires: ["html-basics"],
   summary: "Now make it look good. Colours, spacing, fonts, and layout.",
@@ -843,5 +858,10 @@ export const cssCourse: Course = {
     s21({ id: "terminal-timetable-color", task: "Darken the words so they have enough contrast.", inputMode: "guided", files: solvedTerminalTimetable(".info-card {\n  font-size: 18px;\n  line-height: 1.6;\n  color: ;\n}"), activeFile: "styles.css", highlightToken: "color: ;", tests: [{ id: "terminal-timetable-color-set", kind: "style", selector: ".info-card", prop: "color", equals: "rgb(31, 41, 55)", readable: "dark slate", label: "The card text shows its words in dark slate" }], hints: [{ level: 1, text: "Use the dark slate code named in the task." }, { level: 2, text: "Write #1f2937 after the colon." }], xp: 45 }),
     s21({ id: "terminal-timetable-font-weight", task: "Give the card text a little more weight.", inputMode: "guided", files: solvedTerminalTimetable(".info-card {\n  font-size: 18px;\n  line-height: 1.6;\n  color: #1f2937;\n  font-weight: ;\n}"), activeFile: "styles.css", highlightToken: "font-weight: ;", tests: [{ id: "terminal-timetable-font-weight-set", kind: "style", selector: ".info-card", prop: "font-weight", equals: "500", readable: "medium", label: "The card text sets its weight to medium" }], hints: [{ level: 1, text: "Use the medium weight number." }, { level: 2, text: "Write 500 after the colon." }], xp: 45 }),
     s21({ id: "terminal-timetable-letter-spacing", task: "Loosen the letters very slightly.", inputMode: "guided", files: solvedTerminalTimetable(".info-card {\n  font-size: 18px;\n  line-height: 1.6;\n  color: #1f2937;\n  font-weight: 500;\n  letter-spacing: ;\n}"), activeFile: "styles.css", highlightToken: "letter-spacing: ;", tests: [{ id: "terminal-timetable-letter-spacing-set", kind: "style", selector: ".info-card", prop: "letter-spacing", equals: "0.2px", readable: "0.2 pixels", label: "The card text spaces its letters by 0.2 pixels" }], hints: [{ level: 1, text: "Use a small pixel value." }, { level: 2, text: "Write 0.2px after the colon." }], xp: 45 }),
+    s22({ id: "store-price-display", task: "Put the label and the amount on one line.", inputMode: "guided", files: solvedStorePrice(".price-row {\n  display: ;\n}"), activeFile: "styles.css", highlightToken: "display: ;", tests: [{ id: "store-price-display-set", kind: "style", selector: ".price-row", prop: "display", equals: "flex", readable: "a flex row", label: "The row is laid out as a flex row" }], hints: [{ level: 1, text: "Use the display value that lays children out in a row." }, { level: 2, text: "Write flex after the colon." }], xp: 45 }),
+    s22({ id: "store-price-justify-content", task: "Push the amount to the far right.", inputMode: "guided", files: solvedStorePrice(".price-row {\n  display: flex;\n  justify-content: ;\n}"), activeFile: "styles.css", highlightToken: "justify-content: ;", tests: [{ id: "store-price-justify-content-set", kind: "style", selector: ".price-row", prop: "justify-content", equals: "space-between", readable: "pushed apart", label: "The row spaces its children pushed apart" }], hints: [{ level: 1, text: "Use the value that puts all spare space between the two." }, { level: 2, text: "Write space-between after the colon." }], xp: 45 }),
+    s22({ id: "store-price-align-items", task: "Line the two up through their middles.", inputMode: "guided", files: solvedStorePrice(".price-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: ;\n}"), activeFile: "styles.css", highlightToken: "align-items: ;", tests: [{ id: "store-price-align-items-set", kind: "style", selector: ".price-row", prop: "align-items", equals: "center", readable: "centred across", label: "The row lines its children up centred across" }], hints: [{ level: 1, text: "Use the value that centres children across the row." }, { level: 2, text: "Write center after the colon." }], xp: 45 }),
+    s22({ id: "store-price-gap", task: "Keep a minimum gap between the two.", inputMode: "guided", files: solvedStorePrice(".price-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: ;\n}"), activeFile: "styles.css", highlightToken: "gap: ;", tests: [{ id: "store-price-gap-set", kind: "style", selector: ".price-row", prop: "column-gap", equals: "12px", readable: "12 pixels", label: "The row keeps a gap of 12 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the gap." }, { level: 2, text: "Write 12px after the colon." }], xp: 45 }),
+    s22({ id: "store-price-padding", task: "Give the row room inside.", inputMode: "guided", files: solvedStorePrice(".price-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 12px;\n  padding: ;\n}"), activeFile: "styles.css", highlightToken: "padding: ;", tests: [{ id: "store-price-padding-set", kind: "style", selector: ".price-row", prop: "padding-top", equals: "12px", readable: "12 pixels", label: "The row has room inside of 12 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the inside room." }, { level: 2, text: "Write 12px after the colon." }], xp: 45 }),
   ],
 };
