@@ -121,6 +121,14 @@ const CURFEW_NOTICE_HTML = `<aside class="notice-banner">
 </aside>`;
 const solvedCurfewNotice = (styles: string): Record<string, string> => ({ "index.html": CURFEW_NOTICE_HTML, "styles.css": css(styles) });
 
+/* css-topic: typography */
+const TERMINAL_TIMETABLE_HTML = `<article class="info-card">
+  <h2>Jeepney Timetable</h2>
+  <p>Time: 7:30AM</p>
+  <p class="info-detail">Destination: Mandaluyong</p>
+</article>`;
+const solvedTerminalTimetable = (styles: string): Record<string, string> => ({ "index.html": TERMINAL_TIMETABLE_HTML, "styles.css": css(styles) });
+
 /** Authored proof for every step. Missing entries stop the course from loading. */
 const references = {
   "first-rule": {
@@ -296,6 +304,11 @@ const references = {
   "curfew-notice-border-left-color": { estimatedMinutes: 4, solution: solvedCurfewNotice(".notice-banner {\n  border-left-width: 4px;\n  border-left-style: solid;\n  border-left-color: #b45309;\n}") },
   "curfew-notice-background-color": { estimatedMinutes: 4, solution: solvedCurfewNotice(".notice-banner {\n  border-left-width: 4px;\n  border-left-style: solid;\n  border-left-color: #b45309;\n  background-color: #fffbeb;\n}") },
   "curfew-notice-padding-left": { estimatedMinutes: 4, solution: solvedCurfewNotice(".notice-banner {\n  border-left-width: 4px;\n  border-left-style: solid;\n  border-left-color: #b45309;\n  background-color: #fffbeb;\n  padding-left: 16px;\n}") },
+  "terminal-timetable-font-size": { estimatedMinutes: 4, solution: solvedTerminalTimetable(".info-card {\n  font-size: 18px;\n}") },
+  "terminal-timetable-line-height": { estimatedMinutes: 4, solution: solvedTerminalTimetable(".info-card {\n  font-size: 18px;\n  line-height: 1.6;\n}") },
+  "terminal-timetable-color": { estimatedMinutes: 4, solution: solvedTerminalTimetable(".info-card {\n  font-size: 18px;\n  line-height: 1.6;\n  color: #1f2937;\n}") },
+  "terminal-timetable-font-weight": { estimatedMinutes: 4, solution: solvedTerminalTimetable(".info-card {\n  font-size: 18px;\n  line-height: 1.6;\n  color: #1f2937;\n  font-weight: 500;\n}") },
+  "terminal-timetable-letter-spacing": { estimatedMinutes: 4, solution: solvedTerminalTimetable(".info-card {\n  font-size: 18px;\n  line-height: 1.6;\n  color: #1f2937;\n  font-weight: 500;\n  letter-spacing: 0.2px;\n}") },
 } satisfies Record<string, StepReference>;
 
 const PROJECT_ID = "jeepney-route-card";
@@ -318,6 +331,7 @@ const PROJECT_17_ID = "barangay-print-notice";
 const PROJECT_18_ID = "barangay-night-notice";
 const PROJECT_19_ID = "sari-sari-store";
 const PROJECT_20_ID = "barangay-curfew-notice";
+const PROJECT_21_ID = "jeepney-terminal-timetable";
 
 const s = (step: Omit<Step, "index" | "kind" | "projectId">): Step => {
   const reference = references[step.id as keyof typeof references];
@@ -346,12 +360,14 @@ const s19 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const 
 
 const s20 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_20_ID }; };
 
+const s21 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const reference = references[step.id as keyof typeof references]; if (!reference) throw new Error(`Missing reference data for CSS step: ${step.id}`); return { ...step, ...reference, index: ++n, kind: "web", projectId: PROJECT_21_ID }; };
+
 export const cssCourse: Course = {
   id: "css-basics",
   order: 2,
   title: "Learn CSS by Building a Jeepney Route Card",
   project: "Jeepney Route Card",
-  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }],
+  projects: [{ id: PROJECT_ID, title: "Jeepney Route Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Receipt" }, { id: PROJECT_3_ID, title: "Turo-Turo Order Row" }, { id: PROJECT_4_ID, title: "Barangay Notice Banner" }, { id: PROJECT_5_ID, title: "Palengke Produce Grid" }, { id: PROJECT_6_ID, title: "Emergency Help Link" }, { id: PROJECT_7_ID, title: "Barangay Request Form" }, { id: PROJECT_8_ID, title: "Barangay Service Cards" }, { id: PROJECT_9_ID, title: "Palengke Price Columns" }, { id: PROJECT_10_ID, title: "Barangay Holiday Theme" }, { id: PROJECT_11_ID, title: "Barangay Alert Motion" }, { id: PROJECT_12_ID, title: "Barangay Announcement Heading" }, { id: PROJECT_13_ID, title: "Barangay Announcement Link" }, { id: PROJECT_14_ID, title: "Turo-Turo Order Button" }, { id: PROJECT_15_ID, title: "Barangay Service Status" }, { id: PROJECT_16_ID, title: "Barangay Focus Link" }, { id: PROJECT_17_ID, title: "Barangay Print Notice" }, { id: PROJECT_18_ID, title: "Barangay Night Notice" }, { id: PROJECT_19_ID, title: "Sari Sari Store" }, { id: PROJECT_20_ID, title: "Barangay Curfew Notice" }, { id: PROJECT_21_ID, title: "Jeepney Terminal Timetable" }],
   kind: "web",
   requires: ["html-basics"],
   summary: "Now make it look good. Colours, spacing, fonts, and layout.",
@@ -822,5 +838,10 @@ export const cssCourse: Course = {
     s20({ id: "curfew-notice-border-left-color", task: "Colour the stripe amber so it reads as a warning.", inputMode: "guided", files: solvedCurfewNotice(".notice-banner {\n  border-left-width: 4px;\n  border-left-style: solid;\n  border-left-color: ;\n}"), activeFile: "styles.css", highlightToken: "border-left-color: ;", tests: [{ id: "curfew-notice-border-left-color-set", kind: "style", selector: ".notice-banner", prop: "border-left-color", equals: "rgb(180, 83, 9)", readable: "amber", label: "The notice has a stripe coloured amber" }], hints: [{ level: 1, text: "Use the amber colour code named in the task." }, { level: 2, text: "Write #b45309 after the colon." }], xp: 45 }),
     s20({ id: "curfew-notice-background-color", task: "Tint the notice background to match the stripe.", inputMode: "guided", files: solvedCurfewNotice(".notice-banner {\n  border-left-width: 4px;\n  border-left-style: solid;\n  border-left-color: #b45309;\n  background-color: ;\n}"), activeFile: "styles.css", highlightToken: "background-color: ;", tests: [{ id: "curfew-notice-background-color-set", kind: "style", selector: ".notice-banner", prop: "background-color", equals: "rgb(255, 251, 235)", readable: "pale amber", label: "The notice has a background of pale amber" }], hints: [{ level: 1, text: "Use the pale amber code." }, { level: 2, text: "Write #fffbeb after the colon." }], xp: 45 }),
     s20({ id: "curfew-notice-padding-left", task: "Keep the words clear of the stripe.", inputMode: "guided", files: solvedCurfewNotice(".notice-banner {\n  border-left-width: 4px;\n  border-left-style: solid;\n  border-left-color: #b45309;\n  background-color: #fffbeb;\n  padding-left: ;\n}"), activeFile: "styles.css", highlightToken: "padding-left: ;", tests: [{ id: "curfew-notice-padding-left-set", kind: "style", selector: ".notice-banner", prop: "padding-left", equals: "16px", readable: "16 pixels", label: "The notice keeps its words clear by 16 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the space after the stripe." }, { level: 2, text: "Write 16px after the colon." }], xp: 45 }),
+    s21({ id: "terminal-timetable-font-size", task: "Make the card text large enough to read on a phone.", inputMode: "guided", files: solvedTerminalTimetable(".info-card {\n  font-size: ;\n}"), activeFile: "styles.css", highlightToken: "font-size: ;", tests: [{ id: "terminal-timetable-font-size-set", kind: "style", selector: ".info-card", prop: "font-size", equals: "18px", readable: "18 pixels", label: "The card text sets its text at 18 pixels" }], hints: [{ level: 1, text: "Use a pixel value for the text size." }, { level: 2, text: "Write 18px after the colon." }], xp: 45 }),
+    s21({ id: "terminal-timetable-line-height", task: "Open up the space between lines.", inputMode: "guided", files: solvedTerminalTimetable(".info-card {\n  font-size: 18px;\n  line-height: ;\n}"), activeFile: "styles.css", highlightToken: "line-height: ;", tests: [{ id: "terminal-timetable-line-height-set", kind: "style", selector: ".info-card", prop: "line-height", equals: "28.8px", readable: "1.6 times the text size", label: "The card text spaces its lines by 1.6 times the text size" }], hints: [{ level: 1, text: "Use a number with no unit." }, { level: 2, text: "Write 1.6 after the colon." }], xp: 45 }),
+    s21({ id: "terminal-timetable-color", task: "Darken the words so they have enough contrast.", inputMode: "guided", files: solvedTerminalTimetable(".info-card {\n  font-size: 18px;\n  line-height: 1.6;\n  color: ;\n}"), activeFile: "styles.css", highlightToken: "color: ;", tests: [{ id: "terminal-timetable-color-set", kind: "style", selector: ".info-card", prop: "color", equals: "rgb(31, 41, 55)", readable: "dark slate", label: "The card text shows its words in dark slate" }], hints: [{ level: 1, text: "Use the dark slate code named in the task." }, { level: 2, text: "Write #1f2937 after the colon." }], xp: 45 }),
+    s21({ id: "terminal-timetable-font-weight", task: "Give the card text a little more weight.", inputMode: "guided", files: solvedTerminalTimetable(".info-card {\n  font-size: 18px;\n  line-height: 1.6;\n  color: #1f2937;\n  font-weight: ;\n}"), activeFile: "styles.css", highlightToken: "font-weight: ;", tests: [{ id: "terminal-timetable-font-weight-set", kind: "style", selector: ".info-card", prop: "font-weight", equals: "500", readable: "medium", label: "The card text sets its weight to medium" }], hints: [{ level: 1, text: "Use the medium weight number." }, { level: 2, text: "Write 500 after the colon." }], xp: 45 }),
+    s21({ id: "terminal-timetable-letter-spacing", task: "Loosen the letters very slightly.", inputMode: "guided", files: solvedTerminalTimetable(".info-card {\n  font-size: 18px;\n  line-height: 1.6;\n  color: #1f2937;\n  font-weight: 500;\n  letter-spacing: ;\n}"), activeFile: "styles.css", highlightToken: "letter-spacing: ;", tests: [{ id: "terminal-timetable-letter-spacing-set", kind: "style", selector: ".info-card", prop: "letter-spacing", equals: "0.2px", readable: "0.2 pixels", label: "The card text spaces its letters by 0.2 pixels" }], hints: [{ level: 1, text: "Use a small pixel value." }, { level: 2, text: "Write 0.2px after the colon." }], xp: 45 }),
   ],
 };
