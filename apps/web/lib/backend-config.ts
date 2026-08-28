@@ -1,3 +1,5 @@
+import { siteUrl } from "@/lib/site";
+
 export interface BackendConfig {
   url: string;
   publishableKey: string;
@@ -19,13 +21,12 @@ function cleanUrl(value: string | undefined): string | null {
 export function backendConfig(): BackendConfig | null {
   const url = cleanUrl(process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL);
   const publishableKey = (process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY)?.trim();
-  const siteUrl = cleanUrl(process.env.SITE_URL ?? process.env.NEXT_PUBLIC_SITE_URL) ?? "http://localhost:3000";
   if (!url || !publishableKey) return null;
   return {
     url,
     publishableKey,
     secretKey: process.env.SUPABASE_SECRET_KEY?.trim() || null,
-    siteUrl,
+    siteUrl: siteUrl(),
   };
 }
 

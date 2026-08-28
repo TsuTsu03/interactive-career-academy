@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { AccountScreen } from "@/components/account-screen";
 
 export const metadata: Metadata = {
-  title: "Account | Web Foundations",
-  description: "Account connection status for the Web Foundations learning app.",
+  robots: { index: false, follow: false },
+  title: "Account",
+  description: "Account connection status for CodeDaddy.",
 };
 
 export default function AccountPage() {

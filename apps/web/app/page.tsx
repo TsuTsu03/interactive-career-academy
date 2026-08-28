@@ -3,12 +3,23 @@ import Link from "next/link";
 import { BrandLogo } from "@/components/brand-logo";
 import { Icon, type IconName } from "@/components/icon";
 import { SiteFooter } from "@/components/site-footer";
+import { StructuredData } from "@/components/structured-data";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { pageOpenGraph } from "@/lib/site";
+import { siteGraph } from "@/lib/structured-data";
+
+const DESCRIPTION =
+  "Learn front-end development through clear concepts, Philippines-first projects, and working code you can inspect and improve.";
 
 export const metadata: Metadata = {
   title: "Learn web development by building for real life",
-  description:
-    "Learn front-end development through clear concepts, Philippines-first projects, and working code you can inspect and improve.",
+  description: DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: pageOpenGraph({
+    url: "/",
+    title: "CodeDaddy | Learn web development by building for real life",
+    description: DESCRIPTION,
+  }),
 };
 
 const CODE_LINES = [
@@ -89,6 +100,7 @@ const PRODUCT_STORY: {
 export default function Page() {
   return (
     <div className="flex min-h-[100dvh] flex-col bg-background text-on-background">
+      <StructuredData data={siteGraph()} />
       <header className="sticky top-0 z-50 border-b border-outline-variant bg-surface">
         <div className="flex h-touch-target w-full items-center justify-between px-margin-mobile md:h-16 md:px-margin-desktop">
           <BrandLogo href="/" compact />
