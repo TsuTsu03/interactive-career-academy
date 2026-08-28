@@ -1,4 +1,5 @@
 import type { Concept } from "@/lib/lesson-ir";
+import { newCourseConcepts } from "@/content/new-course-concepts";
 
 const reactDemoCss =
   "body{margin:0;padding:20px;font-family:system-ui,sans-serif;color:#172033;background:#f7f5ef}main,section{max-width:420px}section{padding:14px;border:2px solid #2563eb;border-radius:8px;background:white}h1,h2,p{margin:0 0 10px}button,input{font:inherit;padding:8px 10px}button{cursor:pointer}ul{margin:0;padding-left:22px}";
@@ -16,6 +17,7 @@ const reactDemoCss =
  * PLAN.md section 5. Enforced by `lib/harness.ts`.
  */
 export const concepts: Record<string, Concept> = {
+  ...newCourseConcepts,
   // --- Learn HTML by Building a Sari-Sari Store Page ---
 
   element: {
@@ -2662,6 +2664,260 @@ export const concepts: Record<string, Concept> = {
       caption: "The className prop gives this heading its visible class style.",
     },
     proof: "You will pass a class name to the heading through its props.",
+  },
+  "react-jsx-element": {
+    id: "react-jsx-element",
+    term: "JSX element",
+    definition: "A JSX element is an HTML-like way to describe what React should show.",
+    analogy: "It is like writing the sign you want printed instead of listing every printing step.",
+    visual: {
+      kind: "diagram",
+      diagram: {
+        alt: "A main JSX tag becomes a main area in the browser.",
+        columns: 2,
+        nodes: [
+          { id: "jsx", label: "<main></main>", note: "JSX description", tone: "accent" },
+          { id: "page", label: "Main area", note: "browser result", tone: "box" },
+        ],
+        arrows: [{ from: "jsx", to: "page", label: "React shows" }],
+      },
+    },
+    proof: "You will return a main JSX element and see it appear.",
+  },
+  "react-jsx-expression": {
+    id: "react-jsx-expression",
+    term: "JSX expression",
+    definition: "A JSX expression uses curly braces to show a JavaScript value inside JSX.",
+    analogy: "It is like leaving a labelled space on a notice for today's changing message.",
+    visual: {
+      kind: "diagram",
+      diagram: {
+        alt: "The title value passes through curly braces and appears in a heading.",
+        columns: 3,
+        nodes: [
+          { id: "value", label: "title", note: "saved words", tone: "ghost" },
+          { id: "braces", label: "{title}", note: "read value", tone: "accent" },
+          { id: "heading", label: "Page heading", note: "shown words", tone: "box" },
+        ],
+        arrows: [{ from: "value", to: "braces" }, { from: "braces", to: "heading" }],
+      },
+    },
+    proof: "You will put a saved title between curly braces in a heading.",
+  },
+  "react-jsx-class-name": {
+    id: "react-jsx-class-name",
+    term: "className",
+    definition: "className gives a CSS class to an element written in JSX.",
+    analogy: "It is the label that tells the stylesheet which visual rule belongs to an element.",
+    visual: {
+      kind: "live-demo",
+      files: {
+        "index.html": "<main><h1 class=\"notice-title\">Evacuation Centre</h1></main>",
+        "styles.css": `${reactDemoCss}.notice-title{border-left:6px solid #2563eb;padding-left:10px}`,
+      },
+      caption: "The class name connects the heading to its visible border rule.",
+    },
+    proof: "You will add a className to a JSX heading.",
+  },
+  "react-jsx-fragment": {
+    id: "react-jsx-fragment",
+    term: "JSX fragment",
+    definition: "A JSX fragment groups nearby elements without adding another element to the page.",
+    analogy: "It is like a paper clip that keeps two forms together without adding another form.",
+    visual: {
+      kind: "diagram",
+      diagram: {
+        alt: "A fragment groups a main area and footer while the page receives only those two elements.",
+        columns: 3,
+        nodes: [
+          { id: "fragment", label: "<> ... </>", note: "group", tone: "accent" },
+          { id: "main", label: "main", note: "first element", tone: "box" },
+          { id: "footer", label: "footer", note: "second element", tone: "box" },
+        ],
+        arrows: [{ from: "fragment", to: "main" }, { from: "fragment", to: "footer" }],
+      },
+    },
+    proof: "You will wrap a returned element in a fragment.",
+  },
+  "react-children": {
+    id: "react-children",
+    term: "children prop",
+    definition: "The children prop holds content placed between a component's opening and closing tags.",
+    analogy: "Like a labelled envelope that carries whatever paper was placed inside it.",
+    visual: {
+      kind: "diagram",
+      diagram: {
+        alt: "Content between component tags becomes the children prop and appears inside the component.",
+        columns: 3,
+        nodes: [
+          { id: "content", label: "Available", note: "tag content", tone: "ghost" },
+          { id: "children", label: "children", note: "component prop", tone: "accent" },
+          { id: "badge", label: "Status badge", note: "shown content", tone: "box" },
+        ],
+        arrows: [{ from: "content", to: "children" }, { from: "children", to: "badge" }],
+      },
+    },
+    proof: "You will pass Available between StatusBadge tags and render it through children.",
+  },
+  "react-reducer": {
+    id: "react-reducer",
+    term: "reducer",
+    definition: "A reducer calculates the next state from the current state and a named action.",
+    analogy: "Like a stock clerk applying one written add or reset instruction to the current count.",
+    visual: {
+      kind: "diagram",
+      diagram: {
+        alt: "Current state and an action enter a reducer, which returns the next state.",
+        columns: 3,
+        nodes: [
+          { id: "current", label: "Current state", note: "count now", tone: "ghost" },
+          { id: "reducer", label: "reducer", note: "apply action", tone: "accent" },
+          { id: "next", label: "Next state", note: "new count", tone: "box" },
+        ],
+        arrows: [{ from: "current", to: "reducer" }, { from: "reducer", to: "next" }],
+      },
+    },
+    proof: "You will use a reducer to add one to a dashboard count.",
+  },
+  "react-context": {
+    id: "react-context",
+    term: "React context",
+    definition: "React context shares one value with nested components without passing it through every level.",
+    analogy: "Like one barangay notice board that every service desk can read directly.",
+    visual: {
+      kind: "diagram",
+      diagram: {
+        alt: "A context provider shares one label with a nested label component.",
+        columns: 3,
+        nodes: [
+          { id: "provider", label: "Provider", note: "shared label", tone: "accent" },
+          { id: "tree", label: "Component tree", note: "nested parts", tone: "ghost" },
+          { id: "reader", label: "ContextLabel", note: "reads label", tone: "box" },
+        ],
+        arrows: [{ from: "provider", to: "tree" }, { from: "tree", to: "reader" }],
+      },
+    },
+    proof: "You will provide a summary label and read it in a nested component.",
+  },
+  "react-custom-hook": {
+    id: "react-custom-hook",
+    term: "custom hook",
+    definition: "A custom hook is a function that gives reusable React logic a clear name.",
+    analogy: "Like one standard service procedure that several desks can follow without rewriting it.",
+    visual: {
+      kind: "diagram",
+      diagram: {
+        alt: "A component calls useLabel, which reads context and returns the shared label.",
+        columns: 3,
+        nodes: [
+          { id: "component", label: "Component", note: "needs label", tone: "ghost" },
+          { id: "hook", label: "useLabel", note: "reusable logic", tone: "accent" },
+          { id: "value", label: "Shared label", note: "returned value", tone: "box" },
+        ],
+        arrows: [{ from: "component", to: "hook" }, { from: "hook", to: "value" }],
+      },
+    },
+    proof: "You will move a context lookup into a custom hook named useLabel.",
+  },
+  "react-memoization": {
+    id: "react-memoization",
+    term: "memoization",
+    definition: "Memoization reuses a calculated value until one of its listed inputs changes.",
+    analogy: "Like keeping today's total on a summary slip until a new sale changes it.",
+    visual: {
+      kind: "diagram",
+      diagram: {
+        alt: "The count enters a saved calculation and produces a doubled value.",
+        columns: 3,
+        nodes: [
+          { id: "count", label: "count", note: "listed input", tone: "ghost" },
+          { id: "memo", label: "useMemo", note: "saved calculation", tone: "accent" },
+          { id: "double", label: "doubled", note: "reused value", tone: "box" },
+        ],
+        arrows: [{ from: "count", to: "memo" }, { from: "memo", to: "double" }],
+      },
+    },
+    proof: "You will memoize a doubled dashboard count and show the result.",
+  },
+  "react-lifted-state": {
+    id: "react-lifted-state",
+    term: "lifted state",
+    definition: "Lifted state lives in the nearest parent that needs to share it with more than one child.",
+    analogy: "Like keeping one official amount at the main desk so two service windows read the same number.",
+    visual: {
+      kind: "diagram",
+      diagram: {
+        alt: "One parent state value flows to an input child and a summary child.",
+        columns: 3,
+        nodes: [
+          { id: "parent", label: "App state", note: "one amount", tone: "accent" },
+          { id: "input", label: "AmountInput", note: "edits amount", tone: "box" },
+          { id: "summary", label: "Summary", note: "reads amount", tone: "box" },
+        ],
+        arrows: [{ from: "parent", to: "input" }, { from: "parent", to: "summary" }],
+      },
+    },
+    proof: "You will keep one amount in App and pass it to two child components.",
+  },
+  "react-immutable-update": {
+    id: "react-immutable-update",
+    term: "immutable state update",
+    definition: "An immutable state update creates a new object or array instead of changing the old one.",
+    analogy: "Like issuing a corrected form while keeping the old signed form unchanged.",
+    visual: {
+      kind: "diagram",
+      diagram: {
+        alt: "An old profile is copied, one field changes, and React receives a new profile.",
+        columns: 3,
+        nodes: [
+          { id: "old", label: "Old profile", note: "unchanged", tone: "ghost" },
+          { id: "copy", label: "{ ...profile }", note: "new object", tone: "accent" },
+          { id: "next", label: "Updated profile", note: "new state", tone: "box" },
+        ],
+        arrows: [{ from: "old", to: "copy" }, { from: "copy", to: "next" }],
+      },
+    },
+    proof: "You will copy a profile object before replacing one field.",
+  },
+  "react-derived-state": {
+    id: "react-derived-state",
+    term: "derived value",
+    definition: "A derived value is calculated from current props or state instead of stored as another state value.",
+    analogy: "Like calculating a receipt total from its current items instead of keeping a second total that can become stale.",
+    visual: {
+      kind: "diagram",
+      diagram: {
+        alt: "Current items and a query produce a filtered list during rendering.",
+        columns: 3,
+        nodes: [
+          { id: "inputs", label: "Items + query", note: "current values", tone: "ghost" },
+          { id: "calculate", label: "filter", note: "derive now", tone: "accent" },
+          { id: "result", label: "Visible items", note: "no extra state", tone: "box" },
+        ],
+        arrows: [{ from: "inputs", to: "calculate" }, { from: "calculate", to: "result" }],
+      },
+    },
+    proof: "You will calculate a filtered collection directly from products and query.",
+  },
+  "react-hook-rules": {
+    id: "react-hook-rules",
+    term: "Rules of Hooks",
+    definition: "The Rules of Hooks require hooks to run at the top level of React components or custom hooks.",
+    analogy: "Like following the same numbered checklist in the same order for every service request.",
+    visual: {
+      kind: "diagram",
+      diagram: {
+        alt: "A component calls a custom hook before returning its page elements.",
+        columns: 3,
+        nodes: [
+          { id: "component", label: "App starts", note: "top level", tone: "ghost" },
+          { id: "hook", label: "useToggle()", note: "same order", tone: "accent" },
+          { id: "return", label: "return JSX", note: "after hooks", tone: "box" },
+        ],
+        arrows: [{ from: "component", to: "hook" }, { from: "hook", to: "return" }],
+      },
+    },
+    proof: "You will call useToggle at the top of App before returning JSX.",
   },
 };
 

@@ -24,6 +24,9 @@ export interface JsProbe {
   expressions: string[];
   /** Function calls to make: [name, args]. */
   calls: { fn: string; args: unknown[] }[];
+  /** Plain-data fixtures used by the opaque runner's local API doubles. */
+  fetch?: Record<string, { status: number; body: unknown; headers?: Record<string, string> }>;
+  storage?: Record<string, string>;
 }
 
 export interface JsRunResult {
@@ -61,7 +64,7 @@ function runnerDocument(): string {
     parent.postMessage(Object.assign({ __academy: "result" }, payload), "*");
   }
 
-  window.addEventListener("message", function (event) {
+  window.addEventListener("message", async function (event) {
     var msg = event.data;
     if (!msg || msg.__academy !== "run") return;
 
@@ -78,6 +81,32 @@ function runnerDocument(): string {
     var returns = [];
 
     try {
+      var storageData = Object.assign({}, msg.storage || {});
+      var localStorageDouble = {
+        getItem: function (key) {
+          return Object.prototype.hasOwnProperty.call(storageData, key) ? storageData[key] : null;
+        },
+        setItem: function (key, value) { storageData[String(key)] = String(value); },
+        removeItem: function (key) { delete storageData[String(key)]; },
+        clear: function () { storageData = {}; },
+        key: function (index) { return Object.keys(storageData)[index] || null; },
+        get length() { return Object.keys(storageData).length; }
+      };
+      var fetchDouble = async function (input, init) {
+        var url = String(input);
+        var fixture = (msg.fetch || {})[url];
+        if (!fixture) throw new Error("No lesson response is configured for " + url + ".");
+        var headers = Object.assign({}, fixture.headers || {});
+        return {
+          ok: fixture.status >= 200 && fixture.status < 300,
+          status: fixture.status,
+          url: url,
+          request: { method: (init && init.method) || "GET", body: init && init.body, headers: (init && init.headers) || {} },
+          headers: { get: function (name) { return headers[String(name).toLowerCase()] || null; } },
+          json: async function () { return fixture.body; },
+          text: async function () { return typeof fixture.body === "string" ? fixture.body : JSON.stringify(fixture.body); }
+        };
+      };
       var probeSrc = "\\n;return {" +
         "__values: [" + (msg.expressions || []).map(function (e) {
           return "(function(){ try { return (" + e + "); } catch (err) { return undefined; } })()";
@@ -87,10 +116,10 @@ function runnerDocument(): string {
             JSON.stringify(c.args) + "); } catch (err) { return undefined; } })()";
         }).join(",") + "]};";
 
-      var fn = new Function(msg.code + probeSrc);
-      var out = fn();
-      values = (out && out.__values) || [];
-      returns = (out && out.__returns) || [];
+      var fn = new Function("localStorage", "fetch", msg.code + probeSrc);
+      var out = fn(localStorageDouble, fetchDouble);
+      values = await Promise.all((out && out.__values) || []);
+      returns = await Promise.all((out && out.__returns) || []);
       console.log = originalLog;
       reply({ ok: true, logs: logs, values: values, returns: returns });
     } catch (err) {
@@ -142,7 +171,14 @@ export function runLearnerScript(code: string, probe: JsProbe): Promise<JsRunRes
 
       if (data.__academy === "ready") {
         frame.contentWindow?.postMessage(
-          { __academy: "run", code, expressions: probe.expressions, calls: probe.calls },
+          {
+            __academy: "run",
+            code,
+            expressions: probe.expressions,
+            calls: probe.calls,
+            fetch: probe.fetch,
+            storage: probe.storage,
+          },
           "*",
         );
         return;

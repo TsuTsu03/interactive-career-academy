@@ -6,9 +6,9 @@ import { SiteFooter } from "@/components/site-footer";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 export const metadata: Metadata = {
-  title: "Write real code. Build a real future.",
+  title: "Learn web development by building for real life",
   description:
-    "Write real code, see it work, and build Philippines-first web projects from HTML through React.",
+    "Learn front-end development through clear concepts, Philippines-first projects, and working code you can inspect and improve.",
 };
 
 const CODE_LINES = [
@@ -54,6 +54,38 @@ const LOOP: {
   },
 ];
 
+const PRODUCT_STORY: {
+  icon: IconName;
+  label: string;
+  title: string;
+  text: string;
+}[] = [
+  {
+    icon: "menu_book",
+    label: "Understand",
+    title: "Learn every idea four ways",
+    text: "Start with a plain definition. Connect it to a familiar analogy, see a visual, then prove it with code.",
+  },
+  {
+    icon: "map",
+    label: "Build",
+    title: "Work on projects that feel familiar",
+    text: "Build sari-sari store pages, barangay tools, fare calculators, and other projects rooted in everyday Filipino life.",
+  },
+  {
+    icon: "schedule",
+    label: "Remember",
+    title: "Review ideas before they fade",
+    text: "Short review sessions bring back concepts from earlier courses while you keep working on new projects.",
+  },
+  {
+    icon: "task_alt",
+    label: "Prove",
+    title: "Keep working proof",
+    text: "Each check points to a real requirement. Your completed projects stay available for you to inspect and improve.",
+  },
+];
+
 export default function Page() {
   return (
     <div className="flex min-h-[100dvh] flex-col bg-background text-on-background">
@@ -62,8 +94,11 @@ export default function Page() {
           <BrandLogo href="/" compact />
 
           <nav aria-label="Public navigation" className="hidden items-center gap-6 md:flex">
-            <a href="#curriculum" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">
-              Curriculum
+            <a href="#why-codedaddy" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">
+              Why CodeDaddy
+            </a>
+            <a href="#workspace" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">
+              Workspace
             </a>
             <a href="#how-it-works" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">
               How it Works
@@ -94,14 +129,13 @@ export default function Page() {
         <section className="relative flex w-full flex-col items-center overflow-hidden px-margin-mobile pb-24 pt-20 text-center md:px-margin-desktop md:pb-40 md:pt-32">
           <div className="z-10 flex max-w-4xl flex-col items-center">
             <h1 className="mb-6 max-w-3xl font-display text-[24px] font-bold leading-8 tracking-[-0.01em] text-primary md:text-headline-lg">
-              Write real code.
+              Learn web development
               <br />
-              <span className="text-secondary">Build a real future.</span>
+              <span className="text-secondary">by building for real life.</span>
             </h1>
             <p className="mb-10 max-w-2xl text-body-lg text-on-surface-variant">
-              Master modern web development from HTML to React through a structured, project-based
-              curriculum. Build familiar projects like a sari-sari store price list or a jeepney
-              fare calculator. Zero fluff. 100% free front-end path.
+              Learn each concept four ways, then use it in projects shaped by everyday life in the
+              Philippines. Finish with working pages and apps you can inspect, explain, and improve.
             </p>
             <div className="flex w-full flex-col justify-center gap-4 sm:flex-row">
               <Link
@@ -124,17 +158,58 @@ export default function Page() {
           </div>
         </section>
 
+        <section
+          id="why-codedaddy"
+          aria-labelledby="why-codedaddy-title"
+          className="border-y border-outline-variant bg-surface-container-low px-margin-mobile py-16 md:px-margin-desktop md:py-24"
+        >
+          <div className="mx-auto max-w-6xl">
+            <div className="max-w-3xl">
+              <p className="font-mono text-label-caps uppercase tracking-widest text-secondary">
+                Built for practice
+              </p>
+              <h2 id="why-codedaddy-title" className="mt-3 text-headline-md text-primary md:text-headline-lg">
+                A clear path from explanation to working code
+              </h2>
+              <p className="mt-4 text-body-lg text-on-surface-variant">
+                CodeDaddy connects explanations, familiar projects, and browser checks in one
+                learning loop. You always know what you are changing and why it matters.
+              </p>
+            </div>
+
+            <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {PRODUCT_STORY.map((item) => (
+                <article
+                  key={item.label}
+                  className="rounded-xl border border-outline-variant bg-surface-container-lowest p-6"
+                >
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-fixed text-primary">
+                    <Icon name={item.icon} size={26} />
+                  </div>
+                  <p className="mt-6 font-mono text-label-caps uppercase tracking-widest text-secondary">
+                    {item.label}
+                  </p>
+                  <h3 className="mt-2 text-[20px] font-semibold leading-7 text-primary">
+                    {item.title}
+                  </h3>
+                  <p className="mt-3 text-body-md text-on-surface-variant">{item.text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Workspace preview */}
         <section
-          id="curriculum"
-          className="w-full border-y border-outline-variant bg-surface-container-low px-margin-mobile py-16 md:px-margin-desktop md:py-24"
+          id="workspace"
+          className="w-full border-b border-outline-variant bg-surface-container-low px-margin-mobile py-16 md:px-margin-desktop md:py-24"
         >
           <div className="mx-auto max-w-6xl">
             <div className="mb-12 text-center md:mb-16 md:text-left">
               <h2 className="mb-2 text-headline-md text-primary">The Workspace</h2>
               <p className="max-w-2xl text-body-lg text-on-surface-variant">
-                Read one clear task, edit real code, and compare it with a live browser preview. No
-                fluffy tutorials — a real editor in your browser.
+                Read one clear task, edit real code, and compare it with a live browser preview.
+                You work in a real editor inside your browser.
               </p>
             </div>
 

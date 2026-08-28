@@ -26,6 +26,7 @@ export type PageTestSpec = Extract<
       | "page-text-equals"
       | "page-attr-equals"
       | "page-class-contains"
+      | "page-class-not-contains"
       | "page-click-text-equals"
       | "page-click-attr-equals"
       | "page-click-class-contains"
@@ -90,9 +91,13 @@ function runnerDocument(): string {
     }
 
     if (spec.type) {
-      el.value = spec.type;
-      fire(el, "input");
-      fire(el, "change");
+      var input = spec.inputSelector ? document.querySelector(spec.inputSelector) : el;
+      if (!input) {
+        return { id: spec.id, passed: false, actual: "nothing matched " + spec.inputSelector };
+      }
+      input.value = spec.type;
+      fire(input, "input");
+      fire(input, "change");
       el = document.querySelector(spec.selector);
       if (!el) return { id: spec.id, passed: false, actual: "the element disappeared after typing" };
     }
@@ -104,6 +109,10 @@ function runnerDocument(): string {
     else if (spec.want === "class") {
       var has = el.classList.contains(spec.value);
       return { id: spec.id, passed: has, actual: el.className || "no classes" };
+    }
+    else if (spec.want === "not-class") {
+      var absent = !el.classList.contains(spec.value);
+      return { id: spec.id, passed: absent, actual: el.className || "no classes" };
     }
 
     if (actual === null || actual === undefined) actual = "nothing";
@@ -168,6 +177,8 @@ function toWireSpec(spec: PageTestSpec) {
       return { id: spec.id, selector: spec.selector, want: "attr", attr: spec.attr, value: spec.value };
     case "page-class-contains":
       return { id: spec.id, selector: spec.selector, want: "class", value: spec.value };
+    case "page-class-not-contains":
+      return { id: spec.id, selector: spec.selector, want: "not-class", value: spec.value };
     case "page-click-text-equals":
       return { id: spec.id, selector: spec.selector, want: "text", value: spec.value, click: true, clickSelector: spec.clickSelector };
     case "page-click-attr-equals":
@@ -175,7 +186,7 @@ function toWireSpec(spec: PageTestSpec) {
     case "page-click-class-contains":
       return { id: spec.id, selector: spec.selector, want: "class", value: spec.value, click: true, clickSelector: spec.clickSelector };
     case "page-input-text-equals":
-      return { id: spec.id, selector: spec.selector, want: "text", value: spec.value, type: spec.type };
+      return { id: spec.id, selector: spec.selector, inputSelector: spec.inputSelector, want: "text", value: spec.value, type: spec.type };
   }
 }
 

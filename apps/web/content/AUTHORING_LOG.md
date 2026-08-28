@@ -3216,3 +3216,47 @@ added to catch mechanically instead of by review.
 **How:** `tools/dom-author.mjs` with `qwen2.5-coder-7b-instruct` served locally, asserting through the `page-*` family so the script actually runs before the check. Selectors, expressions, and expected results all come from `tools/dom-topics.mjs`. The model supplied only the words on the screen.
 
 **Verification performed:** TypeScript and ESLint both clean. Course is at 120 steps.
+
+---
+
+## 2026-08-28 - React curriculum completed at 550 steps
+
+**What got made:** React expanded from 60 to 550 cumulative steps across 58
+Philippines-first projects. The new coverage moves from JSX through components,
+props, children, lists, conditionals, state, events, controlled forms, effects,
+refs, reducers, context, custom hooks, and practical memoization.
+
+**Runtime decision:** The owner approved Sucrase 3.35.1 and its measured runtime
+cost. The generated React browser asset is 394,499 bytes raw and 105,999 bytes
+gzip, an increase of 201,277 raw and 45,264 gzip from the prior asset. React
+preview and grading remain separate opaque-origin `allow-scripts` frames.
+
+**Verification performed:** TypeScript, ESLint, production build, and
+`git diff --check` are clean. The React-only browser harness reports 550 steps,
+0 errors, and 15 reviewed granularity warnings. The complete browser harness
+reports 2,250 steps, 0 errors, and 28 reviewed warnings. A dedicated runtime
+diagnostic passed valid JSX, malformed JSX, timeout cleanup, and recovery
+checks, with no runner iframe left behind.
+
+---
+
+## 2026-08-28 - Four curriculum gaps completed
+
+**What got made:** Design Foundations reached 180 steps across 30 projects;
+JavaScript for Real Apps reached 130 across 26; TypeScript for React reached
+120 across 24; and Testing and DevTools reached 80 across 16. The curriculum
+map now groups all ten courses into Web Design Basics and Front-End Development
+without changing existing course ids.
+
+**Runtime work:** The JavaScript runner gained plain-data fetch and storage
+fixtures. The approved Sucrase runtime now compiles TypeScript only for TSX
+files, preserving the faster JSX path for the existing React course. Existing
+saved course sessions continue to open even when the new prerequisite order is
+introduced.
+
+**Verification performed:** Each new course passed a targeted real-Chrome
+harness with zero errors and zero warnings. The final serial per-course browser
+audit checked all 2,760 steps with zero errors and 28 reviewed legacy
+granularity warnings. The TSX runtime diagnostic, console check, and 1440px and
+375px workspace checks passed for all four new courses. TypeScript, ESLint,
+production build, and `git diff --check` are clean.

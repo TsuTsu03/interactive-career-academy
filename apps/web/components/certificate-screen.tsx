@@ -1,132 +1,82 @@
 "use client";
 
-import { SiteFooter } from "@/components/site-footer";
-import { Icon } from "@/components/icon";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Icon } from "@/components/icon";
 import { ProductNav } from "@/components/product-nav";
+import { SiteFooter } from "@/components/site-footer";
+import { capstones } from "@/content/capstones";
 import { curriculum } from "@/content/curriculum";
 import { useCurriculumProgress } from "@/hooks/use-curriculum-progress";
-import { type Copy } from "@/lib/lesson-ir";
+import { loadPracticeState } from "@/lib/practice-progress";
 
-const CERTIFICATE_COPY = {
-  eyebrow: "Certificate",
-  heading: "Show what you finished.",
-  intro: "Finish every project. Verified links will be added after the backend is ready.",
-  loading: "Checking progress",
-  locked: "Not ready yet",
-  frontendReady: "Course work complete",
-  disconnected: "Verification not connected",
-  disconnectedHelp: "Browser progress cannot issue a real certificate.",
-  preview: "Preview only",
-  learner: "Learner name",
-  completedPath: "finished the Web Foundations learning path",
-  wordingOpen: "Final wording and project links come later.",
-  projectDone: "Done",
-  projectOpen: "Not done",
-  viewProjects: "View projects",
-} satisfies Record<string, Copy>;
+interface CertificateRecord {
+  code: string;
+  display_name: string;
+  credential_name: string;
+  portfolio_url: string;
+  repository_url: string;
+  issued_at: string;
+}
+
+interface ServerStatus {
+  configured?: boolean;
+  certificateIssuance?: boolean;
+  signedIn?: boolean;
+  ready?: boolean;
+  completedCourses?: string[];
+  completedCapstones?: string[];
+  submittedCapstones?: string[];
+  displayName?: string;
+  certificate?: CertificateRecord | null;
+  error?: string;
+}
 
 export function CertificateScreen() {
   const { ready, progress } = useCurriculumProgress();
-  const eligible = ready && curriculum.courses.every((course) => progress[course.id].isComplete);
+  const [localCapstones, setLocalCapstones] = useState(0);
+  const [server, setServer] = useState<ServerStatus | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState("");
+  const localCourses = ready ? curriculum.courses.filter((course) => progress[course.id].isComplete).length : 0;
 
-  return (
-    <div className="flex min-h-[100dvh] flex-col bg-background text-on-background">
-      <ProductNav current="certificate" />
-      <main className="mx-auto w-full flex-1 max-w-[980px] px-margin-mobile py-8 md:px-margin-desktop md:py-12">
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      const state = loadPracticeState();
+      setLocalCapstones(capstones.filter((capstone) => {
+        const completion = state.completions.find((item) => item.activityId === capstone.id);
+        return completion && capstone.tests.every((test) => completion.passedTestIds.includes(test.id));
+      }).length);
+    }, 0);
+    void fetch("/api/certificate", { cache: "no-store" }).then(async (response) => setServer(await response.json() as ServerStatus));
+    return () => window.clearTimeout(timer);
+  }, []);
 
-        <header className="max-w-[720px]">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-voltage">
-              {CERTIFICATE_COPY.eyebrow}
-            </span>
-          </div>
-          <h1 className="mt-4 font-display text-[38px] font-bold leading-[1.05] tracking-tight text-chalk sm:text-[46px]">
-            {CERTIFICATE_COPY.heading}
-          </h1>
-          <p className="mt-4 text-[17px] leading-relaxed text-ash">
-            {CERTIFICATE_COPY.intro}
-          </p>
-        </header>
+  async function issue() {
+    setBusy(true);
+    setMessage("");
+    const response = await fetch("/api/certificate", { method: "POST" });
+    const data = await response.json() as ServerStatus & { certificate?: CertificateRecord };
+    setBusy(false);
+    if (!response.ok) {
+      setMessage(data.error ?? "Certificate could not be issued.");
+      return;
+    }
+    setServer((current) => ({ ...current, certificate: data.certificate, ready: true }));
+    setMessage("Certificate issued. The public record is ready to share.");
+  }
 
-        <section className="mt-8 rounded-2xl border border-hairline bg-panel p-5 sm:p-7">
-          <p
-            className={`flex items-center gap-2 font-mono text-[12px] font-bold uppercase tracking-wider ${
-              eligible ? "text-acid" : ready ? "text-gold" : "text-ash"
-            }`}
-          >
-            <Icon
-              name={!ready ? "radio_button_unchecked" : eligible ? "check_circle" : "lock"}
-              size={16}
-              filled={eligible}
-            />
-            <span>
-              {!ready
-                  ? CERTIFICATE_COPY.loading
-                  : eligible
-                    ? CERTIFICATE_COPY.frontendReady
-                    : CERTIFICATE_COPY.locked}
-            </span>
-          </p>
+  const certificate = server?.certificate;
+  return <div className="flex min-h-[100dvh] flex-col bg-background text-on-background"><ProductNav current="certificate" /><main className="mx-auto w-full max-w-[980px] flex-1 px-margin-mobile py-8 md:px-margin-desktop md:py-12"><header className="max-w-[720px]"><p className="font-mono text-[11px] uppercase tracking-[0.25em] text-voltage">Certificate</p><h1 className="mt-4 font-display text-[38px] font-bold leading-tight text-chalk sm:text-[46px]">A completion record backed by your saved work.</h1><p className="mt-4 text-[17px] leading-relaxed text-ash">The Front-End Development Certificate of Completion requires ten guided courses, five independent capstones, five project-link records, and a saved certificate name.</p></header>
 
-          <ul className="mt-5 grid gap-3 sm:grid-cols-3">
-            {curriculum.courses.map((course) => {
-              const complete = ready && progress[course.id].isComplete;
-              return (
-                <li key={course.id} className="rounded-lg border border-hairline bg-raised px-4 py-3">
-                  <p className="font-mono text-[11px] text-ash">{course.project}</p>
-                  <p className={`mt-2 flex items-center gap-1.5 text-[13px] ${complete ? "text-acid" : "text-ash"}`}>
-                    <Icon name={complete ? "check_circle" : "lock"} size={15} filled={complete} />
-                    <span>{complete ? CERTIFICATE_COPY.projectDone : CERTIFICATE_COPY.projectOpen}</span>
-                  </p>
-                </li>
-              );
-            })}
-          </ul>
-        </section>
+  <section className="mt-8 grid gap-3 sm:grid-cols-3"><Requirement label="Guided courses" value={`${localCourses} / ${curriculum.courses.length}`} done={localCourses === curriculum.courses.length} /><Requirement label="Capstones" value={`${localCapstones} / ${capstones.length}`} done={localCapstones === capstones.length} /><Requirement label="Account submissions" value={`${server?.submittedCapstones?.length ?? 0} / ${capstones.length}`} done={server?.submittedCapstones?.length === capstones.length} /></section>
 
-        <section className="relative mt-6 overflow-hidden rounded-2xl border border-plasma/35 bg-raised p-6 sm:p-10">
-          <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-plasma">
-            <Icon name="workspace_premium" size={16} className="mr-1 inline-block align-text-bottom" />
-            {CERTIFICATE_COPY.preview}
-          </p>
-          <div className="mt-8 border-y border-hairline py-8 text-center sm:py-12">
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-ash">
-              Web Foundations
-            </p>
-            <h2 className="mt-3 font-display text-[32px] font-bold tracking-tight text-chalk sm:text-[42px]">
-              Certificate of Completion
-            </h2>
-            <p className="mt-7 text-[14px] text-ash">{CERTIFICATE_COPY.learner}</p>
-            <p className="mt-2 font-display text-[24px] font-bold text-chalk">________________</p>
-            <p className="mx-auto mt-6 max-w-[50ch] text-[15px] leading-relaxed text-ash">
-              {CERTIFICATE_COPY.completedPath}
-            </p>
-          </div>
-          <p className="mt-6 flex items-start gap-2 text-[14px] leading-relaxed text-ash">
-            <Icon name="lightbulb" size={16} className="mt-0.5" />
-            <span>{CERTIFICATE_COPY.wordingOpen}</span>
-          </p>
-        </section>
+  <section className="relative mt-6 overflow-hidden rounded-2xl border border-plasma/35 bg-raised p-6 sm:p-10"><p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-plasma"><Icon name="workspace_premium" size={16} className="mr-1 inline-block align-text-bottom" />{certificate ? "Issued record" : "Certificate preview"}</p><div className="mt-8 border-y border-hairline py-8 text-center sm:py-12"><p className="font-mono text-[11px] uppercase tracking-[0.2em] text-ash">CodeDaddy Front-End Development</p><h2 className="mt-3 font-display text-[32px] font-bold tracking-tight text-chalk sm:text-[42px]">Certificate of Completion</h2><p className="mt-7 text-[14px] text-ash">Presented to</p><p className="mt-2 font-display text-[28px] font-bold text-chalk">{certificate?.display_name || server?.displayName || "Your saved certificate name"}</p><p className="mx-auto mt-6 max-w-[54ch] text-[15px] leading-relaxed text-ash">Completed all ten guided courses and five authored, browser-checked capstone projects.</p></div><p className="mt-6 text-[13px] leading-relaxed text-ash">Certificate of Completion only. It is not accreditation, employment readiness, or independent competency certification. The linked portfolio remains the inspectable evidence.</p></section>
 
-        <section className="mt-6 rounded-2xl border border-gold/40 bg-panel p-5 sm:p-6">
-          <p className="flex items-center gap-2 font-mono text-[12px] font-bold uppercase tracking-wider text-gold">
-            <Icon name="lock" size={16} />
-            <span>{CERTIFICATE_COPY.disconnected}</span>
-          </p>
-          <p className="mt-3 text-[15px] leading-relaxed text-ash">
-            {CERTIFICATE_COPY.disconnectedHelp}
-          </p>
-          <Link
-            href="/projects"
-            className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-lg border border-hairline px-4 py-3 font-mono text-[12px] text-chalk transition-colors hover:border-ash/70"
-          >
-            <span>{CERTIFICATE_COPY.viewProjects}</span>
-            <Icon name="arrow_forward" size={16} />
-          </Link>
-        </section>
-      </main>
-      <SiteFooter home="/dashboard" />
-    </div>
-  );
+  <section className="mt-6 rounded-2xl border border-hairline bg-panel p-5 sm:p-6">{certificate ? <><p className="flex items-center gap-2 font-mono text-[12px] font-bold uppercase text-acid"><Icon name="check_circle" size={16} filled /> Issued {new Date(certificate.issued_at).toLocaleDateString("en-PH", { dateStyle: "long" })}</p><div className="mt-5 flex flex-wrap gap-3"><Link href={`/certificate/${certificate.code}`} className="inline-flex min-h-11 items-center rounded-lg bg-primary px-5 font-mono text-[12px] font-bold text-on-primary">Open public record</Link><a href={certificate.portfolio_url} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center rounded-lg border border-hairline px-5 font-mono text-[12px] text-chalk">Portfolio</a></div></> : server?.signedIn ? <><p className={`flex items-center gap-2 font-mono text-[12px] font-bold uppercase ${server.ready ? "text-acid" : "text-gold"}`}><Icon name={server.ready ? "check_circle" : "lock"} size={16} filled={server.ready} />{server.ready ? "All account requirements recorded" : "Account requirements still open"}</p><p className="mt-3 text-[14px] leading-relaxed text-ash">Merge your browser progress from Account, record all five capstone links, and save your certificate name. Issuance uses the server-only key; the browser cannot mint a certificate directly.</p><button onClick={() => void issue()} disabled={!server.ready || !server.certificateIssuance || busy} className="mt-5 min-h-11 rounded-lg bg-primary px-5 font-mono text-[12px] font-bold text-on-primary disabled:opacity-50">{busy ? "Issuing…" : "Issue certificate"}</button></> : <><p className="flex items-center gap-2 font-mono text-[12px] font-bold uppercase text-gold"><Icon name="lock" size={16} /> Account connection required</p><p className="mt-3 text-[14px] text-ash">Sign in and sync your completed browser work before the server can issue a public record.</p><Link href="/account" className="mt-5 inline-flex min-h-11 items-center rounded-lg border border-hairline px-5 font-mono text-[12px] text-chalk">Open account</Link></>}{message ? <p role="status" className="mt-4 text-[13px] text-gold">{message}</p> : null}</section>
+  </main><SiteFooter home="/dashboard" /></div>;
+}
+
+function Requirement({ label, value, done }: { label: string; value: string; done: boolean }) {
+  return <div className="rounded-xl border border-hairline bg-panel p-4"><p className={`flex items-center gap-2 font-mono text-[11px] font-bold uppercase ${done ? "text-acid" : "text-ash"}`}><Icon name={done ? "check_circle" : "radio_button_unchecked"} size={15} filled={done} />{label}</p><p className="mt-2 font-display text-[26px] font-bold text-chalk">{value}</p></div>;
 }

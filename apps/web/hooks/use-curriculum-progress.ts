@@ -36,6 +36,8 @@ export function useCurriculumProgress() {
     // Browser progress is unavailable during SSR, so adopt it once after mount.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     refresh();
+    window.addEventListener("codedaddy-progress-imported", refresh);
+    return () => window.removeEventListener("codedaddy-progress-imported", refresh);
   }, [refresh]);
 
   return { ...state, refresh };

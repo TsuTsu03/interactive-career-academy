@@ -468,6 +468,7 @@ const PAGE_KINDS = new Set([
   "page-text-equals",
   "page-attr-equals",
   "page-class-contains",
+  "page-class-not-contains",
   "page-click-text-equals",
   "page-click-attr-equals",
   "page-click-class-contains",
@@ -534,6 +535,16 @@ function runPageTest(spec: PageTestSpec, run: PageRunResult): TestResult {
       status: "failed",
       actual,
       message: `The ${describe(spec.selector)} does not carry the class ${spec.value}${after}. Its classes are ${actual}. Check the line that changes them, then press Run again.`,
+    };
+  }
+
+  if (spec.kind === "page-class-not-contains") {
+    return {
+      id: spec.id,
+      label: spec.label,
+      status: "failed",
+      actual,
+      message: `The ${describe(spec.selector)} still carries the class ${spec.value}. Its classes are ${actual}. Check the line that removes it, then press Run again.`,
     };
   }
 
@@ -640,12 +651,19 @@ export async function gradeStep(
       if (t.kind === "js-value") expressions.push(t.expression);
       if (t.kind === "js-returns") calls.push({ fn: t.fn, args: t.args });
     }
-    jsRun = await runLearnerScript(files["script.js"] ?? "", { expressions, calls });
+    jsRun = await runLearnerScript(files["script.js"] ?? "", {
+      expressions,
+      calls,
+      fetch: step.runtimeFixtures?.fetch,
+      storage: step.runtimeFixtures?.storage,
+    });
   }
 
   const reactRun =
     reactTests.length > 0
-      ? await runLearnerReact(files["app.js"] ?? "", reactTests)
+      ? await runLearnerReact(files["app.tsx"] ?? files["app.js"] ?? "", reactTests, {
+          typescript: files["app.tsx"] !== undefined,
+        })
       : null;
 
   const pageTests = step.tests.filter((test): test is PageTestSpec =>

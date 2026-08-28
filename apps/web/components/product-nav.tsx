@@ -10,6 +10,8 @@ import { copy, type Copy } from "@/lib/lesson-ir";
 const NAV_ITEMS: { href: string; label: Copy; id: string }[] = [
   { href: "/curriculum", id: "courses", label: "Curriculum" },
   { href: "/projects", id: "projects", label: "Portfolio" },
+  { href: "/practice", id: "practice", label: "Practice" },
+  { href: "/tools", id: "tools", label: "Tools" },
   { href: "/account", id: "account", label: "Learner Profile" },
 ];
 
@@ -31,7 +33,7 @@ export function ProductNav({
 
   const items = NAV_ITEMS.map((item) => ({
     ...item,
-    active: current === item.id || (current === "dashboard" && item.id === "courses"),
+    active: current === item.id || (current === "dashboard" && item.id === "courses") || (current === "evidence" && item.id === "projects"),
   }));
 
   return (

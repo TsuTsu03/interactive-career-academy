@@ -9,11 +9,15 @@ import { CodeEditor } from "./code-editor";
 import { Hud, LEVEL_STEP, rankFor, type GameState } from "./hud";
 import { ParticleBurst } from "./juice";
 import { Preview } from "./preview";
+import { PhoneSymbolRow } from "./phone-symbol-row";
 import { RankUp } from "./rank-up";
 import { curriculum } from "@/content/curriculum";
 import { resolveConcepts } from "@/content/concepts";
 import { gradeStep, type TestResult } from "@/lib/grading";
 import { type Course, type Step } from "@/lib/lesson-ir";
+import { characterIssues, type CharacterIssue } from "@/lib/character-guard";
+import { conceptConnections } from "@/lib/concept-connections";
+import { baonStorageKey, restoreBaonPlan, type BaonPlan } from "@/lib/baon";
 import {
   applyChallengeProgress,
   freshChallengeState,
@@ -27,6 +31,13 @@ import {
   saveGlobalReviewState,
 } from "@/lib/progress";
 import { enrollStepConcepts, freshReviewState, todayKey, type ReviewState } from "@/lib/review";
+import {
+  freshMistakeState,
+  loadMistakeState,
+  recordMistakes,
+  saveMistakeState,
+  type MistakeState,
+} from "@/lib/mistakes";
 import {
   freshSubmissionDraft,
   restoreSubmissionDraft,
@@ -42,6 +53,7 @@ const INITIAL: GameState = {
 };
 
 type Phase = "editing" | "running" | "passed" | "failed";
+type MobilePane = "instructions" | "editor" | "preview";
 
 const VIEW_COURSE_MAP = "VIEW COURSE MAP" as const;
 
@@ -155,6 +167,7 @@ export function Workspace({ course }: { course: Course }) {
   const [phase, setPhase] = useState<Phase>("editing");
   const [hintLevel, setHintLevel] = useState(0);
   const [usedHint, setUsedHint] = useState(false);
+  const [recoveryLevel, setRecoveryLevel] = useState(0);
   const [burst, setBurst] = useState(0);
   const [gain, setGain] = useState({ fire: 0, amount: 0 });
   const [challengeNotice, setChallengeNotice] = useState<{
@@ -164,7 +177,12 @@ export function Workspace({ course }: { course: Course }) {
   } | null>(null);
   const [shake, setShake] = useState(false);
   const [rankUp, setRankUp] = useState<string | null>(null);
+  const [characterWarnings, setCharacterWarnings] = useState<CharacterIssue[]>([]);
+  const [questionOpen, setQuestionOpen] = useState(false);
+  const [questionCopied, setQuestionCopied] = useState(false);
+  const [baonPlan, setBaonPlan] = useState<BaonPlan | null>(null);
   const [review, setReview] = useState<ReviewState>(freshReviewState());
+  const [mistakes, setMistakes] = useState<MistakeState>(freshMistakeState());
   const liveRef = useRef<HTMLDivElement>(null);
 
   // Pane sizing. The Stitch workspace lets the learner tune the split with the
@@ -173,8 +191,10 @@ export function Workspace({ course }: { course: Course }) {
   const [editorRatio, setEditorRatio] = useState(1.45);
   const [wideLayout, setWideLayout] = useState(false);
   const [splitLayout, setSplitLayout] = useState(false);
+  const [mobilePane, setMobilePane] = useState<MobilePane>("instructions");
   const outerRef = useRef<HTMLDivElement>(null);
   const paneRowRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<HTMLTextAreaElement>(null);
 
   // Inline pane sizes only make sense once the panes sit side by side; in the
   // stacked layout a flex-basis would set heights instead.
@@ -251,6 +271,14 @@ export function Workspace({ course }: { course: Course }) {
       },
     );
     setReview(loadGlobalReviewState(curriculum));
+    setMistakes(loadMistakeState());
+    try {
+      const raw = localStorage.getItem(baonStorageKey);
+      const value: unknown = raw ? JSON.parse(raw) : null;
+      setBaonPlan(restoreBaonPlan(value, course));
+    } catch {
+      setBaonPlan(null);
+    }
   }, [course]);
 
   useEffect(() => {
@@ -283,6 +311,17 @@ export function Workspace({ course }: { course: Course }) {
 
   const run = useCallback(async () => {
     if (phase === "running") return;
+    const warnings = characterIssues(step, files);
+    if (warnings.length > 0) {
+      setCharacterWarnings(warnings);
+      setResults([]);
+      setPhase("editing");
+      announce(warnings[0].message);
+      return;
+    }
+    setCharacterWarnings([]);
+    setQuestionOpen(false);
+    setQuestionCopied(false);
     setPhase("running");
     setResults(
       step.tests.map((t) => ({ id: t.id, label: t.label, status: "waiting" as const })),
@@ -383,6 +422,19 @@ export function Workspace({ course }: { course: Course }) {
       );
     } else {
       setPhase("failed");
+      setRecoveryLevel((level) => Math.max(level, 1));
+      const failedIds = graded
+        .filter((result) => result.status === "failed")
+        .map((result) => result.id);
+      const nextMistakes = recordMistakes(
+        mistakes,
+        course,
+        step,
+        failedIds,
+        new Date().toISOString(),
+      );
+      setMistakes(nextMistakes);
+      saveMistakeState(nextMistakes);
       if (game.combo > 1) setGame((g) => ({ ...g, combo: 1 }));
       const firstFail = graded.find((g) => g.status === "failed");
       announce(
@@ -400,8 +452,9 @@ export function Workspace({ course }: { course: Course }) {
     results,
     session.challenges,
     session.completedSteps,
+    mistakes,
     setGame,
-    course.id,
+    course,
   ]);
 
   function announce(msg: string) {
@@ -425,12 +478,19 @@ export function Workspace({ course }: { course: Course }) {
     setPhase("editing");
     setHintLevel(0);
     setUsedHint(false);
+    setRecoveryLevel(0);
+    setCharacterWarnings([]);
+    setQuestionOpen(false);
+    setQuestionCopied(false);
   }, [isLast, course.steps, stepIdx]);
 
   const resetStep = useCallback(() => {
     setFiles(step.files);
     setResults([]);
     setPhase("editing");
+    setHintLevel(0);
+    setUsedHint(false);
+    setRecoveryLevel(0);
   }, [step, setFiles]);
 
   /* ------------------------------------------------------------------ */
@@ -498,14 +558,85 @@ export function Workspace({ course }: { course: Course }) {
     [files, step, setFiles],
   );
 
+  const insertPhoneSymbol = useCallback(
+    (symbol: string) => {
+      const source = files[activeFile] ?? "";
+      const textarea = editorRef.current;
+      const start = textarea?.selectionStart ?? source.length;
+      const end = textarea?.selectionEnd ?? start;
+      const nextCursor = start + symbol.length;
+      setFiles({
+        ...files,
+        [activeFile]: `${source.slice(0, start)}${symbol}${source.slice(end)}`,
+      });
+      setPhase("editing");
+
+      const restoreCursor = () => {
+        editorRef.current?.focus();
+        editorRef.current?.setSelectionRange(nextCursor, nextCursor);
+      };
+      requestAnimationFrame(restoreCursor);
+      window.setTimeout(restoreCursor, 80);
+    },
+    [activeFile, files, setFiles],
+  );
+
   const fileNames = Object.keys(step.files);
   const currentProject = course.projects.find((project) => project.id === step.projectId);
   const projectSteps = course.steps.filter((candidate) => candidate.projectId === step.projectId);
   const projectStepIndex = projectSteps.findIndex((candidate) => candidate.id === step.id);
   const courseCompletion = Math.round((session.completedSteps.length / total) * 100);
+  const baonStepIndex = baonPlan?.stepIds.indexOf(step.id) ?? -1;
+  const baonActive = baonStepIndex >= 0;
+  const baonEndsHere = baonActive && baonStepIndex === (baonPlan?.stepIds.length ?? 0) - 1;
+  const questionText = failed[0]
+    ? buildQuestion(course, step, failed[0], files)
+    : "";
+  const connections = useMemo(
+    () => conceptConnections(course, step),
+    [course, step],
+  );
+
+  async function copyQuestion() {
+    if (!questionText) return;
+    try {
+      await navigator.clipboard.writeText(questionText);
+    } catch {
+      const textarea = document.createElement("textarea");
+      textarea.value = questionText;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      textarea.remove();
+    }
+    setQuestionCopied(true);
+    announce("Question copied. You can paste it where you choose to ask for help.");
+  }
+
+  function saveBaonExit() {
+    try {
+      localStorage.removeItem(baonStorageKey);
+      if (!isLast) {
+        const next = course.steps[stepIdx + 1];
+        localStorage.setItem(
+          courseStorageKey(course.id),
+          JSON.stringify({
+            ...session,
+            stepIdx: stepIdx + 1,
+            files: next.files,
+            activeFile: next.activeFile,
+          }),
+        );
+      }
+    } catch {
+      // Leaving the workspace still works when browser storage is blocked.
+    }
+  }
 
   return (
-    <div className="relative flex h-[100dvh] flex-col overflow-x-hidden overflow-y-auto bg-void lg:overflow-hidden">
+    <div className="relative flex h-[100dvh] flex-col overflow-hidden bg-void">
       <div ref={liveRef} aria-live="polite" className="sr-only" />
 
       <Hud
@@ -544,7 +675,7 @@ export function Workspace({ course }: { course: Course }) {
         </div>
       ) : null}
 
-      <div ref={outerRef} className="flex flex-col pb-12 lg:min-h-0 lg:flex-1 lg:flex-row">
+      <div ref={outerRef} className="flex min-h-0 flex-1 flex-col pb-[7.75rem] md:pb-[4.75rem] lg:flex-row">
         <aside
           className="z-10 hidden w-16 shrink-0 flex-col border-r border-outline-variant bg-surface-container-low px-1 py-gutter md:flex lg:w-64 lg:px-2"
           aria-label="Workspace sections"
@@ -585,7 +716,7 @@ export function Workspace({ course }: { course: Course }) {
         <aside
           id="workspace-instructions"
           style={wideLayout ? { flexBasis: instructionWidth, maxWidth: instructionWidth } : undefined}
-          className="flex w-full shrink-0 flex-col border-b border-outline-variant bg-surface p-gutter lg:overflow-y-auto lg:border-b-0"
+          className={`${mobilePane === "instructions" ? "flex" : "hidden"} min-h-0 w-full flex-1 shrink-0 flex-col overflow-y-auto border-b border-outline-variant bg-surface p-gutter md:flex lg:flex-none lg:border-b-0`}
         >
           <div className="-mx-4 -mt-4 mb-4 border-b border-hairline bg-raised px-4 py-3 lg:hidden">
             <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-voltage">Project workspace</p>
@@ -611,6 +742,24 @@ export function Workspace({ course }: { course: Course }) {
             {resolveConcepts(step.conceptIds).map((c) => (
               <ConceptCard key={c.id} concept={c} onSpeak={speak} />
             ))}
+            {connections.length > 0 ? (
+              <section className="mb-5 border border-hairline bg-raised p-3.5" aria-labelledby="concept-connections-heading">
+                <h2 id="concept-connections-heading" className="font-mono text-[10px] font-bold uppercase tracking-widest text-acid">
+                  Concept connections
+                </h2>
+                <p className="mt-2 text-[13px] leading-relaxed text-ash">You will use this idea again in:</p>
+                <ul className="mt-2 space-y-2">
+                  {connections.map((connection) => (
+                    <li key={`${connection.courseId}:${connection.projectTitle}`} className="text-[13px] leading-relaxed">
+                      <Link href={`/learn/${connection.courseId}`} className="font-semibold text-primary underline-offset-2 hover:underline">
+                        {connection.projectTitle}
+                      </Link>
+                      <span className="text-ash"> — {connection.stepTask}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
           </div>
 
           <div className="mb-4 flex items-start gap-3">
@@ -640,6 +789,18 @@ export function Workspace({ course }: { course: Course }) {
             </h2>
             <p className="mt-2 text-[14px] leading-relaxed text-ash">{guidanceFor(step)}</p>
           </section>
+
+          {baonActive ? (
+            <section className="mb-5 border border-gold/40 bg-raised p-3.5" aria-label="Baon Mode plan">
+              <p className="flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-wider text-gold">
+                <Icon name="schedule" size={15} /> Baon Mode
+              </p>
+              <p className="mt-2 text-[14px] leading-relaxed text-ash">
+                Step {baonStepIndex + 1} of {baonPlan?.stepIds.length}. About {baonPlan?.estimatedMinutes} minutes planned.
+                {baonEndsHere ? " Your planned session ends after this step." : ""}
+              </p>
+            </section>
+          ) : null}
 
           <div className="mb-2 text-[10px] uppercase tracking-widest text-ash">What the checker will look for</div>
           <p className="mb-3 text-[13px] leading-relaxed text-ash">
@@ -692,7 +853,47 @@ export function Workspace({ course }: { course: Course }) {
                   </div>
                 </div>
               ) : null}
+              <button type="button" onClick={() => setQuestionOpen(true)} className="mt-3 inline-flex min-h-11 items-center gap-2 rounded border border-hairline px-3 py-2 font-mono text-[11px] font-bold text-chalk">
+                <Icon name="help" size={16} /> Make a Tanong Card
+              </button>
+              {recoveryLevel === 1 ? (
+                <button type="button" onClick={() => setRecoveryLevel(2)} className="mt-3 ml-2 inline-flex min-h-11 items-center gap-2 rounded border border-hairline px-3 py-2 font-mono text-[11px] font-bold text-chalk">
+                  <Icon name="visibility" size={16} /> Show where to inspect
+                </button>
+              ) : null}
+              {recoveryLevel >= 2 ? (
+                <div className="mt-3 border-t border-hairline pt-3 text-[13px] leading-relaxed text-ash">
+                  <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-gold">Focused inspection</p>
+                  <p className="mt-1">
+                    Open <span className="font-mono text-chalk">{activeFile}</span>
+                    {errorLine ? ` near line ${errorLine}` : " and find the part named in the task"}. Compare one symbol or value at a time before changing it.
+                  </p>
+                </div>
+              ) : null}
             </div>
+          ) : null}
+
+          {characterWarnings.length > 0 ? (
+            <section className="mb-4 border border-gold/50 bg-raised p-3" aria-labelledby="character-guard-heading">
+              <p id="character-guard-heading" className="flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-widest text-gold">
+                <Icon name="visibility" size={15} /> Character Guard found a phone keyboard character
+              </p>
+              <ul className="mt-2 space-y-2 text-[14px] leading-relaxed text-chalk">
+                {characterWarnings.map((warning) => <li key={warning.id}>{warning.message}</li>)}
+              </ul>
+            </section>
+          ) : null}
+
+          {questionOpen && questionText ? (
+            <section className="mb-4 border border-plasma/40 bg-raised p-3" aria-labelledby="tanong-card-heading">
+              <h2 id="tanong-card-heading" className="font-mono text-[10px] font-bold uppercase tracking-widest text-plasma">Tanong Card</h2>
+              <p className="mt-2 text-[13px] leading-relaxed text-ash">This includes code from the current step only. Review it before copying. CodeDaddy sends nothing.</p>
+              <label htmlFor="tanong-card-text" className="sr-only">Question text</label>
+              <textarea id="tanong-card-text" readOnly value={questionText} className="mt-3 h-40 w-full resize-y rounded border border-hairline bg-void p-3 font-mono text-[12px] leading-relaxed text-chalk" />
+              <button type="button" onClick={() => void copyQuestion()} className="mt-3 inline-flex min-h-11 items-center gap-2 rounded bg-primary px-4 py-2 font-mono text-[11px] font-bold text-on-primary">
+                <Icon name="description" size={16} /> {questionCopied ? "Copied" : "Copy question"}
+              </button>
+            </section>
           ) : null}
 
           {phase === "passed" ? (
@@ -725,7 +926,7 @@ export function Workspace({ course }: { course: Course }) {
                 ))}
               </div>
             ) : null}
-            {hintLevel < step.hints.length ? (
+            {recoveryLevel >= 2 && hintLevel < step.hints.length ? (
               <button
                 type="button"
                 onClick={() => {
@@ -735,8 +936,12 @@ export function Workspace({ course }: { course: Course }) {
                 className="flex min-h-11 w-full items-center justify-center gap-2 rounded border border-outline-variant text-on-surface transition-colors hover:bg-surface-variant"
               >
                 <Icon name="help" size={18} />
-                Get a Hint
+                {hintLevel === 0 ? "Use a Hint" : "Get another Hint"}
               </button>
+            ) : recoveryLevel === 0 && step.hints.length > 0 ? (
+              <p className="rounded border border-hairline bg-raised p-3 text-[13px] leading-relaxed text-ash">
+                Run your code first. If a check needs work, CodeDaddy will guide you from the check to the file, then to an authored hint.
+              </p>
             ) : null}
             <button
               type="button"
@@ -766,13 +971,13 @@ export function Workspace({ course }: { course: Course }) {
           className="pane-resizer hidden lg:block"
         />
 
-        <div className="flex min-h-[720px] flex-col lg:min-h-0 lg:flex-1">
-          <div ref={paneRowRef} className="flex min-h-0 flex-1 flex-col md:flex-row">
+        <div className={`${mobilePane === "instructions" ? "h-0 flex-none" : "min-h-0 flex-1"} flex flex-col md:min-h-0 md:flex-1`}>
+          <div ref={paneRowRef} className={`${mobilePane === "instructions" ? "hidden" : "flex"} min-h-0 flex-1 flex-col md:flex md:flex-row`}>
             {/* Editor */}
             <section
               id="workspace-files"
               style={splitLayout ? { flexGrow: editorRatio, flexBasis: 0 } : undefined}
-              className="flex min-h-0 flex-1 flex-col border-b border-outline-variant bg-surface md:border-b-0"
+              className={`${mobilePane === "editor" ? "flex" : "hidden"} min-h-0 flex-1 flex-col border-b border-outline-variant bg-surface md:flex md:border-b-0`}
               aria-label="Code editor"
             >
               <div className="no-scrollbar flex h-10 shrink-0 items-center overflow-x-auto border-b border-outline-variant bg-surface-container">
@@ -794,6 +999,8 @@ export function Workspace({ course }: { course: Course }) {
                 ))}
               </div>
 
+              <PhoneSymbolRow onInsert={insertPhoneSymbol} />
+
               <CodeEditor
                 value={files[activeFile] ?? ""}
                 onChange={(next) => {
@@ -804,6 +1011,7 @@ export function Workspace({ course }: { course: Course }) {
                 highlightToken={activeFile === step.activeFile ? step.highlightToken : undefined}
                 errorLine={activeFile === step.activeFile ? errorLine : null}
                 label={`Code editor, ${activeFile}`}
+                textareaRef={editorRef}
               />
 
               {step.inputMode === "tap-to-build" && step.blocks && step.correctBlock ? (
@@ -833,7 +1041,7 @@ export function Workspace({ course }: { course: Course }) {
             />
 
             {/* Preview */}
-            <div id="workspace-output" className="flex min-h-0 flex-1 flex-col bg-surface">
+            <div id="workspace-output" className={`${mobilePane === "preview" ? "flex" : "hidden"} min-h-0 flex-1 flex-col bg-surface md:flex`}>
               <Preview
                 files={files}
                 kind={step.kind}
@@ -841,6 +1049,32 @@ export function Workspace({ course }: { course: Course }) {
               />
             </div>
           </div>
+
+          <nav
+            aria-label="Phone workspace views"
+            className="fixed inset-x-0 bottom-12 z-20 grid h-12 grid-cols-3 border-t border-hairline bg-panel md:hidden"
+          >
+            {([
+              ["instructions", "description", "Learn"],
+              ["editor", "code", "Code"],
+              ["preview", "visibility", "Preview"],
+            ] as const).map(([pane, icon, label]) => (
+              <button
+                key={pane}
+                type="button"
+                aria-pressed={mobilePane === pane}
+                onClick={() => setMobilePane(pane)}
+                className={`flex min-h-11 items-center justify-center gap-2 border-t-2 font-mono text-[11px] font-bold uppercase tracking-wider ${
+                  mobilePane === pane
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "border-transparent text-on-surface-variant"
+                }`}
+              >
+                <Icon name={icon} size={17} filled={mobilePane === pane} />
+                <span>{label}</span>
+              </button>
+            ))}
+          </nav>
 
           {/* ---------------- Action bar ---------------- */}
           <div
@@ -879,7 +1113,12 @@ export function Workspace({ course }: { course: Course }) {
             ) : null}
             <div className="relative shrink-0">
               {burst > 0 ? <ParticleBurst key={`burst-${burst}`} count={14} /> : null}
-              {phase === "passed" ? isLast ? (
+            {phase === "passed" ? baonEndsHere ? (
+                <Link href="/dashboard" onNavigate={saveBaonExit} className="flex h-9 items-center gap-2 rounded-lg bg-secondary px-5 font-bold text-on-secondary">
+                  Finish Session
+                  <Icon name="arrow_forward" size={18} />
+                </Link>
+              ) : isLast ? (
                 <Link
                   href="/curriculum"
                   onNavigate={() => {
@@ -950,4 +1189,25 @@ function speak(text: string) {
   const u = new SpeechSynthesisUtterance(text);
   u.rate = 0.95;
   window.speechSynthesis.speak(u);
+}
+
+function buildQuestion(
+  course: Course,
+  step: Step,
+  failure: TestResult,
+  files: Record<string, string>,
+): string {
+  const code = Object.entries(files)
+    .map(([file, source]) => `File: ${file}\n\`\`\`\n${source}\n\`\`\``)
+    .join("\n\n");
+  return [
+    `I am working on ${course.title}.`,
+    `Step: ${step.task}`,
+    `Failing check: ${failure.label}`,
+    failure.message ? `Checker message: ${failure.message}` : null,
+    "I ran the checker and reviewed the named file, but I am still stuck. Please help me understand what to inspect next without giving me the full solution.",
+    "",
+    "Current step code:",
+    code,
+  ].filter((line): line is string => line !== null).join("\n");
 }

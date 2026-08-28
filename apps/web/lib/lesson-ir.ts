@@ -84,6 +84,26 @@ export interface Concept {
 export type InputMode = "tap-to-build" | "fill-blank" | "guided" | "free";
 
 /**
+ * Deterministic browser capabilities available to JavaScript lessons.
+ *
+ * Real network and browser storage are deliberately unavailable inside the
+ * opaque runner. These plain-data fixtures let a lesson practise the real
+ * `fetch` and `localStorage` APIs without reaching the platform origin or an
+ * external service. The runner owns the small in-memory implementations.
+ */
+export interface RuntimeFixtures {
+  fetch?: Record<
+    string,
+    {
+      status: number;
+      body: unknown;
+      headers?: Record<string, string>;
+    }
+  >;
+  storage?: Record<string, string>;
+}
+
+/**
  * How a step is run and checked.
  *
  * `web` renders HTML and CSS and asserts against the resulting document.
@@ -222,6 +242,7 @@ export type TestSpec =
       value: string;
     }
   | { id: string; label: Copy; kind: "page-class-contains"; selector: string; value: string }
+  | { id: string; label: Copy; kind: "page-class-not-contains"; selector: string; value: string }
   /** Clicks `clickSelector`, then reads `selector`. Proves a handler ran. */
   | {
       id: string;
@@ -248,11 +269,12 @@ export type TestSpec =
       selector: string;
       value: string;
     }
-  /** Types into `selector`, fires input and change, then reads it back. */
+  /** Types into `inputSelector`, fires input and change, then reads `selector`. */
   | {
       id: string;
       label: Copy;
       kind: "page-input-text-equals";
+      inputSelector: string;
       selector: string;
       type: string;
       value: string;
@@ -328,6 +350,8 @@ export interface Step {
   estimatedMinutes?: number;
   /** The project (within this course) this step belongs to. See `Project`. */
   projectId: string;
+  /** Optional deterministic APIs for JavaScript lessons. Plain data only. */
+  runtimeFixtures?: RuntimeFixtures;
 }
 
 /**
@@ -370,9 +394,18 @@ export interface Course {
   steps: Step[];
 }
 
+export interface Program {
+  id: string;
+  title: string;
+  summary: Copy;
+  /** Course ids in the order shown inside this program. */
+  courseIds: string[];
+}
+
 export interface Curriculum {
   id: string;
   title: string;
+  programs: Program[];
   courses: Course[];
 }
 

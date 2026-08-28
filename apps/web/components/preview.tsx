@@ -111,7 +111,8 @@ function ReactPreview({
   const requestRef = useRef(0);
   const watchdogRef = useRef<number | null>(null);
   const [runtimeKey, setRuntimeKey] = useState(0);
-  const codeRef = useRef(files["app.js"] ?? "");
+  const codeRef = useRef(files["app.tsx"] ?? files["app.js"] ?? "");
+  const typescriptRef = useRef(files["app.tsx"] !== undefined);
 
   // The runtime is inlined rather than linked. This frame has an opaque
   // origin, so a relative `<script src>` inside it has nothing to resolve
@@ -144,6 +145,7 @@ function ReactPreview({
         requestId,
         code: codeRef.current,
         checks: [],
+        typescript: typescriptRef.current,
       },
       "*",
     );
@@ -174,7 +176,7 @@ function ReactPreview({
   }, []);
 
   useEffect(() => {
-    codeRef.current = files["app.js"] ?? "";
+    codeRef.current = files["app.tsx"] ?? files["app.js"] ?? "";
     const timer = window.setTimeout(send, 260);
     return () => window.clearTimeout(timer);
   }, [files]);

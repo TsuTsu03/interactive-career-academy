@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, type RefObject } from "react";
 
 /**
  * A textarea with a syntax-highlighted layer behind it.
@@ -95,6 +95,7 @@ export function CodeEditor({
   highlightToken,
   errorLine,
   label,
+  textareaRef,
 }: {
   value: string;
   onChange: (next: string) => void;
@@ -103,8 +104,10 @@ export function CodeEditor({
   highlightToken?: string;
   errorLine?: number | null;
   label: string;
+  textareaRef?: RefObject<HTMLTextAreaElement | null>;
 }) {
-  const taRef = useRef<HTMLTextAreaElement>(null);
+  const localTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const taRef = textareaRef ?? localTextareaRef;
   const preRef = useRef<HTMLPreElement>(null);
 
   const lines = useMemo(() => value.split("\n"), [value]);
@@ -120,7 +123,7 @@ export function CodeEditor({
     };
     ta.addEventListener("scroll", sync);
     return () => ta.removeEventListener("scroll", sync);
-  }, []);
+  }, [taRef]);
 
   const tokenize =
     language === "html" ? tokenizeHtml : language === "js" ? tokenizeJs : tokenizeCss;

@@ -13,7 +13,7 @@ const PROJECT_COPY = {
   eyebrow: "Projects",
   heading: "Keep what you build.",
   intro: "Every course makes one real project. Finish it, then prepare its links.",
-  localOnly: "Draft links stay in this browser. Nothing is sent yet.",
+  localOnly: "Guided-course link drafts stay in this browser. Certificate submissions use the five capstone records.",
   loading: "Loading progress",
   complete: "Project complete",
   building: "Still building",
@@ -40,6 +40,9 @@ export function ProjectsScreen() {
             <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-voltage">
               {PROJECT_COPY.eyebrow}
             </span>
+            <Link href="/evidence" className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-hairline px-4 font-mono text-[11px] font-bold text-chalk">
+              Skill Evidence Ledger <Icon name="arrow_forward" size={15} />
+            </Link>
           </div>
           <h1 className="mt-4 font-display text-[38px] font-bold leading-[1.05] tracking-tight text-chalk sm:text-[46px]">
             {PROJECT_COPY.heading}

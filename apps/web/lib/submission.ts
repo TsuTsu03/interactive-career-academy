@@ -55,7 +55,22 @@ export function validateRepositoryUrl(value: string): SubmissionFieldError {
   return url.pathname.split("/").filter(Boolean).length >= 2 ? null : "not-repository";
 }
 
+export function validateSecureRepositoryUrl(value: string): SubmissionFieldError {
+  const basic = validateRepositoryUrl(value);
+  if (basic) return basic;
+  const url = new URL(value.trim());
+  return url.protocol === "https:" && url.pathname.split("/").filter(Boolean).length === 2 && !url.search && !url.hash
+    ? null
+    : "not-repository";
+}
+
 export function validateLiveUrl(value: string): SubmissionFieldError {
   if (!value.trim()) return "required";
   return validWebUrl(value.trim()) ? null : "invalid-url";
+}
+
+export function validateSecureLiveUrl(value: string): SubmissionFieldError {
+  if (!value.trim()) return "required";
+  const url = validWebUrl(value.trim());
+  return url?.protocol === "https:" ? null : "invalid-url";
 }

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { flushSync } from "react-dom";
 import { createRoot } from "react-dom/client";
+import { transform } from "sucrase";
 
 function hasOpaqueOrigin() {
   try {
@@ -94,9 +95,14 @@ function startRuntime() {
     const message = event.data;
 
     try {
+      const compiled = transform(message.code, {
+        transforms: message.typescript ? ["typescript", "jsx"] : ["jsx"],
+        jsxRuntime: "classic",
+        production: true,
+      }).code;
       const makeComponent = new Function(
         "React",
-        `"use strict";\n${message.code}\n;return typeof App === "function" ? App : null;`,
+        `"use strict";\n${compiled}\n;return typeof App === "function" ? App : null;`,
       );
       const App = makeComponent(React);
       if (!App) throw new Error("Create a function named App so React has something to show.");

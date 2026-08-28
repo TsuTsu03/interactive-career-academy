@@ -27,6 +27,10 @@ export function CourseGate({ course }: { course: Course }) {
   });
 
   useEffect(() => {
+    const ownProgress = courseProgressFromStorage(
+      course,
+      localStorage.getItem(courseStorageKey(course.id)),
+    );
     const requirements = course.requires
       .map((id) => courseById(id))
       .filter((requiredCourse): requiredCourse is Course => requiredCourse !== undefined);
@@ -42,7 +46,8 @@ export function CourseGate({ course }: { course: Course }) {
     setState({
       ready: true,
       unlocked:
-        requirements.length === course.requires.length && progress.every((item) => item.isComplete),
+        ownProgress.hasSession ||
+        (requirements.length === course.requires.length && progress.every((item) => item.isComplete)),
     });
   }, [course]);
 

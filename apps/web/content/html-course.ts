@@ -2107,6 +2107,7 @@ export const htmlCourse: Course = {
       files: { "index.html": page("    <h1>Aling Nena's Store</h1>\n    \n") },
       activeFile: "index.html",
       slotLine: 8,
+      conceptIds: ["element"],
       blocks: ["<p></p>", "<h2></h2>", "<img>", "<span></span>"],
       correctBlock: "<p></p>",
       tests: [

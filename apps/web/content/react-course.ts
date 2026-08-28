@@ -1,4 +1,5 @@
 import type { Course, Step } from "@/lib/lesson-ir";
+import { advancedReactProjects, advancedReactSteps } from "@/content/react-advanced-course";
 
 const PROJECT_ID = "barangay-help-desk-heading";
 const PROJECT_2_ID = "barangay-service-card";
@@ -1905,7 +1906,7 @@ const steps: Step[] = [
 
 export const reactCourse: Course = {
   id: "react-basics",
-  order: 5,
+  order: 8,
   title: "Learn React by Building a Barangay Help Desk",
   project: "Barangay Help Desk Heading",
   projects: [
@@ -1918,9 +1919,10 @@ export const reactCourse: Course = {
     { id: PROJECT_7_ID, title: "Barangay Attendance Toggle" },
     { id: PROJECT_8_ID, title: "Barangay Page Title" },
     { id: PROJECT_9_ID, title: "Barangay Search Focus" },
+    ...advancedReactProjects,
   ],
   kind: "react",
-  requires: ["js-basics"],
+  requires: ["tailwind-basics"],
   summary: "Build real React components and see each change render in a secure live preview.",
-  steps,
+  steps: [...steps, ...advancedReactSteps],
 };

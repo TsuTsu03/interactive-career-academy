@@ -30,6 +30,12 @@ export interface ReactRunResult {
   timedOut?: boolean;
 }
 
+interface ReactRunOptions {
+  runtimeSource?: string;
+  timeoutMs?: number;
+  typescript?: boolean;
+}
+
 /**
  * The runtime, fetched once and shared by every frame.
  *
@@ -70,7 +76,7 @@ function loadRuntime(): Promise<string> {
  * `</script>` inside would end the block early and leave the rest as text.
  */
 export function reactRunnerDocument(source = ""): string {
-  const runtime = source.replace(/<\/script/gi, "<\/script");
+  const runtime = source.replace(/<\/script/gi, "<\\/script");
   return `<!doctype html><html><head><meta charset="utf-8"><style>
     body { margin: 0; padding: 24px; font-family: system-ui, sans-serif; color: #0f172a; }
     #react-status { color: #475569; font-size: 14px; }
@@ -94,6 +100,7 @@ export async function reactRunnerDocumentAsync(): Promise<string> {
 export function runLearnerReact(
   code: string,
   checks: ReactTestSpec[],
+  options: ReactRunOptions = {},
 ): Promise<ReactRunResult> {
   return new Promise((resolve) => {
     const frame = document.createElement("iframe");
@@ -124,7 +131,7 @@ export function runLearnerReact(
 
       if (data.__academy === "react-ready") {
         frame.contentWindow?.postMessage(
-          { __academy: "react-run", requestId, code, checks },
+          { __academy: "react-run", requestId, code, checks, typescript: options.typescript === true },
           "*",
         );
         return;
@@ -146,9 +153,9 @@ export function runLearnerReact(
         timedOut: true,
         error: "Your component did not finish rendering.",
       });
-    }, RUN_TIMEOUT_MS);
+    }, options.timeoutMs ?? RUN_TIMEOUT_MS);
 
-    loadRuntime()
+    (options.runtimeSource === undefined ? loadRuntime() : Promise.resolve(options.runtimeSource))
       .then((source) => {
         frame.srcdoc = reactRunnerDocument(source);
         document.body.appendChild(frame);

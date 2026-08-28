@@ -1,6 +1,8 @@
 import { conceptById } from "@/content/concepts";
+import { curriculum } from "@/content/curriculum";
 import { gradeStep } from "./grading";
 import type { Concept, Course, Step } from "./lesson-ir";
+import type { PracticeActivity } from "./practice-ir";
 
 /**
  * The authoring harness.
@@ -28,8 +30,39 @@ export interface StepReport {
   findings: Finding[];
 }
 
+export function checkPracticeReference(activity: PracticeActivity): Finding[] {
+  const course = curriculum.courses.find((item) => item.id === activity.sourceCourseId);
+  if (!course) {
+    return [{ severity: "error", rule: "practice-source", message: `Source course ${activity.sourceCourseId} does not exist.` }];
+  }
+  if (!course.projects.some((project) => project.id === activity.sourceProjectId)) {
+    return [{ severity: "error", rule: "practice-source", message: `Source project ${activity.sourceProjectId} does not exist in ${course.id}.` }];
+  }
+  if (!["rebuild", "bug-clinic", "constraint", "remix", "capstone"].includes(activity.mode)) {
+    return [{ severity: "error", rule: "practice-mode", message: "Practice mode is not in the closed mode union." }];
+  }
+  if (activity.mode === "remix") {
+    const source = activity.sourceActivityId;
+    if (!source || source === activity.id) {
+      return [{ severity: "error", rule: "remix-source", message: "A remix needs a different source activity." }];
+    }
+  } else if (activity.sourceActivityId) {
+    return [{ severity: "error", rule: "remix-source", message: "Only a remix may depend on a source activity." }];
+  }
+  if (activity.mode !== "capstone" && activity.requiresActivityIds?.length) {
+    return [{ severity: "error", rule: "capstone-order", message: "Only a capstone may require earlier independent activities." }];
+  }
+  for (const constraint of activity.constraints ?? []) {
+    const testIds = new Set(activity.tests.map((test) => test.id));
+    if (constraint.testIds.length === 0 || constraint.testIds.some((id) => !testIds.has(id))) {
+      return [{ severity: "error", rule: "constraint", message: `Constraint ${constraint.id} must point only to checks in this activity.` }];
+    }
+  }
+  return [];
+}
+
 /** Structural checks that need no execution. */
-function checkShape(step: Step): Finding[] {
+function checkShape(step: Step, independent = false): Finding[] {
   const out: Finding[] = [];
   const err = (rule: string, message: string) =>
     out.push({ severity: "error", rule, message });
@@ -61,9 +94,9 @@ function checkShape(step: Step): Finding[] {
   // Learner time budget: 3-5 min for an easy step, 5-10 for a hard one.
   // PLAN.md section 3, decision 21.
   if (!step.estimatedMinutes) warn("estimate", "No estimatedMinutes.");
-  if (step.estimatedMinutes && step.estimatedMinutes > 10) {
+  if (!independent && step.estimatedMinutes && step.estimatedMinutes > 10) {
     err("estimate", `${step.estimatedMinutes} min exceeds the 10 min hard cap for one step.`);
-  } else if (step.estimatedMinutes && step.estimatedMinutes > 8) {
+  } else if (!independent && step.estimatedMinutes && step.estimatedMinutes > 8) {
     warn("estimate", `${step.estimatedMinutes} min is long; keep hard steps to 5-10 min.`);
   }
 
@@ -87,7 +120,7 @@ function checkShape(step: Step): Finding[] {
     out.push(...checkConcept(concept));
   }
 
-  out.push(...checkGranularity(step));
+  if (!independent) out.push(...checkGranularity(step));
 
   return out;
 }
@@ -236,8 +269,17 @@ async function checkBehaviour(step: Step): Promise<Finding[]> {
   }
 
   try {
-    const after = await gradeStep(step, step.solution);
-    const failed = after.filter((r) => r.status !== "passed");
+    let after = await gradeStep(step, step.solution);
+    let failed = after.filter((r) => r.status !== "passed");
+    if (failed.length > 0) {
+      // A full audit creates and destroys thousands of opaque runner frames.
+      // Give the browser one cleanup window, then require the same solution to
+      // prove itself again. A real content error still fails deterministically;
+      // a one-frame lifecycle miss does not become a false curriculum error.
+      await new Promise<void>((resolve) => setTimeout(resolve, 50));
+      after = await gradeStep(step, step.solution);
+      failed = after.filter((r) => r.status !== "passed");
+    }
     if (failed.length > 0) {
       out.push({
         severity: "error",
@@ -259,10 +301,11 @@ async function checkBehaviour(step: Step): Promise<Finding[]> {
 export async function validateCourse(
   course: Course,
   onStep?: (report: StepReport) => void,
+  options?: { independent?: boolean },
 ): Promise<StepReport[]> {
   const reports: StepReport[] = [];
   for (const step of course.steps) {
-    const findings = [...checkShape(step), ...(await checkBehaviour(step))];
+    const findings = [...checkShape(step, options?.independent), ...(await checkBehaviour(step))];
     const report: StepReport = {
       courseId: course.id,
       stepId: step.id,

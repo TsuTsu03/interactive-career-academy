@@ -2,7 +2,9 @@
 
 import { useCallback, useState } from "react";
 import { curriculum } from "@/content/curriculum";
-import { countBySeverity, validateCourse, type StepReport } from "@/lib/harness";
+import { practiceActivities, practiceCourse } from "@/content/practice-activities";
+import { capstoneCourse, capstones } from "@/content/capstones";
+import { checkPracticeReference, countBySeverity, validateCourse, type StepReport } from "@/lib/harness";
 
 /**
  * Runs the authoring harness against every course and shows what failed.
@@ -21,9 +23,10 @@ export function HarnessRunner() {
     setReports(null);
     const all: StepReport[] = [];
     const requestedCourse = new URLSearchParams(window.location.search).get("course");
+    const allCourses = [...curriculum.courses, practiceCourse, capstoneCourse];
     const courses = requestedCourse
-      ? curriculum.courses.filter((course) => course.id === requestedCourse)
-      : curriculum.courses;
+      ? allCourses.filter((course) => course.id === requestedCourse)
+      : allCourses;
     if (requestedCourse && courses.length === 0) {
       const invalidFilter: StepReport = {
         courseId: requestedCourse,
@@ -45,10 +48,23 @@ export function HarnessRunner() {
       // Parked on window as each step finishes, so the result survives a
       // starved renderer and so a hang is visible at the step that caused it.
       // That is how this page is usually driven during development.
+      const independentActivities = [...practiceActivities, ...capstones];
       await validateCourse(course, (report) => {
+        if (course.id === practiceCourse.id || course.id === capstoneCourse.id) {
+          const activity = independentActivities.find((item) => item.id === report.stepId);
+          if (activity) {
+            report.findings.push(...checkPracticeReference(activity));
+            if (activity.sourceActivityId && !independentActivities.some((item) => item.id === activity.sourceActivityId)) {
+              report.findings.push({ severity: "error", rule: "remix-source", message: `Source activity ${activity.sourceActivityId} does not exist.` });
+            }
+            for (const requiredId of activity.requiresActivityIds ?? []) {
+              if (!independentActivities.some((item) => item.id === requiredId)) report.findings.push({ severity: "error", rule: "capstone-order", message: `Required activity ${requiredId} does not exist.` });
+            }
+          }
+        }
         all.push(report);
         (window as unknown as { __harness?: StepReport[] }).__harness = all;
-      });
+      }, { independent: course.id === capstoneCourse.id });
     }
     setReports(all);
     setProgress("");
@@ -59,7 +75,10 @@ export function HarnessRunner() {
   const problems = reports?.filter((r) => r.findings.length > 0) ?? [];
 
   return (
-    <main className="mx-auto min-h-[100dvh] max-w-[1000px] px-6 py-12">
+    <main
+      className="mx-auto min-h-[100dvh] max-w-[1000px] px-6 py-12"
+      data-course-ids={[...curriculum.courses, practiceCourse, capstoneCourse].map((course) => course.id).join(",")}
+    >
       <h1 className="font-display text-[34px] font-bold tracking-tight text-chalk">
         Authoring harness
       </h1>

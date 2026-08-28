@@ -2,7 +2,7 @@
 
 **This is the canonical document.** Start here. Working title through decision 31 was "Interactive Career Academy" — the product is renamed **CodeDaddy** as of decision 32. The repo folder, `apps/web`'s internal package name, and historical references below keep the old name; only the product's public-facing name changed.
 
-**Status:** Decided 2026-08-23, in an interview with the product owner. Amended the same day, in a second interview, with decisions 20 through 31, and a third time with decision 32. Amended 2026-08-26 with decisions 33 and 34, which define CodeDaddy's product differentiation and approved signature feature set, and again the same day with decisions 35 through 37, which add the access layer, the session and recovery tools, and the portfolio capstone that ends the free path. Amended 2026-08-27 with decision 38, which replaces decision 19's step-count target with coverage-based course sizes, and 2026-08-28 with decision 39, which groups the courses into two programs and names the material a front-end developer needs that the curriculum did not have.
+**Status:** Decided 2026-08-23, in an interview with the product owner. Amended the same day, in a second interview, with decisions 20 through 31, and a third time with decision 32. Amended 2026-08-26 with decisions 33 and 34, which define CodeDaddy's product differentiation and approved signature feature set, and again the same day with decisions 35 through 37, which add the access layer, the session and recovery tools, and the portfolio capstone that ends the free path. Amended 2026-08-27 with decision 38, which replaces decision 19's step-count target with coverage-based course sizes. Amended 2026-08-28 with decision 39, which groups the courses into two programs and names the material a front-end developer needs that the curriculum did not have, and decision 40, which selects a static GCash QR for donations.
 **Supersedes:** `ARCHITECTURE_PLAN_V2.md`, most of which was written against the wrong assumptions. It is kept for history, not for guidance.
 
 ---
@@ -48,16 +48,16 @@ These features form one teaching system, not a wall of unrelated gamification. E
 |---|---|---|
 | **Four-way concept teaching** | See a definition, familiar analogy, live visual or diagram, and immediate proof before using a new idea | Built |
 | **Spaced review** | Recall concepts across course boundaries at increasing intervals so earlier learning is not abandoned | Built |
-| **Progressive recovery** | Move from the failing check to a focused inspection prompt and then an authored hint; never reveal the full solution or overwrite learner code | Foundation built; structured recovery path planned |
-| **Rebuild Mode** | After a guided project, rebuild a smaller version from memory with fewer prompts to prove independent recall | Planned |
-| **Bug Clinic** | Repair a deliberately broken interface whose failures represent common beginner mistakes | Planned |
-| **Skill Evidence Ledger** | Show the exact concepts and checks a learner has proved across named projects, with links to the artifacts when available | Planned |
-| **Constraint Missions** | Complete projects under practical requirements such as keyboard access, mobile readability, print output, reduced motion, or low-bandwidth delivery | Planned; some constraints already appear inside course content |
-| **Project Remix** | Change the subject, content, layout, or behaviour of a completed build without repeating the original guided steps | Planned |
-| **Concept Connections** | Show where one global concept returns in later courses and projects, such as HTML structure becoming a CSS target and then a JavaScript DOM relationship | Registry foundation built; learner-facing connections planned |
-| **Mistake Museum** | Keep a private record of the checks the learner actually fails, name the small number of mistakes they repeat most, and route those concepts back into practice | Planned (decision 35) |
-| **Proof page** | Turn the private evidence ledger into one page the learner can publish and send to somebody, built only from work the app actually verified | Planned (decision 37) |
-| **Portfolio capstone** | Build a real portfolio site as the last project of the free path, guided on what belongs on it and checked on whether it works | Planned (decision 37) |
+| **Progressive recovery** | Move from the failing check to a focused inspection prompt and then an authored hint; never reveal the full solution or overwrite learner code | Built and browser-verified 2026-08-29 |
+| **Rebuild Mode** | After a guided project, rebuild a smaller version from memory with fewer prompts to prove independent recall | Built and browser-verified 2026-08-29 |
+| **Bug Clinic** | Repair a deliberately broken interface whose failures represent common beginner mistakes | Built and browser-verified 2026-08-29 |
+| **Skill Evidence Ledger** | Show the exact concepts and checks a learner has proved across named projects, with links to the artifacts when available | Built and browser-verified 2026-08-29 |
+| **Constraint Missions** | Complete projects under practical requirements such as keyboard access, mobile readability, print output, reduced motion, or low-bandwidth delivery | Built and browser-verified 2026-08-29 |
+| **Project Remix** | Change the subject, content, layout, or behaviour of a completed build without repeating the original guided steps | Built and browser-verified 2026-08-29 |
+| **Concept Connections** | Show where one global concept returns in later courses and projects, such as HTML structure becoming a CSS target and then a JavaScript DOM relationship | Built and browser-verified 2026-08-29 |
+| **Mistake Museum** | Keep a private record of the checks the learner actually fails, name the small number of mistakes they repeat most, and route those concepts back into practice | Built and browser-verified 2026-08-29 |
+| **Proof page** | Turn the private evidence ledger into one page the learner can publish and send to somebody, built only from work the app actually verified | Built and browser-verified 2026-08-29 |
+| **Portfolio capstone** | Build a real portfolio site as the last project of the free path, guided on what belongs on it and checked on whether it works | Built and browser-verified 2026-08-29 |
 
 Implementation rules for the planned features:
 
@@ -109,7 +109,7 @@ The workspace preview can remain on the landing page, but it follows this produc
 
 ## 3. The decisions
 
-Thirty-nine decisions, with the reasoning, so nobody relitigates them by accident. 1 through 19 were decided 2026-08-23 in the first interview; 20 through 31 in a second interview the same day, which grilled the first plan against the actual codebase and found the gaps below; decision 32 renamed the product; decisions 33 and 34 were approved 2026-08-26 after reviewing how CodeDaddy should remain inspired by freeCodeCamp without becoming its visual or product duplicate; decisions 35 through 37 were approved the same day, after asking what else could ship with v1 for that same reason.
+Forty decisions, with the reasoning, so nobody relitigates them by accident. 1 through 19 were decided 2026-08-23 in the first interview; 20 through 31 in a second interview the same day, which grilled the first plan against the actual codebase and found the gaps below; decision 32 renamed the product; decisions 33 and 34 were approved 2026-08-26 after reviewing how CodeDaddy should remain inspired by freeCodeCamp without becoming its visual or product duplicate; decisions 35 through 37 were approved the same day, after asking what else could ship with v1 for that same reason. Decision 38 replaced numeric curriculum targets, decision 39 expanded the frontend curriculum, and decision 40 fixed the donation method.
 
 | # | Decision | Choice | Why |
 |---|---|---|---|
@@ -151,7 +151,8 @@ Thirty-nine decisions, with the reasoning, so nobody relitigates them by acciden
 | 36 | Session and recovery tools | **Progress Passport, Baon Mode, Character Guard, and the Tanong Card, all shipping with v1** | Four small tools against four real failures of this specific audience. Progress lives in `localStorage` and accounts are deferred behind decision 18, so a wiped shared computer erases everything — the Passport is the only answer available before the backend exists. Baon Mode costs almost nothing because decision 21 already requires a per-step estimate. Character Guard exists because decision 35's phone workspace makes smart quotes and wrong brackets the most common invisible failure. The Tanong Card teaches the learner to ask a good question without building the forum decision 11 refused |
 | 37 | The final project | **The learner's own portfolio site is the fifth capstone and the last thing they build on the free path, and the proof page feeds it** | Decision 30 named five capstones without saying what they are. The portfolio is the only project whose content is the other projects, so it can only be built last — built any earlier, it is an empty shelf. It is also the artifact that outlives the certificate: a certificate is a claim, a working site with live projects is the evidence. The proof page exists so the evidence on that site is generated from verified work rather than written from memory. Amends decision 30 by naming the fifth capstone; the certificate requirement itself is unchanged |
 | 38 | Course size | **Coverage, not a step count. Targets are ~350 HTML, ~450 CSS, ~650 JavaScript, ~130 Tailwind, ~550 React — about 2,100 for v1, replacing decision 19's ~6,300** | Decision 19's target was freeCodeCamp's real step count doubled. The multiplier was never derived from what a learner needs to know; it was picked to be more than fCC. Authoring against it showed why that fails: HTML reached 273 steps having taught 79 elements, which is every element a beginner course should cover, and the remaining ~370 steps to hit the old target could only be padding — the exact thing AGENTS.md section 5 and decision 27 exist to prevent. A course is finished when the material is covered and practised, not when a number is reached. The revised figures are what each subject actually needs: HTML is nearly done and needs combination work rather than more elements; CSS is the largest real gap at 105 steps with the box model, flexbox, grid, and responsive design barely touched; JavaScript has its basics and is missing functions in depth, the DOM, events, and async; Tailwind is a thin layer over CSS the learner already knows; React is the largest single course because it is the closest to employable work and the owner asked for it to be the most detailed. Cuts the calendar in section 7 from 16-38 months to roughly a third of that without removing anything a learner needs |
-| 39 | Curriculum shape | **Two programs above the existing courses. Program A, Web Design Basics: HTML, Design Foundations, CSS, JavaScript, JavaScript on a Page. Program B, Front-End Development: JavaScript for Real Apps, Tailwind, React, TypeScript for React, Testing and DevTools, the five capstones. Course ids are unchanged; the programs are a grouping layer.** | The owner asked whether a graduate would be a competitive front-end developer who also knows UI/UX. Audited rather than guessed, and the answer was no, for two reasons the step count hid. **The JavaScript course teaches the language, not the web:** across all 655 steps there is not one `document.`, `querySelector`, `addEventListener`, `fetch`, `async`, `Promise`, or `localStorage`. Every step ends in `console.log`, so a graduate has never attached a click handler or read an API. **UI/UX is absent:** zero occurrences of hierarchy, contrast ratio, design system, spacing scale, empty state, or wireframe anywhere in the content. The courses teach how to write CSS, never what to build or why - which is half of what the product promises. Design Foundations sits after HTML and before CSS so the learner meets the ideas before forming habits against them, and it belongs to Program A because that is the program named for design. DOM work is its own course rather than an extension, because the seam between the language and the browser is real and because existing saved progress stays untouched. Merging HTML, CSS, and JavaScript into one course id was considered and refused: progress is stored at `aca.progress.v2.<courseId>`, so a merge would strand every learner who has started. Raises the total from decision 38's ~2,100 to ~2,660, which is new material rather than padding. Git and the terminal are named here as **unsolved**: there is no shell in a sandboxed iframe, so they cannot be checked, and they wait for the backend of build-order step 11 or for an owner decision to teach them unchecked |
+| 39 | Curriculum shape | **Two programs above the existing courses. Program A, Web Design Basics: HTML, Design Foundations, CSS, JavaScript, JavaScript on a Page. Program B, Front-End Development: JavaScript for Real Apps, Tailwind, React, TypeScript for React, Testing and DevTools, the five capstones. Course ids are unchanged; the programs are a grouping layer.** | The owner asked whether a graduate would be a competitive front-end developer who also knows UI/UX. Audited rather than guessed, and the answer was no, for two reasons the step count hid. **The JavaScript course teaches the language, not the web:** across all 655 steps there is not one `document.`, `querySelector`, `addEventListener`, `fetch`, `async`, `Promise`, or `localStorage`. Every step ends in `console.log`, so a graduate has never attached a click handler or read an API. **UI/UX is absent:** zero occurrences of hierarchy, contrast ratio, design system, spacing scale, empty state, or wireframe anywhere in the content. The courses teach how to write CSS, never what to build or why - which is half of what the product promises. Design Foundations sits after HTML and before CSS so the learner meets the ideas before forming habits against them, and it belongs to Program A because that is the program named for design. DOM work is its own course rather than an extension, because the seam between the language and the browser is real and because existing saved progress stays untouched. Merging HTML, CSS, and JavaScript into one course id was considered and refused: progress is stored at `aca.progress.v2.<courseId>`, so a merge would strand every learner who has started. Raises the total from decision 38's ~2,100 to 2,760, which is new material rather than padding. Git and the terminal are named here as **unsolved**: there is no shell in a sandboxed iframe, so they cannot be checked, and they wait for the backend of build-order step 11 or for an owner decision to teach them unchecked |
+| 40 | Donations | **Show one owner-supplied static GCash QR inside the dismissible donation prompt. No checkout, payment API, or external donation provider.** | The free path stays free and CodeDaddy does not need payment state, webhooks, accounts, or a new dependency to accept optional support. The QR is a local public asset at `apps/web/public/gcash-qr.png`; replacing it remains an owner-controlled deployment change. |
 
 ---
 
@@ -160,11 +161,12 @@ Thirty-nine decisions, with the reasoning, so nobody relitigates them by acciden
 ### The free path, in order
 
 ```
-HTML  →  CSS  →  Tailwind  →  JavaScript  →  React  →  Database  →  Back-end
-└─────────────── v1 launch ───────────────┘  └──── after launch ────┘
+Program A: HTML → Design Foundations → CSS → JavaScript → JavaScript on a Page
+Program B: JavaScript for Real Apps → Tailwind → React → TypeScript for React → Testing and DevTools → five capstones
+After frontend freeze: Database → Back-end
 ```
 
-A course is many small projects built across many small steps, freeCodeCamp style (decision 23) — not one project stretched across the whole course. The learner never starts from a blank file mid-project: each step begins where the last one ended, but that continuity is scoped to the project, not the whole course. Learn HTML uses this split across 58 projects; CSS across 87; Tailwind across 24; JavaScript across 129; and React currently across 9. `Course.projects[]` names each one; `Step.projectId` says which project a step belongs to. Finishing a project is a named milestone with a shareable artifact — not a gate, and not itself a certificate (decision 24).
+A course is many small projects built across many small steps, freeCodeCamp style (decision 23) — not one project stretched across the whole course. The learner never starts from a blank file mid-project: each step begins where the last one ended, but that continuity is scoped to the project, not the whole course. The ten guided courses now contain 476 projects. `Course.projects[]` names each one; `Step.projectId` says which project a step belongs to. Finishing a project is a named milestone with a shareable artifact — not a gate, and not itself a certificate (decision 24).
 
 ### Course naming
 
@@ -181,44 +183,45 @@ programs are a layer above them, so no saved progress moves.
 | Course | Project | Steps now | Target |
 |---|---|---|---|
 | Learn HTML | Sari-Sari Store Page + 57 more | 347 (58 projects) | ~350 |
-| **Design Foundations** | not started | 0 | ~180 |
+| **Design Foundations** | Barangay Service Hierarchy + 29 more | 180 (30 projects) | ~180 |
 | Learn CSS | Jeepney Route Card + 86 more | 450 (87 projects) | ~450 |
 | Learn JavaScript | Palengke Price Counter + 128 more | 655 (129 projects) | ~650 |
-| **JavaScript on a Page** | not started | 0 | ~120 |
+| **JavaScript on a Page** | Barangay Certificate + 23 more | 120 (24 projects) | ~120 |
 
 **Program B — Front-End Development**
 
 | Course | Project | Steps now | Target |
 |---|---|---|---|
-| **JavaScript for Real Apps** | not started | 0 | ~130 |
+| **JavaScript for Real Apps** | Barangay Alert Promise + 25 more | 130 (26 projects) | ~130 |
 | Learn Tailwind CSS | Turo-Turo Menu Card + 23 more | 128 (24 projects) | ~130 |
-| Learn React | Barangay Help Desk Heading + 8 more | 60 (9 projects) | ~550 |
-| **TypeScript for React** | not started | 0 | ~120 |
-| **Testing and DevTools** | not started | 0 | ~80 |
-| The five capstones | not started | 0 | 5 projects |
+| Learn React | Barangay Help Desk Heading + 57 more | 550 (58 projects) | ~550 |
+| **TypeScript for React** | Typed Help Desk + 23 more | 120 (24 projects) | ~120 |
+| **Testing and DevTools** | Fare Test Case + 15 more | 80 (16 projects) | ~80 |
+| The five capstones | Independent briefs and automated checks | 5 projects | 5 projects |
 
 The five courses that existed before decision 39 are listed with their old
 decision 19 targets for history: HTML ~640, CSS ~2,470, JavaScript ~2,640,
 Tailwind ~190, React ~370.
 
-HTML, CSS, Tailwind, and JavaScript have reached their coverage targets and
-passed the complete browser authoring harness on 2026-08-28. React now has 60
-steps covering components, nested elements, props, list rendering, keys,
-conditional output, state, events, controlled inputs, effects, and refs with a
-real bundled React 19 runtime. The owner approved its separate opaque-origin
-preview and grading frame roles on 2026-08-28; both remain `allow-scripts` only.
-Further React lesson authoring pauses at this verified 60-step checkpoint until
-the JSX transform is resolved. The installed Next.js Babel internals could not
-produce a browser bundle without Node-only modules, and no browser JSX
-transformer is installed. Adding one requires the dependency approval and
-transfer-size review required by `AGENTS.md` section 3. The measured candidate
-is Sucrase 3.35.1: bundling it with the current runtime raises the asset from
-60,735 to 120,992 bytes gzip, a 60,257-byte increase. That is a narrow runtime-
-cost exception to section 3 and therefore still needs an explicit owner call.
-**React is now the largest remaining target** because it is the closest thing
-here to employable work.
+All ten guided courses have reached their coverage targets and passed the
+complete browser authoring harness on 2026-08-28. React now has
+550 steps across 58 projects. Its coverage includes JSX, components, props,
+children, composition, lists, keys, conditional output, state, events,
+controlled forms, effects, refs, reducers, context, custom hooks, memoized
+values, callbacks, and memoized components. Accessibility is practised inside
+the projects rather than deferred to a separate lesson.
 
-1,640 steps total, across five courses, as of 2026-08-28: 58 HTML projects, 87 CSS, 24 Tailwind, 129 JavaScript, and 9 React. The full browser harness reports 0 errors; its 13 remaining warnings are reviewed structural exceptions where one coherent step necessarily changes more than three lines. Under decision 38, the remaining guided-curriculum work is now principally the React course rather than more padding in completed foundations.
+The owner approved Sucrase 3.35.1 and the required React runtime-cost exception
+on 2026-08-28. The generated browser asset grew from 60,735 to 106,011 bytes
+gzip, an increase of 45,276 bytes and below the approved 60,257-byte ceiling.
+React preview and grading still run in separate opaque-origin frames with
+`allow-scripts` only. No frame combines scripts with same-origin permission.
+
+2,760 steps total, across ten courses and 476 projects, as of 2026-08-28. The full browser harness reports
+0 errors and 28 reviewed granularity warnings. Thirteen are the existing
+foundation exceptions. Fifteen React warnings are coherent multi-line edits:
+one component-prop connection, seven filtered-list connections, six browser
+event effects with cleanup, and one custom-hook extraction.
 
 Decision 19 set these targets by doubling freeCodeCamp's real step count, verified live at freecodecamp.org on 2026-08-23. Decision 38 replaced that method on 2026-08-27: a course is sized by what it has to cover, and the old figures survive only as the last column above. The multiplier was never derived from what a learner needs, and authoring against it produced a finished-in-substance HTML course still ~370 steps short of its number, with nothing left to add but padding.
 
@@ -333,7 +336,7 @@ Before the backend exists it exports as one self-contained file the learner publ
 
 ### Certificates
 
-Fully automated. The v1 credential is **one Front-End Development certificate** (decision 30), earned by finishing all five free-path courses through React plus **5 independent capstone projects** — four built to an authored brief with their own automated test suites, and a fifth that is the learner's own portfolio site linking the other four (decision 37). No step-by-step scaffolding in any of them. Finishing the guided courses proves the learner can follow instructions; the five independent projects are what make the certificate mean anything beyond that. It references the learner's real repositories and deployments.
+Fully automated. The v1 credential is **one Front-End Development certificate** (decision 30), earned by finishing all ten guided courses plus **5 independent capstone projects** — four built to an authored brief with their own automated test suites, and a fifth that is the learner's own portfolio site linking the other four (decision 37). No step-by-step scaffolding in any of them. Finishing the guided courses proves the learner can follow instructions; the five independent projects are what make the certificate mean anything beyond that. It references the learner's real repositories and deployments.
 
 It is a **Certificate of Completion**, not accreditation and not a competency certification. Browser-side results can be forged and that is an accepted, disclosed limit. The portfolio is the real evidence; the certificate points at it.
 
@@ -399,17 +402,28 @@ Everything in 1 through 4 is expensive to reverse once thousands of steps exist.
 5. **Finish the frontend product shell**: real local progress, course gating, completion flows, responsive behaviour, and accessibility
 6. **Build spaced review as a frontend flow** using local lesson data
 7. **Build every remaining v1 frontend surface** for accounts, projects, submissions, and certificates with honest disconnected states
-8. **Finish the v1 front-end curriculum**: expand HTML and CSS, add Tailwind, expand JavaScript, add React and accessibility
-9. **Deliver the approved differentiation and access layers**: revise the landing-page story, then add the offline course shell and the phone-first workspace, then the Progress Passport, Character Guard, Baon Mode, the Tanong Card, the Mistake Museum, progressive recovery, Concept Connections, Rebuild Mode, Bug Clinic, the Skill Evidence Ledger, the proof page, Constraint Missions, and Project Remix in that order, then author the five capstone briefs and their test suites with the portfolio last, since its brief depends on what the other four produce
-10. **Freeze the frontend** after browser, responsive, accessibility, performance, offline, phone-workspace, passport round-trip, content-harness, rebuild, bug-clinic, recovery, capstone, and evidence-integrity verification
-11. Only after frontend freeze: Supabase, GitHub OAuth, email magic link, database persistence, and APIs
-12. Connect project submission and automated certificates to the verified backend
+8. **Finish the v1 front-end curriculum**: expand HTML and CSS, add Tailwind, expand JavaScript, add React, Design Foundations, JavaScript for Real Apps, TypeScript for React, Testing and DevTools, and accessibility — **complete 2026-08-28**
+9. **Deliver the approved differentiation and access layers**: revise the landing-page story, then add the offline course shell and the phone-first workspace, then the Progress Passport, Character Guard, Baon Mode, the Tanong Card, the Mistake Museum, progressive recovery, Concept Connections, Rebuild Mode, Bug Clinic, the Skill Evidence Ledger, the proof page, Constraint Missions, and Project Remix in that order, then author the five capstone briefs and their test suites with the portfolio last, since its brief depends on what the other four produce — **complete 2026-08-29**
+10. **Freeze the frontend** after browser, responsive, accessibility, performance, offline, phone-workspace, passport round-trip, content-harness, rebuild, bug-clinic, recovery, capstone, and evidence-integrity verification — **complete 2026-08-29**
+11. Only after frontend freeze: Supabase, GitHub OAuth, email magic link, database persistence, and APIs — **implementation and local contract verification complete 2026-08-29; live provider setup pending**
+12. Connect project submission and automated certificates to the verified backend — **implementation and local contract verification complete 2026-08-29; live Supabase deployment pending**
 
 Step 9 remains frontend-only. The offline shell and the phone workspace come first inside it because both change the shell every later feature is built into — retrofitting a service worker and a small-screen layout around seven finished features costs far more than building them under it. The Progress Passport and Character Guard follow immediately: the Passport protects work that is being lost today, and Character Guard is what makes the phone workspace survivable. The Mistake Museum comes next, since it only needs to record failures the grader already produces. The proof page waits until the Skill Evidence Ledger exists, because it is that ledger rendered for somebody else to read. The rest of step 9's order deliberately starts with features that can reuse existing lesson, concept, grading, and review data. Rebuild Mode and Bug Clinic require an explicit IR and harness design before content authoring begins. The Skill Evidence Ledger must derive claims from verified state rather than introduce a second source of truth. Constraint Missions should first appear inside selected course projects and the five capstones, then expand only when the harness can verify their requirements. Project Remix remains optional and should reuse completed project files without mutating the learner's original artifact.
 
-**Current checkpoint, 2026-08-23:** Steps 1 through 7 are implemented. The
-frontend now has local progress, ordered course gates, completion flows, and a
-spaced-review screen. It also has honest disconnected account, project draft,
+**Current checkpoint, 2026-08-29:** Steps 1 through 10 are complete. The frozen
+frontend contains 2,760 guided steps, 8 optional practice activities, and 5
+independent capstones. The real-Chrome authoring harness passed all 2,773 items
+with 0 errors; all 87 previously queued lesson routes and editor/checker flows
+also passed. Steps 11 and 12 are implemented behind server routes with Supabase
+row-level security, PKCE auth, explicit progress sync, project-link records,
+server-gated certificate issuance, and a public certificate record. The local
+Supabase-compatible integration audit passes, but real GitHub/email provider
+round-trips, migration application, deployment, and production verification
+remain owner/provider gates.
+
+**Historical checkpoint, 2026-08-23:** Steps 1 through 7 were implemented. The
+frontend had local progress, ordered course gates, completion flows, and a
+spaced-review screen. It also had honest disconnected account, project draft,
 submission, and certificate surfaces.
 
 Step 8, completing the frontend curriculum, was in progress (HTML at 27 steps)
@@ -529,7 +543,6 @@ Carried forward from the audit and still true.
 Not blocking. Decide when they become real.
 
 - Which specialisations are the paid tier
-- How donations are taken (Ko-fi, GitHub Sponsors, PayMongo)
 - Hosting plan and the scale at which the free tier breaks
 - Exact certificate wording, and whether it needs legal review
 - Whether the community layer in `ARCHITECTURE_PLAN_V2.md` section 6b is ever revived
@@ -541,15 +554,17 @@ Not blocking. Decide when they become real.
 A working Next.js 16 app in `apps/web`.
 
 - Three-column step workspace: instructions, editor, live preview
-- Five courses (HTML, CSS, Tailwind CSS, JavaScript, React), 1,640 steps total, all harness-verified end to end. React has 60 steps across nine practical projects.
+- Ten courses grouped into Web Design Basics and Front-End Development, 2,760 steps total, all harness-verified end to end. React has 550 steps across 58 practical projects.
 - A global concept registry (`content/concepts.ts`) and global, cross-course spaced review — a concept learned in one course still resurfaces while the learner spends months inside the next one
-- A `Course.projects[]` / `Step.projectId` layer used by every course and all 307 current projects
+- A `Course.projects[]` / `Step.projectId` layer used by every course and all 476 current projects
 - An authoring harness (`lib/harness.ts`, at `/harness`) that checks learner copy, hints, concepts, accessibility, and — as of 2026-08-23 — step granularity, mechanically
-- Deterministic grading for markup, computed styles, source patterns, JavaScript behaviour, and React-rendered output
-- Safe JavaScript grading in a disposable frame with a hard timeout; React grading is disposable, while its opaque-origin live preview has a watchdog that remounts an unresponsive runtime. The React browser runtime is built from the installed React packages with no new dependency
+- Deterministic grading for markup, computed styles, source patterns, JavaScript behaviour with local API fixtures, and React or TypeScript-rendered output
+- Safe JavaScript grading in a disposable frame with a hard timeout; React grading is disposable, while its opaque-origin live preview has a watchdog that remounts an unresponsive runtime. The React browser runtime is built from the installed React packages and Sucrase 3.35.1 for JSX and TSX compilation
 - Tap-to-build blocks, guided typing, progressive hints
 - One patient, plain-English teaching voice across the product
 - XP, combo, streak, ranks, rank-up celebration
 - Progress saved per course, restored on return
+- A dismissible donation prompt that reads an owner-supplied static GCash QR from `public/gcash-qr.png`; the QR asset itself is still pending
+- The approved landing-page story: four-way teaching, Philippines-first projects, spaced review, and working project evidence before the workspace preview
 
 See `apps/web/README.md` for the invariants that must never regress.

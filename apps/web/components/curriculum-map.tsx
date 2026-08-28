@@ -61,6 +61,9 @@ function dueReviewCopy(count: number): Copy {
 }
 
 function technology(courseId: string, kind: "web" | "js" | "react"): string {
+  if (courseId === "design-foundations") return "Design";
+  if (courseId === "typescript-react") return "TypeScript + React";
+  if (courseId === "testing-devtools") return "Testing + DevTools";
   if (kind === "react") return "React";
   if (kind === "js") return "JavaScript";
   if (courseId.startsWith("tailwind")) return "Tailwind CSS";
@@ -136,6 +139,96 @@ export function CurriculumMap() {
 
   const { ready, progress, dueReviews, hasReviewConcepts } = state;
 
+  const renderCourse = (course: (typeof curriculum.courses)[number]) => {
+    const courseProgress = progress[course.id];
+    const unmetRequirement = course.requires.find(
+      (requiredId) => !progress[requiredId]?.isComplete,
+    );
+    const locked =
+      course.requires.length > 0 &&
+      (!ready || (Boolean(unmetRequirement) && !courseProgress.hasSession));
+    const requiredCourse = curriculum.courses.find(
+      (candidate) => candidate.id === unmetRequirement,
+    );
+
+    const content = (
+      <>
+        <span
+          aria-hidden="true"
+          className={`mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 font-mono text-sm font-bold ${
+            courseProgress.isComplete
+              ? "border-acid text-acid glow-acid"
+              : !locked && ready
+                ? "border-voltage text-voltage glow-voltage"
+                : "border-hairline text-ash"
+          }`}
+        >
+          {courseProgress.isComplete ? <Icon name="check" size={20} /> : course.order}
+        </span>
+
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <h3 className="font-display text-[22px] font-bold tracking-tight text-chalk">
+                {course.title}
+              </h3>
+              <span className="rounded border border-hairline px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-ash">
+                {technology(course.id, course.kind)}
+              </span>
+            </div>
+            <CourseStatus progress={courseProgress} locked={locked} ready={ready} />
+          </div>
+
+          <p className="mt-2 max-w-[62ch] text-[15px] leading-relaxed text-ash">
+            {copy(course.summary)}
+          </p>
+
+          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[12px] text-ash">
+            <span>{copy(progressCopy(courseProgress))}</span>
+            <span>{totalXp(course)} XP</span>
+            {locked && requiredCourse ? (
+              <span className="flex items-center gap-1.5 text-ash/80">
+                <Icon name="lock" size={14} />
+                <span>{copy(requirementCopy(requiredCourse.title))}</span>
+              </span>
+            ) : null}
+          </div>
+
+          <div
+            className="mt-4 h-1.5 overflow-hidden rounded-full bg-hairline"
+            role="progressbar"
+            aria-label={`${course.title}: ${copy(progressCopy(courseProgress))}`}
+            aria-valuenow={courseProgress.completedCount}
+            aria-valuemin={0}
+            aria-valuemax={courseProgress.total}
+          >
+            <div
+              className="h-full rounded-full bg-acid transition-[width] duration-500"
+              style={{ width: `${(courseProgress.completedCount / courseProgress.total) * 100}%` }}
+            />
+          </div>
+        </div>
+      </>
+    );
+
+    return (
+      <li key={course.id}>
+        {locked ? (
+          <article className="flex items-start gap-4 rounded-2xl border border-hairline bg-panel p-5 opacity-75 sm:gap-5 sm:p-6">
+            {content}
+          </article>
+        ) : (
+          <Link
+            href={`/learn/${course.id}`}
+            className="group flex min-h-11 items-start gap-4 rounded-2xl border border-hairline bg-panel p-5 transition-colors hover:border-ash/50 sm:gap-5 sm:p-6"
+          >
+            {content}
+          </Link>
+        )}
+      </li>
+    );
+  };
+
   return (
     <div className="flex min-h-[100dvh] flex-col bg-background text-on-background">
       <ProductNav current="courses" />
@@ -210,103 +303,27 @@ export function CurriculumMap() {
           </span>
         </Link>
 
-        <ol className="relative space-y-4">
-          {curriculum.courses.map((course) => {
-            const courseProgress = progress[course.id];
-            const unmetRequirement = course.requires.find(
-              (requiredId) => !progress[requiredId]?.isComplete,
-            );
-            const locked = course.requires.length > 0 && (!ready || Boolean(unmetRequirement));
-            const requiredCourse = curriculum.courses.find(
-              (candidate) => candidate.id === unmetRequirement,
-            );
-
-            const content = (
-              <>
-                <span
-                  aria-hidden="true"
-                  className={`mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 font-mono text-sm font-bold ${
-                    courseProgress.isComplete
-                      ? "border-acid text-acid glow-acid"
-                      : !locked && ready
-                        ? "border-voltage text-voltage glow-voltage"
-                        : "border-hairline text-ash"
-                  }`}
-                >
-                  {courseProgress.isComplete ? <Icon name="check" size={20} /> : course.order}
-                </span>
-
-                <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
-                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <h2 className="font-display text-[22px] font-bold tracking-tight text-chalk">
-                        {course.title}
-                      </h2>
-                      <span className="rounded border border-hairline px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-ash">
-                        {technology(course.id, course.kind)}
-                      </span>
-                    </div>
-                    <CourseStatus
-                      progress={courseProgress}
-                      locked={locked}
-                      ready={ready}
-                    />
-                  </div>
-
-                  <p className="mt-2 max-w-[62ch] text-[15px] leading-relaxed text-ash">
-                    {copy(course.summary)}
-                  </p>
-
-                  <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[12px] text-ash">
-                    <span>{copy(progressCopy(courseProgress))}</span>
-                    <span>{totalXp(course)} XP</span>
-                    {locked && requiredCourse ? (
-                      <span className="flex items-center gap-1.5 text-ash/80">
-                        <Icon name="lock" size={14} />
-                        <span>{copy(requirementCopy(requiredCourse.title))}</span>
-                      </span>
-                    ) : null}
-                  </div>
-
-                  <div
-                    className="mt-4 h-1.5 overflow-hidden rounded-full bg-hairline"
-                    role="progressbar"
-                    aria-label={`${course.title}: ${copy(progressCopy(courseProgress))}`}
-                    aria-valuenow={courseProgress.completedCount}
-                    aria-valuemin={0}
-                    aria-valuemax={courseProgress.total}
-                  >
-                    <div
-                      className="h-full rounded-full bg-acid transition-[width] duration-500"
-                      style={{
-                        width: `${(courseProgress.completedCount / courseProgress.total) * 100}%`,
-                      }}
-                    />
-                  </div>
-                </div>
-              </>
-            );
-
-            return (
-              <li key={course.id}>
-                {locked ? (
-                  <article
-                    className="flex items-start gap-4 rounded-2xl border border-hairline bg-panel p-5 opacity-75 sm:gap-5 sm:p-6"
-                  >
-                    {content}
-                  </article>
-                ) : (
-                  <Link
-                    href={`/learn/${course.id}`}
-                    className="group flex min-h-11 items-start gap-4 rounded-2xl border border-hairline bg-panel p-5 transition-colors hover:border-ash/50 sm:gap-5 sm:p-6"
-                  >
-                    {content}
-                  </Link>
-                )}
-              </li>
-            );
-          })}
-        </ol>
+        <div className="space-y-12">
+          {curriculum.programs.map((program) => (
+            <section key={program.id} aria-labelledby={`${program.id}-title`}>
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-voltage">
+                Program
+              </p>
+              <h2 id={`${program.id}-title`} className="mt-2 font-display text-[28px] font-bold text-chalk">
+                {program.title}
+              </h2>
+              <p className="mt-2 max-w-[65ch] text-[15px] leading-relaxed text-ash">
+                {copy(program.summary)}
+              </p>
+              <ol className="relative mt-6 space-y-4">
+                {program.courseIds
+                  .map((id) => curriculum.courses.find((course) => course.id === id))
+                  .filter((course): course is (typeof curriculum.courses)[number] => Boolean(course))
+                  .map(renderCourse)}
+              </ol>
+            </section>
+          ))}
+        </div>
 
         <p className="mt-12 font-mono text-[12px] text-ash/80">
           {copy(MAP_COPY.localOnly)}

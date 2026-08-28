@@ -368,12 +368,12 @@ const s24 = (step: Omit<Step, "index" | "kind" | "projectId">): Step => { const 
 
 export const tailwindCourse: Course = {
   id: "tailwind-basics",
-  order: 3,
+  order: 7,
   title: "Learn Tailwind CSS by Building a Turo-Turo Menu Card",
   project: "Turo-Turo Menu Card",
   projects: [{ id: PROJECT_ID, title: "Turo-Turo Menu Card" }, { id: PROJECT_2_ID, title: "Sari-Sari Status Badge" }, { id: PROJECT_3_ID, title: "Palengke Category Grid" }, { id: PROJECT_4_ID, title: "Jeepney Route Notice" }, { id: PROJECT_5_ID, title: "Barangay Event Card" }, { id: PROJECT_6_ID, title: "Barangay Help Link" }, { id: PROJECT_7_ID, title: "Palengke Price Row" }, { id: PROJECT_8_ID, title: "Barangay Clinic Hours" }, { id: PROJECT_9_ID, title: "Barangay Water Notice" }, { id: PROJECT_10_ID, title: "Water Refill" }, { id: PROJECT_11_ID, title: "Barangay Clean" }, { id: PROJECT_12_ID, title: "Computer Shop" }, { id: PROJECT_13_ID, title: "Fiesta Programme" }, { id: PROJECT_14_ID, title: "Rice Retailer" }, { id: PROJECT_15_ID, title: "Laundry Shop" }, { id: PROJECT_16_ID, title: "Pharmacy Shelf" }, { id: PROJECT_17_ID, title: "Sari Sari" }, { id: PROJECT_18_ID, title: "Barangay Health" }, { id: PROJECT_19_ID, title: "Jeepney Route" }, { id: PROJECT_20_ID, title: "Palengke Stall" }, { id: PROJECT_21_ID, title: "Turo Turo" }, { id: PROJECT_22_ID, title: "School Notice" }, { id: PROJECT_23_ID, title: "Tricycle Terminal" }, { id: PROJECT_24_ID, title: "Bakery Display" }],
   kind: "web",
-  requires: ["css-basics"],
+  requires: ["js-real-apps"],
   summary: "You already know CSS. Now learn to write it as short class names instead of rules.",
   steps: [
     s({
