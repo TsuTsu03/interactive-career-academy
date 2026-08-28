@@ -8,6 +8,15 @@ const baseUrl = process.env.CODEDADDY_URL ?? "http://localhost:3000";
 const chromePath = process.env.CHROME_PATH ?? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const outputDir = process.env.CODEDADDY_QA_OUTPUT ?? join(tmpdir(), "codedaddy-backend-audit");
 const port = Number(process.env.CODEDADDY_CDP_PORT ?? 9345);
+
+// This audit asserts the honest disconnected state, so it only means anything
+// against a server with no Supabase credentials. Check that before launching
+// Chrome, otherwise the run dies on a timeout for text that can never appear.
+const authConfig = await fetch(`${baseUrl}/api/auth/config`).then((response) => response.json()).catch(() => null);
+if (authConfig?.configured) {
+  console.error("The app under test is connected to Supabase. This audit checks the disconnected account, certificate, and submission states, so run it against a server started without SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY - for example with apps/web/.env.local temporarily renamed.");
+  process.exit(1);
+}
 const profileDir = await mkdtemp(join(tmpdir(), "codedaddy-backend-chrome-"));
 await mkdir(outputDir, { recursive: true });
 const chrome = spawn(chromePath, ["--headless=new", "--disable-gpu", `--remote-debugging-port=${port}`, `--user-data-dir=${profileDir}`, "--no-first-run", "about:blank"], { stdio: "ignore" });

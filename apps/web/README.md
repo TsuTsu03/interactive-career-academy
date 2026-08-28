@@ -164,6 +164,11 @@ node tools/backend-integration-audit.mjs
 
 The browser scripts use `http://localhost:3000` and a temporary report folder by default. Set `CODEDADDY_URL`, `CODEDADDY_QA_OUTPUT`, `CODEDADDY_CDP_PORT`, or `CHROME_PATH` when those defaults do not fit the environment.
 
+`backend-browser-audit.mjs` checks the honest **disconnected** account,
+certificate, and submission states, so it needs a server started without
+Supabase credentials. Against a configured server it exits early and says so
+rather than timing out.
+
 `backend-integration-audit.mjs` runs the built app against a local Supabase-compatible mock. It verifies the server contract, PKCE flow, authenticated persistence, submission recording, certificate gates, and public record without using real provider credentials. A live Supabase deployment still needs a separate provider round-trip.
 
 The authoritative product decisions are in the repository root `PLAN.md`. The visual system is documented in `design/DESIGN.md`, and the downloaded Google Stitch reference package is in `design/stitch/codedaddy-learning-platform/`.
