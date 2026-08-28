@@ -50,6 +50,28 @@ The donation prompt opens once on every full app load and can always be dismisse
 | `components/product-nav.tsx` | Shared responsive learner navigation |
 | `app/globals.css` | Manila Modernist design tokens and responsive themes |
 
+## Discovery, sharing, and installing
+
+Public teaching routes are indexable. Every route that renders one learner's own
+browser state is `noindex` and disallowed in `robots.txt`, because it says
+nothing to anybody else.
+
+| Route | Role |
+|---|---|
+| `/robots.txt` | Crawl rules and the sitemap pointer |
+| `/sitemap.xml` | Landing page, curriculum, ten courses, five capstones, eight practice activities |
+| `/manifest.webmanifest` | Installable shell for the offline course cache in `public/sw.js` |
+| `/opengraph-image` | Build-time share card generated from the Manila Modernist tokens |
+
+`SITE_URL` sets the origin used by canonical links, the sitemap, the share card,
+and the auth redirects. It is one variable for all of them (`lib/site.ts`), and
+an unset value falls back to `http://localhost:3000` rather than emitting a
+wrong canonical.
+
+Structured data is authored from curriculum data in `lib/structured-data.ts`:
+an `EducationalOrganization` and `WebSite` on the landing page, an `ItemList` of
+every course on `/curriculum`, and a `Course` on each `/learn/[courseId]`.
+
 ## Iframe security
 
 The iframe sandboxes are the security boundary and must stay separate.
@@ -77,6 +99,40 @@ Never combine `allow-scripts` and `allow-same-origin` on one iframe.
 - Browser progress remains useful without an account. Signed-in sync is explicit and merges the more advanced record instead of silently replacing local work.
 - Public certificates are minted only by the server after it revalidates all ten courses, five capstones, five project-link records, and the saved certificate name.
 - Donations remain optional and never change access to the free curriculum.
+
+## Continuous integration, versions, and deployment
+
+`.github/workflows/ci.yml` runs on every push to `main` and every pull request.
+It runs the three gates `AGENTS.md` section 6 requires — `tsc --noEmit`,
+`eslint . --max-warnings 0`, and `next build` — on Node 24. A red CI run means
+the change is not finished.
+
+The app version lives in `apps/web/package.json`. Record changes in
+`CHANGELOG.md`, then tag:
+
+```bash
+git tag -a v1.0.0 -m "v1.0.0"
+git push origin v1.0.0
+```
+
+`.github/workflows/release.yml` re-runs the same gates against the tag and only
+then publishes a GitHub release. A tag that fails verification publishes nothing.
+
+Deployment itself is the host's Git integration rather than a workflow, so no
+deploy credentials live in this repository. On Vercel, connect the repo, set the
+root directory to `apps/web`, and set four environment variables:
+
+| Variable | Value |
+|---|---|
+| `SUPABASE_URL` | The project API URL |
+| `SUPABASE_PUBLISHABLE_KEY` | The `sb_publishable_...` key |
+| `SUPABASE_SECRET_KEY` | The `sb_secret_...` key, server-only |
+| `SITE_URL` | The production origin, with no trailing slash |
+
+`SITE_URL` drives canonical URLs, the sitemap, the share card, and the auth
+redirects at once. Setting it wrong is the single most likely deployment
+mistake. The same origin must also be the Supabase Site URL, and
+`<origin>/**` must be in the Supabase redirect allow-list.
 
 ## Supabase setup
 
