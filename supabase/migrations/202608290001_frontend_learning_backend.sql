@@ -38,7 +38,7 @@ create table if not exists public.practice_progress (
 create table if not exists public.project_submissions (
   user_id uuid not null references auth.users(id) on delete cascade,
   project_id text not null,
-  repository_url text not null check (repository_url ~ '^https://github\\.com/[^/]+/[^/]+/?$'),
+  repository_url text not null check (repository_url ~ '^https://github\.com/[^/]+/[^/]+/?$'),
   live_url text not null check (live_url ~ '^https://'),
   verification_status text not null default 'recorded' check (verification_status in ('recorded', 'verified', 'rejected')),
   created_at timestamptz not null default timezone('utc', now()),
