@@ -765,7 +765,7 @@ export function Workspace({ course }: { course: Course }) {
           <div className="mb-4 flex items-start gap-3">
             <div className="flex-1">
               <p className="inline-block rounded bg-tertiary-container px-2 py-1 text-label-caps uppercase text-on-tertiary">Current Task</p>
-              <p className="mt-2 text-[20px] font-semibold leading-snug text-chalk">{step.task}</p>
+              <h1 className="mt-2 text-[20px] font-semibold leading-snug text-chalk">{step.task}</h1>
             </div>
             <button
               type="button"

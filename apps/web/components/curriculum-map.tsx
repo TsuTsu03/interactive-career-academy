@@ -31,6 +31,8 @@ const MAP_COPY = {
     "Short review sessions help the ideas you have already used stay familiar while you keep building.",
   noReview: "No review is ready yet",
   reviewClear: "You are caught up for today",
+  expand: "Show the courses in this program",
+  collapse: "Hide the courses in this program",
 } satisfies Record<string, Copy>;
 
 type ProgressByCourse = Record<string, CourseProgress>;
@@ -40,6 +42,26 @@ interface MapState {
   progress: ProgressByCourse;
   dueReviews: number;
   hasReviewConcepts: boolean;
+  /** Keyed by program id. One program is open at a time by default. */
+  openPrograms: Record<string, boolean>;
+}
+
+/** The first render is deterministic: program one open, the rest closed. */
+function initialOpenPrograms(): Record<string, boolean> {
+  return Object.fromEntries(
+    curriculum.programs.map((program, index) => [program.id, index === 0]),
+  );
+}
+
+function programCourses(program: (typeof curriculum.programs)[number]) {
+  return program.courseIds
+    .map((id) => curriculum.courses.find((course) => course.id === id))
+    .filter((course): course is (typeof curriculum.courses)[number] => Boolean(course));
+}
+
+function programCountCopy(courseCount: number, completedCount: number): Copy {
+  const courses = `${courseCount} ${courseCount === 1 ? "course" : "courses"}`;
+  return completedCount > 0 ? `${courses} · ${completedCount} completed` : courses;
 }
 
 function emptyProgress(): ProgressByCourse {
@@ -114,6 +136,7 @@ export function CurriculumMap() {
     progress: emptyProgress(),
     dueReviews: 0,
     hasReviewConcepts: false,
+    openPrograms: initialOpenPrograms(),
   }));
 
   useEffect(() => {
@@ -123,6 +146,14 @@ export function CurriculumMap() {
       return [course.id, courseProgressFromStorage(course, raw)] as const;
     });
     const progress = Object.fromEntries(progressEntries);
+
+    const activeProgram =
+      curriculum.programs.find((program) =>
+        programCourses(program).some((course) => !progress[course.id].isComplete),
+      ) ?? curriculum.programs[curriculum.programs.length - 1];
+    const openPrograms = Object.fromEntries(
+      curriculum.programs.map((program) => [program.id, program.id === activeProgram?.id]),
+    );
 
     const review = loadGlobalReviewState(curriculum);
     const hasReviewConcepts = review.items.length > 0;
@@ -134,10 +165,19 @@ export function CurriculumMap() {
       progress,
       dueReviews,
       hasReviewConcepts,
+      openPrograms,
     });
   }, []);
 
-  const { ready, progress, dueReviews, hasReviewConcepts } = state;
+  const { ready, progress, dueReviews, hasReviewConcepts, openPrograms } = state;
+
+  const setProgramOpen = (programId: string, open: boolean) => {
+    setState((previous) =>
+      previous.openPrograms[programId] === open
+        ? previous
+        : { ...previous, openPrograms: { ...previous.openPrograms, [programId]: open } },
+    );
+  };
 
   const renderCourse = (course: (typeof curriculum.courses)[number]) => {
     const courseProgress = progress[course.id];
@@ -303,26 +343,68 @@ export function CurriculumMap() {
           </span>
         </Link>
 
-        <div className="space-y-12">
-          {curriculum.programs.map((program) => (
-            <section key={program.id} aria-labelledby={`${program.id}-title`}>
-              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-voltage">
-                Program
-              </p>
-              <h2 id={`${program.id}-title`} className="mt-2 font-display text-[28px] font-bold text-chalk">
-                {program.title}
-              </h2>
-              <p className="mt-2 max-w-[65ch] text-[15px] leading-relaxed text-ash">
-                {copy(program.summary)}
-              </p>
-              <ol className="relative mt-6 space-y-4">
-                {program.courseIds
-                  .map((id) => curriculum.courses.find((course) => course.id === id))
-                  .filter((course): course is (typeof curriculum.courses)[number] => Boolean(course))
-                  .map(renderCourse)}
-              </ol>
-            </section>
-          ))}
+        <div className="space-y-6">
+          {curriculum.programs.map((program) => {
+            const courses = programCourses(program);
+            const completedCount = courses.filter(
+              (course) => ready && progress[course.id].isComplete,
+            ).length;
+            const open = openPrograms[program.id] ?? false;
+
+            return (
+              <section
+                key={program.id}
+                aria-labelledby={`${program.id}-title`}
+                className="rounded-2xl border border-hairline bg-panel/40"
+              >
+                {/* A native details element carries the keyboard, focus, and
+                    screen-reader behaviour of a disclosure for free, and works
+                    before hydration. */}
+                <details
+                  open={open}
+                  onToggle={(event) => setProgramOpen(program.id, event.currentTarget.open)}
+                >
+                  <summary
+                    className="flex cursor-pointer list-none items-start gap-4 rounded-2xl p-5 transition-colors hover:bg-panel focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-voltage sm:p-6 [&::-webkit-details-marker]:hidden"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-hairline text-ash transition-transform duration-200 motion-reduce:transition-none ${
+                        open ? "rotate-90" : ""
+                      }`}
+                    >
+                      <Icon name="chevron_right" size={18} />
+                    </span>
+
+                    <span className="min-w-0 flex-1">
+                      <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-voltage">
+                        Program
+                      </span>
+                      <h2
+                        id={`${program.id}-title`}
+                        className="mt-2 font-display text-[28px] font-bold text-chalk"
+                      >
+                        {program.title}
+                      </h2>
+                      <span className="mt-2 block max-w-[65ch] text-[15px] leading-relaxed text-ash">
+                        {copy(program.summary)}
+                      </span>
+                      <span className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[12px] text-ash">
+                        <span>{copy(programCountCopy(courses.length, completedCount))}</span>
+                        <span className="text-voltage">
+                          {copy(open ? MAP_COPY.collapse : MAP_COPY.expand)}
+                        </span>
+                      </span>
+                    </span>
+                  </summary>
+
+                  <ol className="relative space-y-4 px-5 pb-5 sm:px-6 sm:pb-6">
+                    {courses.map(renderCourse)}
+                  </ol>
+                </details>
+              </section>
+            );
+          })}
         </div>
 
         <p className="mt-12 font-mono text-[12px] text-ash/80">
