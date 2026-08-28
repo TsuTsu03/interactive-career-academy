@@ -15,28 +15,28 @@ export function SiteFooter({ home = "/" }: { home?: string }) {
         <p className="text-label-caps uppercase text-on-surface-variant">
           © 2026 CodeDaddy Philippines
         </p>
-        <nav aria-label="Footer navigation" className="flex flex-wrap justify-center gap-4">
+        <nav aria-label="Footer navigation" className="flex flex-wrap items-center justify-center gap-x-1 gap-y-1">
           <a
             href={REPO}
-            className="text-label-caps uppercase text-on-surface-variant transition-colors hover:text-primary hover:underline"
+            className="inline-flex min-h-11 items-center rounded px-2 text-label-caps uppercase text-on-surface-variant transition-colors hover:text-primary hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             Open Source
           </a>
           <Link
             href="/#how-it-works"
-            className="text-label-caps uppercase text-on-surface-variant transition-colors hover:text-primary hover:underline"
+            className="inline-flex min-h-11 items-center rounded px-2 text-label-caps uppercase text-on-surface-variant transition-colors hover:text-primary hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             About
           </Link>
           <a
             href={`${REPO}/discussions`}
-            className="text-label-caps uppercase text-on-surface-variant transition-colors hover:text-primary hover:underline"
+            className="inline-flex min-h-11 items-center rounded px-2 text-label-caps uppercase text-on-surface-variant transition-colors hover:text-primary hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             Community
           </a>
           <a
             href={REPO}
-            className="text-label-caps uppercase text-on-surface-variant transition-colors hover:text-primary hover:underline"
+            className="inline-flex min-h-11 items-center rounded px-2 text-label-caps uppercase text-on-surface-variant transition-colors hover:text-primary hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             GitHub
           </a>

@@ -10,7 +10,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Donation prompt
 
-The donation prompt opens once on every full app load and can always be dismissed. It does not appear on the internal `/harness` route. Donations use a static owner-supplied GCash QR image with no embedded checkout or payment backend. Save the real QR as `public/gcash-qr.png`; until that file exists, the prompt shows an honest pending state.
+The donation prompt waits until the learner has finished at least one whole project, so a first-time visitor is never asked for money before the product has done anything for them. It can always be dismissed, and a dismissal is remembered for 30 days in `codedaddy.donation.dismissed.v1`. It does not appear on the internal `/harness` route. Donations use a static owner-supplied GCash QR image with no embedded checkout or payment backend. Save the real QR as `public/gcash-qr.png`; until that file exists, the prompt shows an honest pending state.
 
 ## Main routes
 

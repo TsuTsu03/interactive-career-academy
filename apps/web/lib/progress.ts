@@ -128,6 +128,30 @@ export function completedStepIdsByCourse(curriculum: Curriculum): Record<string,
   return result;
 }
 
+/**
+ * How many whole projects the learner has finished, across every course. A
+ * project rather than a step count because a project is the unit the learner
+ * actually feels finishing, and it is what the curriculum is built from.
+ *
+ * Reads localStorage, so it belongs in an effect or a handler, never in render.
+ */
+export function completedProjectCount(curriculum: Curriculum): number {
+  const completedByCourse = completedStepIdsByCourse(curriculum);
+  let finished = 0;
+
+  for (const course of curriculum.courses) {
+    const completed = new Set(completedByCourse[course.id]);
+    if (completed.size === 0) continue;
+
+    for (const project of course.projects) {
+      const steps = course.steps.filter((step) => step.projectId === project.id);
+      if (steps.length > 0 && steps.every((step) => completed.has(step.id))) finished += 1;
+    }
+  }
+
+  return finished;
+}
+
 /** Read the global review record, restored against every course's progress. */
 export function loadGlobalReviewState(curriculum: Curriculum): ReviewState {
   let saved: unknown = null;

@@ -42,7 +42,11 @@ export function BrandLogo({
   if (!href) return content;
 
   return (
-    <Link href={href} aria-label="CodeDaddy home" className="rounded-sm focus-visible:outline">
+    <Link
+      href={href}
+      aria-label="CodeDaddy home"
+      className="inline-flex min-h-11 items-center rounded-sm focus-visible:outline"
+    >
       {content}
     </Link>
   );

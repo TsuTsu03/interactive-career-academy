@@ -4,13 +4,47 @@ import { Icon } from "@/components/icon";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
+import { curriculum } from "@/content/curriculum";
+import { completedProjectCount } from "@/lib/progress";
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
+/**
+ * The prompt waits until the learner has finished a whole project. Asking a
+ * first-time visitor for money before the product has done anything for them
+ * is both rude and useless, and it put a payment card in front of somebody who
+ * had not yet read a single step.
+ */
+const REQUIRED_PROJECTS = 1;
+
+/** Its own key, like the review record. Nothing here belongs to a course. */
+const DISMISSED_KEY = "codedaddy.donation.dismissed.v1";
+const DISMISSED_DAYS = 30;
+
+function recentlyDismissed(): boolean {
+  try {
+    const saved = Number(localStorage.getItem(DISMISSED_KEY));
+    if (!Number.isFinite(saved) || saved <= 0) return false;
+    return Date.now() - saved < DISMISSED_DAYS * 24 * 60 * 60 * 1000;
+  } catch {
+    return false;
+  }
+}
+
+function rememberDismissal(): void {
+  try {
+    localStorage.setItem(DISMISSED_KEY, String(Date.now()));
+  } catch {
+    // A blocked or full store only means the prompt may return sooner.
+  }
+}
+
 export function DonationModal({ gcashQrAvailable }: { gcashQrAvailable: boolean }) {
   const pathname = usePathname();
-  const [open, setOpen] = useState(true);
+  // Closed on the first render: whether it opens depends on saved progress,
+  // which only exists in the browser.
+  const [open, setOpen] = useState(false);
   const [qrState, setQrState] = useState<"loading" | "ready" | "missing">(
     gcashQrAvailable ? "loading" : "missing",
   );
@@ -19,6 +53,20 @@ export function DonationModal({ gcashQrAvailable }: { gcashQrAvailable: boolean 
   const titleId = useId();
   const descriptionId = useId();
   const isHarness = pathname === "/harness" || pathname.startsWith("/harness/");
+
+  useEffect(() => {
+    if (isHarness) return;
+    if (recentlyDismissed()) return;
+    if (completedProjectCount(curriculum) < REQUIRED_PROJECTS) return;
+    // One post-mount decision, from browser-only state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setOpen(true);
+  }, [isHarness]);
+
+  const dismiss = () => {
+    rememberDismissal();
+    setOpen(false);
+  };
 
   useEffect(() => {
     if (!open || isHarness) return;
@@ -31,6 +79,7 @@ export function DonationModal({ gcashQrAvailable }: { gcashQrAvailable: boolean 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
+        rememberDismissal();
         setOpen(false);
         return;
       }
@@ -87,7 +136,7 @@ export function DonationModal({ gcashQrAvailable }: { gcashQrAvailable: boolean 
         <button
           ref={closeRef}
           type="button"
-          onClick={() => setOpen(false)}
+          onClick={dismiss}
           aria-label="Close donation message"
           className="absolute right-3 top-3 flex h-touch-target w-touch-target items-center justify-center rounded-lg text-ash transition-colors hover:bg-raised hover:text-chalk"
         >
@@ -146,7 +195,7 @@ export function DonationModal({ gcashQrAvailable }: { gcashQrAvailable: boolean 
         <div className="mt-7 flex justify-end">
           <button
             type="button"
-            onClick={() => setOpen(false)}
+            onClick={dismiss}
             className="min-h-11 rounded-lg border border-hairline px-5 py-3 font-bold text-chalk transition-colors hover:bg-raised"
           >
             Not now
