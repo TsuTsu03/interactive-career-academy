@@ -132,12 +132,14 @@ function CourseStatus({
   // its words, which is what the status rule requires.
   return (
     <span
-      className={`flex items-center gap-2 font-mono text-sm ${
+      className={`flex items-start justify-start gap-2 font-mono text-sm md:justify-end ${
         active ? "text-primary" : "text-on-surface-variant"
       }`}
     >
-      <Icon name={icon} size={18} filled={icon === "check_circle"} />
-      <span>{copy(label)}</span>
+      <span className="mt-0.5 shrink-0">
+        <Icon name={icon} size={18} filled={icon === "check_circle"} />
+      </span>
+      <span className="text-left md:text-right">{copy(label)}</span>
     </span>
   );
 }
@@ -235,7 +237,7 @@ export function CurriculumMap() {
             )}
           </span>
 
-          <div className="min-w-0 flex-grow md:pr-48">
+          <div className="min-w-0 flex-grow">
             <div className="mb-2 flex flex-wrap items-center gap-3">
               <h3 className="font-display text-[22px] font-bold tracking-tight text-on-surface">
                 {course.title}
@@ -257,15 +259,17 @@ export function CurriculumMap() {
               <span>{copy(progressCopy(courseProgress))}</span>
               <span>{totalXp(course)} XP</span>
               {locked && requiredCourse ? (
-                <span className="flex items-center gap-1.5">
-                  <Icon name="lock" size={14} />
+                <span className="flex items-start gap-1.5">
+                  <span className="mt-0.5 shrink-0">
+                    <Icon name="lock" size={14} />
+                  </span>
                   <span>{copy(requirementCopy(requiredCourse.title))}</span>
                 </span>
               ) : null}
             </div>
           </div>
 
-          <div className="mt-4 md:absolute md:right-6 md:top-6 md:mt-0">
+          <div className="mt-4 md:mt-0 md:w-48 md:shrink-0 md:text-right">
             <CourseStatus
               progress={courseProgress}
               locked={locked}
