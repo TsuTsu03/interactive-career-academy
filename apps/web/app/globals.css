@@ -267,13 +267,44 @@
 /* The 2px pane divider from the Stitch workspace. It reads as structure at
    rest and as an interactive wire on hover. */
 .pane-resizer {
-  width: 2px;
-  background: var(--color-outline-variant);
+  position: relative;
+  flex: none;
+  width: 12px;
+  background: transparent;
   cursor: col-resize;
+  touch-action: none;
+}
+
+/* The visible line, centred in the grab area. */
+.pane-resizer::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: var(--color-outline-variant);
   transition: background-color 140ms ease;
 }
-.pane-resizer:hover,
-.pane-resizer:focus-visible {
+
+/* A grip, so the line reads as something you can drag rather than a border. */
+.pane-resizer::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 28px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: var(--color-outline);
+  transition: background-color 140ms ease;
+}
+
+.pane-resizer:hover::before,
+.pane-resizer:focus-visible::before,
+.pane-resizer:hover::after,
+.pane-resizer:focus-visible::after {
   background: var(--color-primary);
 }
 

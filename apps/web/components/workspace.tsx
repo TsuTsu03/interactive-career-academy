@@ -983,7 +983,7 @@ export function Workspace({ course }: { course: Course }) {
           className="pane-resizer hidden lg:block"
         />
 
-        <div className={`${mobilePane === "instructions" ? "h-0 flex-none" : "min-h-0 flex-1"} flex flex-col md:min-h-0 md:flex-1`}>
+        <div className={`${mobilePane === "instructions" ? "h-0 flex-none" : "min-h-0 flex-1"} flex flex-col md:h-auto md:min-h-0 md:flex-1`}>
           <div ref={paneRowRef} className={`${mobilePane === "instructions" ? "hidden" : "flex"} min-h-0 flex-1 flex-col md:flex md:flex-row`}>
             {/* Editor */}
             <section
