@@ -345,7 +345,7 @@ export function CurriculumMap() {
               <section
                 key={program.id}
                 aria-labelledby={`${program.id}-title`}
-                className="overflow-hidden rounded-2xl border border-voltage/30 bg-primary-soft"
+                className="overflow-hidden rounded-2xl border border-hairline border-l-4 border-l-voltage bg-surface-container-high"
               >
                 {/* A native details element carries the keyboard, focus, and
                     screen-reader behaviour of a disclosure for free, and works
@@ -355,7 +355,7 @@ export function CurriculumMap() {
                   onToggle={(event) => setProgramOpen(program.id, event.currentTarget.open)}
                 >
                   <summary
-                    className="flex cursor-pointer list-none items-start gap-4 p-5 transition-colors hover:bg-primary-soft/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary sm:p-6 [&::-webkit-details-marker]:hidden"
+                    className="flex cursor-pointer list-none items-start gap-4 p-5 transition-colors hover:bg-surface-container-highest focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary sm:p-6 [&::-webkit-details-marker]:hidden"
                   >
                     <span
                       aria-hidden="true"
@@ -388,7 +388,7 @@ export function CurriculumMap() {
                     </span>
                   </summary>
 
-                  <ol className="relative space-y-4 border-t border-voltage/20 bg-background p-5 sm:p-6">
+                  <ol className="relative space-y-4 border-t border-hairline bg-background p-5 sm:p-6">
                     {courses.map(renderCourse)}
                   </ol>
                 </details>

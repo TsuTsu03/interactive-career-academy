@@ -46,21 +46,21 @@ const LOOP: {
     icon: "menu_book",
     title: "1. Read Task",
     text: "Clear instructions focus on one small feature and explain why the change matters.",
-    ring: "bg-primary-fixed text-primary",
+    ring: "bg-primary-soft text-voltage",
     hover: "hover:border-primary",
   },
   {
     icon: "terminal",
     title: "2. Edit Code",
     text: "Write real code in a keyboard-friendly editor and watch the page update beside it.",
-    ring: "bg-secondary-container text-on-secondary-container",
+    ring: "bg-secondary-soft text-plasma",
     hover: "hover:border-secondary",
   },
   {
     icon: "visibility",
     title: "3. See Results",
     text: "Instant checks show what passed and what to inspect before your next attempt.",
-    ring: "bg-tertiary-fixed text-on-tertiary-fixed-variant",
+    ring: "bg-warning-soft text-gold",
     hover: "hover:border-tertiary-fixed-dim",
   },
 ];
@@ -195,7 +195,7 @@ export default function Page() {
                   key={item.label}
                   className="rounded-xl border border-outline-variant bg-surface-container-lowest p-6"
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-fixed text-primary">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-soft text-voltage">
                     <Icon name={item.icon} size={26} />
                   </div>
                   <p className="mt-6 font-mono text-label-caps uppercase tracking-widest text-secondary">
@@ -252,7 +252,7 @@ export default function Page() {
               {/* Editor */}
               <section className="col-span-1 flex h-full flex-col bg-surface md:col-span-6">
                 <div className="flex h-10 items-center gap-4 border-b border-outline-variant bg-surface-container-lowest px-4">
-                  <span className="flex items-center gap-1 rounded bg-primary-fixed-dim px-2 py-1 font-mono text-[12px] text-primary">
+                  <span className="flex items-center gap-1 rounded bg-primary-fixed-dim px-2 py-1 font-mono text-[12px] text-on-primary-fixed">
                     <Icon name="html" size={14} />
                     index.html
                   </span>
