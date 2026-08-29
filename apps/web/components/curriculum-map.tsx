@@ -46,11 +46,9 @@ interface MapState {
   openPrograms: Record<string, boolean>;
 }
 
-/** The first render is deterministic: program one open, the rest closed. */
+/** Every program starts closed. The map opens as a short list of programs. */
 function initialOpenPrograms(): Record<string, boolean> {
-  return Object.fromEntries(
-    curriculum.programs.map((program, index) => [program.id, index === 0]),
-  );
+  return Object.fromEntries(curriculum.programs.map((program) => [program.id, false]));
 }
 
 function programCourses(program: (typeof curriculum.programs)[number]) {
@@ -147,26 +145,18 @@ export function CurriculumMap() {
     });
     const progress = Object.fromEntries(progressEntries);
 
-    const activeProgram =
-      curriculum.programs.find((program) =>
-        programCourses(program).some((course) => !progress[course.id].isComplete),
-      ) ?? curriculum.programs[curriculum.programs.length - 1];
-    const openPrograms = Object.fromEntries(
-      curriculum.programs.map((program) => [program.id, program.id === activeProgram?.id]),
-    );
-
     const review = loadGlobalReviewState(curriculum);
     const hasReviewConcepts = review.items.length > 0;
     const dueReviews = dueReviewConcepts(review, curriculum, today).length;
     // One post-mount update adopts browser-only progress without a hydration mismatch.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setState({
+    setState((previous) => ({
+      ...previous,
       ready: true,
       progress,
       dueReviews,
       hasReviewConcepts,
-      openPrograms,
-    });
+    }));
   }, []);
 
   const { ready, progress, dueReviews, hasReviewConcepts, openPrograms } = state;
@@ -355,7 +345,7 @@ export function CurriculumMap() {
               <section
                 key={program.id}
                 aria-labelledby={`${program.id}-title`}
-                className="rounded-2xl border border-hairline bg-panel/40"
+                className="overflow-hidden rounded-2xl border border-voltage/30 bg-primary-soft"
               >
                 {/* A native details element carries the keyboard, focus, and
                     screen-reader behaviour of a disclosure for free, and works
@@ -365,11 +355,11 @@ export function CurriculumMap() {
                   onToggle={(event) => setProgramOpen(program.id, event.currentTarget.open)}
                 >
                   <summary
-                    className="flex cursor-pointer list-none items-start gap-4 rounded-2xl p-5 transition-colors hover:bg-panel focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-voltage sm:p-6 [&::-webkit-details-marker]:hidden"
+                    className="flex cursor-pointer list-none items-start gap-4 p-5 transition-colors hover:bg-primary-soft/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary sm:p-6 [&::-webkit-details-marker]:hidden"
                   >
                     <span
                       aria-hidden="true"
-                      className={`mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-hairline text-ash transition-transform duration-200 motion-reduce:transition-none ${
+                      className={`mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-voltage/40 text-voltage transition-transform duration-200 motion-reduce:transition-none ${
                         open ? "rotate-90" : ""
                       }`}
                     >
@@ -391,14 +381,14 @@ export function CurriculumMap() {
                       </span>
                       <span className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[12px] text-ash">
                         <span>{copy(programCountCopy(courses.length, completedCount))}</span>
-                        <span className="text-voltage">
+                        <span className="font-bold text-voltage">
                           {copy(open ? MAP_COPY.collapse : MAP_COPY.expand)}
                         </span>
                       </span>
                     </span>
                   </summary>
 
-                  <ol className="relative space-y-4 px-5 pb-5 sm:px-6 sm:pb-6">
+                  <ol className="relative space-y-4 border-t border-voltage/20 bg-background p-5 sm:p-6">
                     {courses.map(renderCourse)}
                   </ol>
                 </details>
