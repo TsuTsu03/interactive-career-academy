@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { curriculum } from "@/content/curriculum";
-import { courseSessionSnapshotFromStorage } from "@/lib/progress";
+import { courseSessionSnapshotFromStorage, withoutLearnerFiles } from "@/lib/progress";
 import { freshPracticeState, validatePracticeState } from "@/lib/practice-progress";
 import { authenticatedUser, noStoreHeaders, restRequest } from "@/lib/supabase-server";
 
@@ -44,7 +44,7 @@ export async function PUT(request: Request) {
     const course = known.get(id);
     const snapshot = course ? courseSessionSnapshotFromStorage(course, JSON.stringify(raw)) : null;
     if (!snapshot) return NextResponse.json({ error: `Progress for ${id} is invalid.` }, { status: 400, headers: noStoreHeaders() });
-    courses[id] = snapshot.record;
+    courses[id] = withoutLearnerFiles(snapshot.record);
   }
   const practice = validatePracticeState(body.practice);
   if (!practice) return NextResponse.json({ error: "Independent project progress is invalid." }, { status: 400, headers: noStoreHeaders() });

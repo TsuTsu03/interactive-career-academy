@@ -129,27 +129,21 @@ export function completedStepIdsByCourse(curriculum: Curriculum): Record<string,
 }
 
 /**
- * How many whole projects the learner has finished, across every course. A
- * project rather than a step count because a project is the unit the learner
- * actually feels finishing, and it is what the curriculum is built from.
+ * The saved record with the learner's code removed.
  *
- * Reads localStorage, so it belongs in an effect or a handler, never in render.
+ * Progress rows exist to carry position and completion between browsers, not
+ * to host source files. Storing `files` put the whole editor buffer of every
+ * course in Postgres - on the order of 100 to 300 KB per learner - for data
+ * the browser already holds and the workspace can rebuild: `loadSession`
+ * falls back to the step's starting files when a record has none.
  */
-export function completedProjectCount(curriculum: Curriculum): number {
-  const completedByCourse = completedStepIdsByCourse(curriculum);
-  let finished = 0;
-
-  for (const course of curriculum.courses) {
-    const completed = new Set(completedByCourse[course.id]);
-    if (completed.size === 0) continue;
-
-    for (const project of course.projects) {
-      const steps = course.steps.filter((step) => step.projectId === project.id);
-      if (steps.length > 0 && steps.every((step) => completed.has(step.id))) finished += 1;
-    }
-  }
-
-  return finished;
+export function withoutLearnerFiles(
+  record: Record<string, unknown>,
+): Record<string, unknown> {
+  const trimmed = { ...record };
+  delete trimmed.files;
+  delete trimmed.activeFile;
+  return trimmed;
 }
 
 /** Read the global review record, restored against every course's progress. */

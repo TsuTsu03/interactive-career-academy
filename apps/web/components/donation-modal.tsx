@@ -4,19 +4,24 @@ import { Icon } from "@/components/icon";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
-import { curriculum } from "@/content/curriculum";
-import { completedProjectCount } from "@/lib/progress";
+import { completedStepTotal } from "@/lib/progress-lite";
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 /**
- * The prompt waits until the learner has finished a whole project. Asking a
- * first-time visitor for money before the product has done anything for them
- * is both rude and useless, and it put a payment card in front of somebody who
- * had not yet read a single step.
+ * The prompt waits until the learner has real progress. Asking a first-time
+ * visitor for money before the product has done anything for them is both rude
+ * and useless, and it put a payment card in front of somebody who had not yet
+ * read a single step.
+ *
+ * Counted in steps rather than whole projects so this file never imports course
+ * content: it renders in the root layout, and importing the curriculum here put
+ * every step of all ten courses into the first load of every page, landing page
+ * included. Ten steps is a real stretch of work in a curriculum whose projects
+ * run from five steps upward.
  */
-const REQUIRED_PROJECTS = 1;
+const REQUIRED_STEPS = 10;
 
 /** Its own key, like the review record. Nothing here belongs to a course. */
 const DISMISSED_KEY = "codedaddy.donation.dismissed.v1";
@@ -57,7 +62,7 @@ export function DonationModal({ gcashQrAvailable }: { gcashQrAvailable: boolean 
   useEffect(() => {
     if (isHarness) return;
     if (recentlyDismissed()) return;
-    if (completedProjectCount(curriculum) < REQUIRED_PROJECTS) return;
+    if (completedStepTotal() < REQUIRED_STEPS) return;
     // One post-mount decision, from browser-only state.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setOpen(true);

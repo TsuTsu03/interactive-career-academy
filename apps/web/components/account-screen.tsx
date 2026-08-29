@@ -1,6 +1,7 @@
 "use client";
 
 import { type FormEvent, useEffect, useState } from "react";
+import { GitHubMark, GoogleMark } from "@/components/brand-marks";
 import { Icon } from "@/components/icon";
 import { ProductNav } from "@/components/product-nav";
 import { SiteFooter } from "@/components/site-footer";
@@ -89,10 +90,10 @@ export function AccountScreen() {
         <p className="mt-2 text-[14px] leading-relaxed text-ash">One button does both. If this is your first time, the account is created for you. CodeDaddy never asks for a password.</p>
         <div className="mt-5 flex flex-col gap-3">
           <a aria-disabled={!configured} href={configured ? "/api/auth/github" : undefined} className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 font-mono text-[12px] font-bold ${configured ? "bg-primary text-on-primary" : "cursor-not-allowed border border-hairline text-ash"}`}>
-            <Icon name="code" size={16} /> Continue with GitHub
+            <GitHubMark /> Continue with GitHub
           </a>
           <a aria-disabled={!configured} href={configured ? "/api/auth/google" : undefined} className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border px-5 font-mono text-[12px] font-bold ${configured ? "border-primary text-primary" : "cursor-not-allowed border-hairline text-ash"}`}>
-            <Icon name="person" size={16} /> Continue with Google
+            <GoogleMark /> Continue with Google
           </a>
         </div>
         <p className="mt-4 text-[13px] leading-relaxed text-ash">GitHub is the one to pick if you plan to publish your projects: it is the same identity your repositories will carry.</p>

@@ -1,5 +1,5 @@
 import { curriculum } from "@/content/curriculum";
-import { courseSessionSnapshotFromStorage, courseStorageKey } from "@/lib/progress";
+import { courseSessionSnapshotFromStorage, courseStorageKey, withoutLearnerFiles } from "@/lib/progress";
 import { freshPracticeState, practiceStorageKey, validatePracticeState, type PracticeCompletion, type PracticeState } from "@/lib/practice-progress";
 
 interface RemoteProgress {
@@ -43,11 +43,17 @@ export async function syncBrowserProgress(): Promise<{ restoredCourses: number; 
     const server = courseSessionSnapshotFromStorage(course, remoteRaw ? JSON.stringify(remoteRaw) : null);
     if (!local && !server) continue;
     if (server && (!local || server.completedStepIds.length > local.completedStepIds.length)) {
-      localStorage.setItem(courseStorageKey(course.id), JSON.stringify(server.record));
-      mergedCourses[course.id] = server.record;
+      // The account record carries no files, so a restore keeps whatever this
+      // browser already holds. Adopting the remote position must never be the
+      // thing that deletes code the learner wrote here.
+      const restored = local
+        ? { ...server.record, files: local.record.files, activeFile: local.record.activeFile }
+        : server.record;
+      localStorage.setItem(courseStorageKey(course.id), JSON.stringify(restored));
+      mergedCourses[course.id] = withoutLearnerFiles(server.record);
       restoredCourses += 1;
     } else if (local) {
-      mergedCourses[course.id] = local.record;
+      mergedCourses[course.id] = withoutLearnerFiles(local.record);
       if (!server || local.completedStepIds.length > server.completedStepIds.length) savedCourses += 1;
     }
   }
