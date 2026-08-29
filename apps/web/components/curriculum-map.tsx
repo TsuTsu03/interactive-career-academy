@@ -110,13 +110,15 @@ function CourseStatus({
   ready: boolean;
   active: boolean;
 }) {
+  // A locked course says nothing here. The meta row already carries the whole
+  // sentence, with its own lock icon, naming the course to finish first; a
+  // second shorter copy of the same fact only crowded the title.
+  if (ready && locked) return null;
+
   let icon: IconName = "radio_button_unchecked";
   let label = MAP_COPY.loading;
 
-  if (ready && locked) {
-    icon = "lock";
-    label = MAP_COPY.locked;
-  } else if (ready && progress.isComplete) {
+  if (ready && progress.isComplete) {
     icon = "check_circle";
     label = MAP_COPY.completed;
   } else if (ready && progress.hasSession) {

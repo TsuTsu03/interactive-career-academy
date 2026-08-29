@@ -429,6 +429,22 @@
   .particle { display: none; }
 }
 
+/* Printing a certificate should produce the certificate, not the app around
+   it. The sheet is the only thing on the page, at its own aspect ratio. */
+@media print {
+  body * { visibility: hidden; }
+  .certificate-sheet,
+  .certificate-sheet * { visibility: visible; }
+  .certificate-sheet {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    border: 0;
+  }
+  .certificate-actions { display: none; }
+  @page { size: landscape; margin: 12mm; }
+}
+
 /* Focus is never obscured and never removed. */
 :focus-visible {
   outline: 2px solid var(--color-primary);
