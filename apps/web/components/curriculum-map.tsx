@@ -102,18 +102,16 @@ function technology(courseId: string, kind: "web" | "js" | "react"): string {
 function CourseStatus({
   progress,
   locked,
-  ready
+  ready,
+  active
 }: {
   progress: CourseProgress;
   locked: boolean;
   ready: boolean;
+  active: boolean;
 }) {
   let icon: IconName = "radio_button_unchecked";
   let label = MAP_COPY.loading;
-  // Every state sits on the primary course card, so the pass, continue, and
-  // locked states are told apart by their icon and their words, per the rule
-  // that status is never colour alone.
-  const tone = "text-on-primary";
 
   if (ready && locked) {
     icon = "lock";
@@ -129,9 +127,16 @@ function CourseStatus({
     label = MAP_COPY.start;
   }
 
+  // Only the course the learner is actually on carries the primary colour, so
+  // the eye lands on one row. Every other state is told apart by its icon and
+  // its words, which is what the status rule requires.
   return (
-    <span className={`flex items-center gap-1.5 font-mono text-[12px] ${tone}`}>
-      <Icon name={icon} size={16} filled={icon === "check_circle"} />
+    <span
+      className={`flex items-center gap-2 font-mono text-sm ${
+        active ? "text-primary" : "text-on-surface-variant"
+      }`}
+    >
+      <Icon name={icon} size={18} filled={icon === "check_circle"} />
       <span>{copy(label)}</span>
     </span>
   );
@@ -171,6 +176,18 @@ export function CurriculumMap() {
   const { ready, progress, dueReviews, hasReviewConcepts, openPrograms } =
     state;
 
+  // One row at a time wears the primary colour: the first course the learner
+  // can open and has not finished.
+  const activeCourseId = ready
+    ? curriculum.courses.find((course) => {
+        const unmet = course.requires.some(
+          (requiredId) => !progress[requiredId]?.isComplete
+        );
+        const openable = !unmet || progress[course.id].hasSession;
+        return openable && !progress[course.id].isComplete;
+      })?.id ?? null
+    : null;
+
   const setProgramOpen = (programId: string, open: boolean) => {
     setState((previous) =>
       previous.openPrograms[programId] === open
@@ -182,7 +199,10 @@ export function CurriculumMap() {
     );
   };
 
-  const renderCourse = (course: (typeof curriculum.courses)[number]) => {
+  const renderCourse = (
+    course: (typeof curriculum.courses)[number],
+    active: boolean
+  ) => {
     const courseProgress = progress[course.id];
     const unmetRequirement = course.requires.find(
       (requiredId) => !progress[requiredId]?.isComplete
@@ -193,85 +213,102 @@ export function CurriculumMap() {
     const requiredCourse = curriculum.courses.find(
       (candidate) => candidate.id === unmetRequirement
     );
+    const percent = Math.round(
+      (courseProgress.completedCount / courseProgress.total) * 100
+    );
 
     const content = (
       <>
-        <span
-          aria-hidden="true"
-          className={`mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 font-mono text-sm font-bold ${
-            locked
-              ? "border-on-primary text-on-primary"
-              : "border-on-primary text-on-primary"
-          }`}
-        >
-          {courseProgress.isComplete ? (
-            <Icon name="check" size={20} />
-          ) : (
-            course.order
-          )}
-        </span>
+        <div className="flex flex-col gap-6 md:flex-row">
+          <span
+            aria-hidden="true"
+            className={`mt-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border font-mono text-lg ${
+              active
+                ? "border-primary text-primary"
+                : "border-outline text-on-surface-variant"
+            }`}
+          >
+            {courseProgress.isComplete ? (
+              <Icon name="check" size={20} />
+            ) : (
+              course.order
+            )}
+          </span>
 
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h3 className="font-display text-[22px] font-bold tracking-tight text-on-primary">
+          <div className="min-w-0 flex-grow md:pr-48">
+            <div className="mb-2 flex flex-wrap items-center gap-3">
+              <h3 className="font-display text-[22px] font-bold tracking-tight text-on-surface">
                 {course.title}
               </h3>
-              <span className="rounded border border-on-primary px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-on-primary">
+              <span className="rounded border border-outline-variant px-2 py-0.5 font-mono text-xs uppercase tracking-wider text-on-surface-variant">
                 {technology(course.id, course.kind)}
               </span>
             </div>
+
+            <p className="mb-6 max-w-[62ch] text-[15px] leading-relaxed text-on-surface-variant">
+              {copy(course.summary)}
+            </p>
+
+            <div
+              className={`mb-3 flex flex-wrap items-center gap-4 font-mono text-sm ${
+                active ? "text-primary" : "text-on-surface-variant"
+              }`}
+            >
+              <span>{copy(progressCopy(courseProgress))}</span>
+              <span>{totalXp(course)} XP</span>
+              {locked && requiredCourse ? (
+                <span className="flex items-center gap-1.5">
+                  <Icon name="lock" size={14} />
+                  <span>{copy(requirementCopy(requiredCourse.title))}</span>
+                </span>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="mt-4 md:absolute md:right-6 md:top-6 md:mt-0">
             <CourseStatus
               progress={courseProgress}
               locked={locked}
               ready={ready}
+              active={active}
             />
           </div>
+        </div>
 
-          <p className="mt-2 max-w-[62ch] text-[15px] leading-relaxed text-on-primary">
-            {copy(course.summary)}
-          </p>
-
-          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[12px] text-on-primary">
-            <span>{copy(progressCopy(courseProgress))}</span>
-            <span>{totalXp(course)} XP</span>
-            {locked && requiredCourse ? (
-              <span className="flex items-center gap-1.5 text-on-primary">
-                <Icon name="lock" size={14} />
-                <span>{copy(requirementCopy(requiredCourse.title))}</span>
-              </span>
-            ) : null}
-          </div>
-
+        <div
+          className="h-1.5 w-full overflow-hidden rounded-full bg-surface-variant md:ml-[4.5rem] md:w-[calc(100%-4.5rem)]"
+          role="progressbar"
+          aria-label={`${course.title}: ${copy(progressCopy(courseProgress))}`}
+          aria-valuenow={courseProgress.completedCount}
+          aria-valuemin={0}
+          aria-valuemax={courseProgress.total}
+        >
           <div
-            className="mt-4 h-1.5 overflow-hidden rounded-full bg-primary-container"
-            role="progressbar"
-            aria-label={`${course.title}: ${copy(progressCopy(courseProgress))}`}
-            aria-valuenow={courseProgress.completedCount}
-            aria-valuemin={0}
-            aria-valuemax={courseProgress.total}
-          >
-            <div
-              className="h-full rounded-full bg-on-primary transition-[width] duration-500"
-              style={{
-                width: `${(courseProgress.completedCount / courseProgress.total) * 100}%`
-              }}
-            />
-          </div>
+            className={`h-full rounded-full transition-[width] duration-500 ${
+              active ? "bg-primary" : "bg-on-surface-variant"
+            }`}
+            style={{ width: `${percent}%` }}
+          />
         </div>
       </>
     );
 
+    const shell = active
+      ? "bg-surface-container"
+      : "bg-surface-container-low border border-outline-variant";
+
     return (
       <li key={course.id}>
         {locked ? (
-          <article className="flex items-start gap-4 rounded-2xl bg-primary p-5 opacity-75 sm:gap-5 sm:p-6">
+          <article
+            className={`relative flex flex-col gap-4 rounded-xl p-6 opacity-75 ${shell}`}
+          >
             {content}
           </article>
         ) : (
           <Link
             href={`/learn/${course.id}`}
-            className="group flex min-h-11 items-start gap-4 rounded-2xl bg-primary p-5 transition-colors hover:bg-surface-tint sm:gap-5 sm:p-6"
+            className={`relative flex flex-col gap-4 rounded-xl p-6 transition-colors hover:border-outline hover:bg-surface-container ${shell}`}
           >
             {content}
           </Link>
@@ -366,7 +403,7 @@ export function CurriculumMap() {
               <section
                 key={program.id}
                 aria-labelledby={`${program.id}-title`}
-                className="overflow-hidden rounded-2xl border border-plasma/30 bg-panel transition-colors hover:border-plasma/60"
+                className="flex flex-col rounded-xl border border-outline-variant bg-surface-dim"
               >
                 {/* A native details element carries the keyboard, focus, and
                     screen-reader behaviour of a disclosure for free, and works
@@ -377,43 +414,60 @@ export function CurriculumMap() {
                     setProgramOpen(program.id, event.currentTarget.open)
                   }
                 >
-                  <summary className="flex cursor-pointer list-none items-start gap-4 p-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary sm:items-center sm:p-6 [&::-webkit-details-marker]:hidden">
+                  <summary
+                    className={`relative flex cursor-pointer list-none items-start gap-6 p-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary md:p-8 [&::-webkit-details-marker]:hidden ${
+                      open ? "border-b border-outline-variant" : ""
+                    }`}
+                  >
                     <span
                       aria-hidden="true"
-                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-plasma text-plasma transition-transform duration-200 motion-reduce:transition-none ${
+                      className={`mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-outline text-on-surface transition-transform duration-200 motion-reduce:transition-none ${
                         open ? "rotate-90" : ""
                       }`}
                     >
                       <Icon name="chevron_right" size={22} />
                     </span>
 
-                    <span className="min-w-0 flex-1">
-                      <span className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
-                        <h2
-                          id={`${program.id}-title`}
-                          className="font-display text-[21px] font-bold tracking-tight text-chalk"
-                        >
-                          {program.title}
-                        </h2>
-                        <span className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[12px] text-ash">
-                          <span>
-                            {copy(
-                              programCountCopy(courses.length, completedCount)
-                            )}
-                          </span>
-                          <span>
-                            {copy(open ? MAP_COPY.collapse : MAP_COPY.expand)}
-                          </span>
+                    <span className="min-w-0 flex-grow">
+                      <h2
+                        id={`${program.id}-title`}
+                        className="mb-2 font-display text-[26px] font-bold tracking-tight text-on-surface"
+                      >
+                        {program.title}
+                      </h2>
+                      <span className="block max-w-2xl text-[15px] leading-relaxed text-on-surface-variant">
+                        {copy(program.summary)}
+                      </span>
+                      <span className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-sm text-on-surface-variant md:hidden">
+                        <span>
+                          {copy(
+                            programCountCopy(courses.length, completedCount)
+                          )}
+                        </span>
+                        <span aria-hidden="true">·</span>
+                        <span className="underline">
+                          {copy(open ? MAP_COPY.collapse : MAP_COPY.expand)}
                         </span>
                       </span>
-                      <span className="mt-2 block max-w-[62ch] text-[15px] leading-relaxed text-ash">
-                        {copy(program.summary)}
+                    </span>
+
+                    <span className="absolute right-8 top-6 hidden font-mono text-sm text-on-surface-variant md:block">
+                      <span>
+                        {copy(programCountCopy(courses.length, completedCount))}
+                      </span>
+                      <span aria-hidden="true" className="mx-2">
+                        ·
+                      </span>
+                      <span className="underline">
+                        {copy(open ? MAP_COPY.collapse : MAP_COPY.expand)}
                       </span>
                     </span>
                   </summary>
 
-                  <ol className="relative space-y-4 border-t border-hairline p-5 sm:p-6">
-                    {courses.map(renderCourse)}
+                  <ol className="flex flex-col gap-6 p-6 md:p-8">
+                    {courses.map((course) =>
+                      renderCourse(course, course.id === activeCourseId)
+                    )}
                   </ol>
                 </details>
               </section>
