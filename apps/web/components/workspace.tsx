@@ -722,7 +722,7 @@ export function Workspace({ course }: { course: Course }) {
             <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-voltage">Project workspace</p>
             <p className="mt-1 truncate text-[13px] font-semibold text-chalk">{currentProject?.title ?? course.project}</p>
           </div>
-          <div className="mb-3 flex items-center gap-3">
+          <div className="mb-1 flex items-center gap-3">
             <span className="font-mono text-[13px] font-bold uppercase tracking-wider text-voltage">
               Step {projectStepIndex + 1} of {projectSteps.length}
             </span>
@@ -737,6 +737,18 @@ export function Workspace({ course }: { course: Course }) {
               ))}
             </div>
           </div>
+
+          {/* The step count above belongs to this project, not the course. On
+              its own it reads as if the whole course were 33 steps, so the
+              course scale sits underneath it — smaller, so the near goal stays
+              the number the learner works towards. */}
+          <p className="mb-3 flex flex-wrap gap-x-2 font-mono text-[11px] text-ash">
+            <span className="truncate">{currentProject?.title ?? course.project}</span>
+            <span aria-hidden="true">·</span>
+            <span>
+              {session.completedSteps.length} of {total} steps in this course
+            </span>
+          </p>
 
           <div id="workspace-concepts">
             {resolveConcepts(step.conceptIds).map((c) => (

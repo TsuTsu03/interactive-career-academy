@@ -80,8 +80,10 @@ width, and card rhythm — so arriving content lands where the placeholder was
 instead of shoving the page around. The skeletons are server components: markup
 and two class names, nothing shipped to the browser.
 
-`components/page-transition.tsx` fades a new screen in over 160ms, keyed by
-pathname. Two constraints shape it. It animates opacity only, because a
+`app/template.tsx` fades a new screen in over 160ms. The App Router builds a
+fresh template instance per navigation, which is what replays the animation; a
+key on the layout's children would remount the same way but sits above the
+router's Suspense boundaries. Two constraints shape it. It animates opacity only, because a
 transform on that wrapper would become the containing block for the sticky
 product nav and every fixed layer while it ran. And it uses no fill mode and
 starts at `0.6` rather than `0`: a hidden or throttled tab freezes the
