@@ -23,6 +23,12 @@ export function SiteFooter({ home = "/" }: { home?: string }) {
             Open Source
           </a>
           <Link
+            href="/feedback"
+            className="inline-flex min-h-11 items-center rounded px-2 text-label-caps uppercase text-on-surface-variant transition-colors hover:text-primary hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            Feedback
+          </Link>
+          <Link
             href="/#how-it-works"
             className="inline-flex min-h-11 items-center rounded px-2 text-label-caps uppercase text-on-surface-variant transition-colors hover:text-primary hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >

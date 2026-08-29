@@ -17,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: absoluteUrl("/curriculum"), lastModified: updated, changeFrequency: "weekly", priority: 0.9 },
     { url: absoluteUrl("/capstones"), lastModified: updated, changeFrequency: "monthly", priority: 0.7 },
     { url: absoluteUrl("/practice"), lastModified: updated, changeFrequency: "monthly", priority: 0.6 },
+    { url: absoluteUrl("/feedback"), lastModified: updated, changeFrequency: "yearly", priority: 0.3 },
   ];
 
   const courses: MetadataRoute.Sitemap = curriculum.courses.map((course) => ({
