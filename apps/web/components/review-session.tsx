@@ -214,7 +214,7 @@ export function ReviewSession() {
                     {current.concept.definition}
                   </p>
                 </div>
-                <div className="rounded-lg border-l-2 border-gold bg-raised px-4 py-3">
+                <div className="rounded-lg bg-raised px-4 py-3">
                   <p className="font-mono text-[10px] uppercase tracking-widest text-gold">
                     {REVIEW_COPY.analogy}
                   </p>

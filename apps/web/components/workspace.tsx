@@ -844,7 +844,7 @@ export function Workspace({ course }: { course: Course }) {
           </ul>
 
           {phase === "failed" && failed[0]?.message ? (
-            <div className="mb-4 border border-strike/40 border-l-4 bg-raised p-3">
+            <div className="mb-4 border border-strike/40 bg-raised p-3">
               <p className="mb-1 font-mono text-[10px] uppercase tracking-widest text-strike">
                 Here is the next thing to inspect
               </p>

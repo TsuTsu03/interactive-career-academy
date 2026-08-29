@@ -11,7 +11,7 @@ import {
   courseProgressFromStorage,
   courseStorageKey,
   loadGlobalReviewState,
-  type CourseProgress,
+  type CourseProgress
 } from "@/lib/progress";
 import { dueReviewConcepts, todayKey } from "@/lib/review";
 
@@ -30,9 +30,7 @@ const MAP_COPY = {
   reviewSummary:
     "Short review sessions help the ideas you have already used stay familiar while you keep building.",
   noReview: "No review is ready yet",
-  reviewClear: "You are caught up for today",
-  expand: "Show the courses in this program",
-  collapse: "Hide the courses in this program",
+  reviewClear: "You are caught up for today"
 } satisfies Record<string, Copy>;
 
 type ProgressByCourse = Record<string, CourseProgress>;
@@ -48,23 +46,32 @@ interface MapState {
 
 /** Every program starts closed. The map opens as a short list of programs. */
 function initialOpenPrograms(): Record<string, boolean> {
-  return Object.fromEntries(curriculum.programs.map((program) => [program.id, false]));
+  return Object.fromEntries(
+    curriculum.programs.map((program) => [program.id, false])
+  );
 }
 
 function programCourses(program: (typeof curriculum.programs)[number]) {
   return program.courseIds
     .map((id) => curriculum.courses.find((course) => course.id === id))
-    .filter((course): course is (typeof curriculum.courses)[number] => Boolean(course));
+    .filter((course): course is (typeof curriculum.courses)[number] =>
+      Boolean(course)
+    );
 }
 
 function programCountCopy(courseCount: number, completedCount: number): Copy {
   const courses = `${courseCount} ${courseCount === 1 ? "course" : "courses"}`;
-  return completedCount > 0 ? `${courses} · ${completedCount} completed` : courses;
+  return completedCount > 0
+    ? `${courses} · ${completedCount} completed`
+    : courses;
 }
 
 function emptyProgress(): ProgressByCourse {
   return Object.fromEntries(
-    curriculum.courses.map((course) => [course.id, courseProgressFromStorage(course, null)]),
+    curriculum.courses.map((course) => [
+      course.id,
+      courseProgressFromStorage(course, null)
+    ])
   );
 }
 
@@ -93,7 +100,7 @@ function technology(courseId: string, kind: "web" | "js" | "react"): string {
 function CourseStatus({
   progress,
   locked,
-  ready,
+  ready
 }: {
   progress: CourseProgress;
   locked: boolean;
@@ -134,7 +141,7 @@ export function CurriculumMap() {
     progress: emptyProgress(),
     dueReviews: 0,
     hasReviewConcepts: false,
-    openPrograms: initialOpenPrograms(),
+    openPrograms: initialOpenPrograms()
   }));
 
   useEffect(() => {
@@ -155,30 +162,34 @@ export function CurriculumMap() {
       ready: true,
       progress,
       dueReviews,
-      hasReviewConcepts,
+      hasReviewConcepts
     }));
   }, []);
 
-  const { ready, progress, dueReviews, hasReviewConcepts, openPrograms } = state;
+  const { ready, progress, dueReviews, hasReviewConcepts, openPrograms } =
+    state;
 
   const setProgramOpen = (programId: string, open: boolean) => {
     setState((previous) =>
       previous.openPrograms[programId] === open
         ? previous
-        : { ...previous, openPrograms: { ...previous.openPrograms, [programId]: open } },
+        : {
+            ...previous,
+            openPrograms: { ...previous.openPrograms, [programId]: open }
+          }
     );
   };
 
   const renderCourse = (course: (typeof curriculum.courses)[number]) => {
     const courseProgress = progress[course.id];
     const unmetRequirement = course.requires.find(
-      (requiredId) => !progress[requiredId]?.isComplete,
+      (requiredId) => !progress[requiredId]?.isComplete
     );
     const locked =
       course.requires.length > 0 &&
       (!ready || (Boolean(unmetRequirement) && !courseProgress.hasSession));
     const requiredCourse = curriculum.courses.find(
-      (candidate) => candidate.id === unmetRequirement,
+      (candidate) => candidate.id === unmetRequirement
     );
 
     const content = (
@@ -193,7 +204,11 @@ export function CurriculumMap() {
                 : "border-hairline text-ash"
           }`}
         >
-          {courseProgress.isComplete ? <Icon name="check" size={20} /> : course.order}
+          {courseProgress.isComplete ? (
+            <Icon name="check" size={20} />
+          ) : (
+            course.order
+          )}
         </span>
 
         <div className="min-w-0 flex-1">
@@ -206,7 +221,11 @@ export function CurriculumMap() {
                 {technology(course.id, course.kind)}
               </span>
             </div>
-            <CourseStatus progress={courseProgress} locked={locked} ready={ready} />
+            <CourseStatus
+              progress={courseProgress}
+              locked={locked}
+              ready={ready}
+            />
           </div>
 
           <p className="mt-2 max-w-[62ch] text-[15px] leading-relaxed text-ash">
@@ -234,7 +253,9 @@ export function CurriculumMap() {
           >
             <div
               className="h-full rounded-full bg-acid transition-[width] duration-500"
-              style={{ width: `${(courseProgress.completedCount / courseProgress.total) * 100}%` }}
+              style={{
+                width: `${(courseProgress.completedCount / courseProgress.total) * 100}%`
+              }}
             />
           </div>
         </div>
@@ -322,7 +343,7 @@ export function CurriculumMap() {
                         ? dueReviewCopy(dueReviews)
                         : hasReviewConcepts
                           ? MAP_COPY.reviewClear
-                          : MAP_COPY.noReview,
+                          : MAP_COPY.noReview
                   )}
                 </span>
               </span>
@@ -337,7 +358,7 @@ export function CurriculumMap() {
           {curriculum.programs.map((program) => {
             const courses = programCourses(program);
             const completedCount = courses.filter(
-              (course) => ready && progress[course.id].isComplete,
+              (course) => ready && progress[course.id].isComplete
             ).length;
             const open = openPrograms[program.id] ?? false;
 
@@ -345,18 +366,18 @@ export function CurriculumMap() {
               <section
                 key={program.id}
                 aria-labelledby={`${program.id}-title`}
-                className="overflow-hidden rounded-2xl border border-hairline border-l-4 border-l-voltage bg-surface-container-high"
+                className="overflow-hidden rounded-2xl border border-hairline"
               >
                 {/* A native details element carries the keyboard, focus, and
                     screen-reader behaviour of a disclosure for free, and works
                     before hydration. */}
                 <details
                   open={open}
-                  onToggle={(event) => setProgramOpen(program.id, event.currentTarget.open)}
+                  onToggle={(event) =>
+                    setProgramOpen(program.id, event.currentTarget.open)
+                  }
                 >
-                  <summary
-                    className="flex cursor-pointer list-none items-start gap-4 p-5 transition-colors hover:bg-surface-container-highest focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary sm:p-6 [&::-webkit-details-marker]:hidden"
-                  >
+                  <summary className="flex cursor-pointer list-none items-start gap-4 p-5 transition-colors hover:bg-raised focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary sm:p-6 [&::-webkit-details-marker]:hidden">
                     <span
                       aria-hidden="true"
                       className={`mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-voltage/40 text-voltage transition-transform duration-200 motion-reduce:transition-none ${
@@ -380,9 +401,10 @@ export function CurriculumMap() {
                         {copy(program.summary)}
                       </span>
                       <span className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[12px] text-ash">
-                        <span>{copy(programCountCopy(courses.length, completedCount))}</span>
-                        <span className="font-bold text-voltage">
-                          {copy(open ? MAP_COPY.collapse : MAP_COPY.expand)}
+                        <span>
+                          {copy(
+                            programCountCopy(courses.length, completedCount)
+                          )}
                         </span>
                       </span>
                     </span>

@@ -63,7 +63,7 @@ export function ConceptCard({
           </p>
 
           {/* 2. Something from ordinary life that works the same way */}
-          <div className="rounded-lg border-l-2 border-gold bg-raised px-3 py-2.5">
+          <div className="rounded-lg bg-raised px-3 py-2.5">
             <div className="mb-1 text-[10px] uppercase tracking-widest text-gold">
               A familiar way to picture it
             </div>

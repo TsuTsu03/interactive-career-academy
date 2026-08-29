@@ -1,6 +1,4 @@
-"use client";
-
-import { type Diagram } from "@/lib/lesson-ir";
+import { type Diagram, type DiagramArrow } from "@/lib/lesson-ir";
 
 /**
  * Renders an authored diagram from structured data.
@@ -9,140 +7,90 @@ import { type Diagram } from "@/lib/lesson-ir";
  * component decides how they look, so diagrams stay tiny, themeable, and
  * consistent, and a lesson can never inject markup.
  *
+ * The layout reads top to bottom rather than left to right. Diagrams live in
+ * the instruction column, which is around 300 pixels wide on a phone and not
+ * much more beside the editor. A three-across row scaled down to fit that
+ * width put the labels at roughly eight pixels — present, unreadable, and
+ * therefore not teaching anything. Stacked, every box gets the full column,
+ * the text is real text that wraps and follows the reader's font size, and
+ * the order still carries the sequence.
+ *
  * Anything the learner can actually see in the browser should be a live demo
  * instead. This is for the things they cannot see: how a request travels,
  * what a variable holds, which rule matches which element.
  */
 
-const NODE_W = 132;
-const NODE_H = 56;
-const GAP_X = 42;
-const GAP_Y = 46;
+function boxTone(tone: Diagram["nodes"][number]["tone"]): string {
+  if (tone === "accent") return "border-voltage bg-voltage/10 text-voltage";
+  if (tone === "ghost") return "border-dashed border-hairline text-ash";
+  return "border-ash text-chalk";
+}
+
+/** The line and chevron between two stacked boxes, with the arrow's own label. */
+function Connector({ label }: { label?: string }) {
+  return (
+    <div className="flex items-center gap-2 py-1 pl-[22px]">
+      <span aria-hidden="true" className="flex flex-col items-center">
+        <span className="h-3 w-px bg-ash" />
+        <span className="-mt-px block h-0 w-0 border-x-4 border-t-[6px] border-x-transparent border-t-ash" />
+      </span>
+      {label ? <span className="font-mono text-[11px] text-ash">{label}</span> : null}
+    </div>
+  );
+}
 
 export function DiagramView({ diagram }: { diagram: Diagram }) {
-  const cols = Math.max(1, diagram.columns);
-  const rows = Math.ceil(diagram.nodes.length / cols);
+  const order = new Map(diagram.nodes.map((node, index) => [node.id, index]));
 
-  const pos = new Map<string, { x: number; y: number }>();
-  diagram.nodes.forEach((n, i) => {
-    const col = i % cols;
-    const row = Math.floor(i / cols);
-    pos.set(n.id, {
-      x: col * (NODE_W + GAP_X),
-      y: row * (NODE_H + GAP_Y),
-    });
-  });
+  // An arrow between neighbours becomes the connector between their boxes.
+  // Anything else — a branch, or a jump back — is listed underneath, so a
+  // vertical stack never silently drops a relationship the author wrote.
+  const between = new Map<number, string | undefined>();
+  const extra: DiagramArrow[] = [];
 
-  const width = cols * NODE_W + (cols - 1) * GAP_X;
-  const height = rows * NODE_H + (rows - 1) * GAP_Y;
+  for (const arrow of diagram.arrows) {
+    const from = order.get(arrow.from);
+    const to = order.get(arrow.to);
+    if (from !== undefined && to === from + 1 && !between.has(from)) {
+      between.set(from, arrow.label);
+    } else if (from !== undefined && to !== undefined) {
+      extra.push(arrow);
+    }
+  }
+
+  const labelFor = (id: string) =>
+    diagram.nodes.find((node) => node.id === id)?.label ?? id;
 
   return (
-    <figure className="my-4">
-      <div className="overflow-x-auto rounded-lg border border-hairline bg-void p-4">
-        <svg
-          viewBox={`-8 -8 ${width + 16} ${height + 16}`}
-          width={width + 16}
-          height={height + 16}
-          role="img"
-          aria-label={diagram.alt}
-          className="max-w-full"
-        >
-          <defs>
-            <marker
-              id="arrowhead"
-              markerWidth="8"
-              markerHeight="8"
-              refX="7"
-              refY="4"
-              orient="auto"
-            >
-              <path d="M0,0 L8,4 L0,8 Z" fill="var(--color-ash)" />
-            </marker>
-          </defs>
+    <figure className="my-4 rounded-lg border border-hairline bg-void p-4">
+      <figcaption className="sr-only">{diagram.alt}</figcaption>
 
-          {diagram.arrows.map((a, i) => {
-            const from = pos.get(a.from);
-            const to = pos.get(a.to);
-            if (!from || !to) return null;
+      <ol>
+        {diagram.nodes.map((node, index) => (
+          <li key={node.id}>
+            <div className={`rounded border-2 px-3 py-2 ${boxTone(node.tone)}`}>
+              <p className={`text-[14px] leading-snug ${node.tone === "accent" ? "font-bold" : "font-medium"}`}>
+                {node.label}
+              </p>
+              {node.note ? (
+                <p className="mt-1 font-mono text-[12px] leading-snug text-ash">{node.note}</p>
+              ) : null}
+            </div>
+            {index < diagram.nodes.length - 1 ? <Connector label={between.get(index)} /> : null}
+          </li>
+        ))}
+      </ol>
 
-            const sameRow = from.y === to.y;
-            const x1 = sameRow ? from.x + NODE_W : from.x + NODE_W / 2;
-            const y1 = sameRow ? from.y + NODE_H / 2 : from.y + NODE_H;
-            const x2 = sameRow ? to.x : to.x + NODE_W / 2;
-            const y2 = sameRow ? to.y + NODE_H / 2 : to.y;
-
-            return (
-              <g key={i}>
-                <line
-                  x1={x1}
-                  y1={y1}
-                  x2={x2}
-                  y2={y2}
-                  stroke="var(--color-ash)"
-                  strokeWidth="1.5"
-                  markerEnd="url(#arrowhead)"
-                />
-                {a.label ? (
-                  <text
-                    x={(x1 + x2) / 2}
-                    y={(y1 + y2) / 2 - 6}
-                    textAnchor="middle"
-                    fill="var(--color-ash)"
-                    fontSize="11"
-                    fontFamily="var(--font-mono)"
-                  >
-                    {a.label}
-                  </text>
-                ) : null}
-              </g>
-            );
-          })}
-
-          {diagram.nodes.map((n) => {
-            const p = pos.get(n.id);
-            if (!p) return null;
-            const accent = n.tone === "accent";
-            const ghost = n.tone === "ghost";
-            return (
-              <g key={n.id}>
-                <rect
-                  x={p.x}
-                  y={p.y}
-                  width={NODE_W}
-                  height={NODE_H}
-                  rx="4"
-                  fill={accent ? "color-mix(in srgb, var(--color-voltage) 10%, var(--color-panel))" : "var(--color-panel)"}
-                  stroke={accent ? "var(--color-voltage)" : ghost ? "var(--color-hairline)" : "var(--color-ash)"}
-                  strokeWidth={accent ? 2 : 1.5}
-                  strokeDasharray={ghost ? "4 4" : undefined}
-                />
-                <text
-                  x={p.x + NODE_W / 2}
-                  y={p.y + (n.note ? NODE_H / 2 - 4 : NODE_H / 2 + 4)}
-                  textAnchor="middle"
-                  fill={accent ? "var(--color-voltage)" : ghost ? "var(--color-ash)" : "var(--color-chalk)"}
-                  fontSize="13"
-                  fontWeight={accent ? 700 : 500}
-                >
-                  {n.label}
-                </text>
-                {n.note ? (
-                  <text
-                    x={p.x + NODE_W / 2}
-                    y={p.y + NODE_H / 2 + 14}
-                    textAnchor="middle"
-                    fill="var(--color-ash)"
-                    fontSize="11"
-                    fontFamily="var(--font-mono)"
-                  >
-                    {n.note}
-                  </text>
-                ) : null}
-              </g>
-            );
-          })}
-        </svg>
-      </div>
+      {extra.length > 0 ? (
+        <ul className="mt-3 space-y-1 border-t border-hairline pt-3 font-mono text-[11px] text-ash">
+          {extra.map((arrow, index) => (
+            <li key={index}>
+              {labelFor(arrow.from)} → {labelFor(arrow.to)}
+              {arrow.label ? `: ${arrow.label}` : ""}
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </figure>
   );
 }

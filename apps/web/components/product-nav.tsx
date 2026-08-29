@@ -97,10 +97,10 @@ export function ProductNav({
               href={item.href}
               aria-current={item.active ? "page" : undefined}
               onClick={() => setMenuOpen(false)}
-              className={`flex min-h-touch-target items-center border-l-2 px-margin-mobile text-body-md ${
+              className={`flex min-h-touch-target items-center px-margin-mobile text-body-md ${
                 item.active
-                  ? "border-primary bg-primary-fixed/40 text-primary"
-                  : "border-transparent text-on-surface-variant"
+                  ? "bg-primary-fixed/40 font-bold text-primary"
+                  : "text-on-surface-variant"
               }`}
             >
               {copy(item.label)}
