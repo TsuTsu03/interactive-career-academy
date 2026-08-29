@@ -30,7 +30,9 @@ const MAP_COPY = {
   reviewSummary:
     "Short review sessions help the ideas you have already used stay familiar while you keep building.",
   noReview: "No review is ready yet",
-  reviewClear: "You are caught up for today"
+  reviewClear: "You are caught up for today",
+  expand: "Show the courses in this program",
+  collapse: "Hide the courses in this program"
 } satisfies Record<string, Copy>;
 
 type ProgressByCourse = Record<string, CourseProgress>;
@@ -108,7 +110,10 @@ function CourseStatus({
 }) {
   let icon: IconName = "radio_button_unchecked";
   let label = MAP_COPY.loading;
-  let tone = "text-on-surface-variant";
+  // Every state sits on the primary course card, so the pass, continue, and
+  // locked states are told apart by their icon and their words, per the rule
+  // that status is never colour alone.
+  const tone = "text-on-primary";
 
   if (ready && locked) {
     icon = "lock";
@@ -116,15 +121,12 @@ function CourseStatus({
   } else if (ready && progress.isComplete) {
     icon = "check_circle";
     label = MAP_COPY.completed;
-    tone = "text-secondary";
   } else if (ready && progress.hasSession) {
     icon = "play_circle";
     label = MAP_COPY.continue;
-    tone = "text-primary";
   } else if (ready) {
     icon = "arrow_forward";
     label = MAP_COPY.start;
-    tone = "text-primary";
   }
 
   return (
@@ -197,11 +199,9 @@ export function CurriculumMap() {
         <span
           aria-hidden="true"
           className={`mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 font-mono text-sm font-bold ${
-            courseProgress.isComplete
-              ? "border-acid text-acid glow-acid"
-              : !locked && ready
-                ? "border-voltage text-voltage glow-voltage"
-                : "border-hairline text-ash"
+            locked
+              ? "border-on-primary text-on-primary"
+              : "border-on-primary text-on-primary"
           }`}
         >
           {courseProgress.isComplete ? (
@@ -214,10 +214,10 @@ export function CurriculumMap() {
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h3 className="font-display text-[22px] font-bold tracking-tight text-chalk">
+              <h3 className="font-display text-[22px] font-bold tracking-tight text-on-primary">
                 {course.title}
               </h3>
-              <span className="rounded border border-hairline px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-ash">
+              <span className="rounded border border-on-primary px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-on-primary">
                 {technology(course.id, course.kind)}
               </span>
             </div>
@@ -228,15 +228,15 @@ export function CurriculumMap() {
             />
           </div>
 
-          <p className="mt-2 max-w-[62ch] text-[15px] leading-relaxed text-ash">
+          <p className="mt-2 max-w-[62ch] text-[15px] leading-relaxed text-on-primary">
             {copy(course.summary)}
           </p>
 
-          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[12px] text-ash">
+          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[12px] text-on-primary">
             <span>{copy(progressCopy(courseProgress))}</span>
             <span>{totalXp(course)} XP</span>
             {locked && requiredCourse ? (
-              <span className="flex items-center gap-1.5 text-ash/80">
+              <span className="flex items-center gap-1.5 text-on-primary">
                 <Icon name="lock" size={14} />
                 <span>{copy(requirementCopy(requiredCourse.title))}</span>
               </span>
@@ -244,7 +244,7 @@ export function CurriculumMap() {
           </div>
 
           <div
-            className="mt-4 h-1.5 overflow-hidden rounded-full bg-hairline"
+            className="mt-4 h-1.5 overflow-hidden rounded-full bg-primary-container"
             role="progressbar"
             aria-label={`${course.title}: ${copy(progressCopy(courseProgress))}`}
             aria-valuenow={courseProgress.completedCount}
@@ -252,7 +252,7 @@ export function CurriculumMap() {
             aria-valuemax={courseProgress.total}
           >
             <div
-              className="h-full rounded-full bg-acid transition-[width] duration-500"
+              className="h-full rounded-full bg-on-primary transition-[width] duration-500"
               style={{
                 width: `${(courseProgress.completedCount / courseProgress.total) * 100}%`
               }}
@@ -265,13 +265,13 @@ export function CurriculumMap() {
     return (
       <li key={course.id}>
         {locked ? (
-          <article className="flex items-start gap-4 rounded-2xl border border-hairline bg-panel p-5 opacity-75 sm:gap-5 sm:p-6">
+          <article className="flex items-start gap-4 rounded-2xl bg-primary p-5 opacity-75 sm:gap-5 sm:p-6">
             {content}
           </article>
         ) : (
           <Link
             href={`/learn/${course.id}`}
-            className="group flex min-h-11 items-start gap-4 rounded-2xl border border-hairline bg-panel p-5 transition-colors hover:border-ash/50 sm:gap-5 sm:p-6"
+            className="group flex min-h-11 items-start gap-4 rounded-2xl bg-primary p-5 transition-colors hover:bg-surface-tint sm:gap-5 sm:p-6"
           >
             {content}
           </Link>
@@ -366,7 +366,7 @@ export function CurriculumMap() {
               <section
                 key={program.id}
                 aria-labelledby={`${program.id}-title`}
-                className="overflow-hidden rounded-2xl border border-hairline"
+                className="overflow-hidden rounded-2xl border border-plasma/30 bg-panel transition-colors hover:border-plasma/60"
               >
                 {/* A native details element carries the keyboard, focus, and
                     screen-reader behaviour of a disclosure for free, and works
@@ -377,40 +377,42 @@ export function CurriculumMap() {
                     setProgramOpen(program.id, event.currentTarget.open)
                   }
                 >
-                  <summary className="flex cursor-pointer list-none items-start gap-4 p-5 transition-colors hover:bg-raised focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary sm:p-6 [&::-webkit-details-marker]:hidden">
+                  <summary className="flex cursor-pointer list-none items-start gap-4 p-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-primary sm:items-center sm:p-6 [&::-webkit-details-marker]:hidden">
                     <span
                       aria-hidden="true"
-                      className={`mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-voltage/40 text-voltage transition-transform duration-200 motion-reduce:transition-none ${
+                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-plasma text-plasma transition-transform duration-200 motion-reduce:transition-none ${
                         open ? "rotate-90" : ""
                       }`}
                     >
-                      <Icon name="chevron_right" size={18} />
+                      <Icon name="chevron_right" size={22} />
                     </span>
 
                     <span className="min-w-0 flex-1">
-                      <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-voltage">
-                        Program
-                      </span>
-                      <h2
-                        id={`${program.id}-title`}
-                        className="mt-2 font-display text-[28px] font-bold text-chalk"
-                      >
-                        {program.title}
-                      </h2>
-                      <span className="mt-2 block max-w-[65ch] text-[15px] leading-relaxed text-ash">
-                        {copy(program.summary)}
-                      </span>
-                      <span className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[12px] text-ash">
-                        <span>
-                          {copy(
-                            programCountCopy(courses.length, completedCount)
-                          )}
+                      <span className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+                        <h2
+                          id={`${program.id}-title`}
+                          className="font-display text-[21px] font-bold tracking-tight text-chalk"
+                        >
+                          {program.title}
+                        </h2>
+                        <span className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[12px] text-ash">
+                          <span>
+                            {copy(
+                              programCountCopy(courses.length, completedCount)
+                            )}
+                          </span>
+                          <span>
+                            {copy(open ? MAP_COPY.collapse : MAP_COPY.expand)}
+                          </span>
                         </span>
+                      </span>
+                      <span className="mt-2 block max-w-[62ch] text-[15px] leading-relaxed text-ash">
+                        {copy(program.summary)}
                       </span>
                     </span>
                   </summary>
 
-                  <ol className="relative space-y-4 border-t border-hairline bg-background p-5 sm:p-6">
+                  <ol className="relative space-y-4 border-t border-hairline p-5 sm:p-6">
                     {courses.map(renderCourse)}
                   </ol>
                 </details>
