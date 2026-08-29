@@ -356,6 +356,35 @@
 .glow-plasma { box-shadow: 2px 2px 0 0 color-mix(in srgb, var(--color-on-secondary-container) 22%, transparent); }
 .glow-gold { box-shadow: 2px 2px 0 0 color-mix(in srgb, var(--color-tertiary-fixed-dim) 22%, transparent); }
 
+/* Route changes fade the new screen in. Two deliberate choices:
+
+   Opacity only — a transform on this wrapper would become the containing block
+   for the sticky product nav and every fixed layer for as long as it ran.
+
+   No fill mode, and the fade starts at 0.6 rather than 0 — the rule in 1.2 of
+   AGENTS.md applied to a whole screen. A hidden or throttled tab may never run
+   this animation, and a screen whose visibility depends on an animation that
+   did not run is a blank page. At rest the wrapper is simply opaque. */
+@keyframes page-fade-in {
+  from { opacity: 0.6; }
+  to { opacity: 1; }
+}
+
+.page-enter { animation: page-fade-in 160ms ease-out; }
+
+/* Skeletons pulse their opacity. A sliding gradient would repaint on every
+   frame; this stays on the compositor, which is what the 4 GB reference
+   machine needs. */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+.skeleton {
+  background-color: var(--color-surface-container-high);
+  animation: skeleton-pulse 1.6s ease-in-out infinite;
+}
+
 /* Accessibility: every celebration collapses to a crossfade.
    The learner loses the animation, never the information. */
 @media (prefers-reduced-motion: reduce) {

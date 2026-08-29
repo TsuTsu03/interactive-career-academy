@@ -72,6 +72,22 @@ Structured data is authored from curriculum data in `lib/structured-data.ts`:
 an `EducationalOrganization` and `WebSite` on the landing page, an `ItemList` of
 every course on `/curriculum`, and a `Course` on each `/learn/[courseId]`.
 
+## Route changes
+
+Each route segment has a `loading.tsx` that renders `components/skeleton.tsx`
+in the shape of the screen it is waiting for — the same header height, page
+width, and card rhythm — so arriving content lands where the placeholder was
+instead of shoving the page around. The skeletons are server components: markup
+and two class names, nothing shipped to the browser.
+
+`components/page-transition.tsx` fades a new screen in over 160ms, keyed by
+pathname. Two constraints shape it. It animates opacity only, because a
+transform on that wrapper would become the containing block for the sticky
+product nav and every fixed layer while it ran. And it uses no fill mode and
+starts at `0.6` rather than `0`: a hidden or throttled tab freezes the
+animation clock, and a screen whose visibility depends on an animation that
+never ran is a blank page. At rest the wrapper is simply opaque.
+
 ## Iframe security
 
 The iframe sandboxes are the security boundary and must stay separate.

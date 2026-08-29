@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { DonationModal } from "@/components/donation-modal";
 import { OfflineShell } from "@/components/offline-shell";
+import { PageTransition } from "@/components/page-transition";
 import { siteUrl } from "@/lib/site";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
@@ -71,7 +72,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="min-h-full">
-        {children}
+        <PageTransition>{children}</PageTransition>
         <OfflineShell enabled={process.env.NODE_ENV === "production"} />
         <DonationModal gcashQrAvailable={gcashQrAvailable} />
       </body>
