@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
+import { notifyFeedback } from "@/lib/feedback-email";
 import { noStoreHeaders, restRequest } from "@/lib/supabase-server";
 
 export const dynamic = "force-dynamic";
@@ -59,5 +60,8 @@ export async function POST(request: Request) {
   if ((await response.json()) !== true) {
     return NextResponse.json({ error: "That is a lot of feedback in one hour. Try again later." }, { status: 429, headers: noStoreHeaders() });
   }
+  // The row is already saved. A mail outage costs a notification, never the
+  // feedback, so the result of this is not allowed to change the answer.
+  await notifyFeedback({ mood, message, page, contact });
   return NextResponse.json({ sent: true }, { headers: noStoreHeaders() });
 }
