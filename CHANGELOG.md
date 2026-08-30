@@ -6,7 +6,46 @@ the release workflow, which re-runs the full verification gates before publishin
 
 ## [Unreleased]
 
-Nothing yet.
+Work since the 1.0.0-rc.1 entry was written. Note that no `v*` tag exists on
+this repository yet, so nothing has actually been released.
+
+### Added
+
+- The donation prompt's GCash QR (`apps/web/public/gcash-qr.png`), cropped to
+  the code itself. The account name, mobile number, and user ID printed on the
+  source screenshot are not in the file. Decision 40 is now fully delivered.
+- Google as a third sign-in provider, alongside GitHub OAuth and the email
+  magic link. Decision 5 names only the latter two, so the decision now
+  understates what ships.
+- A feedback page and a prompt that queues behind the donation one, storing
+  each answer through a rate-limited function and emailing it to the
+  maintainer when `RESEND_API_KEY` and `FEEDBACK_EMAIL_TO` are set.
+- A rate limit on the email sign-in link, keyed on salted digests of the
+  address and client so the table identifies nobody.
+- `apps/web/.env.example`, which the README has told contributors to copy
+  since the deployment section was written. `.env*` in `apps/web/.gitignore`
+  had been quietly swallowing it.
+- Route skeletons and a fade between screens.
+
+### Changed
+
+- The curriculum is presented as its two programs, rebuilt to the Stitch
+  screens, with both closed by default and each given its own colour.
+- Course size is stated under the per-project step count.
+- The donation prompt waits for a finished project rather than a step count.
+- Capacity and cost reviewed to keep ten thousand learners inside the free
+  tiers.
+- The account status line names every sign-in method.
+
+### Fixed
+
+- The editor and preview collapsed to zero height on desktop.
+- Icons vanished in dark mode, and the program band was over-saturated.
+- The course status ran over the course title.
+- The certificate drew twice, ignored the save action, and followed the dark
+  theme into an unreadable print.
+- The disconnected-state audit now says why it cannot run instead of timing
+  out.
 
 ## [1.0.0-rc.1] - 2026-08-29
 
