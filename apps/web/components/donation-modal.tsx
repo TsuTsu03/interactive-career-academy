@@ -169,16 +169,16 @@ export function DonationModal({ gcashQrAvailable }: { gcashQrAvailable: boolean 
           Learning stays free whether you donate or not.
         </p>
 
-        <div className="mt-5 flex min-h-[184px] items-center justify-center rounded-lg border border-hairline bg-white p-3 sm:min-h-[216px]">
+        <div className="mt-5 flex min-h-[248px] items-center justify-center rounded-lg border border-hairline bg-white p-3 sm:min-h-[288px]">
           {qrState !== "missing" ? (
             <Image
               src="/gcash-qr.png"
               alt="GCash QR code for CodeDaddy donations"
-              width={200}
-              height={200}
+              width={288}
+              height={288}
               onLoad={() => setQrState("ready")}
               onError={() => setQrState("missing")}
-              className="h-auto w-[160px] sm:w-[200px]"
+              className="h-auto w-[224px] sm:w-[264px]"
             />
           ) : null}
           {qrState === "missing" ? (
