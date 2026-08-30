@@ -23,6 +23,11 @@ export async function POST(request: Request) {
     request.headers.get("x-real-ip") ||
     "unknown";
   const digest = (value: string) => createHash("sha256").update(value).digest("hex");
+  // Called with the secret key, so the function no longer has to be reachable
+  // by `anon`. The caller here is anonymous, but this route is not: it runs on
+  // the server, and leaving the grant open let anyone holding the publishable
+  // key burn the throttle for an address they do not own and lock its owner
+  // out of the only sign-in method that needs no third-party account.
   const throttle = await restRequest(
     "rpc/claim_email_link",
     {
@@ -32,6 +37,8 @@ export async function POST(request: Request) {
         p_client_hash: digest(clientAddress),
       }),
     },
+    undefined,
+    true,
   );
   if (!throttle?.ok) {
     return NextResponse.json({ error: "The sign-in email could not be sent." }, { status: 502, headers: noStoreHeaders() });

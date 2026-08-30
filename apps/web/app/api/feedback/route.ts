@@ -10,10 +10,12 @@ const MOODS = new Set(["working", "unsure", "stuck", "idea"]);
 /**
  * Records one piece of learner feedback.
  *
- * Anonymous is the normal case, so this route uses the publishable key and a
- * function that can insert but never read. The client address is hashed before
- * it leaves this process; the throttle needs to tell senders apart, not know
- * who they are.
+ * Anonymous is the normal case, but the route is not: it runs on the server, so
+ * it calls the insert-only function with the secret key rather than leaving the
+ * function reachable by `anon`. Anyone holding the publishable key could
+ * otherwise post straight to the RPC and put arbitrary text in the maintainer's
+ * inbox. The client address is hashed before it leaves this process; the
+ * throttle needs to tell senders apart, not know who they are.
  */
 export async function POST(request: Request) {
   const body = (await request.json().catch(() => null)) as {
@@ -43,16 +45,21 @@ export async function POST(request: Request) {
     request.headers.get("x-real-ip") ||
     "unknown";
 
-  const response = await restRequest("rpc/submit_feedback", {
-    method: "POST",
-    body: JSON.stringify({
-      p_mood: mood,
-      p_message: message || null,
-      p_page: page || null,
-      p_contact: contact || null,
-      p_client_hash: createHash("sha256").update(clientAddress).digest("hex"),
-    }),
-  });
+  const response = await restRequest(
+    "rpc/submit_feedback",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        p_mood: mood,
+        p_message: message || null,
+        p_page: page || null,
+        p_contact: contact || null,
+        p_client_hash: createHash("sha256").update(clientAddress).digest("hex"),
+      }),
+    },
+    undefined,
+    true,
+  );
 
   if (!response?.ok) {
     return NextResponse.json({ error: "Feedback could not be sent right now." }, { status: 502, headers: noStoreHeaders() });

@@ -113,13 +113,13 @@ Forty decisions, with the reasoning, so nobody relitigates them by accident. 1 t
 
 | # | Decision | Choice | Why |
 |---|---|---|---|
-| 1 | What it is | Open-source, free, direct to learner | freeCodeCamp's mission, not a product sold to schools |
+| 1 | What it is | Open-source, free, direct to learner. **The repository is private until launch** | freeCodeCamp's mission, not a product sold to schools. The intent is unchanged; opening the source is close to irreversible and needs a full history audit for committed secrets first, so it waits for the launch gate rather than happening by default |
 | 2 | Revenue | Donations plus paid specialisations | Nothing on the free path is ever paywalled |
 | 3 | Credential | **Fully automated.** No reviewer, no defense | The only way free stays free at zero marginal cost, and exactly how fCC does it |
 | 4 | Accounts | Required upfront | One progress path instead of two. Simpler code, like fCC |
 | 5 | Auth | GitHub OAuth plus email magic link. **No passwords** | They need GitHub for projects anyway. No passwords means no reset flow and nothing to steal |
 | 6 | Content | AI drafts, automated harness validates | The only way one person reaches fCC scale |
-| 7 | Repos and licences | Platform MIT, free curriculum CC BY-SA, advanced private | The code is a gift. The content is the product |
+| 7 | Repos and licences | Platform MIT, free curriculum CC BY-SA, advanced private. **Not yet applied: the repository is private and carries no licence file** | The code is a gift. The content is the product. Recorded here 2026-08-30 because the decision read as already done and was not — a reader comparing the plan to the repository would have found it simply wrong. Opening the source and adding the two licence files is a launch-gate item, not a v2 one |
 | 8 | Free scope | Everything through back-end | Specialisations are the paid tier, and they are far away |
 | 9 | Back-end runtime | Learner's own machine, submits a URL | Zero platform cost per learner. Also what fCC does, and what real work looks like |
 | 10 | Language | English only, no locale system | Chosen knowingly. Taglish is closed |
