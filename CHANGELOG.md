@@ -26,6 +26,19 @@ this repository yet, so nothing has actually been released.
   since the deployment section was written. `.env*` in `apps/web/.gitignore`
   had been quietly swallowing it.
 - Route skeletons and a fade between screens.
+- `supabase/migrations/202608300003_server_only_rpcs.sql`, which takes the
+  anonymous execute grant off `claim_email_link` and `submit_feedback`. It must
+  be applied *after* the release below is deployed, not before.
+
+### Security
+
+- The email-throttle and feedback RPCs are now called with the secret key
+  instead of the publishable one. Both are `security definer` functions that
+  were granted to `anon`, so anyone holding the publishable key could reach
+  `/rest/v1/rpc/...` directly and bypass the app — putting arbitrary text in the
+  maintainer's inbox, or burning the sign-in throttle for somebody else's
+  address until its owner was locked out. Neither function is called from a
+  browser, so nothing legitimate loses access.
 
 ### Changed
 
