@@ -14,3 +14,6 @@ Thumbs.db
 # not source. See CODEX_LOOP_PROMPT.md and run-codex-loop.ps1.
 .codex-loop-logs/
 STOP_LOOP
+
+.vercel
+.env*
