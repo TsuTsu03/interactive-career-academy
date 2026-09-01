@@ -45,14 +45,15 @@ function rememberDismissal(): void {
   }
 }
 
-export function DonationModal({ gcashQrAvailable }: { gcashQrAvailable: boolean }) {
+export function DonationModal() {
   const pathname = usePathname();
   // Closed on the first render: whether it opens depends on saved progress,
   // which only exists in the browser.
   const [open, setOpen] = useState(false);
-  const [qrState, setQrState] = useState<"loading" | "ready" | "missing">(
-    gcashQrAvailable ? "loading" : "missing",
-  );
+  // The browser is the only honest reporter of whether the image arrived. A
+  // server-side check cannot see the CDN the asset is actually served from,
+  // and reading it wrong hides a QR code that works.
+  const [qrState, setQrState] = useState<"loading" | "ready" | "missing">("loading");
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();

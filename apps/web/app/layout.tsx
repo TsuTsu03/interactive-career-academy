@@ -4,8 +4,6 @@ import { DonationModal } from "@/components/donation-modal";
 import { FeedbackModal } from "@/components/feedback-modal";
 import { OfflineShell } from "@/components/offline-shell";
 import { siteUrl } from "@/lib/site";
-import { existsSync } from "node:fs";
-import { join } from "node:path";
 import "./globals.css";
 
 const sans = Inter({
@@ -84,8 +82,6 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  const gcashQrAvailable = existsSync(join(process.cwd(), "public", "gcash-qr.png"));
-
   return (
     <html
       lang="en"
@@ -103,7 +99,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full">
         {children}
         <OfflineShell enabled={process.env.NODE_ENV === "production"} />
-        <DonationModal gcashQrAvailable={gcashQrAvailable} />
+        <DonationModal />
         <FeedbackModal />
       </body>
     </html>

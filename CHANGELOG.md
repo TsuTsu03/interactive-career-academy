@@ -29,6 +29,13 @@ this repository yet, so nothing has actually been released.
 - `supabase/migrations/202608300003_server_only_rpcs.sql`, which takes the
   anonymous execute grant off `claim_email_link` and `submit_feedback`. It must
   be applied *after* the release below is deployed, not before.
+- A landing-page FAQ, written as nine plain-data question and answer pairs
+  and rendered always open. Both a featured snippet and an AI answer quote
+  rendered text, and a collapsed answer is hidden text.
+- `/llms.txt`, generated from the curriculum, capstones, and the same FAQ data
+  so it cannot drift from the site it describes.
+- `BreadcrumbList` JSON-LD on all six public nested routes, and `FAQPage`
+  JSON-LD on the landing page.
 
 ### Security
 
@@ -49,6 +56,13 @@ this repository yet, so nothing has actually been released.
 - Capacity and cost reviewed to keep ten thousand learners inside the free
   tiers.
 - The account status line names every sign-in method.
+- `Course` structured data now carries `about`, `educationalLevel`,
+  `timeRequired`, `learningResourceType`, and `educationalCredentialAwarded`.
+- `robots.txt` names thirteen AI crawlers explicitly and disallows
+  `/capstones/*/submit`. Root metadata sets `googleBot` snippet directives,
+  because a truncated snippet is what stops a page being quoted at all.
+- The sitemap stopped hardcoding a date; `lastModified` is build time.
+- The footer links to the curriculum and practice pages.
 
 ### Fixed
 
@@ -59,6 +73,18 @@ this repository yet, so nothing has actually been released.
   theme into an unreadable print.
 - The disconnected-state audit now says why it cannot run instead of timing
   out.
+- The donation prompt decided whether the GCash QR existed by calling
+  `existsSync` against `public/` from the root layout, on every request. The
+  app does not build to `standalone`, so on a host that serves `public/` from
+  a CDN rather than from the function filesystem that check can read false
+  while the image itself serves fine — showing every learner "QR pending"
+  forever. The browser's own `onLoad` and `onError` already reported the
+  truth, so the server-side check is gone.
+- The landing page title carried no brand. `title.template` in a root layout
+  applies to child segments only, and `app/page.tsx` shares the root segment,
+  so `%s | CodeDaddy` never ran on the most-linked page on the site.
+- `/capstones` and `/practice` set title and description only, so neither had
+  a canonical URL or a share card.
 
 ## [1.0.0-rc.1] - 2026-08-29
 
