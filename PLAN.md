@@ -113,13 +113,13 @@ Forty decisions, with the reasoning, so nobody relitigates them by accident. 1 t
 
 | # | Decision | Choice | Why |
 |---|---|---|---|
-| 1 | What it is | Open-source, free, direct to learner | freeCodeCamp's mission, not a product sold to schools |
+| 1 | What it is | Open-source, free, direct to learner. **The repository is private until launch** | freeCodeCamp's mission, not a product sold to schools. The intent is unchanged; opening the source is close to irreversible and needs a full history audit for committed secrets first, so it waits for the launch gate rather than happening by default |
 | 2 | Revenue | Donations plus paid specialisations | Nothing on the free path is ever paywalled |
 | 3 | Credential | **Fully automated.** No reviewer, no defense | The only way free stays free at zero marginal cost, and exactly how fCC does it |
 | 4 | Accounts | Required upfront | One progress path instead of two. Simpler code, like fCC |
 | 5 | Auth | GitHub OAuth plus email magic link. **No passwords** | They need GitHub for projects anyway. No passwords means no reset flow and nothing to steal |
 | 6 | Content | AI drafts, automated harness validates | The only way one person reaches fCC scale |
-| 7 | Repos and licences | Platform MIT, free curriculum CC BY-SA, advanced private | The code is a gift. The content is the product |
+| 7 | Repos and licences | Platform MIT, free curriculum CC BY-SA, advanced private. **Not yet applied: the repository is private and carries no licence file** | The code is a gift. The content is the product. Recorded here 2026-08-30 because the decision read as already done and was not — a reader comparing the plan to the repository would have found it simply wrong. Opening the source and adding the two licence files is a launch-gate item, not a v2 one |
 | 8 | Free scope | Everything through back-end | Specialisations are the paid tier, and they are far away |
 | 9 | Back-end runtime | Learner's own machine, submits a URL | Zero platform cost per learner. Also what fCC does, and what real work looks like |
 | 10 | Language | English only, no locale system | Chosen knowingly. Taglish is closed |
@@ -405,12 +405,43 @@ Everything in 1 through 4 is expensive to reverse once thousands of steps exist.
 8. **Finish the v1 front-end curriculum**: expand HTML and CSS, add Tailwind, expand JavaScript, add React, Design Foundations, JavaScript for Real Apps, TypeScript for React, Testing and DevTools, and accessibility — **complete 2026-08-28**
 9. **Deliver the approved differentiation and access layers**: revise the landing-page story, then add the offline course shell and the phone-first workspace, then the Progress Passport, Character Guard, Baon Mode, the Tanong Card, the Mistake Museum, progressive recovery, Concept Connections, Rebuild Mode, Bug Clinic, the Skill Evidence Ledger, the proof page, Constraint Missions, and Project Remix in that order, then author the five capstone briefs and their test suites with the portfolio last, since its brief depends on what the other four produce — **complete 2026-08-29**
 10. **Freeze the frontend** after browser, responsive, accessibility, performance, offline, phone-workspace, passport round-trip, content-harness, rebuild, bug-clinic, recovery, capstone, and evidence-integrity verification — **complete 2026-08-29**
-11. Only after frontend freeze: Supabase, GitHub OAuth, email magic link, database persistence, and APIs — **implementation and local contract verification complete 2026-08-29; live provider setup pending**
-12. Connect project submission and automated certificates to the verified backend — **implementation and local contract verification complete 2026-08-29; live Supabase deployment pending**
+11. Only after frontend freeze: Supabase, GitHub OAuth, email magic link, database persistence, and APIs — **implementation and local contract verification complete 2026-08-29; Supabase project live and GitHub OAuth verified against it 2026-08-30; the email magic link has never run live**
+12. Connect project submission and automated certificates to the verified backend — **implementation and local contract verification complete 2026-08-29; deployed 2026-08-30 but never exercised: no progress, submission, or certificate row has ever been written by a real session**
 
 Step 9 remains frontend-only. The offline shell and the phone workspace come first inside it because both change the shell every later feature is built into — retrofitting a service worker and a small-screen layout around seven finished features costs far more than building them under it. The Progress Passport and Character Guard follow immediately: the Passport protects work that is being lost today, and Character Guard is what makes the phone workspace survivable. The Mistake Museum comes next, since it only needs to record failures the grader already produces. The proof page waits until the Skill Evidence Ledger exists, because it is that ledger rendered for somebody else to read. The rest of step 9's order deliberately starts with features that can reuse existing lesson, concept, grading, and review data. Rebuild Mode and Bug Clinic require an explicit IR and harness design before content authoring begins. The Skill Evidence Ledger must derive claims from verified state rather than introduce a second source of truth. Constraint Missions should first appear inside selected course projects and the five capstones, then expand only when the harness can verify their requirements. Project Remix remains optional and should reuse completed project files without mutating the learner's original artifact.
 
-**Current checkpoint, 2026-08-29:** Steps 1 through 10 are complete. The frozen
+**Current checkpoint, 2026-08-30.** The backend is no longer hypothetical, and
+the gap is now verification rather than implementation. Confirmed directly
+against the live project:
+
+- The Supabase project is running, all four migrations are applied, and row-level
+  security is on for all seven tables. The deployed `claim_email_link` body is
+  byte-identical to the copy in `supabase/migrations/`, so the live schema and
+  the repository agree.
+- **GitHub OAuth has completed a real round-trip.** One account exists, with one
+  GitHub identity.
+- **Nothing else has ever run live.** Zero email identities, zero progress rows,
+  zero practice rows, zero submissions, zero certificates, zero feedback. The
+  magic link, progress sync, capstone submission, server-gated certificate
+  issuance, and the feedback email are all implemented, locally audited, and
+  completely unexercised in production.
+
+Two pieces of bookkeeping are behind the reality. The migration ledger holds
+four rows against three files, and none of the version numbers line up with the
+filenames, so the Supabase CLI cannot tell what is applied to this project — a
+fresh project built from the repository is fine, but the CLI is not a safe tool
+against this one until the ledger and the filenames are reconciled. And no `v*`
+tag exists on the repository at all, so the `1.0.0-rc.1` entry below describes a
+release that was written up but never cut.
+
+The remaining work before launch is therefore not building anything. It is
+running one real learner session end to end on the deployment, confirming
+`SITE_URL` against the Supabase Site URL and redirect allow-list, and deciding
+two open questions: whether the two `security definer` RPCs should keep their
+`anon` execute grant, and whether the repository goes public as decisions 1 and
+7 say it should.
+
+**Historical checkpoint, 2026-08-29:** Steps 1 through 10 are complete. The frozen
 frontend contains 2,760 guided steps, 8 optional practice activities, and 5
 independent capstones. The real-Chrome authoring harness passed all 2,773 items
 with 0 errors; all 87 previously queued lesson routes and editor/checker flows
@@ -564,7 +595,8 @@ A working Next.js 16 app in `apps/web`.
 - One patient, plain-English teaching voice across the product
 - XP, combo, streak, ranks, rank-up celebration
 - Progress saved per course, restored on return
-- A dismissible donation prompt that reads an owner-supplied static GCash QR from `public/gcash-qr.png`; the QR asset itself is still pending
+- A dismissible donation prompt that reads an owner-supplied static GCash QR from `public/gcash-qr.png`. The asset shipped 2026-08-30, cropped to the code alone so no account name or number is published with it
+- A feedback page and prompt, rate-limited and stored without an account, that emails each answer to the maintainer. With no community layer and no analytics, this is the only channel a learner has for telling anyone that something is broken
 - The approved landing-page story: four-way teaching, Philippines-first projects, spaced review, and working project evidence before the workspace preview
 
 See `apps/web/README.md` for the invariants that must never regress.
