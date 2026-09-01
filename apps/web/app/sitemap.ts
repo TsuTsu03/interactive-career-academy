@@ -10,7 +10,10 @@ import { absoluteUrl } from "@/lib/site";
  * they render local browser state and say nothing to anybody else.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const updated = new Date("2026-08-29");
+  // Evaluated when the site is built. A hand-typed date goes stale the moment
+  // content changes without anybody noticing, and a wrong `lastmod` is worse
+  // than none: crawlers learn to ignore the field.
+  const updated = new Date();
 
   const fixed: MetadataRoute.Sitemap = [
     { url: absoluteUrl("/"), lastModified: updated, changeFrequency: "weekly", priority: 1 },

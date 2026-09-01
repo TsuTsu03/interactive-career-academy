@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PracticeWorkspace } from "@/components/practice-workspace";
 import { practiceActivities } from "@/content/practice-activities";
+import { StructuredData } from "@/components/structured-data";
 import { pageOpenGraph } from "@/lib/site";
+import { breadcrumbSchema } from "@/lib/structured-data";
 
 export function generateStaticParams() {
   return practiceActivities.map((activity) => ({ activityId: activity.id }));
@@ -28,5 +30,16 @@ export default async function PracticeActivityPage({ params }: { params: Promise
   const { activityId } = await params;
   const activity = practiceActivities.find((item) => item.id === activityId);
   if (!activity) notFound();
-  return <PracticeWorkspace activity={activity} />;
+  return (
+    <>
+      <StructuredData
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Practice Lab", path: "/practice" },
+          { name: activity.title, path: `/practice/${activity.id}` },
+        ])}
+      />
+      <PracticeWorkspace activity={activity} />
+    </>
+  );
 }

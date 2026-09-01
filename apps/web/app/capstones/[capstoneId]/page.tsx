@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PracticeWorkspace } from "@/components/practice-workspace";
 import { capstones } from "@/content/capstones";
+import { StructuredData } from "@/components/structured-data";
 import { pageOpenGraph } from "@/lib/site";
+import { breadcrumbSchema } from "@/lib/structured-data";
 
 export function generateStaticParams() { return capstones.map((capstone) => ({ capstoneId: capstone.id })); }
 
@@ -26,5 +28,16 @@ export default async function CapstonePage({ params }: { params: Promise<{ capst
   const { capstoneId } = await params;
   const capstone = capstones.find((item) => item.id === capstoneId);
   if (!capstone) notFound();
-  return <PracticeWorkspace activity={capstone} />;
+  return (
+    <>
+      <StructuredData
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Capstones", path: "/capstones" },
+          { name: capstone.title, path: `/capstones/${capstone.id}` },
+        ])}
+      />
+      <PracticeWorkspace activity={capstone} />
+    </>
+  );
 }

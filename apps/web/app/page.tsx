@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BrandLogo } from "@/components/brand-logo";
 import { Icon, type IconName } from "@/components/icon";
+import { FaqSection } from "@/components/faq-section";
 import { SiteFooter } from "@/components/site-footer";
 import { StructuredData } from "@/components/structured-data";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -12,7 +13,10 @@ const DESCRIPTION =
   "Learn front-end development through clear concepts, Philippines-first projects, and working code you can inspect and improve.";
 
 export const metadata: Metadata = {
-  title: "Learn web development by building for real life",
+  // `title.template` in the root layout applies to child segments only, and the
+  // landing page shares that segment. Stated in full here so the brand is not
+  // the one thing missing from the most-linked title on the site.
+  title: { absolute: "CodeDaddy | Learn web development by building for real life" },
   description: DESCRIPTION,
   alternates: { canonical: "/" },
   openGraph: pageOpenGraph({
@@ -114,6 +118,9 @@ export default function Page() {
             </a>
             <a href="#how-it-works" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">
               How it Works
+            </a>
+            <a href="#faq" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">
+              Questions
             </a>
           </nav>
 
@@ -336,6 +343,8 @@ export default function Page() {
             </div>
           </div>
         </section>
+
+        <FaqSection />
       </main>
 
       <SiteFooter />

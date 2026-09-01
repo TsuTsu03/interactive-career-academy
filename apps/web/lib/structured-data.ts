@@ -1,9 +1,21 @@
 import { curriculum } from "@/content/curriculum";
+import { faq } from "@/lib/faq";
 import { copy, type Course } from "@/lib/lesson-ir";
 import { absoluteUrl, siteUrl } from "@/lib/site";
 
 const ORGANIZATION_ID = `${siteUrl()}/#organization`;
 const WEBSITE_ID = `${siteUrl()}/#website`;
+
+const SUBJECTS = [
+  "HTML",
+  "CSS",
+  "JavaScript",
+  "Tailwind CSS",
+  "React",
+  "TypeScript",
+  "Web accessibility",
+  "Front-end development",
+];
 
 const PROVIDER = {
   "@type": "EducationalOrganization",
@@ -11,9 +23,12 @@ const PROVIDER = {
   name: "CodeDaddy",
   url: absoluteUrl("/"),
   logo: absoluteUrl("/icon.svg"),
+  image: absoluteUrl("/opengraph-image"),
   description:
     "A free, browser-based front-end learning platform built around Philippines-first projects.",
   areaServed: "PH",
+  knowsAbout: SUBJECTS,
+  knowsLanguage: "en",
   sameAs: ["https://github.com/TsuTsu03/interactive-career-academy"],
 };
 
@@ -31,7 +46,38 @@ export function siteGraph(): Record<string, unknown> {
         inLanguage: "en",
         publisher: { "@id": ORGANIZATION_ID },
       },
+      {
+        "@type": "FAQPage",
+        "@id": `${siteUrl()}/#faq`,
+        inLanguage: "en",
+        isPartOf: { "@id": WEBSITE_ID },
+        mainEntity: faq.map((entry) => ({
+          "@type": "Question",
+          name: entry.question,
+          acceptedAnswer: { "@type": "Answer", text: entry.answer },
+        })),
+      },
     ],
+  };
+}
+
+/**
+ * The trail a reader actually walked to reach a page. Answer engines use it to
+ * name the section a quoted passage came from, and search results render it in
+ * place of a bare URL.
+ */
+export function breadcrumbSchema(
+  trail: { name: string; path: string }[],
+): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: trail.map((crumb, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: crumb.name,
+      item: absoluteUrl(crumb.path),
+    })),
   };
 }
 
@@ -42,6 +88,7 @@ export function siteGraph(): Record<string, unknown> {
  */
 export function courseSchema(course: Course): Record<string, unknown> {
   const minutes = course.steps.reduce((total, step) => total + (step.estimatedMinutes ?? 0), 0);
+  const hours = Math.max(1, Math.round(minutes / 60));
 
   return {
     "@context": "https://schema.org",
@@ -53,12 +100,17 @@ export function courseSchema(course: Course): Record<string, unknown> {
     inLanguage: "en",
     isAccessibleForFree: true,
     teaches: course.projects.map((project) => project.title),
+    about: SUBJECTS,
+    educationalLevel: "Beginner",
+    learningResourceType: "Interactive project course",
+    timeRequired: `PT${hours}H`,
+    educationalCredentialAwarded: "CodeDaddy certificate of completion",
     provider: { "@id": ORGANIZATION_ID },
     offers: { "@type": "Offer", price: 0, priceCurrency: "PHP", category: "Free" },
     hasCourseInstance: {
       "@type": "CourseInstance",
       courseMode: "online",
-      courseWorkload: `PT${Math.max(1, Math.round(minutes / 60))}H`,
+      courseWorkload: `PT${hours}H`,
     },
   };
 }

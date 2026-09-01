@@ -31,6 +31,35 @@ export const metadata: Metadata = {
   applicationName: "CodeDaddy",
   manifest: "/manifest.webmanifest",
   alternates: { canonical: "/" },
+  authors: [{ name: "CodeDaddy" }],
+  creator: "CodeDaddy",
+  publisher: "CodeDaddy",
+  category: "education",
+  keywords: [
+    "learn web development",
+    "learn HTML",
+    "learn CSS",
+    "learn JavaScript",
+    "learn React",
+    "learn TypeScript",
+    "free coding course Philippines",
+    "browser code editor",
+    "front-end development for beginners",
+  ],
+  // Full snippets and a large image preview. Truncated snippets are what stop
+  // a page being quoted, whether the quote lands in a search result or in an
+  // AI answer built from the same crawl.
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
+  },
   icons: {
     icon: "/icon.svg",
   },

@@ -6,7 +6,7 @@ import { StructuredData } from "@/components/structured-data";
 import { courseById, curriculum } from "@/content/curriculum";
 import { copy } from "@/lib/lesson-ir";
 import { pageOpenGraph } from "@/lib/site";
-import { courseSchema } from "@/lib/structured-data";
+import { breadcrumbSchema, courseSchema } from "@/lib/structured-data";
 
 type Params = { courseId: string };
 
@@ -40,6 +40,13 @@ export default async function Page({ params }: { params: Promise<Params> }) {
   if (!course) notFound();
   return (
     <>
+      <StructuredData
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Curriculum", path: "/curriculum" },
+          { name: course.title, path: `/learn/${course.id}` },
+        ])}
+      />
       <StructuredData data={courseSchema(course)} />
       {course.requires.length > 0 ? <CourseGate course={course} /> : <Workspace course={course} />}
     </>
