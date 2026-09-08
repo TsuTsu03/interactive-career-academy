@@ -2935,3 +2935,265 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: sari-sari-delivery-log.
+sqlCourse.projects.push({"id":"sari-sari-delivery-log","title":"Sari-Sari Store Delivery Log"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-sari-sari-delivery-log-1",
+    "index": 81,
+    "task": "Select the id, name, and amount from the record table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result-1",
+        "label": "Initial rows contain id 1, 2, 3, 4 with their amounts",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Rice",
+            8
+          ],
+          [
+            2,
+            "Soap",
+            20
+          ],
+          [
+            3,
+            "Cooking Oil",
+            2
+          ],
+          [
+            4,
+            "Egg",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the three fields: id, name, and amount."
+      },
+      {
+        "level": 2,
+        "text": "Use SELECT to read from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT id, name, amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-delivery-log"
+  },
+  {
+    "id": "sql-sari-sari-delivery-log-2",
+    "index": 82,
+    "task": "Insert a new record with id 5, name 'New Record', category 'Local', amount 7, status 'Open', group_id 1, then read all rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT id, name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result-2",
+        "label": "After insert, rows include id 5 with amount 7",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Rice",
+            8
+          ],
+          [
+            2,
+            "Soap",
+            20
+          ],
+          [
+            3,
+            "Cooking Oil",
+            2
+          ],
+          [
+            4,
+            "Egg",
+            5
+          ],
+          [
+            5,
+            "New Record",
+            7
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the new record using INSERT with id 5 and name 'New Record'."
+      },
+      {
+        "level": 2,
+        "text": "Then read all rows with SELECT id, name, amount."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nSELECT id, name, amount FROM record;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sari-sari-delivery-log"
+  },
+  {
+    "id": "sql-sari-sari-delivery-log-3",
+    "index": 83,
+    "task": "Update only id 5 amount to 9, then read the updated record.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nSELECT id, name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result-3",
+        "label": "Updated record shows id 5 with amount 9",
+        "kind": "sql-row-contains",
+        "row": [
+          5,
+          "New Record",
+          9
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change only id 5's amount to 9 using UPDATE."
+      },
+      {
+        "level": 2,
+        "text": "Then read only id 5 with SELECT WHERE id = 5."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nSELECT id, name, amount FROM record WHERE id = 5;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sari-sari-delivery-log"
+  },
+  {
+    "id": "sql-sari-sari-delivery-log-4",
+    "index": 84,
+    "task": "Update only id 2 status to 'Open', then read id 2's details.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nSELECT id, name, amount FROM record WHERE id = 5;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result-4",
+        "label": "Updated record shows id 2 with status 'Open'",
+        "kind": "sql-row-contains",
+        "row": [
+          2,
+          "Soap",
+          "Open"
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change id 2's status to 'Open' using UPDATE."
+      },
+      {
+        "level": 2,
+        "text": "Then read id 2's id, name, and status with SELECT WHERE id = 2."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nSELECT id, name, status FROM record WHERE id = 2;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sari-sari-delivery-log"
+  },
+  {
+    "id": "sql-sari-sari-delivery-log-5",
+    "index": 85,
+    "task": "Delete only id 4, then read remaining ids and names.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nSELECT id, name, status FROM record WHERE id = 2;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result-5",
+        "label": "After delete, rows contain ids 1, 2, 3, 5 with their names",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Rice"
+          ],
+          [
+            2,
+            "Soap"
+          ],
+          [
+            3,
+            "Cooking Oil"
+          ],
+          [
+            5,
+            "New Record"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Remove id 4 using DELETE WHERE id = 4."
+      },
+      {
+        "level": 2,
+        "text": "Then read remaining ids and names with SELECT id, name."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nSELECT id, name FROM record;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sari-sari-delivery-log"
+  }
+] satisfies typeof sqlCourse.steps));
