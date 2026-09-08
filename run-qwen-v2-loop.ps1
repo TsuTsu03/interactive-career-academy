@@ -18,7 +18,7 @@ param(
   [ValidateSet("sql-basics", "nosql-basics")][string]$CourseId = "sql-basics",
   [string]$ProjectId = "",
   [ValidateRange(5, 10)][int]$BatchSize = 5,
-  [ValidateLength(0, 4000)][string]$BatchBrief = "",
+  [ValidateLength(0, 12000)][string]$BatchBrief = "",
   [ValidateLength(0, 260)][string]$BatchBriefFile = ""
 )
 
@@ -36,7 +36,7 @@ if ($BatchBriefFile) {
   if (-not $resolvedBriefFile.StartsWith($briefRoot + [System.IO.Path]::DirectorySeparatorChar, [System.StringComparison]::OrdinalIgnoreCase)) { throw "BatchBriefFile must stay inside .qwen-v2-campaign." }
   if (-not (Test-Path -LiteralPath $resolvedBriefFile -PathType Leaf)) { throw "BatchBriefFile does not exist." }
   $BatchBrief = Get-Content -LiteralPath $resolvedBriefFile -Raw
-  if ($BatchBrief.Length -gt 4000) { throw "BatchBriefFile exceeds 4,000 characters." }
+  if ($BatchBrief.Length -gt 12000) { throw "BatchBriefFile exceeds 12,000 characters." }
 }
 $projectArgument = if ($ProjectId) { $ProjectId } else { "__last_project__" }
 $briefArgument = if ($BatchBrief) { [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($BatchBrief)) } else { "__no_batch_brief__" }
@@ -53,7 +53,7 @@ import { pathToFileURL } from "node:url";
 const [mode, root, courseId, projectArgument, batchText, endpoint, model, promptPath, receiptPath, briefArgument] = process.argv.slice(2);
 const requestedProject = projectArgument === "__last_project__" ? "" : projectArgument;
 const ownerBatchBrief = briefArgument && briefArgument !== "__no_batch_brief__" ? Buffer.from(briefArgument, "base64").toString("utf8") : undefined;
-if (ownerBatchBrief && ownerBatchBrief.length > 4000) throw Error("BatchBrief exceeds 4,000 characters.");
+if (ownerBatchBrief && ownerBatchBrief.length > 12000) throw Error("BatchBrief exceeds 12,000 characters.");
 const count = Number(batchText);
 const isSql = courseId === "sql-basics";
 if (!["sql-basics", "nosql-basics"].includes(courseId)) throw Error("Unknown course.");

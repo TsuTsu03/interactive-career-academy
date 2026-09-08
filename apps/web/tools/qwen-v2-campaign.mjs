@@ -109,7 +109,7 @@ const nosqlTracks = [
     "6 filter the final find to amount <= 7; 7 sort those documents by amount; 8 limit to 2; 9 change the second inserted document status to Done in its source document and find Done records; 10 project only name and status from the Done result"],
   ["embedded document view", "nosql-document, nosql-projection, nosql-filter, nosql-sort",
     "The seed documents include a top-level details object but queries operate on top-level fields. 1 find all documents and observe the embedded details; 2 project name and details; 3 add amount to the projection; 4 filter top-level category equal to Local; 5 sort those Local documents by amount",
-    "6 limit the two sorted Local documents to 1; 7 switch the filter to status Open and remove the limit so two documents return; 8 project name and status; 9 sort the two Open documents by name descending; 10 limit to the first 1. Explain in the tasks that embedding keeps related details together but large repeated data can be costly"],
+    "6 limit the two sorted Local documents to 1; 7 switch the filter to status Open and remove the limit so two documents return; 8 project name and status; 9 sort the two Open documents by amount descending; 10 limit to the first 1. Explain in the tasks that embedding keeps related details together but large repeated data can be costly"],
   ["reference record view", "nosql-document, nosql-projection, nosql-filter, nosql-in",
     "The seed has records with groupId references and a separate groups collection. The runner has no join. 1 find all records; 2 project name and groupId; 3 filter groupId equal to 1; 4 sort the two matching records by amount; 5 limit to 1",
     "6 query the groups collection instead and find all group documents; 7 project group id and label; 8 sort the two groups by label descending; 9 use $in to keep only group id 1; 10 project only the label from that one group. State plainly that relational SQL is usually better when many reports must combine changing referenced records"],
@@ -253,6 +253,97 @@ function sqlSolutions(track, project, batch) {
   return all.slice(batch === 1 ? 0 : 5, batch === 1 ? 5 : 10);
 }
 
+function nosqlSeed(project) {
+  const [a, b, c, d] = project.names;
+  const details = { source: "Community", checked: true };
+  return {
+    records: [
+      { id: 1, name: a, category: "Local", amount: 8, status: "Open", groupId: 1, details },
+      { id: 2, name: b, category: "Regional", amount: 20, status: "Done", groupId: 2, details },
+      { id: 3, name: c, category: "Local", amount: 2, status: "Open", groupId: 1, details },
+      { id: 4, name: d, category: "Regional", amount: 5, status: "Done", groupId: 2, details },
+    ],
+    groups: [
+      { id: 1, label: "North Team", area: "North" },
+      { id: 2, label: "South Team", area: "South" },
+    ],
+  };
+}
+
+function nosqlSolutions(track, project, batch) {
+  const command = (value) => JSON.stringify(value);
+  const inserted = [
+    { name: "New Record", category: "Local", amount: 7, status: "Open", note: "Community order" },
+    { name: "Backup Record", category: "Local", amount: 4, status: "Open" },
+  ];
+  const changed = [inserted[0], { ...inserted[1], status: "Done" }];
+  const records = (options = {}) => ({ collection: "records", operation: "find", ...options });
+  const groups = (options = {}) => ({ collection: "groups", operation: "find", ...options });
+  const insert = (documents) => ({ collection: "records", operation: "insert", documents });
+  const solutions = {
+    "document report": [
+      command(records()), command(records({ projection: ["name"] })), command(records({ projection: ["name", "amount"] })),
+      command(records({ projection: ["name", "amount"], filter: { amount: { $lte: 10 } } })),
+      command(records({ projection: ["name", "amount"], filter: { amount: { $lte: 10 } }, sort: { amount: 1 } })),
+      command(records({ projection: ["name", "amount"], filter: { amount: { $lte: 10 } }, sort: { amount: 1 }, limit: 2 })),
+      command(records({ projection: ["name", "amount"], filter: { amount: { $gt: 5 } }, sort: { amount: 1 }, limit: 2 })),
+      command(records({ projection: ["name", "amount"], filter: { amount: { $gt: 5 } }, sort: { amount: -1 }, limit: 2 })),
+      command(records({ projection: ["name"], filter: { amount: { $gt: 5 } }, sort: { amount: -1 }, limit: 2 })),
+      command(records({ projection: ["name"], filter: { amount: { $gt: 5 } }, sort: { amount: -1 }, limit: 1 })),
+    ],
+    "logical filters": [
+      command(records({ filter: { status: { $eq: "Open" } } })), command(records({ filter: { status: { $ne: "Open" } } })),
+      command(records({ filter: { amount: { $lte: 8 } } })), command(records({ filter: { amount: { $gte: 8 } } })),
+      command(records({ filter: { $and: [{ status: "Open" }, { amount: { $lte: 8 } }] } })),
+      command(records({ filter: { $or: [{ status: "Done" }, { amount: { $lt: 3 } }] } })),
+      command(records({ filter: { category: { $in: ["Local", "Regional"] } } })),
+      command(records({ filter: { category: { $in: ["Local", "Regional"] } }, projection: ["name", "amount"] })),
+      command(records({ filter: { category: { $in: ["Local", "Regional"] } }, projection: ["name", "amount"], sort: { amount: 1 } })),
+      command(records({ filter: { category: { $in: ["Local", "Regional"] } }, projection: ["name", "amount"], sort: { amount: 1 }, limit: 3 })),
+    ],
+    "insert and read": [
+      command(insert([{ ...inserted[0], note: undefined }])).replace(',"note":null', ""), command(insert([inserted[0]])), command(insert(inserted)),
+      command([insert(inserted), records()]), command([insert(inserted), records({ projection: ["name", "amount"] })]),
+      command([insert(inserted), records({ projection: ["name", "amount"], filter: { amount: { $lte: 7 } } })]),
+      command([insert(inserted), records({ projection: ["name", "amount"], filter: { amount: { $lte: 7 } }, sort: { amount: 1 } })]),
+      command([insert(inserted), records({ projection: ["name", "amount"], filter: { amount: { $lte: 7 } }, sort: { amount: 1 }, limit: 2 })]),
+      command([insert(changed), records({ filter: { status: "Done" } })]), command([insert(changed), records({ filter: { status: "Done" }, projection: ["name", "status"] })]),
+    ],
+    "embedded document view": [
+      command(records()), command(records({ projection: ["name", "details"] })), command(records({ projection: ["name", "details", "amount"] })),
+      command(records({ projection: ["name", "details", "amount"], filter: { category: "Local" } })),
+      command(records({ projection: ["name", "details", "amount"], filter: { category: "Local" }, sort: { amount: 1 } })),
+      command(records({ projection: ["name", "details", "amount"], filter: { category: "Local" }, sort: { amount: 1 }, limit: 1 })),
+      command(records({ projection: ["name", "details", "amount"], filter: { status: "Open" }, sort: { amount: 1 } })),
+      command(records({ projection: ["name", "status"], filter: { status: "Open" }, sort: { amount: 1 } })),
+      command(records({ projection: ["name", "status"], filter: { status: "Open" }, sort: { amount: -1 } })),
+      command(records({ projection: ["name", "status"], filter: { status: "Open" }, sort: { amount: -1 }, limit: 1 })),
+    ],
+    "reference record view": [
+      command(records()), command(records({ projection: ["name", "groupId"] })), command(records({ projection: ["name", "groupId"], filter: { groupId: 1 } })),
+      command(records({ projection: ["name", "groupId"], filter: { groupId: 1 }, sort: { amount: 1 } })),
+      command(records({ projection: ["name", "groupId"], filter: { groupId: 1 }, sort: { amount: 1 }, limit: 1 })),
+      command(groups()), command(groups({ projection: ["id", "label"] })), command(groups({ projection: ["id", "label"], sort: { label: -1 } })),
+      command(groups({ projection: ["id", "label"], sort: { label: -1 }, filter: { id: { $in: [1] } } })),
+      command(groups({ projection: ["label"], sort: { label: -1 }, filter: { id: { $in: [1] } } })),
+    ],
+  };
+  const all = solutions[track[0]];
+  return all.slice(batch === 1 ? 0 : 5, batch === 1 ? 5 : 10);
+}
+
+function nosqlExpected(track, project, batch) {
+  const [a, b, c, d] = project.names;
+  const expected = {
+    "document report": [`1 ${a}, ${b}, ${c}, ${d}; 2 names only; 3 names and amounts 8, 20, 2, 5; 4 ${a} 8, ${c} 2, ${d} 5; 5 ${c} 2, ${d} 5, ${a} 8`, `6 ${c} 2 and ${d} 5; 7 ${a} 8 and ${b} 20; 8 ${b} 20 then ${a} 8; 9 those two names only; 10 ${b} only`],
+    "logical filters": [`1 ${a}, ${c}; 2 ${b}, ${d}; 3 ${a}, ${c}, ${d}; 4 ${a}, ${b}; 5 ${a}, ${c}`, `6 ${b}, ${c}, ${d}; 7 all four; 8 all names and amounts; 9 ${c} 2, ${d} 5, ${a} 8, ${b} 20; 10 ${c}, ${d}, ${a}`],
+    "insert and read": ["1 New Record without a note; 2 New Record with note Community order; 3 New Record and Backup Record; 4 all four seed records followed by both inserted records; 5 those six names and amounts", `6 ${c} 2, ${d} 5, New Record 7, Backup Record 4; 7 ${c} 2, Backup Record 4, ${d} 5, New Record 7; 8 ${c} 2 and Backup Record 4; 9 ${b}, ${d}, and Backup Record as Done; 10 those three names and Done statuses only`],
+    "embedded document view": [`1 all four complete documents; 2 names and details; 3 names, details, and amounts; 4 ${a} and ${c}; 5 ${c} 2 then ${a} 8`, `6 ${c} only; 7 ${c} 2 then ${a} 8; 8 those two names and Open statuses; 9 ${a} then ${c}; 10 ${a} only`],
+    "reference record view": [`1 all four records; 2 four names and group ids; 3 ${a} and ${c}; 4 ${c} then ${a}; 5 ${c} only`, "6 both complete group documents including area; 7 both ids and labels without area; 8 South Team then North Team; 9 North Team only; 10 label North Team only"],
+  };
+  return expected[track[0]][batch - 1];
+}
+
 function sqlBrief(project, projectIndex, batch) {
   const track = sqlTracks[projectIndex % sqlTracks.length];
   const [a, b, c, d] = project.names;
@@ -269,8 +360,8 @@ function sqlBrief(project, projectIndex, batch) {
 function nosqlBrief(project, projectIndex, batch) {
   const track = nosqlTracks[projectIndex % nosqlTracks.length];
   const [a, b, c, d] = project.names;
-  const facts = `${a}: id 1, category Local, amount 8, status Open, groupId 1; ${b}: id 2, category Regional, amount 20, status Done, groupId 2; ${c}: id 3, category Local, amount 2, status Open, groupId 1; ${d}: id 4, category Regional, amount 5, status Done, groupId 2. Each record also has details: { source: "Community", checked: true }. Groups are {id:1,label:"North Team"} and {id:2,label:"South Team"}.`;
-  return `Build ${project.title}, a Philippine project. Track: ${track[0]}. Seed collections records and groups with exactly these facts: ${facts} This is batch ${batch} of 2. Five exact goals: ${batch === 1 ? track[2] : track[3]}. Use these registered concepts where they first apply: ${track[1]}. Every solution is the complete JSON command or command array. Keep each change to at most three lines. Give exact expected documents with every projected field and value. Make every filter, sort, limit, insertion, or projection change observable. No explanation-only step. Do not add concepts outside the registered list.`;
+  const facts = `${a}: id 1, category Local, amount 8, status Open, groupId 1; ${b}: id 2, category Regional, amount 20, status Done, groupId 2; ${c}: id 3, category Local, amount 2, status Open, groupId 1; ${d}: id 4, category Regional, amount 5, status Done, groupId 2. Each record also has details: { source: "Community", checked: true }. Groups are North Team with area North and South Team with area South.`;
+  return `Build ${project.title}, a Philippine project. Track: ${track[0]}. Seed collections records and groups with exactly these facts: ${facts} For a new project, copy this exact seed object unchanged: ${JSON.stringify(nosqlSeed(project))}. This is batch ${batch} of 2. Five exact goals: ${batch === 1 ? track[2] : track[3]}. Copy these five complete solution strings unchanged and in order: ${JSON.stringify(nosqlSolutions(track, project, batch))}. Required result facts: ${nosqlExpected(track, project, batch)}. Copy these facts into behavioral tests; do not recalculate or omit matching documents. Use these registered concepts where they first apply: ${track[1]}. Every solution is the complete JSON command or command array. Keep each change to at most three lines. Give exact expected documents with every projected field and value. Make every filter, sort, limit, insertion, or projection change observable. No explanation-only step. Do not add concepts outside the registered list.`;
 }
 
 const campaigns = {
@@ -293,10 +384,19 @@ for (const track of nosqlTracks) {
   for (const conceptId of track[1].split(", ")) {
     if (!registeredConceptIds.has(conceptId)) throw new Error(`Unknown campaign concept ${conceptId}`);
   }
+  for (const batch of [1, 2]) {
+    if (!nosqlExpected(track, nosqlContexts[0], batch)) throw new Error(`Missing expected outcomes for ${track[0]} batch ${batch}`);
+    if (nosqlSolutions(track, nosqlContexts[0], batch).length !== 5) throw new Error(`Missing exact solutions for ${track[0]} batch ${batch}`);
+  }
 }
 for (const [courseId, campaign] of Object.entries(campaigns)) {
   if (new Set(campaign.projects.map((project) => project.id)).size !== campaign.projects.length) throw new Error(`${courseId} has duplicate campaign project ids`);
   if (campaign.projects.some((project) => !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(project.id))) throw new Error(`${courseId} has an invalid campaign project id`);
+  for (const [projectIndex, project] of campaign.projects.entries()) {
+    for (const batch of [1, 2]) {
+      if (campaign.brief(project, projectIndex, batch).length > 12000) throw new Error(`${courseId}/${project.id} batch ${batch} brief is too large`);
+    }
+  }
 }
 
 function progress(courseId) {
