@@ -151,6 +151,108 @@ function sqlExpected(track, project, batch) {
   return expectations[track.name][batch - 1];
 }
 
+function sqlSeed(track, project) {
+  const quote = (value) => value.replaceAll("'", "''");
+  const [a, b, c, d] = project.names.map(quote);
+  if (track.sourceOnly) {
+    return `CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, '${a}', 'Local', 8, 'Open', 1), (2, '${b}', 'Regional', 20, 'Done', 2), (3, '${c}', 'Local', 2, 'Open', 1), (4, '${d}', 'Regional', 5, 'Done', 2);`;
+  }
+  const fourthGroup = track.missingGroup ? "NULL" : "2";
+  return `CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, '${a}', 'Local', 8, 'Open', 1), (2, '${b}', 'Regional', 20, 'Done', 2), (3, '${c}', 'Local', 2, 'Open', 1), (4, '${d}', 'Regional', 5, 'Done', ${fourthGroup});\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');`;
+}
+
+function sqlSolutions(track, project, batch) {
+  const firstLetter = project.names[0][0].replaceAll("'", "''");
+  const solutions = {
+    "filtered report": [
+      "SELECT name FROM record;",
+      "SELECT name, amount FROM record;",
+      "SELECT name, amount FROM record WHERE amount <= 10;",
+      "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC;",
+      "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC LIMIT 2;",
+      "SELECT COUNT(*) FROM record WHERE amount <= 10;",
+      "SELECT COUNT(*) AS priority_count FROM record WHERE amount <= 10;",
+      "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;",
+      "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category HAVING SUM(amount) > 12;",
+      "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category HAVING SUM(amount) > 8 ORDER BY total_amount DESC;",
+    ],
+    "conditions report": [
+      "SELECT name, status FROM record;",
+      "SELECT name, status FROM record WHERE status = 'Open';",
+      "SELECT name, status FROM record WHERE amount <= 8;",
+      "SELECT name, status FROM record WHERE status = 'Open' AND amount <= 8;",
+      "SELECT name, status FROM record WHERE status = 'Done' OR amount < 3;",
+      `SELECT name FROM record WHERE name LIKE '${firstLetter}%';`,
+      "SELECT name, category, amount FROM record WHERE category = 'Local';",
+      "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20;",
+      "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;",
+      "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC LIMIT 2;",
+    ],
+    "aggregate report": [
+      "SELECT COUNT(*) FROM record;",
+      "SELECT COUNT(*) AS record_count FROM record;",
+      "SELECT SUM(amount) AS total_amount FROM record;",
+      "SELECT AVG(amount) AS average_amount FROM record;",
+      "SELECT category, COUNT(*) AS record_count FROM record GROUP BY category;",
+      "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;",
+      "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category ORDER BY total_amount DESC;",
+      "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category HAVING SUM(amount) > 12;",
+      "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;",
+      "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category ORDER BY total_amount DESC;",
+    ],
+    "inner join report": [
+      "SELECT record.name, record.group_id FROM record;",
+      "SELECT record.name, group_info.label FROM record JOIN group_info ON group_info.id = record.group_id;",
+      "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id;",
+      "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10;",
+      "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10 ORDER BY record.amount ASC;",
+      "SELECT group_info.label, COUNT(*) AS record_count FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label;",
+      "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label;",
+      "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label HAVING SUM(record.amount) > 12;",
+      "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label ORDER BY total_amount DESC;",
+      "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label ORDER BY total_amount DESC LIMIT 1;",
+    ],
+    "left join report": [
+      "SELECT record.name, record.group_id FROM record;",
+      "SELECT record.name, group_info.label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;",
+      "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;",
+      "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id WHERE record.group_id IS NULL;",
+      "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id ORDER BY group_label ASC;",
+      "SELECT COUNT(*) FROM record LEFT JOIN group_info ON group_info.id = record.group_id;",
+      "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, COUNT(*) AS record_count FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label;",
+      "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label;",
+      "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label HAVING SUM(record.amount) > 8;",
+      "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label HAVING SUM(record.amount) > 8 ORDER BY total_amount DESC;",
+    ],
+    "data changes": [
+      "SELECT id, name, amount FROM record;",
+      "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nSELECT id, name, amount FROM record;",
+      "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nSELECT id, name, amount FROM record WHERE id = 5;",
+      "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nSELECT id, name, status FROM record WHERE id = 2;",
+      "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nSELECT id, name FROM record;",
+      "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nSELECT id, name, amount FROM record WHERE id = 6;",
+      "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nSELECT id, name, category, amount FROM record WHERE id = 6;",
+      "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nDELETE FROM record WHERE id = 1;\nSELECT id, name, amount FROM record;",
+      "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nDELETE FROM record WHERE id = 1;\nSELECT COUNT(*) FROM record;",
+      "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nDELETE FROM record WHERE id = 1;\nSELECT name, amount FROM record ORDER BY amount ASC;",
+    ],
+    "schema and rows": [
+      "CREATE TABLE report (id INTEGER, name TEXT);",
+      "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);",
+      "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id = 1;\nSELECT id, name, amount FROM report;",
+      "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report;",
+      "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report ORDER BY amount ASC;",
+      "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nSELECT id, name, amount FROM report ORDER BY amount ASC;",
+      "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nSELECT id, name, amount FROM report ORDER BY amount ASC;",
+      "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY amount ASC;",
+      "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT COUNT(*) FROM report;",
+      "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY id ASC;",
+    ],
+  };
+  const all = solutions[track.name];
+  return all.slice(batch === 1 ? 0 : 5, batch === 1 ? 5 : 10);
+}
+
 function sqlBrief(project, projectIndex, batch) {
   const track = sqlTracks[projectIndex % sqlTracks.length];
   const [a, b, c, d] = project.names;
@@ -161,7 +263,7 @@ function sqlBrief(project, projectIndex, batch) {
       ? "Use flat_record with columns id, name, category, amount."
       : "Use record with columns id, name, category, amount, status, group_id, plus group_info(id,label).";
   const facts = `${a}: id 1, Local, amount 8, Open, group 1; ${b}: id 2, Regional, amount 20, Done, group 2; ${c}: id 3, Local, amount 2, Open, group 1; ${d}: id 4, Regional, amount 5, Done, group ${track.missingGroup ? "NULL" : "2"}. Groups are 1 North Team and 2 South Team.${missing}`;
-  return `Build ${project.title}, a Philippine ${project.context.toLowerCase()} project. Track: ${track.name}. ${seedShape} Seed exactly these facts: ${facts} This is batch ${batch} of 2. Five exact goals: ${batch === 1 ? track.first : track.second}. Required result facts for goals 1-5 in this batch: ${sqlExpected(track, project, batch)}. Copy these facts into behavioral tests; do not recalculate or omit matching rows. Use these registered concepts where they first apply: ${track.concepts}. Every solution is the complete executable SQL file. Keep each change to at most three lines. Give actual seed-derived expected values, including every selected column. Make filtering, sorting, grouping, limiting, changes, and rollback observable. No explanation-only step. Do not add concepts outside the registered list.`;
+  return `Build ${project.title}, a Philippine ${project.context.toLowerCase()} project. Track: ${track.name}. ${seedShape} Seed exactly these facts: ${facts} For a new project, copy this exact SQL seed unchanged: ${JSON.stringify(sqlSeed(track, project))}. This is batch ${batch} of 2. Five exact goals: ${batch === 1 ? track.first : track.second}. Copy these five complete solution strings unchanged and in order: ${JSON.stringify(sqlSolutions(track, project, batch))}. Required result facts for goals 1-5 in this batch: ${sqlExpected(track, project, batch)}. Copy these facts into behavioral tests; do not recalculate or omit matching rows. Use these registered concepts where they first apply: ${track.concepts}. Every solution is the complete executable SQL file. Keep each change to at most three lines. Give actual seed-derived expected values, including every selected column. Make filtering, sorting, grouping, limiting, changes, and rollback observable. No explanation-only step. Do not add concepts outside the registered list.`;
 }
 
 function nosqlBrief(project, projectIndex, batch) {
@@ -184,6 +286,7 @@ for (const track of sqlTracks) {
   }
   for (const batch of [1, 2]) {
     if (!sqlExpected(track, sqlProjects[0], batch)) throw new Error(`Missing expected outcomes for ${track.name} batch ${batch}`);
+    if (sqlSolutions(track, sqlProjects[0], batch).length !== 5) throw new Error(`Missing exact solutions for ${track.name} batch ${batch}`);
   }
 }
 for (const track of nosqlTracks) {
