@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ProductNav } from "@/components/product-nav";
 import { curriculum } from "@/content/curriculum";
-import { copy, totalXp, type Copy } from "@/lib/lesson-ir";
+import { copy, totalXp, type Copy, type StepKind } from "@/lib/lesson-ir";
 import {
   courseProgressFromStorage,
   courseStorageKey,
@@ -89,10 +89,11 @@ function dueReviewCopy(count: number): Copy {
   return `${count} ${count === 1 ? "concept" : "concepts"} ready for review`;
 }
 
-function technology(courseId: string, kind: "web" | "js" | "react"): string {
+function technology(courseId: string, kind: StepKind): string {
   if (courseId === "design-foundations") return "Design";
   if (courseId === "typescript-react") return "TypeScript + React";
   if (courseId === "testing-devtools") return "Testing + DevTools";
+  if (kind === "sql") return courseId.includes("nosql") ? "NoSQL" : "SQL";
   if (kind === "react") return "React";
   if (kind === "js") return "JavaScript";
   if (courseId.startsWith("tailwind")) return "Tailwind CSS";

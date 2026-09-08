@@ -5,6 +5,7 @@ import { Icon } from "@/components/icon";
 import { buildConsoleDocument, buildDocument } from "@/lib/grading";
 import type { StepKind } from "@/lib/lesson-ir";
 import { reactRunnerDocumentAsync } from "@/lib/react-runner";
+import { runLearnerSql, type SqlRunResult } from "@/lib/sql-runner";
 
 const REACT_PREVIEW_TIMEOUT_MS = 4000;
 
@@ -31,12 +32,15 @@ export function Preview({
   files,
   kind,
   flash,
+  sqlSeed,
 }: {
   files: Record<string, string>;
   kind: StepKind;
   flash: "none" | "pass" | "fail";
+  sqlSeed?: string;
 }) {
   if (kind === "react") return <ReactPreview files={files} flash={flash} />;
+  if (kind === "sql") return <SqlPreview files={files} seed={sqlSeed ?? ""} flash={flash} />;
   return <DocumentPreview files={files} kind={kind} flash={flash} />;
 }
 
@@ -46,7 +50,7 @@ function DocumentPreview({
   flash,
 }: {
   files: Record<string, string>;
-  kind: Exclude<StepKind, "react">;
+  kind: Exclude<StepKind, "react" | "sql">;
   flash: "none" | "pass" | "fail";
 }) {
   const build = () =>
@@ -94,6 +98,134 @@ function DocumentPreview({
           srcDoc={srcDoc}
           className={`h-full w-full bg-white transition-shadow duration-300 ${ring}`}
         />
+      </div>
+    </section>
+  );
+}
+
+/**
+ * The rows the learner's query returned, updated as they type.
+ *
+ * A SQL learner needs to see the result, not a rendered page — the result set
+ * *is* the output. The query runs in the disposable opaque-origin frame of
+ * `lib/sql-runner.ts` against a database rebuilt from the step's seed every
+ * time, so nothing carries over between runs.
+ *
+ * A half-typed query is a syntax error most of the time, so an error while
+ * typing is reported plainly and without alarm: it is the normal state of
+ * writing SQL, not a failure worth shouting about.
+ */
+function SqlPreview({
+  files,
+  seed,
+  flash,
+}: {
+  files: Record<string, string>;
+  seed: string;
+  flash: "none" | "pass" | "fail";
+}) {
+  const sql = files["query.sql"] ?? "";
+  // The query that produced this result is stored beside it, so a result from
+  // an earlier keystroke is never shown against the text now on screen.
+  const [answered, setAnswered] = useState<{ sql: string; result: SqlRunResult } | null>(null);
+
+  useEffect(() => {
+    if (!sql.trim()) return;
+    // Debounced so a fast typist does not spawn a frame per keystroke.
+    const timer = window.setTimeout(() => {
+      runLearnerSql(seed, sql).then((result) => setAnswered({ sql, result }));
+    }, 400);
+    return () => window.clearTimeout(timer);
+  }, [sql, seed]);
+
+  const run = answered && answered.sql === sql ? answered.result : null;
+  const pending = Boolean(sql.trim()) && !run;
+  const result = run?.results[0];
+
+  return (
+    <section className="flex min-h-0 flex-1 flex-col bg-surface" aria-label="Query results">
+      <div className="flex h-10 shrink-0 items-center gap-2 border-b border-outline-variant bg-surface-container px-4">
+        <span className="text-label-caps uppercase tracking-widest text-on-surface-variant">
+          Results
+        </span>
+        {run && result ? (
+          <span className="text-label-caps text-on-surface-variant">
+            {result.rows.length} {result.rows.length === 1 ? "row" : "rows"}
+          </span>
+        ) : null}
+      </div>
+
+      <div
+        className={`min-h-0 flex-1 overflow-auto bg-surface p-3 transition-shadow duration-300 sm:p-5 ${previewRing(flash)}`}
+        aria-live="polite"
+        aria-busy={pending}
+      >
+        {!sql.trim() ? (
+          <p className="text-body-sm text-on-surface-variant">
+            Write a query and the rows it returns will appear here.
+          </p>
+        ) : run?.seedError ? (
+          <p className="flex items-start gap-2 text-body-sm text-error">
+            <Icon name="close" size={16} />
+            <span>
+              <strong>Lesson problem:</strong> this step&rsquo;s starting data could not be built.
+              {" "}
+              {run.seedError}
+            </span>
+          </p>
+        ) : run?.error ? (
+          <p className="flex items-start gap-2 text-body-sm text-on-surface-variant">
+            <Icon name="help" size={16} />
+            <span>
+              <strong>Not valid SQL yet:</strong> {run.error}
+            </span>
+          </p>
+        ) : !result ? (
+          <p className="text-body-sm text-on-surface-variant">
+            {run
+              ? "That ran, but it did not return any rows. A SELECT is what produces rows."
+              : "Running…"}
+          </p>
+        ) : result.rows.length === 0 ? (
+          <p className="flex items-start gap-2 text-body-sm text-on-surface-variant">
+            <Icon name="help" size={16} />
+            <span>No rows matched. The query is valid — nothing in the table fits it.</span>
+          </p>
+        ) : (
+          <table className="w-full border-collapse text-body-sm">
+            <thead>
+              <tr>
+                {result.columns.map((column) => (
+                  <th
+                    key={column}
+                    scope="col"
+                    className="border-b border-outline-variant px-3 py-2 text-left font-medium text-on-surface-variant"
+                  >
+                    {column}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {result.rows.map((row, r) => (
+                <tr key={r}>
+                  {row.map((cell, c) => (
+                    <td
+                      key={c}
+                      className="border-b border-outline-variant/50 px-3 py-2 text-on-surface"
+                    >
+                      {cell === null ? (
+                        <span className="text-on-surface-variant italic">NULL</span>
+                      ) : (
+                        String(cell)
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </section>
   );

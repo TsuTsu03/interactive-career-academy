@@ -6,6 +6,7 @@ import { htmlCourse } from "./html-course";
 import { jsCourse } from "./js-course";
 import { realAppsCourse } from "./real-apps-course";
 import { reactCourse } from "./react-course";
+import { sqlCourse } from "./sql-course";
 import { tailwindCourse } from "./tailwind-course";
 import { testingDevtoolsCourse } from "./testing-devtools-course";
 import { typescriptReactCourse } from "./typescript-react-course";
@@ -38,6 +39,12 @@ export const curriculum: Curriculum = {
       summary: "Connect real app data, build typed React interfaces, and prove them with tests and diagnostics.",
       courseIds: ["js-real-apps", "tailwind-basics", "react-basics", "typescript-react", "testing-devtools"],
     },
+    {
+      id: "back-end-development",
+      title: "Back-End Development",
+      summary: "Ask a database questions, then build and secure the server that answers them.",
+      courseIds: ["sql-basics"],
+    },
   ],
   courses: [
     htmlCourse,
@@ -50,6 +57,7 @@ export const curriculum: Curriculum = {
     reactCourse,
     typescriptReactCourse,
     testingDevtoolsCourse,
+    sqlCourse,
   ],
 };
 

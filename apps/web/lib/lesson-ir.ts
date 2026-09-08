@@ -111,8 +111,10 @@ export interface RuntimeFixtures {
  * its console output, its declared values, and its source.
  * `react` renders a learner component inside a disposable opaque-origin frame
  * and checks the DOM snapshot inside that frame through typed messages.
+ * `sql` runs the learner's query against an in-memory SQLite database, built
+ * fresh from the step's `sqlSeed`, and asserts against the rows it returned.
  */
-export type StepKind = "web" | "js" | "react";
+export type StepKind = "web" | "js" | "react" | "sql";
 
 /**
  * Deterministic assertions. Each kind is a closed variant so a lesson can
@@ -280,7 +282,49 @@ export type TestSpec =
       value: string;
     }
 
-  // --- Source assertions (either kind) ---
+  // --- SQL assertions (sql steps) ---
+  /**
+   * These describe the database after the learner's SQL ran, and the rows it
+   * returned. They are checked in `lib/sql-runner.ts`, which builds a fresh
+   * in-memory SQLite database from the step's `sqlSeed` every time, so a
+   * result is a fact about the query and never about a previous step.
+   *
+   * `resultIndex` selects which returned result set to assert against, for
+   * the rare step that runs more than one statement. It defaults to 0.
+   */
+  /** The SQL ran without an error. The floor check for any query step. */
+  | { id: string; label: Copy; kind: "sql-runs" }
+  /** The rows returned, exactly, in order. Order-sensitive on purpose: a step
+   * that asks for sorting is only correct if the sorting is there. */
+  | {
+      id: string;
+      label: Copy;
+      kind: "sql-rows-equal";
+      rows: unknown[][];
+      resultIndex?: number;
+      /** Set when the step has not taught ORDER BY yet. */
+      ignoreOrder?: boolean;
+    }
+  /** One expected row appears among the rows returned. */
+  | { id: string; label: Copy; kind: "sql-row-contains"; row: unknown[]; resultIndex?: number }
+  /** Exactly this many rows came back. */
+  | { id: string; label: Copy; kind: "sql-row-count"; count: number; resultIndex?: number }
+  /** The result has these columns, in this order. Checks SELECT lists and aliases. */
+  | { id: string; label: Copy; kind: "sql-columns-equal"; columns: string[]; resultIndex?: number }
+  /** A single cell equals this value. For aggregates: one COUNT, one SUM. */
+  | {
+      id: string;
+      label: Copy;
+      kind: "sql-value-equals";
+      row: number;
+      column: number;
+      value: unknown;
+      resultIndex?: number;
+    }
+  /** The named table exists after the statement ran. For CREATE TABLE steps. */
+  | { id: string; label: Copy; kind: "sql-table-exists"; table: string }
+
+  // --- Source assertions (any kind) ---
   /**
    * The source matches this pattern. Used for teaching syntax the result
    * alone cannot prove, such as "use const" or "write a for loop".
@@ -316,6 +360,13 @@ export interface Step {
   readonlyLines?: number[];
   /** Substring in the active file to ring in Voltage as the thing to change. */
   highlightToken?: string;
+  /**
+   * `sql` steps only. Authored SQL that builds the starting database, run
+   * before the learner's query every time, in a database that is thrown away
+   * afterwards. The learner never sees or edits it, which is why it is a
+   * field of its own rather than another entry in `files`.
+   */
+  sqlSeed?: string;
   /** tap-to-build only: the tray contents and which one is correct. */
   blocks?: string[];
   correctBlock?: string;

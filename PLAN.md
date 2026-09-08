@@ -2,14 +2,14 @@
 
 **This is the canonical document.** Start here. Working title through decision 31 was "Interactive Career Academy" — the product is renamed **CodeDaddy** as of decision 32. The repo folder, `apps/web`'s internal package name, and historical references below keep the old name; only the product's public-facing name changed.
 
-**Status:** Decided 2026-08-23, in an interview with the product owner. Amended the same day, in a second interview, with decisions 20 through 31, and a third time with decision 32. Amended 2026-08-26 with decisions 33 and 34, which define CodeDaddy's product differentiation and approved signature feature set, and again the same day with decisions 35 through 37, which add the access layer, the session and recovery tools, and the portfolio capstone that ends the free path. Amended 2026-08-27 with decision 38, which replaces decision 19's step-count target with coverage-based course sizes. Amended 2026-08-28 with decision 39, which groups the courses into two programs and names the material a front-end developer needs that the curriculum did not have, and decision 40, which selects a static GCash QR for donations.
+**Status:** Decided 2026-08-23, in an interview with the product owner. Amended the same day, in a second interview, with decisions 20 through 31, and a third time with decision 32. Amended 2026-08-26 with decisions 33 and 34, which define CodeDaddy's product differentiation and approved signature feature set, and again the same day with decisions 35 through 37, which add the access layer, the session and recovery tools, and the portfolio capstone that ends the free path. Amended 2026-08-27 with decision 38, which replaces decision 19's step-count target with coverage-based course sizes. Amended 2026-08-28 with decision 39, which groups the courses into two programs and names the material a front-end developer needs that the curriculum did not have, and decision 40, which selects a static GCash QR for donations. Amended 2026-09-08 with decision 41, which removes the paid tier entirely, and decision 42, which adds Program C, the back-end and database curriculum.
 **Supersedes:** `ARCHITECTURE_PLAN_V2.md`, most of which was written against the wrong assumptions. It is kept for history, not for guidance.
 
 ---
 
 ## 1. What this is, in one paragraph
 
-An open-source web app that teaches full-stack development, free forever, straight to the learner. The mission is freeCodeCamp's: put a real skill in reach of anyone with a browser. Acquisition is TikTok and social, not search. Revenue is donations plus paid specialisations that sit beyond the free path. There is no school, no client, no tenant. One hosted site, one open codebase.
+An open-source web app that teaches full-stack development, free forever, straight to the learner. The mission is freeCodeCamp's: put a real skill in reach of anyone with a browser. Acquisition is TikTok and social, not search. Revenue is donations only — there is no paid tier, and none is planned (decision 41). There is no school, no client, no tenant. One hosted site, one open codebase.
 
 ## 2. Who it teaches
 
@@ -109,18 +109,18 @@ The workspace preview can remain on the landing page, but it follows this produc
 
 ## 3. The decisions
 
-Forty decisions, with the reasoning, so nobody relitigates them by accident. 1 through 19 were decided 2026-08-23 in the first interview; 20 through 31 in a second interview the same day, which grilled the first plan against the actual codebase and found the gaps below; decision 32 renamed the product; decisions 33 and 34 were approved 2026-08-26 after reviewing how CodeDaddy should remain inspired by freeCodeCamp without becoming its visual or product duplicate; decisions 35 through 37 were approved the same day, after asking what else could ship with v1 for that same reason. Decision 38 replaced numeric curriculum targets, decision 39 expanded the frontend curriculum, and decision 40 fixed the donation method.
+Forty-two decisions, with the reasoning, so nobody relitigates them by accident. 1 through 19 were decided 2026-08-23 in the first interview; 20 through 31 in a second interview the same day, which grilled the first plan against the actual codebase and found the gaps below; decision 32 renamed the product; decisions 33 and 34 were approved 2026-08-26 after reviewing how CodeDaddy should remain inspired by freeCodeCamp without becoming its visual or product duplicate; decisions 35 through 37 were approved the same day, after asking what else could ship with v1 for that same reason. Decision 38 replaced numeric curriculum targets, decision 39 expanded the frontend curriculum, and decision 40 fixed the donation method. Decisions 41 and 42 were made 2026-09-08: the first removes the paid tier, the second adds the back-end and database program that makes a graduate full-stack.
 
 | # | Decision | Choice | Why |
 |---|---|---|---|
 | 1 | What it is | Open-source, free, direct to learner. **The repository is private until launch** | freeCodeCamp's mission, not a product sold to schools. The intent is unchanged; opening the source is close to irreversible and needs a full history audit for committed secrets first, so it waits for the launch gate rather than happening by default |
-| 2 | Revenue | Donations plus paid specialisations | Nothing on the free path is ever paywalled |
+| 2 | Revenue | ~~Donations plus paid specialisations~~ **Superseded by decision 41: donations only.** | Nothing on the free path is ever paywalled |
 | 3 | Credential | **Fully automated.** No reviewer, no defense | The only way free stays free at zero marginal cost, and exactly how fCC does it |
 | 4 | Accounts | Required upfront | One progress path instead of two. Simpler code, like fCC |
 | 5 | Auth | GitHub OAuth plus email magic link. **No passwords** | They need GitHub for projects anyway. No passwords means no reset flow and nothing to steal |
 | 6 | Content | AI drafts, automated harness validates | The only way one person reaches fCC scale |
 | 7 | Repos and licences | Platform MIT, free curriculum CC BY-SA, advanced private. **Not yet applied: the repository is private and carries no licence file** | The code is a gift. The content is the product. Recorded here 2026-08-30 because the decision read as already done and was not — a reader comparing the plan to the repository would have found it simply wrong. Opening the source and adding the two licence files is a launch-gate item, not a v2 one |
-| 8 | Free scope | Everything through back-end | Specialisations are the paid tier, and they are far away |
+| 8 | Free scope | Everything, including every specialisation | Decision 41 removed the paid tier; nothing is ever paywalled |
 | 9 | Back-end runtime | Learner's own machine, submits a URL | Zero platform cost per learner. Also what fCC does, and what real work looks like |
 | 10 | Language | English only, no locale system | Chosen knowingly. Taglish is closed |
 | 11 | Community | **None in v1** | One moderator, TikTok traffic. Structural safety beats policing |
@@ -153,6 +153,8 @@ Forty decisions, with the reasoning, so nobody relitigates them by accident. 1 t
 | 38 | Course size | **Coverage, not a step count. Targets are ~350 HTML, ~450 CSS, ~650 JavaScript, ~130 Tailwind, ~550 React — about 2,100 for v1, replacing decision 19's ~6,300** | Decision 19's target was freeCodeCamp's real step count doubled. The multiplier was never derived from what a learner needs to know; it was picked to be more than fCC. Authoring against it showed why that fails: HTML reached 273 steps having taught 79 elements, which is every element a beginner course should cover, and the remaining ~370 steps to hit the old target could only be padding — the exact thing AGENTS.md section 5 and decision 27 exist to prevent. A course is finished when the material is covered and practised, not when a number is reached. The revised figures are what each subject actually needs: HTML is nearly done and needs combination work rather than more elements; CSS is the largest real gap at 105 steps with the box model, flexbox, grid, and responsive design barely touched; JavaScript has its basics and is missing functions in depth, the DOM, events, and async; Tailwind is a thin layer over CSS the learner already knows; React is the largest single course because it is the closest to employable work and the owner asked for it to be the most detailed. Cuts the calendar in section 7 from 16-38 months to roughly a third of that without removing anything a learner needs |
 | 39 | Curriculum shape | **Two programs above the existing courses. Program A, Web Design Basics: HTML, Design Foundations, CSS, JavaScript, JavaScript on a Page. Program B, Front-End Development: JavaScript for Real Apps, Tailwind, React, TypeScript for React, Testing and DevTools, the five capstones. Course ids are unchanged; the programs are a grouping layer.** | The owner asked whether a graduate would be a competitive front-end developer who also knows UI/UX. Audited rather than guessed, and the answer was no, for two reasons the step count hid. **The JavaScript course teaches the language, not the web:** across all 655 steps there is not one `document.`, `querySelector`, `addEventListener`, `fetch`, `async`, `Promise`, or `localStorage`. Every step ends in `console.log`, so a graduate has never attached a click handler or read an API. **UI/UX is absent:** zero occurrences of hierarchy, contrast ratio, design system, spacing scale, empty state, or wireframe anywhere in the content. The courses teach how to write CSS, never what to build or why - which is half of what the product promises. Design Foundations sits after HTML and before CSS so the learner meets the ideas before forming habits against them, and it belongs to Program A because that is the program named for design. DOM work is its own course rather than an extension, because the seam between the language and the browser is real and because existing saved progress stays untouched. Merging HTML, CSS, and JavaScript into one course id was considered and refused: progress is stored at `aca.progress.v2.<courseId>`, so a merge would strand every learner who has started. Raises the total from decision 38's ~2,100 to 2,760, which is new material rather than padding. Git and the terminal are named here as **unsolved**: there is no shell in a sandboxed iframe, so they cannot be checked, and they wait for the backend of build-order step 11 or for an owner decision to teach them unchecked |
 | 40 | Donations | **Show one owner-supplied static GCash QR inside the dismissible donation prompt. No checkout, payment API, or external donation provider.** | The free path stays free and CodeDaddy does not need payment state, webhooks, accounts, or a new dependency to accept optional support. The QR is a local public asset at `apps/web/public/gcash-qr.png`; replacing it remains an owner-controlled deployment change. |
+| 41 | Paid tier | **Removed. There is no paid tier, planned or otherwise. Every course and specialisation, present and future, ships free.** Supersedes decision 2's revenue split and decision 8's reasoning | Owner's call, 2026-09-08. Donations are now the only revenue mechanism the product will ever have. Removes the only open question from section 10 asking which specialisations would be paywalled — there are none to designate |
+| 42 | Program C, Back-End Development | **Seven courses, ~2,880 steps, in this order: Databases: SQL ~750, Databases: NoSQL ~250, Command Line and Git ~180, Node.js Fundamentals ~350, Building APIs ~650, Auth and Security ~300, Full-Stack Integration ~400.** The two database courses run **SQLite compiled to WebAssembly inside the existing sandboxed frame**, so they need no install and work on a phone. The computer prerequisite starts at Command Line and Git | Owner's call, 2026-09-08, answering what a graduate needs to be a competitive full-stack developer rather than a front-end one. Sizes follow decision 38's coverage rule, not a multiplier: SQL and APIs are the two largest because that is where the real difficulty sits and where the owner asked for the most depth. **This decision costs one npm dependency, and that was chosen deliberately over the alternative.** Having the learner install PostgreSQL locally was considered and declined: it puts a multi-hour setup wall — service, superuser password, port, then `psql` or pgAdmin — in front of a learner who by section 2 does not yet know what a browser tab is, it excludes every phone-only learner from the whole program, and it still could not grade properly, because a local database exposes no URL the platform can fetch, leaving `source-matches` on the query text as the only available check. A step that passes a query which errors is exactly what AGENTS.md 1.8 exists to prevent. SQLite in the browser removes all three problems at once: real queries, real returned rows, real result-level grading, no install. The cost is **332 KB gzipped, measured rather than estimated** (317 KB wasm plus 16 KB of glue), fetched once and cached, and only on database lessons — about a second on section 9's reference connection, against a several-hundred-megabyte installer. **This is an explicit owner override of AGENTS.md section 3**, and the only one; it does not open the door to a second package. The database engine runs in a disposable `allow-scripts` frame and returns rows by `postMessage`, exactly like `lib/js-runner.ts` — the sandbox rule of AGENTS.md 1.1 is unchanged. Ordering follows from this: the browser-graded database courses come first and stay phone-reachable, so the computer prerequisite is deferred to Command Line and Git, where a real terminal is genuinely unavoidable. Two consequences remain. Program C roughly doubles the curriculum — v1 is 2,760 steps — so it is a second full build cycle at decision 15's budget, not an increment. And decisions 25 and 35's phone-first guarantee still lapses from Command Line and Git onward; those five courses state the prerequisite on their face rather than letting a learner discover it partway in |
 
 ---
 
@@ -163,7 +165,8 @@ Forty decisions, with the reasoning, so nobody relitigates them by accident. 1 t
 ```
 Program A: HTML → Design Foundations → CSS → JavaScript → JavaScript on a Page
 Program B: JavaScript for Real Apps → Tailwind → React → TypeScript for React → Testing and DevTools → five capstones
-After frontend freeze: Database → Back-end
+Program C: SQL → NoSQL → Command Line and Git → Node.js → Building APIs → Auth and Security → Full-Stack Integration
+           (browser)     (learner's own computer from here on)
 ```
 
 A course is many small projects built across many small steps, freeCodeCamp style (decision 23) — not one project stretched across the whole course. The learner never starts from a blank file mid-project: each step begins where the last one ended, but that continuity is scoped to the project, not the whole course. The ten guided courses now contain 476 projects. `Course.projects[]` names each one; `Step.projectId` says which project a step belongs to. Finishing a project is a named milestone with a shareable artifact — not a gate, and not itself a certificate (decision 24).
@@ -198,6 +201,33 @@ programs are a layer above them, so no saved progress moves.
 | **TypeScript for React** | Typed Help Desk + 23 more | 120 (24 projects) | ~120 |
 | **Testing and DevTools** | Fare Test Case + 15 more | 80 (16 projects) | ~80 |
 | The five capstones | Independent briefs and automated checks | 5 projects | 5 projects |
+
+**Program C — Back-End Development** (decision 42)
+
+Authoring has started. The SQL course has its first 8 steps across 2 projects,
+harness-verified on 2026-09-08; everything else below is still a target, set by
+coverage like decision 38's, and an estimate until a batch is timed.
+
+| Course | Steps | Runs | What it has to cover |
+|---|---|---|---|
+| **Databases: SQL** | **8 of ~750** | Browser | Schema design, CRUD, joins, indexes, transactions, normalisation, and reading a query plan. The largest course in the program |
+| Databases: NoSQL | ~250 | Browser | Documents, embedding versus referencing, and — explicitly — when a relational database is the right answer instead |
+| Command Line and Git | ~180 | Own computer | Paths, files, processes, `git` day-to-day, branches, GitHub. Named unsolved in decision 39; this is where it stops being unsolved |
+| Node.js Fundamentals | ~350 | Own computer | JavaScript outside the browser, modules, npm, the file system, async I/O, environment variables |
+| **Building APIs** | **~650** | Own computer | Routing, middleware, request validation, the database layer, error shapes, and REST as it is actually practised |
+| Auth and Security | ~300 | Own computer | Password hashing, sessions and tokens, and the OWASP failures a beginner ships by default |
+| Full-Stack Integration | ~400 | Own computer | Connecting a React front end to the learner's own API, deployment, and the full-stack capstones |
+
+The two database courses run SQLite compiled to WebAssembly in the sandboxed
+frame (decision 42), so they need no install, work on a phone, and are graded on
+the rows a query actually returned — not on its text.
+
+From **Command Line and Git** onward, Program C carries a **computer
+prerequisite**. A terminal and a Node install do not exist on a phone, so
+decisions 25 and 35's phone-first guarantee covers Programs A and B, the SQL
+course, and the NoSQL course, and stops there. Each of the five remaining
+courses states the prerequisite on its face rather than letting a learner
+discover it partway in.
 
 The five courses that existed before decision 39 are listed with their old
 decision 19 targets for history: HTML ~640, CSS ~2,470, JavaScript ~2,640,
@@ -261,9 +291,9 @@ The portfolio is guided, not scaffolded. The learner is taught what belongs on a
 
 Invented testimonials, client logos the learner never worked for, claimed years of experience, skill percentage bars (they mean nothing and every reviewer knows it), lorem ipsum, dead links, "project coming soon" placeholders, and auto-playing media. These are named in the teaching, not just in the checks, because a beginner copies what they see on other portfolios without knowing which parts are lies.
 
-### The paid tier
+### Specialisations beyond full-stack
 
-Specialisations beyond full-stack: mobile, DevOps, AI engineering, security, and similar. **Not designed yet, and not needed for a long time.** Free covers everything through back-end, so the paid product is roughly a year away. Donations are the only revenue until then. That is the accepted consequence of decision 8.
+Mobile, DevOps, AI engineering, security, and similar. **Not designed yet, and not needed for a long time.** No paid tier exists (decision 41) — when built, these ship free like everything else. Donations remain the only revenue.
 
 ---
 
@@ -573,8 +603,7 @@ Carried forward from the audit and still true.
 
 Not blocking. Decide when they become real.
 
-- Which specialisations are the paid tier
-- Hosting plan and the scale at which the free tier breaks
+- Hosting plan and the scale at which growth breaks the free hosting budget
 - Exact certificate wording, and whether it needs legal review
 - Whether the community layer in `ARCHITECTURE_PLAN_V2.md` section 6b is ever revived
 

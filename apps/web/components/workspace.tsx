@@ -1057,6 +1057,7 @@ export function Workspace({ course }: { course: Course }) {
               <Preview
                 files={files}
                 kind={step.kind}
+                sqlSeed={step.sqlSeed}
                 flash={phase === "passed" ? "pass" : phase === "failed" ? "fail" : "none"}
               />
             </div>

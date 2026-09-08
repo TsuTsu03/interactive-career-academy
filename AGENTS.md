@@ -24,7 +24,7 @@ These are ranked. The first one is the one that gets people hurt.
 
 ### 1.1 The iframe sandboxes — NEVER change these
 
-There are exactly seven iframe roles. Each has one correct sandbox value.
+There are exactly eight iframe roles. Each has one correct sandbox value.
 
 | Where | File | Sandbox | Why |
 |---|---|---|---|
@@ -35,6 +35,7 @@ There are exactly seven iframe roles. Each has one correct sandbox value.
 | React preview | `components/preview.tsx` | `allow-scripts` | Real React runs with an opaque origin; postMessage only |
 | React grading | `lib/react-runner.ts` | `allow-scripts` | Disposable opaque frame returns plain assertion results |
 | Page grading | `lib/page-runner.ts` | `allow-scripts` | Runs `script.js` against the markup so DOM lessons can be checked at all. Same rule: opaque origin, postMessage only |
+| SQL runner | `lib/sql-runner.ts` | `allow-scripts` | SQLite compiled to WebAssembly runs the learner's query. Disposable opaque frame, result rows returned by postMessage. The database is in-memory and dies with the frame |
 
 **`allow-scripts` and `allow-same-origin` must never appear together on any iframe in this repo.** Together they let sandboxed content remove its own sandbox and reach the parent page. This is not a style preference. It is the entire security model.
 
@@ -138,6 +139,10 @@ Before adding anything, it must clear all four:
 
 A syntax highlighter, an editor component, an animation library, a state manager, a date library, and a UI kit have all already been considered and rejected. Do not add them.
 
+**One approved exception exists, and it is the only one.** PLAN.md decision 42 permits **SQLite compiled to WebAssembly**, for the two database courses in Program C, approved by the owner on 2026-09-08. It fails test 3 above — 332 KB gzipped, measured, fetched once and cached, and only on database lessons — and was approved anyway because the alternative was making every learner install PostgreSQL, which walls out phone-only learners entirely and still cannot grade a query by its results. It loads only on database lessons, never on the rest of the app, and runs in the `lib/sql-runner.ts` frame under rule 1.1's ordinary terms.
+
+This exception does not generalise. It is not precedent for a second package, and "decision 42 added one" is not an argument. The four tests above still apply to everything else.
+
 ---
 
 ## 4. Settled decisions — do not reopen
@@ -149,7 +154,7 @@ Weaker models reliably try to "helpfully" restore these. They were decided delib
 | Human review, capstone defense, reviewer workflows | Certificates are **fully automated**. Decision 3 |
 | Community, friends, comments, forums, DMs, profiles | **Not in v1.** Decision 11 |
 | Leagues or leaderboards | Replaced by solo challenges. They need a crowd. Decision 14 |
-| Payment, checkout, entitlements, PayMongo | No paid tier exists yet. Decision 2 |
+| Payment, checkout, entitlements, PayMongo | No paid tier, ever. Decision 41 |
 | Multi-tenancy, orgs, schools, cohorts, instructors | This is a consumer product. Decision 1 |
 | Locale files, i18n, Taglish | **English only.** Decision 10 |
 | Password auth | GitHub OAuth and email magic link only. Decision 5 |
