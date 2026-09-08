@@ -202,4 +202,11 @@ rather than timing out.
 
 `backend-integration-audit.mjs` runs the built app against a local Supabase-compatible mock. It verifies the server contract, PKCE flow, authenticated persistence, submission recording, certificate gates, and public record without using real provider credentials. A live Supabase deployment still needs a separate provider round-trip.
 
+The Program C database authoring campaign runs from the repository root with
+`start-qwen-v2-campaign.ps1`. It resumes from committed SQL and NoSQL project
+counts, accepts only behaviorally green five-step batches, and writes runtime
+state under the ignored `.qwen-v2-campaign/` folder. It targets SQL 750 and
+NoSQL 250, then stops; the five computer courses remain blocked on the runner
+decision documented in `V2_RUNNER_DESIGN.md`.
+
 The authoritative product decisions are in the repository root `PLAN.md`. The visual system is documented in `design/DESIGN.md`, and the downloaded Google Stitch reference package is in `design/stitch/codedaddy-learning-platform/`.

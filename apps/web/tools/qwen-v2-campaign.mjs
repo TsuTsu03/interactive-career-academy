@@ -1,0 +1,197 @@
+import "./content-loader.mjs";
+const { curriculum } = await import("../content/curriculum.ts");
+
+const sqlSectors = [
+  ["sari-sari", "Sari-Sari Store", ["Rice", "Soap", "Cooking Oil", "Egg"]],
+  ["palengke", "Palengke Stall", ["Tomatoes", "Eggplant", "Carrots", "Cabbage"]],
+  ["jeepney", "Jeepney Dispatch", ["Cubao", "Quiapo", "Divisoria", "Marikina"]],
+  ["barangay-clinic", "Barangay Clinic", ["Consultation", "Vaccination", "Checkup", "Medicine"]],
+  ["public-school", "Public School", ["Notebook", "Pencil", "Ruler", "Paper"]],
+  ["cooperative", "Community Cooperative", ["Rice Loan", "Seed Fund", "Tool Share", "Market Stall"]],
+  ["carinderia", "Carinderia", ["Adobo", "Sinigang", "Pancit", "Rice Meal"]],
+  ["bakery", "Neighborhood Bakery", ["Pandesal", "Ensaymada", "Monay", "Hopia"]],
+  ["rice-mill", "Rice Mill", ["Dinorado", "Sinandomeng", "Malagkit", "Brown Rice"]],
+  ["fishing-harbor", "Fishing Harbor", ["Bangus", "Tilapia", "Galunggong", "Tuna"]],
+  ["water-station", "Water Refill Station", ["Refill", "Container", "Delivery", "Dispenser"]],
+  ["ukay-ukay", "Ukay-Ukay Shop", ["Shirt", "Jeans", "Jacket", "Dress"]],
+];
+const activities = ["Inventory Report", "Daily Record", "Service Queue", "Supplier List", "Community Schedule", "Delivery Log"];
+const sqlProjects = sqlSectors.flatMap(([slug, title, names]) => activities.map((activity) => ({
+  id: `${slug}-${activity.toLowerCase().replaceAll(" ", "-")}`,
+  title: `${title} ${activity}`,
+  context: title,
+  names,
+})));
+
+const sqlTracks = [
+  {
+    name: "filtered report",
+    concepts: "sql-select, sql-filter, sql-order-by, sql-limit",
+    first: "1 select name only; 2 add amount; 3 keep both columns and filter amount <= 10; 4 keep the filter and sort amount ascending; 5 keep that query and limit to 2 rows for a short priority list",
+    second: "6 replace the report with COUNT(*) for amount <= 10; 7 alias that count as priority_count; 8 show category and SUM(amount) grouped by category; 9 keep only category totals above 12 with HAVING; 10 sort those qualifying totals from largest to smallest",
+  },
+  {
+    name: "conditions report",
+    concepts: "sql-filter, sql-or, sql-like, sql-order-by",
+    first: "1 select name and status; 2 keep status Open; 3 instead keep amount <= 8; 4 keep rows that are Open AND amount <= 8; 5 keep rows that are Done OR amount < 3",
+    second: "6 select names beginning with the first letter of the first seeded name using LIKE; 7 show name, category, and amount for Local rows; 8 include Local rows OR amount = 20; 9 sort that report by name; 10 limit it to the first 3 names",
+  },
+  {
+    name: "aggregate report",
+    concepts: "sql-count, sql-sum, sql-average, sql-group-by, sql-having, sql-descending",
+    first: "1 count all rows; 2 name the count record_count; 3 calculate SUM(amount) as total_amount; 4 calculate AVG(amount) as average_amount; 5 select category and COUNT(*) grouped by category",
+    second: "6 change the grouped calculation to SUM(amount) as total_amount; 7 sort group totals descending; 8 keep totals above 12 with HAVING; 9 filter Open rows before grouping and show each category sum; 10 order the Open group totals from largest to smallest",
+  },
+  {
+    name: "inner join report",
+    concepts: "sql-qualified-column, sql-inner-join, sql-group-by, sql-having",
+    first: "1 read record.name and record.group_id with qualified names; 2 join group_info on matching group ids and show record name plus group label; 3 add amount; 4 filter joined rows to amount <= 10; 5 sort filtered joined rows by amount ascending",
+    second: "6 count records for each group label; 7 sum amount for each group label; 8 keep group sums above 12 with HAVING; 9 sort qualifying group sums descending; 10 limit the grouped report to the largest group",
+  },
+  {
+    name: "left join report",
+    concepts: "sql-left-join, sql-null, sql-coalesce, sql-filter",
+    first: "1 select record name and group id; 2 LEFT JOIN group_info and show every record with its group label; 3 use COALESCE to display Unassigned for the missing group; 4 filter for the row whose group_id IS NULL; 5 switch back to all rows and sort by the displayed group label",
+    second: "6 count every record after the LEFT JOIN; 7 count records per displayed group label; 8 sum amount per displayed group label; 9 keep displayed groups whose sum exceeds 8; 10 order those group sums descending",
+    missingGroup: true,
+  },
+  {
+    name: "data changes",
+    concepts: "sql-insert, sql-update, sql-delete, sql-filter",
+    first: "1 select id, name, and amount; 2 INSERT id 5 named New Record with category Local, amount 7, status Open, group_id 1, then read all rows; 3 UPDATE only id 5 amount to 9, then read it; 4 UPDATE only id 2 status to Open, then read id 2; 5 DELETE only id 4, then read remaining ids and names",
+    second: "6 insert id 6 named Backup Record with amount 4 and read it; 7 update id 6 category to Regional and read it; 8 delete id 1 and read remaining rows; 9 count all remaining rows; 10 show remaining names and amounts sorted by amount ascending",
+  },
+  {
+    name: "schema and rows",
+    concepts: "sql-create-table, sql-insert, sql-update, sql-delete",
+    first: "The seed provides source_record only. 1 CREATE TABLE report with id INTEGER and name TEXT; 2 add amount INTEGER to that CREATE TABLE definition; 3 INSERT one row copied from source_record id 1, then read report; 4 insert source rows ids 2 and 3 too; 5 sort report rows by amount ascending",
+    second: "6 insert source row id 4; 7 update report id 2 amount to 18; 8 delete report id 3; 9 count report rows; 10 show id, name, and amount ordered by id",
+    sourceOnly: true,
+  },
+  {
+    name: "subquery practice",
+    concepts: "sql-select, sql-filter, sql-average, sql-inner-join",
+    first: "1 select name and amount; 2 keep rows above the overall AVG(amount) using a scalar subquery; 3 show the largest amount using a scalar MAX subquery; 4 select names whose group_id appears in group_info using an IN subquery; 5 order those names alphabetically",
+    second: "6 select names whose amount equals the minimum amount subquery; 7 show each name and its group label with a join; 8 keep joined rows above their group average using a correlated subquery; 9 sort those rows by amount descending; 10 limit the result to 2",
+  },
+  {
+    name: "distinct and conditional labels",
+    concepts: "sql-select, sql-alias, sql-group-by, sql-order-by",
+    first: "1 select category; 2 use DISTINCT to return each category once; 3 sort distinct categories alphabetically; 4 select name and a CASE expression labelling amount <= 8 as Priority and other rows Regular; 5 alias the CASE result as action",
+    second: "6 sort the labelled report by name; 7 count rows for each CASE label; 8 order label counts descending; 9 filter Open rows before producing the CASE labels; 10 return only the first 2 Open labelled rows ordered by amount",
+  },
+  {
+    name: "index and query plan",
+    concepts: "sql-create-table, sql-filter, sql-order-by",
+    first: "1 read names with amount <= 10; 2 CREATE INDEX idx_record_amount ON record(amount), then run the same read; 3 query sqlite_master to prove idx_record_amount exists; 4 return the index SQL from sqlite_master; 5 run EXPLAIN QUERY PLAN for the amount filter and assert a nonempty plan result",
+    second: "6 create a second index idx_record_status on status and prove it exists; 7 explain a status filter and assert a nonempty plan; 8 DROP INDEX idx_record_status and prove only idx_record_amount remains among named indexes; 9 read priority rows sorted by amount; 10 limit that indexed report to 2",
+  },
+  {
+    name: "transaction practice",
+    concepts: "sql-insert, sql-update, sql-delete",
+    first: "1 read ids and amounts; 2 BEGIN, insert id 5 New Record amount 7 with the other required fields, COMMIT, then read id 5; 3 begin, update id 5 amount to 9, commit, then read it; 4 begin, update id 1 amount to 99, ROLLBACK, then prove id 1 is still 8; 5 begin, delete id 4, commit, then prove it is gone",
+    second: "6 transactionally insert id 6 Backup Record amount 4; 7 transactionally update id 2 status to Open; 8 transactionally delete id 3; 9 count the final rows; 10 show final ids, names, and amounts ordered by id",
+  },
+  {
+    name: "normalised records",
+    concepts: "sql-create-table, sql-insert, sql-inner-join, sql-qualified-column",
+    first: "The seed provides flat_record with repeated category text. 1 read name and category from flat_record; 2 create category table with id and label; 3 insert Local id 1 and Regional id 2 into category; 4 create item table with id, name, amount, category_id; 5 insert the four items using category ids instead of repeated category text",
+    second: "6 join item to category and show item name plus category label; 7 add amount to that joined report; 8 filter joined rows to amount <= 10; 9 sort filtered joined rows by amount; 10 group by category label and sum amount",
+    flatOnly: true,
+  },
+];
+
+const nosqlContexts = [
+  ["sari-sari-stock", "Sari-Sari Stock", ["Rice", "Soap", "Cooking Oil", "Egg"]],
+  ["palengke-document-orders", "Palengke Document Orders", ["Tomatoes", "Eggplant", "Carrots", "Cabbage"]],
+  ["cebu-route-deliveries", "Cebu Route Deliveries", ["Lahug", "Mandaue", "Lapu-Lapu", "Talisay"]],
+  ["barangay-services", "Barangay Services", ["Clearance", "Health Check", "Permit", "Senior Aid"]],
+  ["school-supplies", "School Supplies", ["Notebook", "Pencil", "Ruler", "Paper"]],
+  ["cooperative-records", "Cooperative Records", ["Rice Loan", "Seed Fund", "Tool Share", "Market Stall"]],
+  ["carinderia-menu", "Carinderia Menu", ["Adobo", "Sinigang", "Pancit", "Rice Meal"]],
+  ["bakery-orders", "Bakery Orders", ["Pandesal", "Ensaymada", "Monay", "Hopia"]],
+  ["rice-mill-batches", "Rice Mill Batches", ["Dinorado", "Sinandomeng", "Malagkit", "Brown Rice"]],
+  ["fishing-catch", "Fishing Catch", ["Bangus", "Tilapia", "Galunggong", "Tuna"]],
+  ["water-refills", "Water Refills", ["Refill", "Container", "Delivery", "Dispenser"]],
+  ["ukay-listings", "Ukay-Ukay Listings", ["Shirt", "Jeans", "Jacket", "Dress"]],
+  ["tricycle-queue", "Tricycle Queue", ["Market", "School", "Clinic", "Terminal"]],
+  ["farm-harvest", "Farm Harvest", ["Mango", "Banana", "Coconut", "Papaya"]],
+  ["community-library", "Community Library", ["History", "Science", "Stories", "Comics"]],
+  ["medicine-stock", "Medicine Stock", ["Paracetamol", "Vitamin C", "Bandage", "Alcohol"]],
+  ["relief-packs", "Relief Packs", ["Rice Pack", "Water", "Blanket", "Soap"]],
+  ["laundry-jobs", "Laundry Jobs", ["Wash", "Dry", "Fold", "Pickup"]],
+  ["repair-tickets", "Repair Tickets", ["Phone", "Fan", "Radio", "Lamp"]],
+  ["tour-bookings", "Local Tour Bookings", ["Museum", "River", "Market", "Park"]],
+  ["garden-plants", "Community Garden", ["Tomato", "Pechay", "Okra", "Herbs"]],
+  ["recycling-pickups", "Recycling Pickups", ["Paper", "Plastic", "Glass", "Metal"]],
+  ["food-pantry", "Food Pantry", ["Rice", "Beans", "Noodles", "Milk"]],
+].map(([id, title, names]) => ({ id, title, names }));
+
+const nosqlTracks = [
+  ["document report", "nosql-document, nosql-projection, nosql-filter, nosql-sort, nosql-limit",
+    "1 find every document; 2 project name only; 3 add amount to the projection; 4 filter amount <= 10; 5 sort those filtered documents by amount ascending",
+    "6 limit the sorted result to 2; 7 change the filter to amount > 5; 8 sort that result descending; 9 project name only while keeping the filter and sort; 10 limit to 1"],
+  ["logical filters", "nosql-equality, nosql-not-equal, nosql-upper-bound, nosql-lower-bound, nosql-and, nosql-or, nosql-in",
+    "1 find status equal to Open; 2 find status not equal to Done; 3 find amount <= 8; 4 find amount >= 8; 5 use $and for status Open and amount <= 8",
+    "6 use $or for status Done or amount < 3; 7 use $in for category Local or Regional; 8 project name and amount from that result; 9 sort by amount ascending; 10 limit to 3"],
+  ["insert and read", "nosql-insert, nosql-command-sequence, nosql-projection, nosql-filter",
+    "1 insert one document named New Record with category Local, amount 7, status Open; 2 add a note field to that inserted document; 3 insert a second document named Backup Record with amount 4; 4 use a command sequence to insert both then find all records; 5 project name and amount in the final find",
+    "6 filter the final find to amount <= 7; 7 sort those documents by amount; 8 limit to 2; 9 change the second inserted document status to Done in its source document and find Done records; 10 project only name and status from the Done result"],
+  ["embedded document view", "nosql-document, nosql-projection, nosql-filter, nosql-sort",
+    "The seed documents include a top-level details object but queries operate on top-level fields. 1 find all documents and observe the embedded details; 2 project name and details; 3 add amount to the projection; 4 filter top-level category equal to Local; 5 sort those Local documents by amount",
+    "6 limit to 2; 7 switch the filter to status Open; 8 project name and status; 9 sort Open documents by name; 10 limit to the first 2. Explain in the tasks that embedding keeps related details together but large repeated data can be costly"],
+  ["reference record view", "nosql-document, nosql-projection, nosql-filter, nosql-in",
+    "The seed has records with groupId references and a separate groups collection. The runner has no join. 1 find all records; 2 project name and groupId; 3 filter groupId equal to 1; 4 sort matching records by amount; 5 limit to 2",
+    "6 query the groups collection instead and find all group documents; 7 project group id and label; 8 filter group id in [1,2]; 9 sort groups by label; 10 limit to 1. State plainly that relational SQL is usually better when many reports must combine changing referenced records"],
+];
+
+function sqlBrief(project, projectIndex, batch) {
+  const track = sqlTracks[projectIndex % sqlTracks.length];
+  const [a, b, c, d] = project.names;
+  const missing = track.missingGroup ? " The fourth row has group_id NULL rather than 2." : "";
+  const seedShape = track.sourceOnly
+    ? "Use source_record with columns id, name, category, amount, status, group_id."
+    : track.flatOnly
+      ? "Use flat_record with columns id, name, category, amount."
+      : "Use record with columns id, name, category, amount, status, group_id, plus group_info(id,label).";
+  const facts = `${a}: id 1, Local, amount 8, Open, group 1; ${b}: id 2, Regional, amount 20, Done, group 2; ${c}: id 3, Local, amount 2, Open, group 1; ${d}: id 4, Regional, amount 5, Done, group ${track.missingGroup ? "NULL" : "2"}. Groups are 1 North Team and 2 South Team.${missing}`;
+  return `Build ${project.title}, a Philippine ${project.context.toLowerCase()} project. Track: ${track.name}. ${seedShape} Seed exactly these facts: ${facts} This is batch ${batch} of 2. Five exact goals: ${batch === 1 ? track.first : track.second}. Use these registered concepts where they first apply: ${track.concepts}. Every solution is the complete executable SQL file. Keep each change to at most three lines. Give actual seed-derived expected values, including every selected column. Make filtering, sorting, grouping, limiting, changes, and rollback observable. No explanation-only step. Do not add concepts outside the registered list.`;
+}
+
+function nosqlBrief(project, projectIndex, batch) {
+  const track = nosqlTracks[projectIndex % nosqlTracks.length];
+  const [a, b, c, d] = project.names;
+  const facts = `${a}: id 1, category Local, amount 8, status Open, groupId 1; ${b}: id 2, category Regional, amount 20, status Done, groupId 2; ${c}: id 3, category Local, amount 2, status Open, groupId 1; ${d}: id 4, category Regional, amount 5, status Done, groupId 2. Each record also has details: { source: "Community", checked: true }. Groups are {id:1,label:"North Team"} and {id:2,label:"South Team"}.`;
+  return `Build ${project.title}, a Philippine project. Track: ${track[0]}. Seed collections records and groups with exactly these facts: ${facts} This is batch ${batch} of 2. Five exact goals: ${batch === 1 ? track[2] : track[3]}. Use these registered concepts where they first apply: ${track[1]}. Every solution is the complete JSON command or command array. Keep each change to at most three lines. Give exact expected documents with every projected field and value. Make every filter, sort, limit, insertion, or projection change observable. No explanation-only step. Do not add concepts outside the registered list.`;
+}
+
+const campaigns = {
+  "sql-basics": { target: 750, projects: sqlProjects, brief: sqlBrief },
+  "nosql-basics": { target: 250, projects: nosqlContexts, brief: nosqlBrief },
+};
+
+if (sqlProjects.length !== 72 || nosqlContexts.length !== 23) throw new Error("Campaign project counts changed unexpectedly");
+for (const [courseId, campaign] of Object.entries(campaigns)) {
+  if (new Set(campaign.projects.map((project) => project.id)).size !== campaign.projects.length) throw new Error(`${courseId} has duplicate campaign project ids`);
+  if (campaign.projects.some((project) => !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(project.id))) throw new Error(`${courseId} has an invalid campaign project id`);
+}
+
+function progress(courseId) {
+  const campaign = campaigns[courseId];
+  const course = curriculum.courses.find((item) => item.id === courseId);
+  if (!campaign || !course) throw new Error(`Unknown campaign course ${courseId}`);
+  for (let projectIndex = 0; projectIndex < campaign.projects.length; projectIndex++) {
+    const project = campaign.projects[projectIndex];
+    const count = course.steps.filter((step) => step.projectId === project.id).length;
+    if (count === 0) return { complete: false, courseId, target: campaign.target, current: course.steps.length, projectId: project.id, batch: 1, brief: campaign.brief(project, projectIndex, 1) };
+    if (count === 5) return { complete: false, courseId, target: campaign.target, current: course.steps.length, projectId: project.id, batch: 2, brief: campaign.brief(project, projectIndex, 2) };
+    if (count !== 10) throw new Error(`${project.id} has ${count} campaign steps; expected 0, 5, or 10`);
+  }
+  if (course.steps.length !== campaign.target) throw new Error(`${courseId} exhausted its campaign at ${course.steps.length}; target is ${campaign.target}`);
+  return { complete: true, courseId, target: campaign.target, current: course.steps.length };
+}
+
+const sql = progress("sql-basics");
+const nosql = progress("nosql-basics");
+const next = sql.complete ? nosql : sql;
+console.log(JSON.stringify({ complete: sql.complete && nosql.complete, sql, nosql, next }));

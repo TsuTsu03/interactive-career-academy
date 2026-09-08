@@ -112,7 +112,7 @@ if (mode === "snapshot") {
       required: ["id", "label", "kind", ...Object.keys(properties).filter(key => !["resultIndex", "ignoreOrder"].includes(key))],
       properties: { id: { type: "string", pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$", maxLength: 100 }, label: { type: "string", minLength: 1, maxLength: 500 }, kind: { const: kind }, ...properties },
     })) };
-    const idPrefix = isNew ? `${isSql ? "sql" : "nosql"}-${projectId}-` : "";
+    const idPrefix = `${isSql ? "sql" : "nosql"}-${projectId}-`;
     const exampleStep = course.steps.find(step => step.projectId === last?.projectId && step.tests.some(test => !test.kind.endsWith("runs"))) ?? last;
     const exemplar = isNew ? {
       shapeOnly: true, instruction: "This example demonstrates JSON shape only. Do not reuse its id, example table, or subject. Build the requested project.",
@@ -188,7 +188,7 @@ if (mode === "snapshot") {
     const generated = data.steps.map((draft, i) => {
       only(draft, ["id", "task", "solution", "tests", "hints", "conceptIds", "estimatedMinutes"]);
       if (!text(draft.id, 100) || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(draft.id) || ids.has(draft.id)) throw Error("Step ids must be new and unique.");
-      if (idPrefix && !draft.id.startsWith(idPrefix)) throw Error(`New step ids must start with ${idPrefix}. Do not copy exemplar ids.`);
+      if (!draft.id.startsWith(idPrefix)) throw Error(`Step ids must start with ${idPrefix}. Do not copy exemplar ids.`);
       ids.add(draft.id);
       if (!text(draft.task) || !text(draft.solution, 20000) || draft.solution === start || !Number.isInteger(draft.estimatedMinutes) || draft.estimatedMinutes < 1 || draft.estimatedMinutes > 10) throw Error("Invalid instruction, solution, or estimate.");
       if (!Array.isArray(draft.hints) || draft.hints.length !== 2 || !draft.hints.every(hint => text(hint, 2000))) throw Error("Two nonempty hints are required.");

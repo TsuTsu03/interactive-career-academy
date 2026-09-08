@@ -104,3 +104,25 @@ unsupported assertion, changed guarded path, or failed gate stops acceptance.
 No new npm dependencies, learner storage format, or production configuration
 changes were introduced. The computer-course checker still needs the owner
 decision described in `V2_RUNNER_DESIGN.md`.
+
+## Resumable database campaign
+
+`run-qwen-v2-campaign.ps1` schedules 72 new SQL projects and 23 new NoSQL
+projects in two five-step batches each. Together with the verified exemplars,
+the exact stop targets are SQL 750 and NoSQL 250. The campaign derives its next
+job from committed course data, so restarting it does not repeat accepted work.
+
+Each child pass gets a concrete Philippine project, seed facts, five ordered
+goals, relevant registered concepts, and expected result guidance. The child
+driver permits only one selected course and the authoring log, restores rejected
+attempts byte-for-byte, and commits only after TypeScript, zero-warning ESLint,
+and the behavioral content gate pass. The supervisor retries a rejected batch
+up to four times, pushes only `codex/v2-backbone` every ten accepted batches,
+and writes status under the ignored `.qwen-v2-campaign/` folder. `STOP_LOOP`
+stops it before another batch. Persistent failure stops the campaign safely.
+
+The campaign intentionally ends after the two browser-graded database courses.
+Command Line and Git through Full-Stack Integration still need the owner to
+choose a trustworthy local-computer grading model from `V2_RUNNER_DESIGN.md`.
+Generating plausible but uncheckable lessons would violate the fail-on-start
+rule, so those five course shells remain at zero steps.
