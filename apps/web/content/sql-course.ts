@@ -424,3 +424,258 @@ export const sqlCourse: Course = {
   kind: "sql",
   steps,
 };
+
+// Validated local authoring batch: sari-sari-inventory-report.
+sqlCourse.projects.push({"id":"sari-sari-inventory-report","title":"Sari-Sari Store Inventory Report"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-sari-sari-inventory-report-31",
+    "index": 31,
+    "task": "Select only the product name from the inventory table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE inventory (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO inventory (id, name, category, amount, status, group_id) VALUES\n(1, 'Rice', 'Local', 8, 'Open', 1),\n(2, 'Soap', 'Regional', 20, 'Done', 2),\n(3, 'Cooking Oil', 'Local', 2, 'Open', 1),\n(4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info (id, label) VALUES\n(1, 'North Team'),\n(2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Report shows product names",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice"
+          ],
+          [
+            "Soap"
+          ],
+          [
+            "Cooking Oil"
+          ],
+          [
+            "Egg"
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose only the name field from the inventory table."
+      },
+      {
+        "level": 2,
+        "text": "Use SELECT name FROM inventory;"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name FROM inventory;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-inventory-report"
+  },
+  {
+    "id": "sql-sari-sari-inventory-report-32",
+    "index": 32,
+    "task": "Add the amount field to the report.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name FROM inventory;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE inventory (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO inventory (id, name, category, amount, status, group_id) VALUES\n(1, 'Rice', 'Local', 8, 'Open', 1),\n(2, 'Soap', 'Regional', 20, 'Done', 2),\n(3, 'Cooking Oil', 'Local', 2, 'Open', 1),\n(4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info (id, label) VALUES\n(1, 'North Team'),\n(2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Report shows product names and amounts",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice",
+            8
+          ],
+          [
+            "Soap",
+            20
+          ],
+          [
+            "Cooking Oil",
+            2
+          ],
+          [
+            "Egg",
+            5
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the amount field to the SELECT clause."
+      },
+      {
+        "level": 2,
+        "text": "Use SELECT name, amount FROM inventory;"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM inventory;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-inventory-report"
+  },
+  {
+    "id": "sql-sari-sari-inventory-report-33",
+    "index": 33,
+    "task": "Filter the report to show only products with amount <= 10.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM inventory;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE inventory (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO inventory (id, name, category, amount, status, group_id) VALUES\n(1, 'Rice', 'Local', 8, 'Open', 1),\n(2, 'Soap', 'Regional', 20, 'Done', 2),\n(3, 'Cooking Oil', 'Local', 2, 'Open', 1),\n(4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info (id, label) VALUES\n(1, 'North Team'),\n(2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Report shows filtered products with amount <= 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice",
+            8
+          ],
+          [
+            "Cooking Oil",
+            2
+          ],
+          [
+            "Egg",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter products with amount <= 10."
+      },
+      {
+        "level": 2,
+        "text": "Use SELECT name, amount FROM inventory WHERE amount <= 10;"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM inventory WHERE amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-inventory-report"
+  },
+  {
+    "id": "sql-sari-sari-inventory-report-34",
+    "index": 34,
+    "task": "Sort the filtered report by amount in ascending order.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM inventory WHERE amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE inventory (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO inventory (id, name, category, amount, status, group_id) VALUES\n(1, 'Rice', 'Local', 8, 'Open', 1),\n(2, 'Soap', 'Regional', 20, 'Done', 2),\n(3, 'Cooking Oil', 'Local', 2, 'Open', 1),\n(4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info (id, label) VALUES\n(1, 'North Team'),\n(2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Report shows filtered products sorted by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cooking Oil",
+            2
+          ],
+          [
+            "Egg",
+            5
+          ],
+          [
+            "Rice",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY amount ASC to sort the filtered results by amount ascending."
+      },
+      {
+        "level": 2,
+        "text": "Use SELECT name, amount FROM inventory WHERE amount <= 10 ORDER BY amount ASC;"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM inventory WHERE amount <= 10 ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-inventory-report"
+  },
+  {
+    "id": "sql-sari-sari-inventory-report-35",
+    "index": 35,
+    "task": "Limit the sorted report to 2 rows for a short priority list.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM inventory WHERE amount <= 10 ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE inventory (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO inventory (id, name, category, amount, status, group_id) VALUES\n(1, 'Rice', 'Local', 8, 'Open', 1),\n(2, 'Soap', 'Regional', 20, 'Done', 2),\n(3, 'Cooking Oil', 'Local', 2, 'Open', 1),\n(4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info (id, label) VALUES\n(1, 'North Team'),\n(2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Report shows top 2 products by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cooking Oil",
+            2
+          ],
+          [
+            "Egg",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT 2 to restrict the output to the top 2 rows."
+      },
+      {
+        "level": 2,
+        "text": "Use SELECT name, amount FROM inventory WHERE amount <= 10 ORDER BY amount ASC LIMIT 2;"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM inventory WHERE amount <= 10 ORDER BY amount ASC LIMIT 2;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-inventory-report"
+  }
+] satisfies typeof sqlCourse.steps));
