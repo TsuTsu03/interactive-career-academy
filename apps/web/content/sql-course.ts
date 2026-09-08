@@ -679,3 +679,232 @@ sqlCourse.steps.push(...([
     "projectId": "sari-sari-inventory-report"
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: sari-sari-inventory-report.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-sari-sari-inventory-report-36",
+    "index": 36,
+    "task": "Replace the entire prior SELECT with COUNT(*) for amount <= 10 and check the scalar value 3, not the output row count.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM inventory WHERE amount <= 10 ORDER BY amount ASC LIMIT 2;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE inventory (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO inventory (id, name, category, amount, status, group_id) VALUES\n(1, 'Rice', 'Local', 8, 'Open', 1),\n(2, 'Soap', 'Regional', 20, 'Done', 2),\n(3, 'Cooking Oil', 'Local', 2, 'Open', 1),\n(4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info (id, label) VALUES\n(1, 'North Team'),\n(2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Count returns scalar value 3 for products with amount <= 10",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 3
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count all rows matching the condition."
+      },
+      {
+        "level": 2,
+        "text": "Remove SELECT name, amount and replace with SELECT COUNT(*)."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) FROM inventory WHERE amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-inventory-report",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-inventory-report-37",
+    "index": 37,
+    "task": "Alias that count as priority_count and check that exact result column heading.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) FROM inventory WHERE amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE inventory (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO inventory (id, name, category, amount, status, group_id) VALUES\n(1, 'Rice', 'Local', 8, 'Open', 1),\n(2, 'Soap', 'Regional', 20, 'Done', 2),\n(3, 'Cooking Oil', 'Local', 2, 'Open', 1),\n(4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info (id, label) VALUES\n(1, 'North Team'),\n(2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Column heading is priority_count",
+        "kind": "sql-columns-equal",
+        "columns": [
+          "priority_count"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add AS priority_count after COUNT(*) to rename the column."
+      },
+      {
+        "level": 2,
+        "text": "The result should show only one column named priority_count."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) AS priority_count FROM inventory WHERE amount <= 10;"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "sari-sari-inventory-report",
+    "conceptIds": [
+      "sql-alias"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-inventory-report-38",
+    "index": 38,
+    "task": "Replace the entire count query with category and SUM(amount) grouped across all four rows, giving Local 10 and Regional 25.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) AS priority_count FROM inventory WHERE amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE inventory (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO inventory (id, name, category, amount, status, group_id) VALUES\n(1, 'Rice', 'Local', 8, 'Open', 1),\n(2, 'Soap', 'Regional', 20, 'Done', 2),\n(3, 'Cooking Oil', 'Local', 2, 'Open', 1),\n(4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info (id, label) VALUES\n(1, 'North Team'),\n(2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Grouped totals: Local 10, Regional 25",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Local",
+            10
+          ],
+          [
+            "Regional",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use GROUP BY category to group rows by category."
+      },
+      {
+        "level": 2,
+        "text": "Use SUM(amount) to calculate total amount per category."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) FROM inventory GROUP BY category;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sari-sari-inventory-report",
+    "conceptIds": [
+      "sql-group-by"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-inventory-report-39",
+    "index": 39,
+    "task": "Keep only the Regional 25 total by using HAVING above 12.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, SUM(amount) FROM inventory GROUP BY category;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE inventory (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO inventory (id, name, category, amount, status, group_id) VALUES\n(1, 'Rice', 'Local', 8, 'Open', 1),\n(2, 'Soap', 'Regional', 20, 'Done', 2),\n(3, 'Cooking Oil', 'Local', 2, 'Open', 1),\n(4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info (id, label) VALUES\n(1, 'North Team'),\n(2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Only Regional 25 remains after HAVING SUM(amount) > 12",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Regional",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add HAVING SUM(amount) > 12 to filter groups by total amount."
+      },
+      {
+        "level": 2,
+        "text": "Only Regional (25) meets the condition."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) FROM inventory GROUP BY category HAVING SUM(amount) > 12;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-inventory-report",
+    "conceptIds": [
+      "sql-having"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-inventory-report-40",
+    "index": 40,
+    "task": "Lower HAVING to above 8 to restore both totals and sort them largest first so Regional 25 comes before Local 10.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, SUM(amount) FROM inventory GROUP BY category HAVING SUM(amount) > 12;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE inventory (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO inventory (id, name, category, amount, status, group_id) VALUES\n(1, 'Rice', 'Local', 8, 'Open', 1),\n(2, 'Soap', 'Regional', 20, 'Done', 2),\n(3, 'Cooking Oil', 'Local', 2, 'Open', 1),\n(4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info (id, label) VALUES\n(1, 'North Team'),\n(2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Both totals restored, sorted largest first: Regional 25, Local 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Regional",
+            25
+          ],
+          [
+            "Local",
+            10
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change HAVING SUM(amount) > 12 to HAVING SUM(amount) > 8."
+      },
+      {
+        "level": 2,
+        "text": "Add ORDER BY SUM(amount) DESC to sort by total amount descending."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) FROM inventory GROUP BY category HAVING SUM(amount) > 8 ORDER BY SUM(amount) DESC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sari-sari-inventory-report",
+    "conceptIds": [
+      "sql-descending"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
