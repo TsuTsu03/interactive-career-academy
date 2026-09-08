@@ -1421,3 +1421,229 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: sari-sari-service-queue.
+sqlCourse.projects.push({"id":"sari-sari-service-queue","title":"Sari-Sari Store Service Queue"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-sari-sari-service-queue-1",
+    "index": 51,
+    "task": "Count all records in the sari-sari service queue.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "count-all-rows",
+        "label": "Count all rows in the record table",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 4
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count all rows in the table."
+      },
+      {
+        "level": 2,
+        "text": "The result should be 4 because there are four seeded items."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-service-queue",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-service-queue-2",
+    "index": 52,
+    "task": "Name the count as record_count for clarity.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "named-count",
+        "label": "The count is named record_count",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 4
+      },
+      {
+        "id": "alias-heading",
+        "label": "The result column is named record_count",
+        "kind": "sql-columns-equal",
+        "columns": [
+          "record_count"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add AS record_count to rename the count result."
+      },
+      {
+        "level": 2,
+        "text": "This makes the output more readable for business reports."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) AS record_count FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-service-queue",
+    "conceptIds": [
+      "sql-alias"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-service-queue-3",
+    "index": 53,
+    "task": "Calculate the total amount of all items in the queue.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) AS record_count FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "total-amount",
+        "label": "Total amount is 35",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 35
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use SUM(amount) to add up all the amounts."
+      },
+      {
+        "level": 2,
+        "text": "The expected total is 8 + 20 + 2 + 5 = 35."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT SUM(amount) AS total_amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-service-queue",
+    "conceptIds": [
+      "sql-sum"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-service-queue-4",
+    "index": 54,
+    "task": "Calculate the average amount of all items in the queue.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT SUM(amount) AS total_amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "average-amount",
+        "label": "Average amount is 8.75",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 8.75
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use AVG(amount) to compute the average."
+      },
+      {
+        "level": 2,
+        "text": "The average is 35 divided by 4, which equals 8.75."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT AVG(amount) AS average_amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-service-queue",
+    "conceptIds": [
+      "sql-average"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-service-queue-5",
+    "index": 55,
+    "task": "Group items by category and count how many are in each category.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT AVG(amount) AS average_amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "grouped-counts",
+        "label": "Local has 2 items, Regional has 2 items",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Local",
+            2
+          ],
+          [
+            "Regional",
+            2
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use GROUP BY category to group by category."
+      },
+      {
+        "level": 2,
+        "text": "COUNT(*) will count items in each group; no ORDER BY is needed since counts are tied."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, COUNT(*) AS record_count FROM record GROUP BY category;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-service-queue",
+    "conceptIds": [
+      "sql-group-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
