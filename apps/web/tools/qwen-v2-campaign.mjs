@@ -128,7 +128,7 @@ function sqlExpected(track, project, batch) {
       `6 ${likeNames}; 7 ${a} 8 and ${c} 2; 8 ${a} 8, ${b} 20, ${c} 2; 9 ${b} 20, ${a} 8, ${c} 2; 10 ${b} 20, ${a} 8`,
     ],
     "aggregate report": [
-      "1 scalar 4; 2 scalar 4 under record_count; 3 scalar 35 under total_amount; 4 scalar 8.75 under average_amount; 5 Local 2 and Regional 2",
+      "1 scalar 4 checked with sql-value-equals at row 0 column 0; 2 the same scalar 4 under record_count; 3 scalar 35 under total_amount; 4 scalar 8.75 under average_amount; 5 Local 2 and Regional 2 checked with sql-rows-equal and ignoreOrder true, with no ORDER BY because the counts are tied",
       "6 Local 10 and Regional 25; 7 Regional 25 then Local 10; 8 Regional 25 only; 9 Local 10 and Regional 25; 10 Regional 25 then Local 10",
     ],
     "inner join report": [

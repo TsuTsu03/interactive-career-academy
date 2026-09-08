@@ -129,7 +129,7 @@ if (mode === "snapshot") {
       recentOutline: isNew ? course.steps.slice(-12).map(({ id }) => id) : course.steps.slice(-12).map(({ id, task }) => ({ id, task })),
       lastStep: isNew ? null : last, seed, registeredConcepts: registered, exemplar,
       allowedAssertions: testSchema.oneOf.map(spec => ({ required: spec.required, fields: spec.properties })),
-      constraint: "One requested project, exactly the requested number of useful cumulative steps. Do not copy previous project ids, tasks, or subject matter. Every solution is the COMPLETE query file, retaining all previous statements needed for the project; not just the changed statement. Use only the exact allowed assertion fields; table is legal only for sql-table-exists. If the project is finished or a new concept is needed, return no batch instead of padding. When ownerBatchBrief is present, follow its supplied facts and step goals exactly; do not replace them with a different project.",
+      constraint: "One requested project, exactly the requested number of useful cumulative steps. Do not copy previous project ids, tasks, or subject matter. Every solution is the COMPLETE query file, retaining all previous statements needed for the project; not just the changed statement. Use only the exact allowed assertion fields; table is legal only for sql-table-exists. For a scalar COUNT, SUM, or AVG answer use sql-value-equals at row 0 column 0; sql-row-count measures output rows and is normally 1 for a scalar aggregate. If the project is finished or a new concept is needed, return no batch instead of padding. When ownerBatchBrief is present, follow its supplied facts and step goals exactly; do not replace them with a different project.",
     };
     const priorReceipt = receiptPath.replace(/-attempt-2\.json$/, "-attempt-1.json");
     if (priorReceipt !== receiptPath) context.retryFeedback = [".log", ".gates.log"].filter(suffix => fs.existsSync(priorReceipt + suffix)).map(suffix => fs.readFileSync(priorReceipt + suffix, "utf8").slice(-1800)).join("\n");
@@ -194,6 +194,14 @@ if (mode === "snapshot") {
       if (!Array.isArray(draft.hints) || draft.hints.length !== 2 || !draft.hints.every(hint => text(hint, 2000))) throw Error("Two nonempty hints are required.");
       if (draft.conceptIds !== undefined && (!Array.isArray(draft.conceptIds) || draft.conceptIds.length > 1 || draft.conceptIds.some(id => typeof id !== "string" || !Object.hasOwn(concepts, id)))) throw Error("Use at most one existing registered concept; new concepts require owner authoring.");
       if (!Array.isArray(draft.tests) || draft.tests.length < 1 || draft.tests.length > 2) throw Error("Use one or two behavioral checks.");
+      const scalarAggregate = isSql && /\bSELECT\s+(?:COUNT|SUM|AVG)\s*\(/i.test(draft.solution) && !/\bGROUP\s+BY\b/i.test(draft.solution);
+      if (scalarAggregate) {
+        draft.tests = draft.tests.map((test) => {
+          if (test?.kind !== "sql-row-count" || test.count === 1) return test;
+          const { count: value, ...rest } = test;
+          return { ...rest, kind: "sql-value-equals", row: 0, column: 0, value };
+        });
+      }
       const testIds = new Set();
       for (const test of draft.tests) {
         if (!object(test) || typeof test.kind !== "string" || !test.kind.startsWith(isSql ? "sql-" : "nosql-") || !Object.hasOwn(fields, test.kind)) throw Error("Unsupported assertion family.");
