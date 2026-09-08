@@ -2423,3 +2423,266 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: sari-sari-community-schedule.
+sqlCourse.projects.push({"id":"sari-sari-community-schedule","title":"Sari-Sari Store Community Schedule"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-sari-sari-community-schedule-1",
+    "index": 71,
+    "task": "Select the record name and group_id for all items in the sari-sari store.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains four rows with name and group_id",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice",
+            1
+          ],
+          [
+            "Soap",
+            2
+          ],
+          [
+            "Cooking Oil",
+            1
+          ],
+          [
+            "Egg",
+            null
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the name and group_id columns from the record table."
+      },
+      {
+        "level": 2,
+        "text": "This is the base query before any joins or filters."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-community-schedule"
+  },
+  {
+    "id": "sql-sari-sari-community-schedule-2",
+    "index": 72,
+    "task": "LEFT JOIN group_info to show every record with its group label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains four rows with name and group label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice",
+            "North Team"
+          ],
+          [
+            "Soap",
+            "South Team"
+          ],
+          [
+            "Cooking Oil",
+            "North Team"
+          ],
+          [
+            "Egg",
+            null
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Join group_info using LEFT JOIN so all records appear even if group_id is NULL."
+      },
+      {
+        "level": 2,
+        "text": "Use ON group_info.id = record.group_id to match the group_id."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-community-schedule"
+  },
+  {
+    "id": "sql-sari-sari-community-schedule-3",
+    "index": 73,
+    "task": "Use COALESCE to display 'Unassigned' for records with no group.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains four rows with name and group_label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice",
+            "North Team"
+          ],
+          [
+            "Soap",
+            "South Team"
+          ],
+          [
+            "Cooking Oil",
+            "North Team"
+          ],
+          [
+            "Egg",
+            "Unassigned"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COALESCE to replace NULL with 'Unassigned' for missing group labels."
+      },
+      {
+        "level": 2,
+        "text": "Alias the new column as group_label for clarity."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-community-schedule"
+  },
+  {
+    "id": "sql-sari-sari-community-schedule-4",
+    "index": 74,
+    "task": "Filter to show only the record whose group_id is NULL.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains one row with name and group_label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Egg",
+            "Unassigned"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add WHERE record.group_id IS NULL to filter for the unassigned record."
+      },
+      {
+        "level": 2,
+        "text": "This isolates the row with no group assigned."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id WHERE record.group_id IS NULL;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-community-schedule"
+  },
+  {
+    "id": "sql-sari-sari-community-schedule-5",
+    "index": 75,
+    "task": "Switch back to all rows and sort by the displayed group label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id WHERE record.group_id IS NULL;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains four rows sorted by group_label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice",
+            "North Team"
+          ],
+          [
+            "Cooking Oil",
+            "North Team"
+          ],
+          [
+            "Soap",
+            "South Team"
+          ],
+          [
+            "Egg",
+            "Unassigned"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Remove the WHERE clause to show all rows again."
+      },
+      {
+        "level": 2,
+        "text": "Add ORDER BY group_label ASC to sort alphabetically by group label."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id ORDER BY group_label ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-community-schedule"
+  }
+] satisfies typeof sqlCourse.steps));
