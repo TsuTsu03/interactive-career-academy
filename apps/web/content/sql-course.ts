@@ -3197,3 +3197,255 @@ sqlCourse.steps.push(...([
     "projectId": "sari-sari-delivery-log"
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: sari-sari-delivery-log.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-sari-sari-delivery-log-6",
+    "index": 86,
+    "task": "Insert id 6 named Backup Record with amount 4 and read it.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nSELECT id, name FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result-6",
+        "label": "After insert, row with id 6 contains Backup Record and amount 4",
+        "kind": "sql-row-contains",
+        "row": [
+          6,
+          "Backup Record",
+          4
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add INSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);"
+      },
+      {
+        "level": 2,
+        "text": "Then read it with SELECT id, name, amount FROM record WHERE id = 6;"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nSELECT id, name, amount FROM record WHERE id = 6;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sari-sari-delivery-log",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-delivery-log-7",
+    "index": 87,
+    "task": "Update id 6 category to Regional and read it.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nSELECT id, name, amount FROM record WHERE id = 6;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result-7",
+        "label": "After update, row with id 6 has category Regional",
+        "kind": "sql-row-contains",
+        "row": [
+          6,
+          "Backup Record",
+          "Regional",
+          4
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Update category to 'Regional' with UPDATE record SET category = 'Regional' WHERE id = 6;"
+      },
+      {
+        "level": 2,
+        "text": "Then read the updated row with SELECT id, name, category, amount FROM record WHERE id = 6;"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nSELECT id, name, category, amount FROM record WHERE id = 6;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sari-sari-delivery-log",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-delivery-log-8",
+    "index": 88,
+    "task": "Delete id 1 and read remaining rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nSELECT id, name, category, amount FROM record WHERE id = 6;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result-8",
+        "label": "After delete, rows contain ids 2, 3, 5, 6 with their names and amounts",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            2,
+            "Soap",
+            20
+          ],
+          [
+            3,
+            "Cooking Oil",
+            2
+          ],
+          [
+            5,
+            "New Record",
+            9
+          ],
+          [
+            6,
+            "Backup Record",
+            4
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Delete id 1 with DELETE FROM record WHERE id = 1;"
+      },
+      {
+        "level": 2,
+        "text": "Then read remaining rows with SELECT id, name, amount FROM record;"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nDELETE FROM record WHERE id = 1;\nSELECT id, name, amount FROM record;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sari-sari-delivery-log",
+    "conceptIds": [
+      "sql-delete"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-delivery-log-9",
+    "index": 89,
+    "task": "Count all remaining rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nDELETE FROM record WHERE id = 1;\nSELECT id, name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result-9",
+        "label": "Count is 4 after deleting id 1",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 4
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count all rows after deletion."
+      },
+      {
+        "level": 2,
+        "text": "The result should be 4."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nDELETE FROM record WHERE id = 1;\nSELECT COUNT(*) FROM record;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sari-sari-delivery-log",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-delivery-log-10",
+    "index": 90,
+    "task": "Show remaining names and amounts sorted by amount ascending.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nDELETE FROM record WHERE id = 1;\nSELECT COUNT(*) FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result-10",
+        "label": "Rows sorted by amount ascending: Cooking Oil 2, Backup Record 4, New Record 9, Soap 20",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cooking Oil",
+            2
+          ],
+          [
+            "Backup Record",
+            4
+          ],
+          [
+            "New Record",
+            9
+          ],
+          [
+            "Soap",
+            20
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Select name and amount with SELECT name, amount FROM record;"
+      },
+      {
+        "level": 2,
+        "text": "Sort them ascending with ORDER BY amount ASC;"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nDELETE FROM record WHERE id = 1;\nSELECT name, amount FROM record ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sari-sari-delivery-log",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
