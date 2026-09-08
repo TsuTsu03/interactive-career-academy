@@ -908,3 +908,254 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: sari-sari-daily-record.
+sqlCourse.projects.push({"id":"sari-sari-daily-record","title":"Sari-Sari Store Daily Record"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-sari-sari-daily-record-41",
+    "index": 41,
+    "task": "Select the name and status of all items in the sari-sari store.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE sari_sari_items (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO sari_sari_items (id, name, category, amount, status, group_id) VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "sql-sari-sari-daily-record-41-result",
+        "label": "The result contains the name and status of all items",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice",
+            "Open"
+          ],
+          [
+            "Soap",
+            "Done"
+          ],
+          [
+            "Cooking Oil",
+            "Open"
+          ],
+          [
+            "Egg",
+            "Done"
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the fields the report needs: name and status."
+      },
+      {
+        "level": 2,
+        "text": "Use SELECT to retrieve these fields from the table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM sari_sari_items;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-daily-record"
+  },
+  {
+    "id": "sql-sari-sari-daily-record-42",
+    "index": 42,
+    "task": "Filter to keep only items with status 'Open'.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM sari_sari_items;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE sari_sari_items (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO sari_sari_items (id, name, category, amount, status, group_id) VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "sql-sari-sari-daily-record-42-result",
+        "label": "The result contains only items with status 'Open'",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice",
+            "Open"
+          ],
+          [
+            "Cooking Oil",
+            "Open"
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use WHERE to filter rows based on status."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where status equals 'Open'."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM sari_sari_items WHERE status = 'Open';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-daily-record"
+  },
+  {
+    "id": "sql-sari-sari-daily-record-43",
+    "index": 43,
+    "task": "Filter to keep only items with amount less than or equal to 8.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM sari_sari_items WHERE status = 'Open';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE sari_sari_items (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO sari_sari_items (id, name, category, amount, status, group_id) VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "sql-sari-sari-daily-record-43-result",
+        "label": "The result contains only items with amount <= 8",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice",
+            "Open"
+          ],
+          [
+            "Cooking Oil",
+            "Open"
+          ],
+          [
+            "Egg",
+            "Done"
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use WHERE to filter rows based on amount."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where amount is less than or equal to 8."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM sari_sari_items WHERE amount <= 8;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-daily-record"
+  },
+  {
+    "id": "sql-sari-sari-daily-record-44",
+    "index": 44,
+    "task": "Filter to keep only items that are 'Open' AND have amount <= 8.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM sari_sari_items WHERE amount <= 8;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE sari_sari_items (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO sari_sari_items (id, name, category, amount, status, group_id) VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "sql-sari-sari-daily-record-44-result",
+        "label": "The result contains only items that are 'Open' AND amount <= 8",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice",
+            "Open"
+          ],
+          [
+            "Cooking Oil",
+            "Open"
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use AND to combine two conditions."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where status is 'Open' AND amount is <= 8."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM sari_sari_items WHERE status = 'Open' AND amount <= 8;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-daily-record"
+  },
+  {
+    "id": "sql-sari-sari-daily-record-45",
+    "index": 45,
+    "task": "Filter to keep items that are 'Done' OR have amount less than 3.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM sari_sari_items WHERE status = 'Open' AND amount <= 8;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE sari_sari_items (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO sari_sari_items (id, name, category, amount, status, group_id) VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "sql-sari-sari-daily-record-45-result",
+        "label": "The result contains items that are 'Done' OR amount < 3",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Soap",
+            "Done"
+          ],
+          [
+            "Cooking Oil",
+            "Open"
+          ],
+          [
+            "Egg",
+            "Done"
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use OR to combine two conditions."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where status is 'Done' OR amount is less than 3."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM sari_sari_items WHERE status = 'Done' OR amount < 3;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-daily-record"
+  }
+] satisfies typeof sqlCourse.steps));
