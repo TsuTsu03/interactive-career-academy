@@ -267,3 +267,608 @@ export const nosqlCourse: Course = {
   kind: "nosql",
   steps,
 };
+
+// Validated local authoring batch: sari-sari-stock.
+nosqlCourse.projects.push({"id":"sari-sari-stock","title":"Sari-Sari Stock"});
+nosqlCourse.steps.push(...([
+  {
+    "id": "nosql-sari-sari-stock-1",
+    "index": 21,
+    "task": "Find every document in the records collection.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": ""
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Rice",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Soap",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Cooking Oil",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Egg",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "All four records are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 1,
+            "name": "Rice",
+            "category": "Local",
+            "amount": 8,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 2,
+            "name": "Soap",
+            "category": "Regional",
+            "amount": 20,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 3,
+            "name": "Cooking Oil",
+            "category": "Local",
+            "amount": 2,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 4,
+            "name": "Egg",
+            "category": "Regional",
+            "amount": 5,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the find operation to retrieve all documents from the records collection."
+      },
+      {
+        "level": 2,
+        "text": "The solution is a single find command with no projection or filter."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\" }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-stock"
+  },
+  {
+    "id": "nosql-sari-sari-stock-2",
+    "index": 22,
+    "task": "Project only the name field from the records collection.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\" }"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Rice",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Soap",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Cooking Oil",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Egg",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Only the names are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Rice"
+          },
+          {
+            "name": "Soap"
+          },
+          {
+            "name": "Cooking Oil"
+          },
+          {
+            "name": "Egg"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a projection array with only the field 'name'."
+      },
+      {
+        "level": 2,
+        "text": "This step changes the output to show only the product names."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"projection\": [\"name\"] }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-stock"
+  },
+  {
+    "id": "nosql-sari-sari-stock-3",
+    "index": 23,
+    "task": "Add the amount field to the projection.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"projection\": [\"name\"] }"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Rice",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Soap",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Cooking Oil",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Egg",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Names and amounts are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Rice",
+            "amount": 8
+          },
+          {
+            "name": "Soap",
+            "amount": 20
+          },
+          {
+            "name": "Cooking Oil",
+            "amount": 2
+          },
+          {
+            "name": "Egg",
+            "amount": 5
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add 'amount' to the projection array."
+      },
+      {
+        "level": 2,
+        "text": "This step adds the quantity of each item to the output."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"projection\": [\"name\", \"amount\"] }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-stock"
+  },
+  {
+    "id": "nosql-sari-sari-stock-4",
+    "index": 24,
+    "task": "Filter documents where amount is less than or equal to 10.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"projection\": [\"name\", \"amount\"] }"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Rice",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Soap",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Cooking Oil",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Egg",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Only items with amount <= 10 are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Rice",
+            "amount": 8
+          },
+          {
+            "name": "Cooking Oil",
+            "amount": 2
+          },
+          {
+            "name": "Egg",
+            "amount": 5
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a filter with $lte to include only amounts less than or equal to 10."
+      },
+      {
+        "level": 2,
+        "text": "This step removes Soap (20) from the output."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"projection\": [\"name\", \"amount\"], \"filter\": { \"amount\": { \"$lte\": 10 } } }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-stock"
+  },
+  {
+    "id": "nosql-sari-sari-stock-5",
+    "index": 25,
+    "task": "Sort the filtered documents by amount in ascending order.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"projection\": [\"name\", \"amount\"], \"filter\": { \"amount\": { \"$lte\": 10 } } }"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Rice",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Soap",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Cooking Oil",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Egg",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Filtered documents sorted by amount ascending",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Cooking Oil",
+            "amount": 2
+          },
+          {
+            "name": "Egg",
+            "amount": 5
+          },
+          {
+            "name": "Rice",
+            "amount": 8
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a sort object with \"amount\": 1 to sort ascending."
+      },
+      {
+        "level": 2,
+        "text": "This step rearranges the output so Cooking Oil comes first, then Egg, then Rice."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"projection\": [\"name\", \"amount\"], \"filter\": { \"amount\": { \"$lte\": 10 } }, \"sort\": { \"amount\": 1 } }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-stock"
+  }
+] satisfies typeof nosqlCourse.steps));

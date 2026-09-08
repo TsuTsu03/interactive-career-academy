@@ -3289,3 +3289,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-08: Local Qwen authored sql-basics/sari-sari-service-queue, steps 56-60; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
 
 - 2026-09-08: Local Qwen authored sql-basics/sari-sari-supplier-list, steps 61-65; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-08: Local Qwen authored nosql-basics/sari-sari-stock, steps 21-25; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
