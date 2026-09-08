@@ -36,6 +36,7 @@ There are exactly eight iframe roles. Each has one correct sandbox value.
 | React grading | `lib/react-runner.ts` | `allow-scripts` | Disposable opaque frame returns plain assertion results |
 | Page grading | `lib/page-runner.ts` | `allow-scripts` | Runs `script.js` against the markup so DOM lessons can be checked at all. Same rule: opaque origin, postMessage only |
 | SQL runner | `lib/sql-runner.ts` | `allow-scripts` | SQLite compiled to WebAssembly runs the learner's query. Disposable opaque frame, result rows returned by postMessage. The database is in-memory and dies with the frame |
+| NoSQL runner | `lib/nosql-runner.ts` | `allow-scripts` | JSON commands run against an in-memory document store. Disposable opaque frame, documents returned by postMessage. The store dies with the frame |
 
 **`allow-scripts` and `allow-same-origin` must never appear together on any iframe in this repo.** Together they let sandboxed content remove its own sandbox and reach the parent page. This is not a style preference. It is the entire security model.
 

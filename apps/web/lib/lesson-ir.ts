@@ -114,7 +114,7 @@ export interface RuntimeFixtures {
  * `sql` runs the learner's query against an in-memory SQLite database, built
  * fresh from the step's `sqlSeed`, and asserts against the rows it returned.
  */
-export type StepKind = "web" | "js" | "react" | "sql";
+export type StepKind = "web" | "js" | "react" | "sql" | "nosql";
 
 /**
  * Deterministic assertions. Each kind is a closed variant so a lesson can
@@ -324,6 +324,14 @@ export type TestSpec =
   /** The named table exists after the statement ran. For CREATE TABLE steps. */
   | { id: string; label: Copy; kind: "sql-table-exists"; table: string }
 
+  // --- Document-store assertions: JSON data, never executable expressions. ---
+  | { id: string; label: Copy; kind: "nosql-runs" }
+  | { id: string; label: Copy; kind: "nosql-doc-count"; count: number }
+  | { id: string; label: Copy; kind: "nosql-docs-equal"; documents: Record<string, unknown>[]; ignoreOrder?: boolean }
+  | { id: string; label: Copy; kind: "nosql-doc-contains"; document: Record<string, unknown> }
+  | { id: string; label: Copy; kind: "nosql-field-equals"; document: number; field: string; value: unknown }
+  | { id: string; label: Copy; kind: "nosql-collection-exists"; collection: string }
+
   // --- Source assertions (any kind) ---
   /**
    * The source matches this pattern. Used for teaching syntax the result
@@ -367,6 +375,8 @@ export interface Step {
    * field of its own rather than another entry in `files`.
    */
   sqlSeed?: string;
+  /** Fresh collections for a JSON document-store command. Never persisted. */
+  nosqlSeed?: Record<string, Record<string, unknown>[]>;
   /** tap-to-build only: the tray contents and which one is correct. */
   blocks?: string[];
   correctBlock?: string;
@@ -431,6 +441,8 @@ export interface Project {
  */
 export interface Course {
   id: string;
+  /** Informational device prerequisite, independent of progress gating. */
+  requiresComputer?: true;
   /** "Learn HTML by Building a Sari-Sari Store Page" */
   title: string;
   /** The first project's name, for the map: "Sari-Sari Store Page" */

@@ -18,6 +18,1171 @@ const reactDemoCss =
  */
 export const concepts: Record<string, Concept> = {
   ...newCourseConcepts,
+  "sql-select": {
+    "id": "sql-select",
+    "term": "SELECT",
+    "definition": "SELECT reads named columns from a table. FROM names the table. A row holds one record, and a column holds one kind of information.",
+    "analogy": "Like reading only item names from a shop ledger while leaving the prices covered.",
+    "proof": "Read the five product names from the store table.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Product records: name and price. Read a column: SELECT name FROM product. Name results: Five product names.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Product records",
+            "note": "name and price",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Read a column",
+            "note": "SELECT name FROM product",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Name results",
+            "note": "Five product names",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-filter": {
+    "id": "sql-filter",
+    "term": "WHERE",
+    "definition": "WHERE keeps only rows whose condition is true. Compare numbers with =, >, <, >=, or <=. It filters rows before counting or grouping.",
+    "analogy": "Like keeping only receipts above your spending limit when checking a shopping bag.",
+    "proof": "Keep only products priced above 20 pesos.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Product prices: 32, 25, 15, 18, 8. Keep matching rows: WHERE price > 20. Remaining prices: 32, 25.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Product prices",
+            "note": "32, 25, 15, 18, 8",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Keep matching rows",
+            "note": "WHERE price > 20",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Remaining prices",
+            "note": "32, 25",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-order-by": {
+    "id": "sql-order-by",
+    "term": "ORDER BY",
+    "definition": "ORDER BY sorts result rows by a named column. Its default direction is ascending: smaller numbers or earlier text first. Without it, row order is not promised.",
+    "analogy": "Like arranging price tags from cheapest to most expensive before displaying them.",
+    "proof": "Put the 25-peso product before the 32-peso product.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Unsorted prices: 32, 25. Choose an order: ORDER BY price. Sorted prices: 25, 32.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Unsorted prices",
+            "note": "32, 25",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Choose an order",
+            "note": "ORDER BY price",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Sorted prices",
+            "note": "25, 32",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-limit": {
+    "id": "sql-limit",
+    "term": "LIMIT",
+    "definition": "LIMIT sets the most rows a query returns. When choosing the first rows, use ORDER BY to say which rows belong first.",
+    "analogy": "Like sorting a tray of items by price, then taking only the first one.",
+    "proof": "Return only the cheapest product remaining in the filtered list.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Sorted prices: 25, 32. Keep the first row: LIMIT 1. One result: 25.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Sorted prices",
+            "note": "25, 32",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Keep the first row",
+            "note": "LIMIT 1",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "One result",
+            "note": "25",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-count": {
+    "id": "sql-count",
+    "term": "COUNT",
+    "definition": "COUNT(*) counts the rows selected by a query. It returns a number instead of listing each row.",
+    "analogy": "Like counting the lines in a stock notebook without adding the quantities written on them.",
+    "proof": "Count the five product records in the store.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Product records: Five rows. Count records: COUNT(*). One answer: 5.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Product records",
+            "note": "Five rows",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Count records",
+            "note": "COUNT(*)",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "One answer",
+            "note": "5",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-alias": {
+    "id": "sql-alias",
+    "term": "AS",
+    "definition": "AS gives a result column a readable name. It changes the heading in the report, not the saved table or the calculated value.",
+    "analogy": "Like putting a clear label on a basket without changing what is inside.",
+    "proof": "Name the count column low_stock while keeping its value at two.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Unclear heading: COUNT(*) = 2. Name the result: AS low_stock. Readable heading: low_stock = 2.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Unclear heading",
+            "note": "COUNT(*) = 2",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Name the result",
+            "note": "AS low_stock",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Readable heading",
+            "note": "low_stock = 2",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-sum": {
+    "id": "sql-sum",
+    "term": "SUM",
+    "definition": "SUM adds the non-missing numbers in a column. Without grouping, the selected rows produce one combined amount.",
+    "analogy": "Like adding the peso amounts on receipts to find the total sales for the day.",
+    "proof": "Add all six sale amounts to get 590 pesos.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Six sale amounts, 120, 180, 60, 30, 90, and 110, are added with SUM(amount). The combined amount is 590.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Sale amounts",
+            "note": "120 + 180 + 60 + 30 + 90 + 110",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Add amounts",
+            "note": "SUM(amount)",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Combined amount",
+            "note": "590",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-group-by": {
+    "id": "sql-group-by",
+    "term": "GROUP BY",
+    "definition": "GROUP BY collects rows with the same value. A calculation such as SUM then produces one answer for each group.",
+    "analogy": "Like sorting receipts into one envelope per stall before adding each envelope separately.",
+    "proof": "Produce separate sales totals for Mila, Romy, and Luz.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Mixed sales of Mila 120, Romy 60, and Mila 180 are grouped by stall. Separate totals are Mila 300 and Romy 60.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Mixed sales",
+            "note": "Mila 120, Romy 60, Mila 180",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Collect matching names",
+            "note": "GROUP BY stall",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Separate totals",
+            "note": "Mila 300; Romy 60",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-descending": {
+    "id": "sql-descending",
+    "term": "DESC",
+    "definition": "DESC makes ORDER BY sort in descending order. Larger numbers come first, and text runs in reverse order.",
+    "analogy": "Like writing the largest expenses at the top of a budget review.",
+    "proof": "Place the 300-peso stall total before 200 and 90.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Stall totals: 200, 90, 300. Largest first: ORDER BY total DESC. Sorted totals: 300, 200, 90.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Stall totals",
+            "note": "200, 90, 300",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Largest first",
+            "note": "ORDER BY total DESC",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Sorted totals",
+            "note": "300, 200, 90",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-having": {
+    "id": "sql-having",
+    "term": "HAVING",
+    "definition": "HAVING filters groups after their calculations. WHERE filters individual rows before the groups are formed.",
+    "analogy": "Like counting the money in each stall envelope, then keeping envelopes whose totals exceed 100 pesos.",
+    "proof": "Keep only the stall groups with totals above 100 pesos.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Stall totals are Mila 300, Romy 90, and Luz 200. HAVING SUM(amount) > 100 keeps Mila and Luz.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Group totals",
+            "note": "Mila 300; Romy 90; Luz 200",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Test group totals",
+            "note": "HAVING SUM(amount) > 100",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Groups retained",
+            "note": "Mila 300; Luz 200",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-average": {
+    "id": "sql-average",
+    "term": "AVG",
+    "definition": "AVG adds the non-missing numbers and divides by how many there are. With GROUP BY, it finds the average separately for each group.",
+    "analogy": "Like splitting two receipt amounts evenly to describe a typical sale size.",
+    "proof": "Show average sale amounts of 150 for Mila and 100 for Luz.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Mila has sale amounts of 120 and 180. AVG(amount) adds them and divides by two, giving 150.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Mila sale amounts",
+            "note": "120 and 180",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Find the average",
+            "note": "AVG(amount)",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Mila average",
+            "note": "(120 + 180) / 2 = 150",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-qualified-column": {
+    "id": "sql-qualified-column",
+    "term": "qualified column name",
+    "definition": "A qualified column name includes its table before a dot. route.name and driver.name can therefore identify different columns that share the name name.",
+    "analogy": "Like adding a street to a shop name when two shops have the same name.",
+    "proof": "Read route.name and route.driver_id from the route table.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Two name columns: route.name and driver.name. Identify the owner: table.column. One clear reference: route.name.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Two name columns",
+            "note": "route.name and driver.name",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Identify the owner",
+            "note": "table.column",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "One clear reference",
+            "note": "route.name",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-inner-join": {
+    "id": "sql-inner-join",
+    "term": "JOIN",
+    "definition": "JOIN connects rows from two tables when its ON condition matches. An ordinary JOIN returns matching pairs and leaves unmatched rows out.",
+    "analogy": "Like matching a numbered route assignment card with the driver badge carrying that number.",
+    "proof": "Replace driver numbers with names on the three assigned routes.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Matching records: route.driver_id = 2; driver.id = 2. Connect the records: JOIN driver ON driver.id = route.driver_id. Combined row: Cubao to Quiapo; Jun; 20.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Matching records",
+            "note": "route.driver_id = 2; driver.id = 2",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Connect the records",
+            "note": "JOIN driver ON driver.id = route.driver_id",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Combined row",
+            "note": "Cubao to Quiapo; Jun; 20",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-left-join": {
+    "id": "sql-left-join",
+    "term": "LEFT JOIN",
+    "definition": "LEFT JOIN keeps every row from its left table. It adds matching right-table values when available and missing values when no match exists.",
+    "analogy": "Like keeping every route on a dispatch board, including slots where nobody has signed up.",
+    "proof": "Keep Pasig to Marikina in the report even without a driver.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "All routes: Three assigned; one unassigned. Keep the left table: route LEFT JOIN driver. Complete dispatch list: Four route rows.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "All routes",
+            "note": "Three assigned; one unassigned",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Keep the left table",
+            "note": "route LEFT JOIN driver",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Complete dispatch list",
+            "note": "Four route rows",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-null": {
+    "id": "sql-null",
+    "term": "NULL",
+    "definition": "NULL means a value is missing or unknown. Test it with IS NULL, rather than = NULL. It is different from zero and from empty text.",
+    "analogy": "Like a blank assignment slot: it does not mean driver number zero has accepted the route.",
+    "proof": "Find the route whose driver id is missing.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Driver ids: 2, 1, NULL, 2. Find missing values: WHERE driver.id IS NULL. Unassigned route: Pasig to Marikina.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Driver ids",
+            "note": "2, 1, NULL, 2",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Find missing values",
+            "note": "WHERE driver.id IS NULL",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Unassigned route",
+            "note": "Pasig to Marikina",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-coalesce": {
+    "id": "sql-coalesce",
+    "term": "COALESCE",
+    "definition": "COALESCE returns the first of its inputs that is not NULL. It can show fallback text without changing a saved missing value. SQL text is enclosed in single quotes.",
+    "analogy": "Like displaying Unassigned on an empty dispatch slot while leaving the assignment itself blank.",
+    "proof": "Show Unassigned in the missing driver cell.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Missing driver: NULL. Choose a fallback: COALESCE(driver.name, 'Unassigned'). Readable result: Unassigned.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Missing driver",
+            "note": "NULL",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Choose a fallback",
+            "note": "COALESCE(driver.name, 'Unassigned')",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Readable result",
+            "note": "Unassigned",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-create-table": {
+    "id": "sql-create-table",
+    "term": "CREATE TABLE",
+    "definition": "CREATE TABLE defines a table name and its columns. INTEGER describes whole numbers. TEXT describes words. Creating the table does not add any rows.",
+    "analogy": "Like drawing and labelling the columns in an empty register before anyone signs it.",
+    "proof": "Create an empty volunteer table with id and name columns.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Empty database: No volunteer table. Define the register: CREATE TABLE volunteer (id INTEGER, name TEXT). Ready to fill: id | name; zero rows.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Empty database",
+            "note": "No volunteer table",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Define the register",
+            "note": "CREATE TABLE volunteer (id INTEGER, name TEXT)",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Ready to fill",
+            "note": "id | name; zero rows",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-insert": {
+    "id": "sql-insert",
+    "term": "INSERT INTO",
+    "definition": "INSERT INTO adds rows to a table. List the columns, then provide values in the same order. Commas can separate several complete rows.",
+    "analogy": "Like writing a new name and number on one line of the volunteer register.",
+    "proof": "Save Ana with id 1 and read the record back.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Empty register: id | name. Add a row: INSERT INTO volunteer (id, name) VALUES (1, 'Ana'). Saved record: 1 | Ana.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Empty register",
+            "note": "id | name",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Add a row",
+            "note": "INSERT INTO volunteer (id, name) VALUES (1, 'Ana')",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Saved record",
+            "note": "1 | Ana",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-update": {
+    "id": "sql-update",
+    "term": "UPDATE",
+    "definition": "UPDATE changes saved rows. SET names the field and its new value. WHERE selects which rows change; without WHERE, every row can change.",
+    "analogy": "Like correcting one numbered register entry instead of rewriting every volunteer name.",
+    "proof": "Change only volunteer 3 from Carlo to Carla.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Names before: 1 Ana; 2 Bela; 3 Carlo. Correct one record: SET name = 'Carla' WHERE id = 3. Names after: 1 Ana; 2 Bela; 3 Carla.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Names before",
+            "note": "1 Ana; 2 Bela; 3 Carlo",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Correct one record",
+            "note": "SET name = 'Carla' WHERE id = 3",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Names after",
+            "note": "1 Ana; 2 Bela; 3 Carla",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-delete": {
+    "id": "sql-delete",
+    "term": "DELETE FROM",
+    "definition": "DELETE FROM removes saved rows. WHERE selects the rows to remove. Without a WHERE condition, it removes every row from the table.",
+    "analogy": "Like crossing one departing volunteer off the register while keeping the others listed.",
+    "proof": "Remove volunteer 2 while keeping Carla and Ana.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Register before: 1 Ana; 2 Bela; 3 Carla. Remove one record: DELETE FROM volunteer WHERE id = 2. Register after: 1 Ana; 3 Carla.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Register before",
+            "note": "1 Ana; 2 Bela; 3 Carla",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Remove one record",
+            "note": "DELETE FROM volunteer WHERE id = 2",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Register after",
+            "note": "1 Ana; 3 Carla",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-like": {
+    "id": "sql-like",
+    "term": "LIKE",
+    "definition": "LIKE compares text with a pattern. The percent sign matches zero or more characters, so C% matches text beginning with C.",
+    "analogy": "Like finding names under the C tab of an alphabetical folder.",
+    "proof": "Show Carla by filtering names with the C% pattern.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Names available: Ana and Carla. Match a prefix: WHERE name LIKE 'C%'. Matching name: Carla.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Names available",
+            "note": "Ana and Carla",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Match a prefix",
+            "note": "WHERE name LIKE 'C%'",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Matching name",
+            "note": "Carla",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "sql-or": {
+    "id": "sql-or",
+    "term": "OR",
+    "definition": "OR keeps a row when either condition is true. A row is still included only once when both conditions match.",
+    "analogy": "Like admitting volunteers who have either a matching name badge or the organiser number.",
+    "proof": "Include organiser Ana alongside the names beginning with C.",
+    "visual": {
+      "kind": "diagram",
+      "diagram": {
+        "alt": "Two ways to qualify: Name starts with C; id is 1. Accept either condition: name LIKE 'C%' OR id = 1. Both volunteers: Carla and Ana.",
+        "columns": 3,
+        "nodes": [
+          {
+            "id": "before",
+            "label": "Two ways to qualify",
+            "note": "Name starts with C; id is 1",
+            "tone": "box"
+          },
+          {
+            "id": "action",
+            "label": "Accept either condition",
+            "note": "name LIKE 'C%' OR id = 1",
+            "tone": "accent"
+          },
+          {
+            "id": "after",
+            "label": "Both volunteers",
+            "note": "Carla and Ana",
+            "tone": "box"
+          }
+        ],
+        "arrows": [
+          {
+            "from": "before",
+            "to": "action"
+          },
+          {
+            "from": "action",
+            "to": "after"
+          }
+        ]
+      }
+    }
+  },
+  "nosql-document": {
+    "id": "nosql-document",
+    "term": "Document",
+    "definition": "A document groups named details about one thing. A collection holds related documents.",
+    "analogy": "A shop keeps one product card per item, together in a folder.",
+    "proof": "Read four product documents from the products collection.",
+    "visual": {
+      "kind": "live-demo",
+      "caption": "The store holds product documents. Find reads them without changing them.",
+      "files": {
+        "index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><style>body{font:16px system-ui,sans-serif;color:#172b35;background:#fff;padding:16px;margin:0}button{font:inherit;background:#164e63;color:#fff;border:2px solid #164e63;padding:10px;cursor:pointer}button:focus-visible{outline:3px solid #b45309;outline-offset:3px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;padding:12px}p{line-height:1.5}</style></head><body><p id=\"status\" role=\"status\">Before reading: the collection holds two product cards.</p><pre id=\"result\">[\n  {\n    &quot;name&quot;: &quot;Rice&quot;,\n    &quot;price&quot;: 55\n  },\n  {\n    &quot;name&quot;: &quot;Soap&quot;,\n    &quot;price&quot;: 25\n  }\n]</pre><button type=\"button\" id=\"run\">Read the products</button><script>document.getElementById(\"run\").addEventListener(\"click\",function(){document.getElementById(\"result\").textContent=\"[\\n  {\\n    \\\"name\\\": \\\"Rice\\\",\\n    \\\"price\\\": 55\\n  },\\n  {\\n    \\\"name\\\": \\\"Soap\\\",\\n    \\\"price\\\": 25\\n  }\\n]\";document.getElementById(\"status\").textContent=\"After find: both cards are returned.\";});</script></body></html>"
+      }
+    }
+  },
+  "nosql-projection": {
+    "id": "nosql-projection",
+    "term": "Projection",
+    "definition": "A projection chooses which details appear in each returned document.",
+    "analogy": "Copy only names from order slips when making a name list.",
+    "proof": "Return just the name from each product document.",
+    "visual": {
+      "kind": "live-demo",
+      "caption": "Projection changes the returned view; stored details remain available.",
+      "files": {
+        "index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><style>body{font:16px system-ui,sans-serif;color:#172b35;background:#fff;padding:16px;margin:0}button{font:inherit;background:#164e63;color:#fff;border:2px solid #164e63;padding:10px;cursor:pointer}button:focus-visible{outline:3px solid #b45309;outline-offset:3px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;padding:12px}p{line-height:1.5}</style></head><body><p id=\"status\" role=\"status\">The returned documents include names and prices.</p><pre id=\"result\">[\n  {\n    &quot;name&quot;: &quot;Rice&quot;,\n    &quot;price&quot;: 55\n  },\n  {\n    &quot;name&quot;: &quot;Soap&quot;,\n    &quot;price&quot;: 25\n  }\n]</pre><button type=\"button\" id=\"run\">Show names only</button><script>document.getElementById(\"run\").addEventListener(\"click\",function(){document.getElementById(\"result\").textContent=\"[\\n  {\\n    \\\"name\\\": \\\"Rice\\\"\\n  },\\n  {\\n    \\\"name\\\": \\\"Soap\\\"\\n  }\\n]\";document.getElementById(\"status\").textContent=\"The returned documents now include names only.\";});</script></body></html>"
+      }
+    }
+  },
+  "nosql-filter": {
+    "id": "nosql-filter",
+    "term": "Filter",
+    "definition": "A filter keeps documents whose details meet a condition. $gt means greater than.",
+    "analogy": "Keep only price tags above your chosen amount.",
+    "proof": "Return products with a price greater than 20.",
+    "visual": {
+      "kind": "live-demo",
+      "caption": "A price equal to the boundary is excluded by $gt.",
+      "files": {
+        "index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><style>body{font:16px system-ui,sans-serif;color:#172b35;background:#fff;padding:16px;margin:0}button{font:inherit;background:#164e63;color:#fff;border:2px solid #164e63;padding:10px;cursor:pointer}button:focus-visible{outline:3px solid #b45309;outline-offset:3px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;padding:12px}p{line-height:1.5}</style></head><body><p id=\"status\" role=\"status\">Three prices: above, equal to, and below 20.</p><pre id=\"result\">[\n  {\n    &quot;name&quot;: &quot;Rice&quot;,\n    &quot;price&quot;: 55\n  },\n  {\n    &quot;name&quot;: &quot;Sample&quot;,\n    &quot;price&quot;: 20\n  },\n  {\n    &quot;name&quot;: &quot;Salt&quot;,\n    &quot;price&quot;: 15\n  }\n]</pre><button type=\"button\" id=\"run\">Keep prices above 20</button><script>document.getElementById(\"run\").addEventListener(\"click\",function(){document.getElementById(\"result\").textContent=\"[\\n  {\\n    \\\"name\\\": \\\"Rice\\\",\\n    \\\"price\\\": 55\\n  }\\n]\";document.getElementById(\"status\").textContent=\"Only 55 is greater than 20. The price of 20 is excluded.\";});</script></body></html>"
+      }
+    }
+  },
+  "nosql-sort": {
+    "id": "nosql-sort",
+    "term": "Sort",
+    "definition": "Sort arranges results by a named detail. Use 1 for lowest first.",
+    "analogy": "Arrange price tags from cheapest to most expensive before choosing one.",
+    "proof": "Put the product prices in ascending order.",
+    "visual": {
+      "kind": "live-demo",
+      "caption": "A sort changes the order of documents, keeping their details intact.",
+      "files": {
+        "index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><style>body{font:16px system-ui,sans-serif;color:#172b35;background:#fff;padding:16px;margin:0}button{font:inherit;background:#164e63;color:#fff;border:2px solid #164e63;padding:10px;cursor:pointer}button:focus-visible{outline:3px solid #b45309;outline-offset:3px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;padding:12px}p{line-height:1.5}</style></head><body><p id=\"status\" role=\"status\">The prices are out of order.</p><pre id=\"result\">[\n  {\n    &quot;name&quot;: &quot;Rice&quot;,\n    &quot;price&quot;: 55\n  },\n  {\n    &quot;name&quot;: &quot;Soap&quot;,\n    &quot;price&quot;: 25\n  },\n  {\n    &quot;name&quot;: &quot;Coffee&quot;,\n    &quot;price&quot;: 40\n  }\n]</pre><button type=\"button\" id=\"run\">Sort by price</button><script>document.getElementById(\"run\").addEventListener(\"click\",function(){document.getElementById(\"result\").textContent=\"[\\n  {\\n    \\\"name\\\": \\\"Soap\\\",\\n    \\\"price\\\": 25\\n  },\\n  {\\n    \\\"name\\\": \\\"Coffee\\\",\\n    \\\"price\\\": 40\\n  },\\n  {\\n    \\\"name\\\": \\\"Rice\\\",\\n    \\\"price\\\": 55\\n  }\\n]\";document.getElementById(\"status\").textContent=\"The same documents now run from 25 to 55.\";});</script></body></html>"
+      }
+    }
+  },
+  "nosql-limit": {
+    "id": "nosql-limit",
+    "term": "Limit",
+    "definition": "Limit caps how many documents come back, after filtering and sorting.",
+    "analogy": "Read only the first card from an already sorted stack.",
+    "proof": "Return only the cheapest qualifying product.",
+    "visual": {
+      "kind": "live-demo",
+      "caption": "Limit uses the existing order; it does not choose the cheapest item itself.",
+      "files": {
+        "index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><style>body{font:16px system-ui,sans-serif;color:#172b35;background:#fff;padding:16px;margin:0}button{font:inherit;background:#164e63;color:#fff;border:2px solid #164e63;padding:10px;cursor:pointer}button:focus-visible{outline:3px solid #b45309;outline-offset:3px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;padding:12px}p{line-height:1.5}</style></head><body><p id=\"status\" role=\"status\">The results are already sorted by price.</p><pre id=\"result\">[\n  {\n    &quot;name&quot;: &quot;Soap&quot;,\n    &quot;price&quot;: 25\n  },\n  {\n    &quot;name&quot;: &quot;Coffee&quot;,\n    &quot;price&quot;: 40\n  },\n  {\n    &quot;name&quot;: &quot;Rice&quot;,\n    &quot;price&quot;: 55\n  }\n]</pre><button type=\"button\" id=\"run\">Keep the first result</button><script>document.getElementById(\"run\").addEventListener(\"click\",function(){document.getElementById(\"result\").textContent=\"[\\n  {\\n    \\\"name\\\": \\\"Soap\\\",\\n    \\\"price\\\": 25\\n  }\\n]\";document.getElementById(\"status\").textContent=\"Only the first sorted document remains.\";});</script></body></html>"
+      }
+    }
+  },
+  "nosql-equality": {
+    "id": "nosql-equality",
+    "term": "Equal condition",
+    "definition": "$eq keeps documents whose named detail matches the requested value exactly.",
+    "analogy": "Pick slips with the exact word pending stamped on them.",
+    "proof": "Find only deliveries with a pending status.",
+    "visual": {
+      "kind": "live-demo",
+      "caption": "An equal condition checks the complete value of the chosen detail.",
+      "files": {
+        "index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><style>body{font:16px system-ui,sans-serif;color:#172b35;background:#fff;padding:16px;margin:0}button{font:inherit;background:#164e63;color:#fff;border:2px solid #164e63;padding:10px;cursor:pointer}button:focus-visible{outline:3px solid #b45309;outline-offset:3px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;padding:12px}p{line-height:1.5}</style></head><body><p id=\"status\" role=\"status\">The deliveries have three different status values.</p><pre id=\"result\">[\n  {\n    &quot;name&quot;: &quot;Ana&quot;,\n    &quot;status&quot;: &quot;pending&quot;\n  },\n  {\n    &quot;name&quot;: &quot;Ben&quot;,\n    &quot;status&quot;: &quot;delivered&quot;\n  },\n  {\n    &quot;name&quot;: &quot;Cora&quot;,\n    &quot;status&quot;: &quot;in transit&quot;\n  }\n]</pre><button type=\"button\" id=\"run\">Keep pending deliveries</button><script>document.getElementById(\"run\").addEventListener(\"click\",function(){document.getElementById(\"result\").textContent=\"[\\n  {\\n    \\\"name\\\": \\\"Ana\\\",\\n    \\\"status\\\": \\\"pending\\\"\\n  }\\n]\";document.getElementById(\"status\").textContent=\"Only the exact pending status matches.\";});</script></body></html>"
+      }
+    }
+  },
+  "nosql-not-equal": {
+    "id": "nosql-not-equal",
+    "term": "Not equal condition",
+    "definition": "$ne keeps documents whose named detail differs from the requested value.",
+    "analogy": "Set aside finished slips; keep every other delivery state.",
+    "proof": "Find all deliveries whose status is not delivered.",
+    "visual": {
+      "kind": "live-demo",
+      "caption": "Not equal can keep several different values, instead of just one matching value.",
+      "files": {
+        "index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><style>body{font:16px system-ui,sans-serif;color:#172b35;background:#fff;padding:16px;margin:0}button{font:inherit;background:#164e63;color:#fff;border:2px solid #164e63;padding:10px;cursor:pointer}button:focus-visible{outline:3px solid #b45309;outline-offset:3px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;padding:12px}p{line-height:1.5}</style></head><body><p id=\"status\" role=\"status\">One delivery is finished; two are unfinished.</p><pre id=\"result\">[\n  {\n    &quot;name&quot;: &quot;Ana&quot;,\n    &quot;status&quot;: &quot;pending&quot;\n  },\n  {\n    &quot;name&quot;: &quot;Ben&quot;,\n    &quot;status&quot;: &quot;delivered&quot;\n  },\n  {\n    &quot;name&quot;: &quot;Cora&quot;,\n    &quot;status&quot;: &quot;in transit&quot;\n  }\n]</pre><button type=\"button\" id=\"run\">Exclude delivered</button><script>document.getElementById(\"run\").addEventListener(\"click\",function(){document.getElementById(\"result\").textContent=\"[\\n  {\\n    \\\"name\\\": \\\"Ana\\\",\\n    \\\"status\\\": \\\"pending\\\"\\n  },\\n  {\\n    \\\"name\\\": \\\"Cora\\\",\\n    \\\"status\\\": \\\"in transit\\\"\\n  }\\n]\";document.getElementById(\"status\").textContent=\"Pending and in transit both differ from delivered.\";});</script></body></html>"
+      }
+    }
+  },
+  "nosql-upper-bound": {
+    "id": "nosql-upper-bound",
+    "term": "Inclusive upper bound",
+    "definition": "$lte means less than or equal to. The boundary value stays included.",
+    "analogy": "A 60-peso spending cap allows a fee of exactly 60 pesos.",
+    "proof": "Return delivery fees at or below 60 pesos.",
+    "visual": {
+      "kind": "live-demo",
+      "caption": "The equal part of $lte keeps the fee on the boundary.",
+      "files": {
+        "index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><style>body{font:16px system-ui,sans-serif;color:#172b35;background:#fff;padding:16px;margin:0}button{font:inherit;background:#164e63;color:#fff;border:2px solid #164e63;padding:10px;cursor:pointer}button:focus-visible{outline:3px solid #b45309;outline-offset:3px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;padding:12px}p{line-height:1.5}</style></head><body><p id=\"status\" role=\"status\">One fee is exactly 60, one below, and one above.</p><pre id=\"result\">[\n  {\n    &quot;name&quot;: &quot;Ana&quot;,\n    &quot;fee&quot;: 60\n  },\n  {\n    &quot;name&quot;: &quot;Ben&quot;,\n    &quot;fee&quot;: 45\n  },\n  {\n    &quot;name&quot;: &quot;Cora&quot;,\n    &quot;fee&quot;: 80\n  }\n]</pre><button type=\"button\" id=\"run\">Keep fees at most 60</button><script>document.getElementById(\"run\").addEventListener(\"click\",function(){document.getElementById(\"result\").textContent=\"[\\n  {\\n    \\\"name\\\": \\\"Ana\\\",\\n    \\\"fee\\\": 60\\n  },\\n  {\\n    \\\"name\\\": \\\"Ben\\\",\\n    \\\"fee\\\": 45\\n  }\\n]\";document.getElementById(\"status\").textContent=\"Both 60 and 45 meet the cap; 80 does not.\";});</script></body></html>"
+      }
+    }
+  },
+  "nosql-and": {
+    "id": "nosql-and",
+    "term": "All conditions",
+    "definition": "$and keeps a document only when every listed condition is true.",
+    "analogy": "Accept a delivery slip only if both its location and budget qualify.",
+    "proof": "Keep Cebu deliveries with fees at or below 60 pesos.",
+    "visual": {
+      "kind": "live-demo",
+      "caption": "Both conditions must match the same document.",
+      "files": {
+        "index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><style>body{font:16px system-ui,sans-serif;color:#172b35;background:#fff;padding:16px;margin:0}button{font:inherit;background:#164e63;color:#fff;border:2px solid #164e63;padding:10px;cursor:pointer}button:focus-visible{outline:3px solid #b45309;outline-offset:3px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;padding:12px}p{line-height:1.5}</style></head><body><p id=\"status\" role=\"status\">Some deliveries meet only the city or only the budget condition.</p><pre id=\"result\">[\n  {\n    &quot;name&quot;: &quot;Ana&quot;,\n    &quot;city&quot;: &quot;Cebu&quot;,\n    &quot;fee&quot;: 60\n  },\n  {\n    &quot;name&quot;: &quot;Ben&quot;,\n    &quot;city&quot;: &quot;Mandaue&quot;,\n    &quot;fee&quot;: 45\n  },\n  {\n    &quot;name&quot;: &quot;Cora&quot;,\n    &quot;city&quot;: &quot;Cebu&quot;,\n    &quot;fee&quot;: 80\n  }\n]</pre><button type=\"button\" id=\"run\">Require Cebu and fee at most 60</button><script>document.getElementById(\"run\").addEventListener(\"click\",function(){document.getElementById(\"result\").textContent=\"[\\n  {\\n    \\\"name\\\": \\\"Ana\\\",\\n    \\\"city\\\": \\\"Cebu\\\",\\n    \\\"fee\\\": 60\\n  }\\n]\";document.getElementById(\"status\").textContent=\"Only Ana's delivery meets both conditions together.\";});</script></body></html>"
+      }
+    }
+  },
+  "nosql-or": {
+    "id": "nosql-or",
+    "term": "Any condition",
+    "definition": "$or keeps a document when at least one listed condition is true.",
+    "analogy": "Accept a route slip for either of the two cities you visit.",
+    "proof": "Keep deliveries in either Cebu or Mandaue.",
+    "visual": {
+      "kind": "live-demo",
+      "caption": "A document needs one matching condition, not both.",
+      "files": {
+        "index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><style>body{font:16px system-ui,sans-serif;color:#172b35;background:#fff;padding:16px;margin:0}button{font:inherit;background:#164e63;color:#fff;border:2px solid #164e63;padding:10px;cursor:pointer}button:focus-visible{outline:3px solid #b45309;outline-offset:3px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;padding:12px}p{line-height:1.5}</style></head><body><p id=\"status\" role=\"status\">The slips belong to three cities.</p><pre id=\"result\">[\n  {\n    &quot;name&quot;: &quot;Ana&quot;,\n    &quot;city&quot;: &quot;Cebu&quot;\n  },\n  {\n    &quot;name&quot;: &quot;Ben&quot;,\n    &quot;city&quot;: &quot;Mandaue&quot;\n  },\n  {\n    &quot;name&quot;: &quot;Dino&quot;,\n    &quot;city&quot;: &quot;Lapu-Lapu&quot;\n  }\n]</pre><button type=\"button\" id=\"run\">Allow Cebu or Mandaue</button><script>document.getElementById(\"run\").addEventListener(\"click\",function(){document.getElementById(\"result\").textContent=\"[\\n  {\\n    \\\"name\\\": \\\"Ana\\\",\\n    \\\"city\\\": \\\"Cebu\\\"\\n  },\\n  {\\n    \\\"name\\\": \\\"Ben\\\",\\n    \\\"city\\\": \\\"Mandaue\\\"\\n  }\\n]\";document.getElementById(\"status\").textContent=\"Cebu and Mandaue each match one allowed condition.\";});</script></body></html>"
+      }
+    }
+  },
+  "nosql-in": {
+    "id": "nosql-in",
+    "term": "Value list condition",
+    "definition": "$in checks whether a named detail matches any value in a list.",
+    "analogy": "Compare a delivery's city with a written list of allowed stops.",
+    "proof": "Keep deliveries whose city is Cebu or Lapu-Lapu.",
+    "visual": {
+      "kind": "live-demo",
+      "caption": "A single detail is compared with each allowed value.",
+      "files": {
+        "index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><style>body{font:16px system-ui,sans-serif;color:#172b35;background:#fff;padding:16px;margin:0}button{font:inherit;background:#164e63;color:#fff;border:2px solid #164e63;padding:10px;cursor:pointer}button:focus-visible{outline:3px solid #b45309;outline-offset:3px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;padding:12px}p{line-height:1.5}</style></head><body><p id=\"status\" role=\"status\">The allowed list is Cebu and Lapu-Lapu.</p><pre id=\"result\">[\n  {\n    &quot;name&quot;: &quot;Ana&quot;,\n    &quot;city&quot;: &quot;Cebu&quot;\n  },\n  {\n    &quot;name&quot;: &quot;Ben&quot;,\n    &quot;city&quot;: &quot;Mandaue&quot;\n  },\n  {\n    &quot;name&quot;: &quot;Dino&quot;,\n    &quot;city&quot;: &quot;Lapu-Lapu&quot;\n  }\n]</pre><button type=\"button\" id=\"run\">Use the revised city list</button><script>document.getElementById(\"run\").addEventListener(\"click\",function(){document.getElementById(\"result\").textContent=\"[\\n  {\\n    \\\"name\\\": \\\"Ana\\\",\\n    \\\"city\\\": \\\"Cebu\\\"\\n  },\\n  {\\n    \\\"name\\\": \\\"Dino\\\",\\n    \\\"city\\\": \\\"Lapu-Lapu\\\"\\n  }\\n]\";document.getElementById(\"status\").textContent=\"Both listed cities match. Mandaue is excluded.\";});</script></body></html>"
+      }
+    }
+  },
+  "nosql-insert": {
+    "id": "nosql-insert",
+    "term": "Insert",
+    "definition": "Insert adds the documents you supply to a collection.",
+    "analogy": "Put a new order slip alongside the market's existing slips.",
+    "proof": "Insert Nena's order for two bags of eggplant.",
+    "visual": {
+      "kind": "live-demo",
+      "caption": "An insert adds documents. In these lessons, every run rebuilds the starting store.",
+      "files": {
+        "index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><style>body{font:16px system-ui,sans-serif;color:#172b35;background:#fff;padding:16px;margin:0}button{font:inherit;background:#164e63;color:#fff;border:2px solid #164e63;padding:10px;cursor:pointer}button:focus-visible{outline:3px solid #b45309;outline-offset:3px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;padding:12px}p{line-height:1.5}</style></head><body><p id=\"status\" role=\"status\">The collection starts with Lina's order.</p><pre id=\"result\">[\n  {\n    &quot;name&quot;: &quot;Lina&quot;,\n    &quot;item&quot;: &quot;Tomatoes&quot;,\n    &quot;quantity&quot;: 1\n  }\n]</pre><button type=\"button\" id=\"run\">Insert Nena's order</button><script>document.getElementById(\"run\").addEventListener(\"click\",function(){document.getElementById(\"result\").textContent=\"[\\n  {\\n    \\\"name\\\": \\\"Lina\\\",\\n    \\\"item\\\": \\\"Tomatoes\\\",\\n    \\\"quantity\\\": 1\\n  },\\n  {\\n    \\\"name\\\": \\\"Nena\\\",\\n    \\\"item\\\": \\\"Eggplant\\\",\\n    \\\"quantity\\\": 2\\n  }\\n]\";document.getElementById(\"status\").textContent=\"The collection now holds Lina's order and Nena's new order.\";});</script></body></html>"
+      }
+    }
+  },
+  "nosql-command-sequence": {
+    "id": "nosql-command-sequence",
+    "term": "Command sequence",
+    "definition": "Commands inside an outer list run in order. The last command supplies the result.",
+    "analogy": "File new slips first, then read every slip from the same folder.",
+    "proof": "Read the whole collection after inserting the new market orders.",
+    "visual": {
+      "kind": "live-demo",
+      "caption": "The second command sees documents added by the first during this run.",
+      "files": {
+        "index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><style>body{font:16px system-ui,sans-serif;color:#172b35;background:#fff;padding:16px;margin:0}button{font:inherit;background:#164e63;color:#fff;border:2px solid #164e63;padding:10px;cursor:pointer}button:focus-visible{outline:3px solid #b45309;outline-offset:3px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;padding:12px}p{line-height:1.5}</style></head><body><p id=\"status\" role=\"status\">Insert returns the two new documents only.</p><pre id=\"result\">[\n  {\n    &quot;name&quot;: &quot;Nena&quot;,\n    &quot;quantity&quot;: 2\n  },\n  {\n    &quot;name&quot;: &quot;Omar&quot;,\n    &quot;quantity&quot;: 4\n  }\n]</pre><button type=\"button\" id=\"run\">Insert, then find</button><script>document.getElementById(\"run\").addEventListener(\"click\",function(){document.getElementById(\"result\").textContent=\"[\\n  {\\n    \\\"name\\\": \\\"Lina\\\",\\n    \\\"quantity\\\": 1\\n  },\\n  {\\n    \\\"name\\\": \\\"Nena\\\",\\n    \\\"quantity\\\": 2\\n  },\\n  {\\n    \\\"name\\\": \\\"Omar\\\",\\n    \\\"quantity\\\": 4\\n  }\\n]\";document.getElementById(\"status\").textContent=\"The following find returns Lina's starting document and both new documents.\";});</script></body></html>"
+      }
+    }
+  },
+  "nosql-lower-bound": {
+    "id": "nosql-lower-bound",
+    "term": "Inclusive lower bound",
+    "definition": "$gte means greater than or equal to. It includes the minimum value.",
+    "analogy": "A minimum of three bags accepts orders for three bags or more.",
+    "proof": "Keep market orders of at least three bags.",
+    "visual": {
+      "kind": "live-demo",
+      "caption": "An inclusive minimum keeps the quantity equal to the boundary.",
+      "files": {
+        "index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><style>body{font:16px system-ui,sans-serif;color:#172b35;background:#fff;padding:16px;margin:0}button{font:inherit;background:#164e63;color:#fff;border:2px solid #164e63;padding:10px;cursor:pointer}button:focus-visible{outline:3px solid #b45309;outline-offset:3px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f1f5f9;padding:12px}p{line-height:1.5}</style></head><body><p id=\"status\" role=\"status\">The quantities are below, equal to, and above three.</p><pre id=\"result\">[\n  {\n    &quot;name&quot;: &quot;Nena&quot;,\n    &quot;quantity&quot;: 2\n  },\n  {\n    &quot;name&quot;: &quot;Sample&quot;,\n    &quot;quantity&quot;: 3\n  },\n  {\n    &quot;name&quot;: &quot;Omar&quot;,\n    &quot;quantity&quot;: 4\n  }\n]</pre><button type=\"button\" id=\"run\">Keep quantities at least 3</button><script>document.getElementById(\"run\").addEventListener(\"click\",function(){document.getElementById(\"result\").textContent=\"[\\n  {\\n    \\\"name\\\": \\\"Sample\\\",\\n    \\\"quantity\\\": 3\\n  },\\n  {\\n    \\\"name\\\": \\\"Omar\\\",\\n    \\\"quantity\\\": 4\\n  }\\n]\";document.getElementById(\"status\").textContent=\"Three and four qualify. Two is below the minimum.\";});</script></body></html>"
+      }
+    }
+  },
+
   // --- Learn HTML by Building a Sari-Sari Store Page ---
 
   element: {

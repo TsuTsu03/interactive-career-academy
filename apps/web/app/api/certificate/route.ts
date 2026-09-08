@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { capstones } from "@/content/capstones";
-import { curriculum } from "@/content/curriculum";
+import { frontEndCourses } from "@/content/curriculum";
 import { backendAvailability } from "@/lib/backend-config";
 import { courseSessionSnapshotFromStorage } from "@/lib/progress";
 import { validatePracticeState } from "@/lib/practice-progress";
@@ -31,7 +31,7 @@ async function readiness(user: AuthUser, accessToken: string) {
   const submissions = await responses[2]!.json() as { project_id: string; repository_url: string; live_url: string; verification_status: string }[];
   const profiles = await responses[3]!.json() as { display_name: string }[];
   const certificates = await responses[4]!.json() as CertificateRecord[];
-  const completedCourses = curriculum.courses.filter((course) => {
+  const completedCourses = frontEndCourses.filter((course) => {
     const row = courseRows.find((item) => item.course_id === course.id);
     const snapshot = row ? courseSessionSnapshotFromStorage(course, JSON.stringify(row.session)) : null;
     return snapshot?.completedStepIds.length === course.steps.length;
@@ -44,7 +44,7 @@ async function readiness(user: AuthUser, accessToken: string) {
   const submittedCapstones = capstones.filter((capstone) => submissions.some((item) => item.project_id === capstone.id && item.verification_status !== "rejected")).map((capstone) => capstone.id);
   const displayName = profiles[0]?.display_name ?? "";
   return {
-    ready: completedCourses.length === curriculum.courses.length && completedCapstones.length === capstones.length && submittedCapstones.length === capstones.length && displayName.length >= 2,
+    ready: completedCourses.length === frontEndCourses.length && completedCapstones.length === capstones.length && submittedCapstones.length === capstones.length && displayName.length >= 2,
     completedCourses,
     completedCapstones,
     submittedCapstones,

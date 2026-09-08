@@ -3260,3 +3260,18 @@ audit checked all 2,760 steps with zero errors and 28 reviewed legacy
 granularity warnings. The TSX runtime diagnostic, console check, and 1440px and
 375px workspace checks passed for all four new courses. TypeScript, ESLint,
 production build, and `git diff --check` are clean.
+
+## 2026-09-08 - Program C database backbone exemplars
+
+SQL now contains 30 cumulative steps across five projects. NoSQL contains 20
+steps across three projects, backed by a bounded JSON interpreter in an opaque
+sandbox. Five later computer courses are registered with project outlines and
+zero authored steps. Existing saved-progress keys and v1 certificate scope are
+preserved.
+
+The shared Node content gate executed all 50 database steps with zero errors.
+The real Chrome SQL and NoSQL harnesses checked all 50 with zero errors and
+zero warnings. Desktop and phone preview, grading, refresh preservation, and
+computer prerequisite surfaces passed. TypeScript, zero-warning ESLint, and
+the production build passed. The 28 existing structural warnings belong to
+older content; its complete browser harness was not repeated in this session.

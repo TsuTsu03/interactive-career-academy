@@ -1058,6 +1058,7 @@ export function Workspace({ course }: { course: Course }) {
                 files={files}
                 kind={step.kind}
                 sqlSeed={step.sqlSeed}
+                nosqlSeed={step.nosqlSeed}
                 flash={phase === "passed" ? "pass" : phase === "failed" ? "fail" : "none"}
               />
             </div>

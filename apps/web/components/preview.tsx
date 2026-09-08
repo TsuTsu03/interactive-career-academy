@@ -6,6 +6,7 @@ import { buildConsoleDocument, buildDocument } from "@/lib/grading";
 import type { StepKind } from "@/lib/lesson-ir";
 import { reactRunnerDocumentAsync } from "@/lib/react-runner";
 import { runLearnerSql, type SqlRunResult } from "@/lib/sql-runner";
+import { runLearnerNosql, type NosqlRunResult } from "@/lib/nosql-runner";
 
 const REACT_PREVIEW_TIMEOUT_MS = 4000;
 
@@ -33,14 +34,17 @@ export function Preview({
   kind,
   flash,
   sqlSeed,
+  nosqlSeed,
 }: {
   files: Record<string, string>;
   kind: StepKind;
   flash: "none" | "pass" | "fail";
   sqlSeed?: string;
+  nosqlSeed?: Record<string, Record<string, unknown>[]>;
 }) {
   if (kind === "react") return <ReactPreview files={files} flash={flash} />;
   if (kind === "sql") return <SqlPreview files={files} seed={sqlSeed ?? ""} flash={flash} />;
+  if (kind === "nosql") return <NosqlPreview files={files} seed={nosqlSeed} flash={flash} />;
   return <DocumentPreview files={files} kind={kind} flash={flash} />;
 }
 
@@ -50,7 +54,7 @@ function DocumentPreview({
   flash,
 }: {
   files: Record<string, string>;
-  kind: Exclude<StepKind, "react" | "sql">;
+  kind: Exclude<StepKind, "react" | "sql" | "nosql">;
   flash: "none" | "pass" | "fail";
 }) {
   const build = () =>
@@ -226,6 +230,39 @@ function SqlPreview({
             </tbody>
           </table>
         )}
+      </div>
+    </section>
+  );
+}
+
+function NosqlPreview({ files, seed, flash }: {
+  files: Record<string, string>;
+  seed?: Record<string, Record<string, unknown>[]>;
+  flash: "none" | "pass" | "fail";
+}) {
+  const query = files["query.json"] ?? "";
+  const [answered, setAnswered] = useState<{ query: string; seed: typeof seed; result: NosqlRunResult } | null>(null);
+  useEffect(() => {
+    if (!query.trim()) return;
+    let live = true;
+    const timer = window.setTimeout(() => {
+      void runLearnerNosql(seed ?? {}, query).then(result => {
+        if (live) setAnswered({ query, seed, result });
+      });
+    }, 400);
+    return () => { live = false; window.clearTimeout(timer); };
+  }, [query, seed]);
+  const result = answered?.query === query && answered.seed === seed ? answered.result : null;
+  const error = result?.seedError ?? result?.error;
+  return (
+    <section className="flex min-h-0 flex-1 flex-col bg-surface" aria-label="Document results">
+      <div className="flex h-10 shrink-0 items-center border-b border-outline-variant px-4 text-label-caps text-on-surface-variant">Documents</div>
+      <div className={`min-h-0 flex-1 overflow-auto p-3 sm:p-5 ${previewRing(flash)}`} aria-live="polite" aria-busy={Boolean(query.trim()) && !result}>
+        <p className="flex items-start gap-2 text-body-sm text-on-surface-variant">
+          <Icon name={error ? "help" : result ? "check" : "help"} size={16} />
+          <span>{!query.trim() ? "Write a JSON command to see its documents here." : error ? `${result?.seedError ? "Lesson problem" : "Check your command"}: ${error}` : result ? `Ran successfully. ${result.documents.length} document(s) returned.` : "Running your command…"}</span>
+        </p>
+        {result?.ok && <pre className="mt-3 whitespace-pre-wrap break-all font-mono text-body-sm text-on-surface">{JSON.stringify(result.documents, null, 2)}</pre>}
       </div>
     </section>
   );

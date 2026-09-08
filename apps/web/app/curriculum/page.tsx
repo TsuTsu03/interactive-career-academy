@@ -5,7 +5,7 @@ import { pageOpenGraph } from "@/lib/site";
 import { breadcrumbSchema, curriculumSchema } from "@/lib/structured-data";
 
 const DESCRIPTION =
-  "The full CodeDaddy path: ten courses from page structure and design judgment through CSS, JavaScript, the DOM, Tailwind, React, TypeScript, and testing.";
+  "Explore web design, front-end development, and browser database lessons, followed by planned courses for development on your own computer.";
 
 export const metadata: Metadata = {
   title: "Curriculum",

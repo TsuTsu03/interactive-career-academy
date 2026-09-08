@@ -1,6 +1,7 @@
 "use client";
 
 import { SiteFooter } from "@/components/site-footer";
+import { ComputerPrerequisite } from "@/components/computer-prerequisite";
 import { Icon, type IconName } from "@/components/icon";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -93,7 +94,13 @@ function technology(courseId: string, kind: StepKind): string {
   if (courseId === "design-foundations") return "Design";
   if (courseId === "typescript-react") return "TypeScript + React";
   if (courseId === "testing-devtools") return "Testing + DevTools";
-  if (kind === "sql") return courseId.includes("nosql") ? "NoSQL" : "SQL";
+  if (kind === "nosql") return "NoSQL";
+  if (kind === "sql") return "SQL";
+  if (courseId === "cli-git") return "Terminal + Git";
+  if (courseId === "node-basics") return "Node.js";
+  if (courseId === "api-basics") return "APIs";
+  if (courseId === "auth-security") return "Security";
+  if (courseId === "fullstack-integration") return "Full Stack";
   if (kind === "react") return "React";
   if (kind === "js") return "JavaScript";
   if (courseId.startsWith("tailwind")) return "Tailwind CSS";
@@ -219,7 +226,7 @@ export function CurriculumMap() {
       (candidate) => candidate.id === unmetRequirement
     );
     const percent = Math.round(
-      (courseProgress.completedCount / courseProgress.total) * 100
+      (courseProgress.completedCount / Math.max(1, courseProgress.total)) * 100
     );
 
     const content = (
@@ -253,13 +260,14 @@ export function CurriculumMap() {
             <p className="mb-6 max-w-[62ch] text-[15px] leading-relaxed text-on-surface-variant">
               {copy(course.summary)}
             </p>
+            {course.requiresComputer && <div className="mb-5 max-w-[62ch]"><ComputerPrerequisite /></div>}
 
             <div
               className={`mb-3 flex flex-wrap items-center gap-4 font-mono text-sm ${
                 active ? "text-primary" : "text-on-surface-variant"
               }`}
             >
-              <span>{copy(progressCopy(courseProgress))}</span>
+              <span>{course.steps.length ? copy(progressCopy(courseProgress)) : "Lessons are being prepared"}</span>
               <span>{totalXp(course)} XP</span>
               {locked && requiredCourse ? (
                 <span className="flex items-start gap-1.5">
@@ -273,12 +281,12 @@ export function CurriculumMap() {
           </div>
 
           <div className="mt-4 md:mt-0 md:w-48 md:shrink-0 md:text-right">
-            <CourseStatus
+            {course.steps.length === 0 ? <span className="inline-flex items-center gap-2 text-on-surface-variant"><Icon name="schedule" size={16} />In preparation</span> : <CourseStatus
               progress={courseProgress}
               locked={locked}
               ready={ready}
               active={active}
-            />
+            />}
           </div>
         </div>
 
@@ -288,7 +296,7 @@ export function CurriculumMap() {
           aria-label={`${course.title}: ${copy(progressCopy(courseProgress))}`}
           aria-valuenow={courseProgress.completedCount}
           aria-valuemin={0}
-          aria-valuemax={courseProgress.total}
+          aria-valuemax={Math.max(1, courseProgress.total)}
         >
           <div
             className={`h-full rounded-full transition-[width] duration-500 ${

@@ -7,7 +7,7 @@ import { Icon } from "@/components/icon";
 import { ProductNav } from "@/components/product-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { capstones } from "@/content/capstones";
-import { curriculum } from "@/content/curriculum";
+import { frontEndCourses } from "@/content/curriculum";
 import { useCurriculumProgress } from "@/hooks/use-curriculum-progress";
 import { loadPracticeState } from "@/lib/practice-progress";
 
@@ -39,7 +39,7 @@ export function CertificateScreen() {
   const [server, setServer] = useState<ServerStatus | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
-  const localCourses = ready ? curriculum.courses.filter((course) => progress[course.id].isComplete).length : 0;
+  const localCourses = ready ? frontEndCourses.filter((course) => progress[course.id].isComplete).length : 0;
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -70,7 +70,7 @@ export function CertificateScreen() {
   const certificate = server?.certificate;
   return <div className="flex min-h-[100dvh] flex-col bg-background text-on-background"><ProductNav current="certificate" /><main className="mx-auto w-full max-w-[980px] flex-1 px-margin-mobile py-8 md:px-margin-desktop md:py-12"><header className="max-w-[720px]"><p className="font-mono text-[11px] uppercase tracking-[0.25em] text-voltage">Certificate</p><h1 className="mt-4 font-display text-[38px] font-bold leading-tight text-chalk sm:text-[46px]">A completion record backed by your saved work.</h1><p className="mt-4 text-[17px] leading-relaxed text-ash">The Front-End Development Certificate of Completion requires ten guided courses, five independent capstones, five project-link records, and a saved certificate name.</p></header>
 
-  <section className="mt-8 grid gap-3 sm:grid-cols-3"><Requirement label="Guided courses" value={`${localCourses} / ${curriculum.courses.length}`} done={localCourses === curriculum.courses.length} /><Requirement label="Capstones" value={`${localCapstones} / ${capstones.length}`} done={localCapstones === capstones.length} /><Requirement label="Account submissions" value={`${server?.submittedCapstones?.length ?? 0} / ${capstones.length}`} done={server?.submittedCapstones?.length === capstones.length} /></section>
+  <section className="mt-8 grid gap-3 sm:grid-cols-3"><Requirement label="Guided courses" value={`${localCourses} / ${frontEndCourses.length}`} done={localCourses === frontEndCourses.length} /><Requirement label="Capstones" value={`${localCapstones} / ${capstones.length}`} done={localCapstones === capstones.length} /><Requirement label="Account submissions" value={`${server?.submittedCapstones?.length ?? 0} / ${capstones.length}`} done={server?.submittedCapstones?.length === capstones.length} /></section>
 
   <section className="certificate-block mt-6">
     <p className="mb-3 font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-plasma"><Icon name="workspace_premium" size={16} className="mr-1 inline-block align-text-bottom" />{certificate ? "Issued record" : "Certificate preview"}</p>

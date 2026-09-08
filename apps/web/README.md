@@ -2,6 +2,15 @@
 
 CodeDaddy is a browser-based, project-led front-end learning platform. Its ten-course v1 frontend teaches web design, HTML, CSS, JavaScript, browser APIs, Tailwind CSS, React, TypeScript, testing, and DevTools through small steps and practical projects rooted in everyday Filipino life.
 
+Program C has 30 SQL and 20 NoSQL exemplar steps. Both run and grade in the
+browser. Its five computer courses have planned projects and no steps while
+their grading model awaits the decision in `../../V2_RUNNER_DESIGN.md`.
+
+The Node content gate requires Node 24. It shares structural checks with the
+browser harness and executes SQL and NoSQL starts and solutions. It does not
+replace browser behavior checks for the other courses. Legacy granularity
+warnings remain warnings; database-course granularity violations are errors.
+
 ```bash
 npm --prefix apps/web run dev
 ```
@@ -171,7 +180,11 @@ From `apps/web`:
 ```bash
 npx tsc --noEmit
 npx eslint .
+npm run check:content
+node tools/check-content-regressions.mjs
+node tools/check-nosql-runtime.mjs
 npm run build
+node tools/v2-browser-audit.mjs
 node tools/browser-audit.mjs
 node tools/practice-browser-audit.mjs
 node tools/capstone-browser-audit.mjs
