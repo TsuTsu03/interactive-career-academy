@@ -212,6 +212,15 @@ if (mode === "snapshot") {
           return { ...rest, kind: "sql-value-equals", row: 0, column: 0, value };
         });
       }
+      const aliasMatch = scalarAggregate ? draft.solution.match(/\s+AS\s+([A-Za-z_][A-Za-z0-9_]*)\s+FROM\b/i) : null;
+      const withoutAlias = aliasMatch ? draft.solution.replace(/\s+AS\s+[A-Za-z_][A-Za-z0-9_]*(?=\s+FROM\b)/i, "") : "";
+      const compactSql = (value) => value.replace(/\s+/g, " ").trim().toLowerCase();
+      if (aliasMatch && compactSql(withoutAlias) === compactSql(start) && !draft.tests.some((test) => test?.kind === "sql-columns-equal")) {
+        draft.tests = draft.tests.filter((test) => test?.kind !== "sql-row-count").slice(0, 1);
+        const usedIds = new Set(draft.tests.map((test) => test?.id));
+        const id = usedIds.has("alias-heading") ? "result-heading" : "alias-heading";
+        draft.tests.push({ id, label: `The result column is named ${aliasMatch[1]}`, kind: "sql-columns-equal", columns: [aliasMatch[1]] });
+      }
       const testIds = new Set();
       for (const test of draft.tests) {
         if (!object(test) || typeof test.kind !== "string" || !test.kind.startsWith(isSql ? "sql-" : "nosql-") || !Object.hasOwn(fields, test.kind)) throw Error("Unsupported assertion family.");
