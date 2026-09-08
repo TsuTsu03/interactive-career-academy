@@ -1,5 +1,6 @@
 import "./content-loader.mjs";
 const { curriculum } = await import("../content/curriculum.ts");
+const { concepts } = await import("../content/concepts.ts");
 
 const sqlSectors = [
   ["sari-sari", "Sari-Sari Store", ["Rice", "Soap", "Cooking Oil", "Egg"]],
@@ -114,6 +115,42 @@ const nosqlTracks = [
     "6 query the groups collection instead and find all group documents; 7 project group id and label; 8 sort the two groups by label descending; 9 use $in to keep only group id 1; 10 project only the label from that one group. State plainly that relational SQL is usually better when many reports must combine changing referenced records"],
 ];
 
+function sqlExpected(track, project, batch) {
+  const [a, b, c, d] = project.names;
+  const likeNames = project.names.filter((name) => name[0].toLowerCase() === a[0].toLowerCase()).join(", ");
+  const expectations = {
+    "filtered report": [
+      `1 names ${a}, ${b}, ${c}, ${d}; 2 those names with amounts 8, 20, 2, 5; 3 ${a} 8, ${c} 2, ${d} 5; 4 ${c} 2, ${d} 5, ${a} 8; 5 ${c} 2, ${d} 5`,
+      "6 scalar value 3 in one output row; 7 the same value under the exact column priority_count; 8 Local 10 then Regional 25; 9 Regional 25 only; 10 Regional 25 then Local 10",
+    ],
+    "conditions report": [
+      `1 ${a} Open, ${b} Done, ${c} Open, ${d} Done; 2 ${a}, ${c}; 3 ${a}, ${c}, ${d}; 4 ${a}, ${c}; 5 ${b}, ${c}, ${d}`,
+      `6 ${likeNames}; 7 ${a} 8 and ${c} 2; 8 ${a} 8, ${b} 20, ${c} 2; 9 ${b} 20, ${a} 8, ${c} 2; 10 ${b} 20, ${a} 8`,
+    ],
+    "aggregate report": [
+      "1 scalar 4; 2 scalar 4 under record_count; 3 scalar 35 under total_amount; 4 scalar 8.75 under average_amount; 5 Local 2 and Regional 2",
+      "6 Local 10 and Regional 25; 7 Regional 25 then Local 10; 8 Regional 25 only; 9 Local 10 and Regional 25; 10 Regional 25 then Local 10",
+    ],
+    "inner join report": [
+      `1 ${a} 1, ${b} 2, ${c} 1, ${d} 2; 2 ${a} North Team, ${b} South Team, ${c} North Team, ${d} South Team; 3 add amounts 8, 20, 2, 5; 4 ${a} 8, ${c} 2, ${d} 5; 5 ${c} 2, ${d} 5, ${a} 8`,
+      "6 North Team 2 and South Team 2; 7 North Team 10 and South Team 25; 8 South Team 25 only; 9 South Team 25 then North Team 10; 10 South Team 25 only",
+    ],
+    "left join report": [
+      `1 four names with group ids 1, 2, 1, NULL; 2 labels North Team, South Team, North Team, NULL; 3 the last label becomes Unassigned; 4 ${d} only; 5 all four rows ordered North Team, North Team, South Team, Unassigned`,
+      "6 scalar 4; 7 North Team 2, South Team 1, Unassigned 1; 8 North Team 10, South Team 20, Unassigned 5; 9 North Team 10 and South Team 20; 10 South Team 20 then North Team 10",
+    ],
+    "data changes": [
+      `1 ids 1-4 with amounts 8, 20, 2, 5; 2 ids 1-5 including New Record 7; 3 New Record 9 only; 4 ${b} status Open only; 5 remaining ids 1, 2, 3, 5`,
+      `6 Backup Record id 6 amount 4; 7 that row with category Regional; 8 remaining ids 2, 3, 5, 6; 9 scalar 4; 10 ${c} 2, Backup Record 4, New Record 9, ${b} 20`,
+    ],
+    "schema and rows": [
+      `1 report exists with id and name; 2 report also has amount; 3 id 1 ${a} 8; 4 ids 1-3; 5 ${c} 2, ${a} 8, ${b} 20`,
+      `6 ${c} 2, ${d} 5, ${a} 8, ${b} 20; 7 ${c} 2, ${d} 5, ${a} 8, ${b} 18; 8 ${d} 5, ${a} 8, ${b} 18; 9 scalar 3; 10 ids 1 ${a} 8, 2 ${b} 18, 4 ${d} 5`,
+    ],
+  };
+  return expectations[track.name][batch - 1];
+}
+
 function sqlBrief(project, projectIndex, batch) {
   const track = sqlTracks[projectIndex % sqlTracks.length];
   const [a, b, c, d] = project.names;
@@ -124,7 +161,7 @@ function sqlBrief(project, projectIndex, batch) {
       ? "Use flat_record with columns id, name, category, amount."
       : "Use record with columns id, name, category, amount, status, group_id, plus group_info(id,label).";
   const facts = `${a}: id 1, Local, amount 8, Open, group 1; ${b}: id 2, Regional, amount 20, Done, group 2; ${c}: id 3, Local, amount 2, Open, group 1; ${d}: id 4, Regional, amount 5, Done, group ${track.missingGroup ? "NULL" : "2"}. Groups are 1 North Team and 2 South Team.${missing}`;
-  return `Build ${project.title}, a Philippine ${project.context.toLowerCase()} project. Track: ${track.name}. ${seedShape} Seed exactly these facts: ${facts} This is batch ${batch} of 2. Five exact goals: ${batch === 1 ? track.first : track.second}. Use these registered concepts where they first apply: ${track.concepts}. Every solution is the complete executable SQL file. Keep each change to at most three lines. Give actual seed-derived expected values, including every selected column. Make filtering, sorting, grouping, limiting, changes, and rollback observable. No explanation-only step. Do not add concepts outside the registered list.`;
+  return `Build ${project.title}, a Philippine ${project.context.toLowerCase()} project. Track: ${track.name}. ${seedShape} Seed exactly these facts: ${facts} This is batch ${batch} of 2. Five exact goals: ${batch === 1 ? track.first : track.second}. Required result facts for goals 1-5 in this batch: ${sqlExpected(track, project, batch)}. Copy these facts into behavioral tests; do not recalculate or omit matching rows. Use these registered concepts where they first apply: ${track.concepts}. Every solution is the complete executable SQL file. Keep each change to at most three lines. Give actual seed-derived expected values, including every selected column. Make filtering, sorting, grouping, limiting, changes, and rollback observable. No explanation-only step. Do not add concepts outside the registered list.`;
 }
 
 function nosqlBrief(project, projectIndex, batch) {
@@ -140,6 +177,20 @@ const campaigns = {
 };
 
 if (sqlProjects.length !== 72 || nosqlContexts.length !== 23) throw new Error("Campaign project counts changed unexpectedly");
+const registeredConceptIds = new Set(Object.keys(concepts));
+for (const track of sqlTracks) {
+  for (const conceptId of track.concepts.split(", ")) {
+    if (!registeredConceptIds.has(conceptId)) throw new Error(`Unknown campaign concept ${conceptId}`);
+  }
+  for (const batch of [1, 2]) {
+    if (!sqlExpected(track, sqlProjects[0], batch)) throw new Error(`Missing expected outcomes for ${track.name} batch ${batch}`);
+  }
+}
+for (const track of nosqlTracks) {
+  for (const conceptId of track[1].split(", ")) {
+    if (!registeredConceptIds.has(conceptId)) throw new Error(`Unknown campaign concept ${conceptId}`);
+  }
+}
 for (const [courseId, campaign] of Object.entries(campaigns)) {
   if (new Set(campaign.projects.map((project) => project.id)).size !== campaign.projects.length) throw new Error(`${courseId} has duplicate campaign project ids`);
   if (campaign.projects.some((project) => !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(project.id))) throw new Error(`${courseId} has an invalid campaign project id`);
