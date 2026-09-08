@@ -1159,3 +1159,265 @@ sqlCourse.steps.push(...([
     "projectId": "sari-sari-daily-record"
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: sari-sari-daily-record.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-sari-sari-daily-record-46",
+    "index": 46,
+    "task": "Select names beginning with 'R' using LIKE to match the first seeded item.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM sari_sari_items WHERE status = 'Done' OR amount < 3;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE sari_sari_items (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO sari_sari_items (id, name, category, amount, status, group_id) VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "sql-sari-sari-daily-record-46-result",
+        "label": "The result contains only 'Rice'",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice"
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use LIKE with 'R%' to match names starting with 'R'."
+      },
+      {
+        "level": 2,
+        "text": "Only 'Rice' should match; check the exact string value."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name FROM sari_sari_items WHERE name LIKE 'R%';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-daily-record",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-daily-record-47",
+    "index": 47,
+    "task": "Show name, category, and amount for all Local items.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name FROM sari_sari_items WHERE name LIKE 'R%';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE sari_sari_items (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO sari_sari_items (id, name, category, amount, status, group_id) VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "sql-sari-sari-daily-record-47-result",
+        "label": "The result contains Rice 8 and Cooking Oil 2",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice",
+            "Local",
+            8
+          ],
+          [
+            "Cooking Oil",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Filter for category = 'Local' to show only Local items."
+      },
+      {
+        "level": 2,
+        "text": "Include name, category, and amount in the SELECT."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM sari_sari_items WHERE category = 'Local';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-daily-record",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-daily-record-48",
+    "index": 48,
+    "task": "Include Local items OR items with amount = 20.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM sari_sari_items WHERE category = 'Local';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE sari_sari_items (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO sari_sari_items (id, name, category, amount, status, group_id) VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "sql-sari-sari-daily-record-48-result",
+        "label": "The result contains Rice 8, Soap 20, and Cooking Oil 2",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice",
+            "Local",
+            8
+          ],
+          [
+            "Soap",
+            "Regional",
+            20
+          ],
+          [
+            "Cooking Oil",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use OR to combine the two conditions: category = 'Local' OR amount = 20."
+      },
+      {
+        "level": 2,
+        "text": "Include all three rows: Rice, Soap, and Cooking Oil."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM sari_sari_items WHERE category = 'Local' OR amount = 20;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-daily-record",
+    "conceptIds": [
+      "sql-or"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-daily-record-49",
+    "index": 49,
+    "task": "Sort the three-row report by amount descending so Soap 20 comes first.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM sari_sari_items WHERE category = 'Local' OR amount = 20;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE sari_sari_items (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO sari_sari_items (id, name, category, amount, status, group_id) VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "sql-sari-sari-daily-record-49-result",
+        "label": "The result is sorted with Soap 20 first, then Rice 8, then Cooking Oil 2",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Soap",
+            "Regional",
+            20
+          ],
+          [
+            "Rice",
+            "Local",
+            8
+          ],
+          [
+            "Cooking Oil",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY amount DESC to sort by amount in descending order."
+      },
+      {
+        "level": 2,
+        "text": "Soap 20 must be first, then Rice 8, then Cooking Oil 2."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM sari_sari_items WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-daily-record",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-daily-record-50",
+    "index": 50,
+    "task": "Limit the sorted report to the first 2 rows so only Soap 20 and Rice 8 appear.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM sari_sari_items WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE sari_sari_items (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO sari_sari_items (id, name, category, amount, status, group_id) VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "sql-sari-sari-daily-record-50-result",
+        "label": "The result contains only Soap 20 and Rice 8",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Soap",
+            "Regional",
+            20
+          ],
+          [
+            "Rice",
+            "Local",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT 2 to restrict output to the first two rows."
+      },
+      {
+        "level": 2,
+        "text": "Only Soap 20 and Rice 8 should appear; Cooking Oil 2 is excluded."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM sari_sari_items WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC LIMIT 2;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-daily-record",
+    "conceptIds": [
+      "sql-limit"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
