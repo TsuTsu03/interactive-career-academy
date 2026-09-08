@@ -1647,3 +1647,246 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: sari-sari-service-queue.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-sari-sari-service-queue-6",
+    "index": 56,
+    "task": "Change the grouped calculation to SUM(amount) as total_amount, giving Local 10 and Regional 25.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, COUNT(*) AS record_count FROM record GROUP BY category;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "grouped-sums",
+        "label": "Local has total 10, Regional has total 25",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Local",
+            10
+          ],
+          [
+            "Regional",
+            25
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use SUM(amount) to add up the amounts for each category."
+      },
+      {
+        "level": 2,
+        "text": "Replace COUNT(*) with SUM(amount) and rename the alias to total_amount."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-service-queue",
+    "conceptIds": [
+      "sql-sum"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-service-queue-7",
+    "index": 57,
+    "task": "Sort both group totals descending so Regional 25 comes first.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "sorted-grouped-sums",
+        "label": "Regional 25 then Local 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Regional",
+            25
+          ],
+          [
+            "Local",
+            10
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY total_amount DESC to sort totals from highest to lowest."
+      },
+      {
+        "level": 2,
+        "text": "The result should show Regional first because 25 > 10."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category ORDER BY total_amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-service-queue",
+    "conceptIds": [
+      "sql-descending"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-service-queue-8",
+    "index": 58,
+    "task": "Keep only totals above 12 with HAVING, leaving only Regional 25.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category ORDER BY total_amount DESC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "filtered-grouped-sums",
+        "label": "Regional 25 only",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Regional",
+            25
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add HAVING SUM(amount) > 12 to filter groups with totals over 12."
+      },
+      {
+        "level": 2,
+        "text": "Only Regional remains because 25 > 12, but 10 is not."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category HAVING SUM(amount) > 12;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-service-queue",
+    "conceptIds": [
+      "sql-having"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-service-queue-9",
+    "index": 59,
+    "task": "Remove HAVING to restore both complete category totals: Local 10 and Regional 25.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category HAVING SUM(amount) > 12;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "restored-grouped-sums",
+        "label": "Local 10 and Regional 25",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Local",
+            10
+          ],
+          [
+            "Regional",
+            25
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Remove the HAVING clause to show all group totals again."
+      },
+      {
+        "level": 2,
+        "text": "The result should return both categories with their full sums."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-service-queue",
+    "conceptIds": []
+  },
+  {
+    "id": "sql-sari-sari-service-queue-10",
+    "index": 60,
+    "task": "Order those two restored totals from largest to smallest: Regional 25 then Local 10.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "final-sorted-grouped-sums",
+        "label": "Regional 25 then Local 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Regional",
+            25
+          ],
+          [
+            "Local",
+            10
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY total_amount DESC to sort the restored totals descending."
+      },
+      {
+        "level": 2,
+        "text": "Regional must appear first because 25 > 10."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category ORDER BY total_amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-service-queue",
+    "conceptIds": [
+      "sql-descending"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
