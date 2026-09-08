@@ -18,7 +18,8 @@ param(
   [ValidateSet("sql-basics", "nosql-basics")][string]$CourseId = "sql-basics",
   [string]$ProjectId = "",
   [ValidateRange(5, 10)][int]$BatchSize = 5,
-  [ValidateLength(0, 4000)][string]$BatchBrief = ""
+  [ValidateLength(0, 4000)][string]$BatchBrief = "",
+  [ValidateLength(0, 260)][string]$BatchBriefFile = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -28,6 +29,15 @@ $promptFile = Join-Path $repo "QWEN_V2_AUTHORING_PROMPT.md"
 $stopFile = Join-Path $repo "STOP_LOOP"
 $courseFile = if ($CourseId -eq "sql-basics") { "apps/web/content/sql-course.ts" } else { "apps/web/content/nosql-course.ts" }
 $allowed = @($courseFile, "apps/web/content/AUTHORING_LOG.md")
+$briefRoot = [System.IO.Path]::GetFullPath((Join-Path $repo ".qwen-v2-campaign"))
+if ($BatchBriefFile) {
+  if ($BatchBrief) { throw "Use BatchBrief or BatchBriefFile, not both." }
+  $resolvedBriefFile = [System.IO.Path]::GetFullPath($BatchBriefFile)
+  if (-not $resolvedBriefFile.StartsWith($briefRoot + [System.IO.Path]::DirectorySeparatorChar, [System.StringComparison]::OrdinalIgnoreCase)) { throw "BatchBriefFile must stay inside .qwen-v2-campaign." }
+  if (-not (Test-Path -LiteralPath $resolvedBriefFile -PathType Leaf)) { throw "BatchBriefFile does not exist." }
+  $BatchBrief = Get-Content -LiteralPath $resolvedBriefFile -Raw
+  if ($BatchBrief.Length -gt 4000) { throw "BatchBriefFile exceeds 4,000 characters." }
+}
 $projectArgument = if ($ProjectId) { $ProjectId } else { "__last_project__" }
 $briefArgument = if ($BatchBrief) { [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($BatchBrief)) } else { "__no_batch_brief__" }
 $logDir = Join-Path ([System.IO.Path]::GetTempPath()) ("codedaddy-qwen-v2-" + [guid]::NewGuid().ToString("N"))

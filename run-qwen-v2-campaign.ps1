@@ -103,10 +103,12 @@ try {
       break
     }
     $job = $progress.next
+    $briefFile = Join-Path $runtimeDir "current-brief.txt"
+    $job.brief | Set-Content -LiteralPath $briefFile -Encoding utf8
     $jobAccepted = $false
     for ($campaignAttempt = 1; $campaignAttempt -le $AttemptsPerBatch; $campaignAttempt++) {
       Write-Campaign "Starting $($job.courseId)/$($job.projectId) batch $($job.batch), campaign attempt $campaignAttempt."
-      & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $repo "run-qwen-v2-loop.ps1") -MaxIterations 1 -CommitEvery 1 -PauseSeconds 0 -Model $Model -CourseId $job.courseId -ProjectId $job.projectId -BatchSize 5 -BatchBrief $job.brief
+      & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $repo "run-qwen-v2-loop.ps1") -MaxIterations 1 -CommitEvery 1 -PauseSeconds 0 -Model $Model -CourseId $job.courseId -ProjectId $job.projectId -BatchSize 5 -BatchBriefFile $briefFile
       if ($LASTEXITCODE -eq 0) { $jobAccepted = $true; break }
       if (Test-Path -LiteralPath $stopFile) { break }
       Write-Campaign "Rejected $($job.courseId)/$($job.projectId) batch $($job.batch); exact rollback confirmed by child driver."
