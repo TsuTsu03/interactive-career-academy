@@ -1890,3 +1890,295 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: sari-sari-supplier-list.
+sqlCourse.projects.push({"id":"sari-sari-supplier-list","title":"Sari-Sari Store Supplier List"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-sari-sari-supplier-list-1",
+    "index": 61,
+    "task": "Read supplier names and group IDs from the record table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains supplier names and group IDs",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice",
+            1
+          ],
+          [
+            "Soap",
+            2
+          ],
+          [
+            "Cooking Oil",
+            1
+          ],
+          [
+            "Egg",
+            2
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Select the supplier name and group_id from the record table."
+      },
+      {
+        "level": 2,
+        "text": "Use qualified column names to avoid ambiguity."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-supplier-list",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-supplier-list-2",
+    "index": 62,
+    "task": "Join supplier names with group labels using an inner join.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains supplier names and group labels",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice",
+            "North Team"
+          ],
+          [
+            "Soap",
+            "South Team"
+          ],
+          [
+            "Cooking Oil",
+            "North Team"
+          ],
+          [
+            "Egg",
+            "South Team"
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Join the record table with group_info using matching group IDs."
+      },
+      {
+        "level": 2,
+        "text": "Use the ON clause to specify the join condition."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sari-sari-supplier-list",
+    "conceptIds": [
+      "sql-inner-join"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-supplier-list-3",
+    "index": 63,
+    "task": "Add the amount column to the supplier list.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains supplier names, group labels, and amounts",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice",
+            "North Team",
+            8
+          ],
+          [
+            "Soap",
+            "South Team",
+            20
+          ],
+          [
+            "Cooking Oil",
+            "North Team",
+            2
+          ],
+          [
+            "Egg",
+            "South Team",
+            5
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the amount column from the record table to the SELECT clause."
+      },
+      {
+        "level": 2,
+        "text": "Ensure the join condition remains unchanged."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sari-sari-supplier-list",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-supplier-list-4",
+    "index": 64,
+    "task": "Filter suppliers with amounts less than or equal to 10.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains only suppliers with amount <= 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice",
+            "North Team",
+            8
+          ],
+          [
+            "Cooking Oil",
+            "North Team",
+            2
+          ],
+          [
+            "Egg",
+            "South Team",
+            5
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter suppliers by amount."
+      },
+      {
+        "level": 2,
+        "text": "Use <= to include suppliers with exactly 10."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sari-sari-supplier-list",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-sari-sari-supplier-list-5",
+    "index": 65,
+    "task": "Sort the filtered suppliers by amount in ascending order.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice', 'Local', 8, 'Open', 1), (2, 'Soap', 'Regional', 20, 'Done', 2), (3, 'Cooking Oil', 'Local', 2, 'Open', 1), (4, 'Egg', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result is sorted by amount in ascending order",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cooking Oil",
+            "North Team",
+            2
+          ],
+          [
+            "Egg",
+            "South Team",
+            5
+          ],
+          [
+            "Rice",
+            "North Team",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add an ORDER BY clause to sort by amount."
+      },
+      {
+        "level": 2,
+        "text": "Use ASC for ascending order."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10 ORDER BY record.amount ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sari-sari-supplier-list",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
