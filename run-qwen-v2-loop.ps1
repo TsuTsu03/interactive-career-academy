@@ -112,6 +112,7 @@ if (mode === "snapshot") {
       "sql-row-contains": { row, resultIndex: index }, "sql-row-count": { count: index, resultIndex: index },
       "sql-columns-equal": { columns: { type: "array", items: scalarText }, resultIndex: index },
       "sql-value-equals": { row: index, column: index, value: cell, resultIndex: index }, "sql-table-exists": { table: scalarText },
+      "sql-table-columns": { table: scalarText, columns: { type: "array", items: scalarText } },
       "nosql-runs": {}, "nosql-doc-count": { count: index },
       "nosql-docs-equal": { documents: { type: "array", items: document }, ignoreOrder: boolean },
       "nosql-doc-contains": { document }, "nosql-field-equals": { document: index, field: scalarText, value: {} },
@@ -139,7 +140,7 @@ if (mode === "snapshot") {
       recentOutline: isNew ? course.steps.slice(-12).map(({ id }) => id) : course.steps.slice(-12).map(({ id, task }) => ({ id, task })),
       lastStep: isNew ? null : last, seed, registeredConcepts: registered, exemplar,
       allowedAssertions: testSchema.oneOf.map(spec => ({ required: spec.required, fields: spec.properties })),
-      constraint: "One requested project, exactly the requested number of useful cumulative steps. Do not copy previous project ids, tasks, or subject matter. Every solution is the COMPLETE query file, retaining all previous statements needed for the project; not just the changed statement. Use only the exact allowed assertion fields; table is legal only for sql-table-exists. For a scalar COUNT, SUM, or AVG answer use sql-value-equals at row 0 column 0; sql-row-count measures output rows and is normally 1 for a scalar aggregate. If the project is finished or a new concept is needed, return no batch instead of padding. When ownerBatchBrief is present, follow its supplied facts and step goals exactly; do not replace them with a different project.",
+      constraint: "One requested project, exactly the requested number of useful cumulative steps. Do not copy previous project ids, tasks, or subject matter. Every solution is the COMPLETE query file, retaining all previous statements needed for the project; not just the changed statement. Use only the exact allowed assertion fields; table is legal only for sql-table-exists and sql-table-columns. resultIndex is a 0-based index over ONLY the statements that returned rows; a solution containing one SELECT has a single result at index 0, so omit resultIndex there, and never name an index past the last row-returning statement. A CREATE TABLE or ALTER TABLE returns no rows, and a SELECT over an empty table returns no result set either, so a step whose solution only creates or reshapes a table must be asserted with sql-table-columns listing that table's columns in declaration order; sql-columns-equal and every row assertion are unsatisfiable there. For a scalar COUNT, SUM, or AVG answer use sql-value-equals at row 0 column 0; sql-row-count measures output rows and is normally 1 for a scalar aggregate. If the project is finished or a new concept is needed, return no batch instead of padding. When ownerBatchBrief is present, follow its supplied facts and step goals exactly; do not replace them with a different project.",
     };
     const priorReceipt = receiptPath.replace(/-attempt-2\.json$/, "-attempt-1.json");
     if (priorReceipt !== receiptPath) context.retryFeedback = [".log", ".gates.log"].filter(suffix => fs.existsSync(priorReceipt + suffix)).map(suffix => fs.readFileSync(priorReceipt + suffix, "utf8").slice(-1800)).join("\n");
@@ -235,6 +236,7 @@ if (mode === "snapshot") {
         if (test.kind === "sql-columns-equal" && (!Array.isArray(test.columns) || !test.columns.every(column => text(column, 100)))) throw Error("Invalid column list.");
         if (test.kind === "sql-value-equals" && (!integer(test.row) || !integer(test.column) || !Object.hasOwn(test, "value"))) throw Error("Invalid cell assertion.");
         if (test.kind === "sql-table-exists" && !text(test.table, 100)) throw Error("Missing table.");
+        if (test.kind === "sql-table-columns" && (!text(test.table, 100) || !Array.isArray(test.columns) || !test.columns.every(column => text(column, 100)))) throw Error("Invalid table column list.");
         if (test.kind === "nosql-docs-equal" && (!Array.isArray(test.documents) || !test.documents.every(object))) throw Error("documents must be objects.");
         if (test.kind === "nosql-doc-contains" && !object(test.document)) throw Error("document must be an object.");
         if (test.kind === "nosql-field-equals" && (!integer(test.document) || !text(test.field, 100) || !Object.hasOwn(test, "value"))) throw Error("Invalid field assertion.");

@@ -323,6 +323,15 @@ export type TestSpec =
     }
   /** The named table exists after the statement ran. For CREATE TABLE steps. */
   | { id: string; label: Copy; kind: "sql-table-exists"; table: string }
+  /**
+   * The named table has these columns, in this order, after the statement ran.
+   *
+   * This reads the schema, not a result set, so it is the only way to check a
+   * step whose whole job is shaping a table: a CREATE TABLE or an ALTER TABLE
+   * returns no rows, and a SELECT over an empty table returns no result set
+   * either, so every result-based assertion is unsatisfiable there.
+   */
+  | { id: string; label: Copy; kind: "sql-table-columns"; table: string; columns: string[] }
 
   // --- Document-store assertions: JSON data, never executable expressions. ---
   | { id: string; label: Copy; kind: "nosql-runs" }

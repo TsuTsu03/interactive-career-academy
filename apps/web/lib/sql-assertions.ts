@@ -33,6 +33,7 @@ export const SQL_KINDS = new Set([
   "sql-columns-equal",
   "sql-value-equals",
   "sql-table-exists",
+  "sql-table-columns",
 ]);
 
 export type SqlTestSpec = Extract<TestSpec, { kind: `sql-${string}` }>;
@@ -83,6 +84,24 @@ export function runSqlTest(spec: SqlTestSpec, run: SqlRunResult): TestResult {
           run.tables.length
             ? `There is no table called ${spec.table}. The database has: ${run.tables.join(", ")}.`
             : `There is no table called ${spec.table}. The database has no tables yet.`,
+        );
+  }
+
+  if (spec.kind === "sql-table-columns") {
+    const got = run.schema[spec.table];
+    if (!got) {
+      return fail(
+        run.tables.length
+          ? `There is no table called ${spec.table}. The database has: ${run.tables.join(", ")}.`
+          : `There is no table called ${spec.table}. The database has no tables yet.`,
+      );
+    }
+    const ok = got.length === spec.columns.length && got.every((c, i) => c === spec.columns[i]);
+    return ok
+      ? pass()
+      : fail(
+          `${spec.table} should have the columns ${spec.columns.join(", ")}, ` +
+            `but it has ${got.length ? got.join(", ") : "none"}.`,
         );
   }
 
