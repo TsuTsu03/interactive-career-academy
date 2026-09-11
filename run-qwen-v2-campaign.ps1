@@ -8,6 +8,8 @@ param(
   [ValidateRange(1, 8)][int]$AttemptsPerBatch = 4,
   [ValidateRange(1, 50)][int]$PushEvery = 10,
   [ValidateRange(0, 60)][int]$PauseSeconds = 5,
+  [ValidateRange(30, 3600)][int]$RetryPauseSeconds = 300,
+  [ValidateRange(1, 100)][int]$StuckResetEvery = 10,
   [string]$Model = "qwen/qwen3-vl-8b"
 )
 
@@ -21,6 +23,11 @@ $stopFile = Join-Path $repo "STOP_LOOP"
 $lms = Join-Path $env:USERPROFILE ".lmstudio\bin\lms.exe"
 $accepted = 0
 $sincePush = 0
+# Batches that used up their attempts this run. A stuck batch is skipped rather
+# than fatal, so the campaign keeps making progress on the other course instead
+# of stopping the whole run on one bad batch.
+$stuck = @{}
+$sinceStuckReset = 0
 $failed = $false
 $serverStarted = $false
 $modelLoaded = $false
@@ -48,6 +55,8 @@ function Save-State($Progress, [string]$Status, [string]$Detail) {
     nosql = $Progress.nosql
   } | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $stateFile -Encoding utf8
 }
+
+function Get-JobKey($Job) { "{0}|{1}|{2}" -f $Job.courseId, $Job.projectId, $Job.batch }
 
 function Push-Checkpoint {
   if ((& git -c "safe.directory=$repo" branch --show-current) -ne "codex/v2-backbone") { throw "Refusing to push outside codex/v2-backbone." }
@@ -102,7 +111,21 @@ try {
       Write-Campaign "Stopped after $accepted accepted batches for stability review."
       break
     }
-    $job = $progress.next
+    $available = @()
+    foreach ($candidate in @($progress.sql, $progress.nosql)) {
+      if ($candidate -and -not $candidate.complete) { $available += $candidate }
+    }
+    $job = $null
+    foreach ($candidate in $available) {
+      if (-not $stuck.ContainsKey((Get-JobKey $candidate))) { $job = $candidate; break }
+    }
+    if (-not $job) {
+      Write-Campaign "Every available batch failed this run. Clearing the skip list and retrying after $RetryPauseSeconds seconds."
+      Save-State $progress "running" "All available batches were skipped; waiting before another pass."
+      $stuck = @{}
+      Start-Sleep -Seconds $RetryPauseSeconds
+      continue
+    }
     $briefFile = Join-Path $runtimeDir "current-brief.txt"
     $job.brief | Set-Content -LiteralPath $briefFile -Encoding utf8
     $jobAccepted = $false
@@ -113,9 +136,19 @@ try {
       if (Test-Path -LiteralPath $stopFile) { break }
       Write-Campaign "Rejected $($job.courseId)/$($job.projectId) batch $($job.batch); exact rollback confirmed by child driver."
     }
-    if (-not $jobAccepted) { throw "Batch failed $AttemptsPerBatch campaign attempts: $($job.courseId)/$($job.projectId) batch $($job.batch)." }
+    if (-not $jobAccepted) {
+      if (Test-Path -LiteralPath $stopFile) { continue }
+      $stuck[(Get-JobKey $job)] = $true
+      Write-Campaign "Skipped $($job.courseId)/$($job.projectId) batch $($job.batch) after $AttemptsPerBatch attempts; moving to other available work."
+      Save-State $progress "running" "Skipped $($job.courseId)/$($job.projectId) batch $($job.batch) after $AttemptsPerBatch attempts."
+      if ($sincePush -gt 0) { Push-Checkpoint }
+      continue
+    }
     $accepted++
     $sincePush++
+    $sinceStuckReset++
+    # A skip is stochastic, not a verdict. Give every skipped batch another turn.
+    if ($sinceStuckReset -ge $StuckResetEvery) { $stuck = @{}; $sinceStuckReset = 0 }
     $progress = Read-Progress
     Save-State $progress "running" "Accepted $($job.courseId)/$($job.projectId) batch $($job.batch)."
     Write-Campaign "Accepted batch $accepted this run. SQL $($progress.sql.current)/750; NoSQL $($progress.nosql.current)/250."
