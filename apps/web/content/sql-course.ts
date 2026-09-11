@@ -4209,3 +4209,240 @@ sqlCourse.steps.push(...([
     "projectId": "palengke-daily-record"
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: palengke-daily-record.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-palengke-daily-record-106",
+    "index": 106,
+    "task": "Count the number of items with amount <= 10 and check the scalar value 3.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC LIMIT 2;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The count of items with amount <= 10 is 3",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 3
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count matching rows."
+      },
+      {
+        "level": 2,
+        "text": "The value must be 3, not the row count."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) FROM record WHERE amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-daily-record",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-palengke-daily-record-107",
+    "index": 107,
+    "task": "Alias the count as priority_count and check that exact result column heading.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) FROM record WHERE amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The count is shown under the exact column priority_count",
+        "kind": "sql-columns-equal",
+        "columns": [
+          "priority_count"
+        ]
+      },
+      {
+        "id": "value",
+        "label": "The value under priority_count is 3",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 3
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use AS to rename the count column."
+      },
+      {
+        "level": 2,
+        "text": "The column must be named priority_count exactly."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) AS priority_count FROM record WHERE amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-daily-record",
+    "conceptIds": [
+      "sql-alias"
+    ]
+  },
+  {
+    "id": "sql-palengke-daily-record-108",
+    "index": 108,
+    "task": "Group by category and sum the amounts across all rows, giving Local 10 and Regional 25.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) AS priority_count FROM record WHERE amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The totals are Local 10 and Regional 25",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Local",
+            10
+          ],
+          [
+            "Regional",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use GROUP BY to group rows by category."
+      },
+      {
+        "level": 2,
+        "text": "Use SUM(amount) to add the amounts per group."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-daily-record",
+    "conceptIds": [
+      "sql-group-by"
+    ]
+  },
+  {
+    "id": "sql-palengke-daily-record-109",
+    "index": 109,
+    "task": "Keep only the Regional 25 total by using HAVING above 12.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Only Regional 25 remains",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Regional",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use HAVING to filter groups after grouping."
+      },
+      {
+        "level": 2,
+        "text": "Only Regional 25 has total > 12."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category HAVING SUM(amount) > 12;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-daily-record",
+    "conceptIds": [
+      "sql-having"
+    ]
+  },
+  {
+    "id": "sql-palengke-daily-record-110",
+    "index": 110,
+    "task": "Lower HAVING to above 8 to restore both totals and sort them largest first so Regional 25 comes before Local 10.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category HAVING SUM(amount) > 12;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Regional 25 then Local 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Regional",
+            25
+          ],
+          [
+            "Local",
+            10
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Lower HAVING to 8 to include both groups."
+      },
+      {
+        "level": 2,
+        "text": "Use ORDER BY total_amount DESC to sort largest first."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category HAVING SUM(amount) > 8 ORDER BY total_amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-daily-record",
+    "conceptIds": [
+      "sql-descending"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
