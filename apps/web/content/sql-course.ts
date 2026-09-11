@@ -3954,3 +3954,258 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: palengke-daily-record.
+sqlCourse.projects.push({"id":"palengke-daily-record","title":"Palengke Stall Daily Record"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-palengke-daily-record-101",
+    "index": 101,
+    "task": "Select only the item names from the record table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows all item names",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Tomatoes"
+          ],
+          [
+            "Eggplant"
+          ],
+          [
+            "Carrots"
+          ],
+          [
+            "Cabbage"
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the field the requested report needs."
+      },
+      {
+        "level": 2,
+        "text": "Read the named fields from the example data."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-daily-record"
+  },
+  {
+    "id": "sql-palengke-daily-record-102",
+    "index": 102,
+    "task": "Add the amount field to the report.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows names and amounts",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Tomatoes",
+            8
+          ],
+          [
+            "Eggplant",
+            20
+          ],
+          [
+            "Carrots",
+            2
+          ],
+          [
+            "Cabbage",
+            5
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the amount field to the report."
+      },
+      {
+        "level": 2,
+        "text": "Use the exact field name from the schema."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-daily-record"
+  },
+  {
+    "id": "sql-palengke-daily-record-103",
+    "index": 103,
+    "task": "Filter the report to show only items with amount <= 10.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only items with amount <= 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Tomatoes",
+            8
+          ],
+          [
+            "Carrots",
+            2
+          ],
+          [
+            "Cabbage",
+            5
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter by amount."
+      },
+      {
+        "level": 2,
+        "text": "Use <= to include items with amount 10 or less."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-daily-record"
+  },
+  {
+    "id": "sql-palengke-daily-record-104",
+    "index": 104,
+    "task": "Sort the filtered report by amount ascending.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report sorts items by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Carrots",
+            2
+          ],
+          [
+            "Cabbage",
+            5
+          ],
+          [
+            "Tomatoes",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY amount ASC to sort by amount ascending."
+      },
+      {
+        "level": 2,
+        "text": "The order must be exact: Carrots, Cabbage, Tomatoes."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-daily-record"
+  },
+  {
+    "id": "sql-palengke-daily-record-105",
+    "index": 105,
+    "task": "Limit the sorted report to two rows for priority.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report limits to two rows for priority",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Carrots",
+            2
+          ],
+          [
+            "Cabbage",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT 2 to restrict output to two rows."
+      },
+      {
+        "level": 2,
+        "text": "The first two rows must be Carrots and Cabbage."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC LIMIT 2;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-daily-record"
+  }
+] satisfies typeof sqlCourse.steps));
