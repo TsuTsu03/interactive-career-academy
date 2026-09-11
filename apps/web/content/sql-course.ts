@@ -3692,3 +3692,265 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: palengke-inventory-report.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-palengke-inventory-report-6",
+    "index": 96,
+    "task": "Insert the fourth item (Cabbage, id 4) into the report and select all.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "four-items-selected",
+        "label": "The report shows all four items: Tomatoes 8, Eggplant 20, Carrots 2, Cabbage 5",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Tomatoes",
+            8
+          ],
+          [
+            2,
+            "Eggplant",
+            20
+          ],
+          [
+            3,
+            "Carrots",
+            2
+          ],
+          [
+            4,
+            "Cabbage",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add id 4 to the WHERE clause in the INSERT to include Cabbage."
+      },
+      {
+        "level": 2,
+        "text": "Verify that all four items appear in the SELECT output."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-inventory-report",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-palengke-inventory-report-7",
+    "index": 97,
+    "task": "Update the report row for id 2 (Eggplant) to set its amount to 18.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "eggplant-updated",
+        "label": "Eggplant amount is now 18, others unchanged",
+        "kind": "sql-row-contains",
+        "row": [
+          2,
+          "Eggplant",
+          18
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use UPDATE report SET amount = 18 WHERE id = 2 to change Eggplant's amount."
+      },
+      {
+        "level": 2,
+        "text": "Verify that Eggplant's amount is 18 in the final SELECT."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nUPDATE report SET amount = 18 WHERE id = 2;\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-inventory-report",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-palengke-inventory-report-8",
+    "index": 98,
+    "task": "Delete the report row for id 3 (Carrots) and select remaining rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nUPDATE report SET amount = 18 WHERE id = 2;\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "carrots-deleted",
+        "label": "Carrots row is gone; remaining rows are Tomatoes 8, Eggplant 18, Cabbage 5",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Tomatoes",
+            8
+          ],
+          [
+            2,
+            "Eggplant",
+            18
+          ],
+          [
+            4,
+            "Cabbage",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use DELETE FROM report WHERE id = 3 to remove Carrots."
+      },
+      {
+        "level": 2,
+        "text": "Verify that Carrots is missing and the other three rows remain."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-inventory-report",
+    "conceptIds": [
+      "sql-delete"
+    ]
+  },
+  {
+    "id": "sql-palengke-inventory-report-9",
+    "index": 99,
+    "task": "Count the number of rows remaining in the report table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "count-three-rows",
+        "label": "The report has exactly three rows remaining",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 3
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use SELECT COUNT(*) FROM report to count remaining rows."
+      },
+      {
+        "level": 2,
+        "text": "Verify that the scalar result is 3."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT COUNT(*) FROM report;"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "palengke-inventory-report",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-palengke-inventory-report-10",
+    "index": 100,
+    "task": "Show the report rows ordered by id ascending.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT COUNT(*) FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "ordered-by-id",
+        "label": "Rows are sorted by id: Tomatoes 8, Eggplant 18, Cabbage 5",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Tomatoes",
+            8
+          ],
+          [
+            2,
+            "Eggplant",
+            18
+          ],
+          [
+            4,
+            "Cabbage",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY id ASC to the final SELECT to sort by id ascending."
+      },
+      {
+        "level": 2,
+        "text": "Verify that id 1 comes first, then id 2, then id 4."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY id ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-inventory-report",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
