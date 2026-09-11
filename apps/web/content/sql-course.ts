@@ -4697,3 +4697,265 @@ sqlCourse.steps.push(...([
     "projectId": "palengke-service-queue"
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: palengke-service-queue.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-palengke-service-queue-6",
+    "index": 116,
+    "task": "Select names beginning with the first letter of the first seeded name using LIKE.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Done' OR amount < 3;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report includes only names starting with 'T'",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Tomatoes"
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use LIKE to match the first letter of the name: 'T%'"
+      },
+      {
+        "level": 2,
+        "text": "Only rows matching the pattern should appear."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name FROM record WHERE name LIKE 'T%';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-service-queue",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-palengke-service-queue-7",
+    "index": 117,
+    "task": "Show name, category, and amount for Local rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name FROM record WHERE name LIKE 'T%';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report includes only Local rows with name, category, and amount",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Tomatoes",
+            "Local",
+            8
+          ],
+          [
+            "Carrots",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Select the three fields: name, category, amount"
+      },
+      {
+        "level": 2,
+        "text": "Filter for category = 'Local'"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-service-queue",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-palengke-service-queue-8",
+    "index": 118,
+    "task": "Include Local rows OR amount = 20.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report includes Local rows and the row with amount = 20",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Tomatoes",
+            "Local",
+            8
+          ],
+          [
+            "Carrots",
+            "Local",
+            2
+          ],
+          [
+            "Eggplant",
+            "Regional",
+            20
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use OR to combine two conditions: category = 'Local' or amount = 20"
+      },
+      {
+        "level": 2,
+        "text": "Only rows matching either condition should appear."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-service-queue",
+    "conceptIds": [
+      "sql-or"
+    ]
+  },
+  {
+    "id": "sql-palengke-service-queue-9",
+    "index": 119,
+    "task": "Sort that three-row report by amount descending so the 20 row comes first.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report is sorted by amount descending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Eggplant",
+            "Regional",
+            20
+          ],
+          [
+            "Tomatoes",
+            "Local",
+            8
+          ],
+          [
+            "Carrots",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY amount DESC to sort by amount descending"
+      },
+      {
+        "level": 2,
+        "text": "The row with amount 20 should come first."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-service-queue",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  },
+  {
+    "id": "sql-palengke-service-queue-10",
+    "index": 120,
+    "task": "Limit it to the first 2 rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report is limited to the first 2 rows",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Eggplant",
+            "Regional",
+            20
+          ],
+          [
+            "Tomatoes",
+            "Local",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT 2 to restrict output to the first 2 rows"
+      },
+      {
+        "level": 2,
+        "text": "Only the first two rows should appear."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC LIMIT 2;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-service-queue",
+    "conceptIds": [
+      "sql-limit"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
