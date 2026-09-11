@@ -3327,3 +3327,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-11: Local Qwen authored sql-basics/palengke-delivery-log, steps 146-150; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
 
 - 2026-09-11: Local Qwen authored sql-basics/jeepney-inventory-report, steps 151-155; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-11: Local Qwen authored nosql-basics/sari-sari-stock, steps 26-30; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
