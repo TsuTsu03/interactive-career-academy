@@ -6490,3 +6490,280 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: jeepney-inventory-report.
+sqlCourse.projects.push({"id":"jeepney-inventory-report","title":"Jeepney Dispatch Inventory Report"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-jeepney-inventory-report-1",
+    "index": 151,
+    "task": "Select the id, name, and amount from the record table to start the jeepney inventory report.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The initial report shows all jeepney records with id, name, and amount",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Cubao",
+            8
+          ],
+          [
+            2,
+            "Quiapo",
+            20
+          ],
+          [
+            3,
+            "Divisoria",
+            2
+          ],
+          [
+            4,
+            "Marikina",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Start by selecting the id, name, and amount columns from the record table."
+      },
+      {
+        "level": 2,
+        "text": "This is the base query for the jeepney inventory report."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT id, name, amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-inventory-report",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-jeepney-inventory-report-2",
+    "index": 152,
+    "task": "Insert a new jeepney record with id 5, name 'New Record', category 'Local', amount 7, status 'Open', group_id 1, then read all rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT id, name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report now includes the new record with id 5 and amount 7",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Cubao",
+            8
+          ],
+          [
+            2,
+            "Quiapo",
+            20
+          ],
+          [
+            3,
+            "Divisoria",
+            2
+          ],
+          [
+            4,
+            "Marikina",
+            5
+          ],
+          [
+            5,
+            "New Record",
+            7
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert the new record using the INSERT INTO statement with the correct values."
+      },
+      {
+        "level": 2,
+        "text": "Then select all rows to verify the new record is included."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nSELECT id, name, amount FROM record;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "jeepney-inventory-report",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-jeepney-inventory-report-3",
+    "index": 153,
+    "task": "Update the amount of the new record (id 5) to 9, then read only that record.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nSELECT id, name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The new record's amount is updated to 9",
+        "kind": "sql-row-contains",
+        "row": [
+          5,
+          "New Record",
+          9
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Update the amount of the new record using the UPDATE statement with WHERE id = 5."
+      },
+      {
+        "level": 2,
+        "text": "Then select only the updated record to verify the change."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nSELECT id, name, amount FROM record WHERE id = 5;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "jeepney-inventory-report",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-jeepney-inventory-report-4",
+    "index": 154,
+    "task": "Update the status of the Quiapo record (id 2) to 'Open', then read only that record's id and status.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nSELECT id, name, amount FROM record WHERE id = 5;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The Quiapo record's status is updated to 'Open'",
+        "kind": "sql-row-contains",
+        "row": [
+          2,
+          "Quiapo",
+          "Open"
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Update the status of the Quiapo record using the UPDATE statement with WHERE id = 2."
+      },
+      {
+        "level": 2,
+        "text": "Then select only that record to verify the change."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nSELECT id, name, status FROM record WHERE id = 2;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "jeepney-inventory-report",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-jeepney-inventory-report-5",
+    "index": 155,
+    "task": "Delete the Marikina record (id 4), then read the remaining ids and names.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nSELECT id, name, status FROM record WHERE id = 2;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The Marikina record is deleted, and the remaining records are shown",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Cubao"
+          ],
+          [
+            2,
+            "Quiapo"
+          ],
+          [
+            3,
+            "Divisoria"
+          ],
+          [
+            5,
+            "New Record"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Delete the Marikina record using the DELETE statement with WHERE id = 4."
+      },
+      {
+        "level": 2,
+        "text": "Then select the remaining records to verify the deletion."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nSELECT id, name FROM record;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "jeepney-inventory-report",
+    "conceptIds": [
+      "sql-delete"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
