@@ -5430,3 +5430,295 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: palengke-community-schedule.
+sqlCourse.projects.push({"id":"palengke-community-schedule","title":"Palengke Stall Community Schedule"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-palengke-community-schedule-1",
+    "index": 131,
+    "task": "Read record.name and record.group_id with qualified names",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains record.name and record.group_id",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Tomatoes",
+            1
+          ],
+          [
+            "Eggplant",
+            2
+          ],
+          [
+            "Carrots",
+            1
+          ],
+          [
+            "Cabbage",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use qualified column names to select record.name and record.group_id."
+      },
+      {
+        "level": 2,
+        "text": "The solution selects only the two required fields from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-community-schedule",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-palengke-community-schedule-2",
+    "index": 132,
+    "task": "Join group_info on matching group ids and show record name plus group label",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains record.name and group_info.label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Tomatoes",
+            "North Team"
+          ],
+          [
+            "Eggplant",
+            "South Team"
+          ],
+          [
+            "Carrots",
+            "North Team"
+          ],
+          [
+            "Cabbage",
+            "South Team"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Join record with group_info using ON group_info.id = record.group_id."
+      },
+      {
+        "level": 2,
+        "text": "Select record.name and group_info.label to show the stall name and team label."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "palengke-community-schedule",
+    "conceptIds": [
+      "sql-inner-join"
+    ]
+  },
+  {
+    "id": "sql-palengke-community-schedule-3",
+    "index": 133,
+    "task": "Add record.amount to the joined result",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains record.name, group_info.label, and record.amount",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Tomatoes",
+            "North Team",
+            8
+          ],
+          [
+            "Eggplant",
+            "South Team",
+            20
+          ],
+          [
+            "Carrots",
+            "North Team",
+            2
+          ],
+          [
+            "Cabbage",
+            "South Team",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add record.amount to the SELECT list to include the stall's price."
+      },
+      {
+        "level": 2,
+        "text": "The solution retains the join and adds the amount field."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-community-schedule",
+    "conceptIds": [
+      "sql-qualified-column"
+    ]
+  },
+  {
+    "id": "sql-palengke-community-schedule-4",
+    "index": 134,
+    "task": "Filter joined rows to amount <= 10",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains only rows with amount <= 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Tomatoes",
+            "North Team",
+            8
+          ],
+          [
+            "Carrots",
+            "North Team",
+            2
+          ],
+          [
+            "Cabbage",
+            "South Team",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add WHERE record.amount <= 10 to filter rows by price."
+      },
+      {
+        "level": 2,
+        "text": "Only Tomatoes, Carrots, and Cabbage meet the condition."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-community-schedule",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-palengke-community-schedule-5",
+    "index": 135,
+    "task": "Sort filtered joined rows by amount ascending",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Tomatoes', 'Local', 8, 'Open', 1), (2, 'Eggplant', 'Regional', 20, 'Done', 2), (3, 'Carrots', 'Local', 2, 'Open', 1), (4, 'Cabbage', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result is sorted by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Carrots",
+            "North Team",
+            2
+          ],
+          [
+            "Cabbage",
+            "South Team",
+            5
+          ],
+          [
+            "Tomatoes",
+            "North Team",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY record.amount ASC to sort by price from lowest to highest."
+      },
+      {
+        "level": 2,
+        "text": "The sorted rows are Carrots (2), Cabbage (5), Tomatoes (8)."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10 ORDER BY record.amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-community-schedule",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
