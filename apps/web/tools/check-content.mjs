@@ -20,7 +20,7 @@ async function sqlEngine() {
 
 function executeSql(SQL, seed, sql) {
   const db = new SQL.Database();
-  const result = { ok: true, results: [], tables: [] };
+  const result = { ok: true, results: [], tables: [], schema: {} };
   try {
     try { db.run(seed); } catch (error) { return { ...result, ok: false, seedError: String(error) }; }
     try {
@@ -29,6 +29,10 @@ function executeSql(SQL, seed, sql) {
       }));
     } catch (error) { result.ok = false; result.error = String(error); }
     result.tables = db.exec("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name")[0]?.values.map(row => String(row[0])) ?? [];
+    // Column order per table, so schema-shaping steps have evidence to assert on.
+    for (const table of result.tables) {
+      result.schema[table] = db.exec("SELECT name FROM pragma_table_info(?)", [table])[0]?.values.map(row => String(row[0])) ?? [];
+    }
     return result;
   } finally { db.close(); }
 }
@@ -65,7 +69,7 @@ async function behaviour(steps) {
       if (phase === "start" && results.every(Boolean)) errors.push(`${step.id}: teaches-nothing: every test passes on start`);
       if (phase === "solution" && !results.every(Boolean)) {
         const failed = step.tests.filter((_, i) => !results[i]);
-        const actual = step.kind === "nosql" ? { documents: run.documents, collections: run.collections } : { results: run.results, tables: run.tables };
+        const actual = step.kind === "nosql" ? { documents: run.documents, collections: run.collections } : { results: run.results, tables: run.tables, schema: run.schema };
         errors.push(`${step.id}: solution-fails: ${failed.map(test => test.id).join(", ")}; expected ${JSON.stringify(failed).slice(0, 1200)}; received ${JSON.stringify(actual).slice(0, 1200)}`);
       }
     }

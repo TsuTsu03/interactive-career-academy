@@ -36,6 +36,12 @@ export interface SqlRunResult {
   results: SqlResultSet[];
   /** Table names present after the learner's SQL ran, sorted. */
   tables: string[];
+  /**
+   * Column names per table after the learner's SQL ran, in declaration order.
+   * A CREATE TABLE returns no rows, so this is the only evidence a step that
+   * shapes a table produced anything.
+   */
+  schema: Record<string, string[]>;
   /** Set when the seed itself failed. An authoring bug, never the learner's. */
   seedError?: string;
   /** Set when the learner's SQL threw or never finished. */
@@ -117,18 +123,26 @@ function runnerDocument(): string {
       }
 
       var tables = [];
+      var schema = {};
       try {
-        var schema = db.exec(
+        var listed = db.exec(
           "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
         );
-        if (schema.length) {
-          tables = schema[0].values.map(function (row) { return String(row[0]); });
+        if (listed.length) {
+          tables = listed[0].values.map(function (row) { return String(row[0]); });
+        }
+        for (var t = 0; t < tables.length; t++) {
+          // A bound parameter, so a table name can never be concatenated in.
+          var info = db.exec("SELECT name FROM pragma_table_info(?)", [tables[t]]);
+          schema[tables[t]] = info.length
+            ? info[0].values.map(function (row) { return String(row[0]); })
+            : [];
         }
       } catch (schemaErr) {
         // A failed schema read only means the tables list is empty.
       }
 
-      reply({ ok: !error, results: results, tables: tables, error: error });
+      reply({ ok: !error, results: results, tables: tables, schema: schema, error: error });
     } catch (err) {
       reply({
         ok: false,
@@ -148,6 +162,16 @@ function runnerDocument(): string {
  * @param seed  Lesson-authored SQL that builds the starting database.
  * @param sql   What the learner wrote.
  */
+/** Narrows the frame's reply to the declared shape. The frame is untrusted. */
+function plainSchema(value: unknown): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  if (!value || typeof value !== "object") return out;
+  for (const [table, columns] of Object.entries(value as Record<string, unknown>)) {
+    if (Array.isArray(columns)) out[table] = columns.map((c) => String(c));
+  }
+  return out;
+}
+
 export async function runLearnerSql(seed: string, sql: string): Promise<SqlRunResult> {
   const engine = await loadEngine();
 
@@ -199,6 +223,7 @@ export async function runLearnerSql(seed: string, sql: string): Promise<SqlRunRe
           ok: Boolean(data.ok),
           results: Array.isArray(data.results) ? (data.results as SqlResultSet[]) : [],
           tables: Array.isArray(data.tables) ? (data.tables as string[]) : [],
+          schema: plainSchema(data.schema),
           seedError: typeof data.seedError === "string" ? data.seedError : undefined,
           error: typeof data.error === "string" ? data.error : undefined,
         });
@@ -212,6 +237,7 @@ export async function runLearnerSql(seed: string, sql: string): Promise<SqlRunRe
         ok: false,
         results: [],
         tables: [],
+        schema: {},
         timedOut: true,
         error: "Your query did not finish. Check for a join with no matching condition.",
       });
