@@ -162,11 +162,12 @@ if (mode === "snapshot") {
     // five minutes - a limit AbortSignal.timeout cannot raise and this Node
     // exposes no way to configure. A slow model then fails every attempt with
     // HeadersTimeoutError. Streaming makes the headers arrive at once.
-    const body = { model, messages: [{ role: "system", content: prompt }, { role: "user", content: user }], temperature: 0.2, max_tokens: 6500, stream: true, response_format: { type: "json_schema", json_schema: { name: "curriculum_batch", strict: true, schema } } };
+    const body = { model, messages: [{ role: "system", content: prompt }, { role: "user", content: user }], temperature: 0.2, max_tokens: 6500, stream: true, stream_options: { include_usage: true }, response_format: { type: "json_schema", json_schema: { name: "curriculum_batch", strict: true, schema } } };
     const response = await fetch(`${endpoint.replace(/\/$/, "")}/v1/chat/completions`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal: AbortSignal.timeout(1800000) });
     if (!response.ok) throw Error(`LM Studio returned HTTP ${response.status}: ${(await response.text()).slice(0, 500)}`);
     let raw = "";
     let finishReason = null;
+    let usage = null;
     let pending = "";
     const decoder = new TextDecoder();
     for await (const chunk of response.body) {
@@ -180,6 +181,7 @@ if (mode === "snapshot") {
         if (payload === "[DONE]") continue;
         let parsed;
         try { parsed = JSON.parse(payload); } catch { throw Error("LM Studio sent a stream chunk that is not JSON."); }
+        if (parsed.usage) usage = parsed.usage;
         const choice = parsed.choices?.[0];
         if (!choice) continue;
         if (typeof choice.delta?.content === "string") raw += choice.delta.content;
@@ -284,7 +286,7 @@ if (mode === "snapshot") {
     const date = new Date().toISOString().slice(0, 10);
     fs.appendFileSync(resolve(allowed[1]), `\n- ${date}: Local Qwen authored ${courseId}/${projectId}, steps ${generated[0].index}-${generated.at(-1).index}; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.\n`);
     console.log(`NEXT: ${courseId}, ${projectId}, steps ${generated.at(-1).index + 1}-${generated.at(-1).index + count}; stop if this project is complete.`);
-    console.log(JSON.stringify({ added: generated.length, selected: course.steps.length + generated.length, usage: envelope.usage ?? null }));
+    console.log(JSON.stringify({ added: generated.length, selected: course.steps.length + generated.length, usage: usage ?? null }));
   } else throw Error("Unknown adapter mode.");
 }
 '@
