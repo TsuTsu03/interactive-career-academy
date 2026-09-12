@@ -5,13 +5,12 @@ param(
 )
 $ErrorActionPreference = "Stop"
 $repo = $PSScriptRoot
+. (Join-Path $PSScriptRoot "qwen-v2-process.ps1")
 $runtimeDir = Join-Path $repo ".qwen-v2-campaign"
 New-Item -ItemType Directory -Path $runtimeDir -Force | Out-Null
 $pidFile = Join-Path $runtimeDir "watchdog.pid"
-if (Test-Path -LiteralPath $pidFile) {
-  $previous = Get-Content -LiteralPath $pidFile -ErrorAction SilentlyContinue
-  if ($previous -and (Get-Process -Id ([int]$previous) -ErrorAction SilentlyContinue)) { throw "Watchdog PID $previous is already running." }
-}
+$livePid = Read-QwenPid $pidFile "run-qwen-v2-watchdog.ps1"
+if ($livePid) { throw "Watchdog PID $livePid is already running." }
 $arguments = @(
   "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", (Join-Path $repo "run-qwen-v2-watchdog.ps1"),
   "-CheckSeconds", $CheckSeconds,

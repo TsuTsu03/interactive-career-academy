@@ -15,6 +15,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $repo = $PSScriptRoot
+. (Join-Path $PSScriptRoot "qwen-v2-process.ps1")
 $webDir = Join-Path $repo "apps\web"
 $runtimeDir = Join-Path $repo ".qwen-v2-campaign"
 $campaignLog = Join-Path $runtimeDir "campaign.log"
@@ -73,7 +74,8 @@ try {
   $pidFile = Join-Path $runtimeDir "supervisor.pid"
   if (Test-Path -LiteralPath $pidFile) {
     $previousPid = Get-Content -LiteralPath $pidFile -ErrorAction SilentlyContinue
-    if ($previousPid -and [int]$previousPid -ne $PID -and (Get-Process -Id ([int]$previousPid) -ErrorAction SilentlyContinue)) { throw "Another campaign supervisor is already running as PID $previousPid." }
+    $livePid = Read-QwenPid $pidFile "run-qwen-v2-campaign.ps1"
+    if ($livePid -and $livePid -ne $PID) { throw "Another campaign supervisor is already running as PID $livePid." }
   }
   $PID | Set-Content -LiteralPath $pidFile -Encoding ascii
   if ((& git -c "safe.directory=$repo" branch --show-current) -ne "codex/v2-backbone") { throw "Campaign requires codex/v2-backbone." }
