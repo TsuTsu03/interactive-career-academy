@@ -15,17 +15,22 @@
 param(
   [ValidateRange(15, 900)][int]$CheckSeconds = 60,
   [ValidateRange(1, 60)][int]$MaxRestartsPerHour = 12,
+  [ValidateRange(5, 240)][int]$StallMinutes = 30,
   [string]$Model = "qwen/qwen3-vl-8b"
 )
 
 $ErrorActionPreference = "Stop"
 $repo = $PSScriptRoot
+. (Join-Path $PSScriptRoot "qwen-v2-process.ps1")
 $runtimeDir = Join-Path $repo ".qwen-v2-campaign"
 New-Item -ItemType Directory -Path $runtimeDir -Force | Out-Null
 $watchdogLog = Join-Path $runtimeDir "watchdog.log"
 $watchdogPidFile = Join-Path $runtimeDir "watchdog.pid"
 $supervisorPidFile = Join-Path $runtimeDir "supervisor.pid"
 $stopFile = Join-Path $repo "STOP_LOOP"
+# Two files, because the redirected stdout can lag behind in its buffer while
+# campaign.log, written with Add-Content, is always flushed.
+$heartbeatFiles = @((Join-Path $runtimeDir "supervisor.out.log"), (Join-Path $runtimeDir "campaign.log"))
 $restarts = New-Object System.Collections.ArrayList
 $lastComplaint = ""
 
@@ -36,18 +41,24 @@ function Write-Watchdog([string]$Message) {
   Add-Content -LiteralPath $watchdogLog -Value $line -Encoding utf8
 }
 
-function Test-SupervisorRunning {
-  if (-not (Test-Path -LiteralPath $supervisorPidFile)) { return $false }
-  $recorded = Get-Content -LiteralPath $supervisorPidFile -ErrorAction SilentlyContinue
-  if (-not $recorded) { return $false }
-  $process = Get-Process -Id ([int]$recorded) -ErrorAction SilentlyContinue
-  return [bool]$process
+function Get-SupervisorPid { Read-QwenPid $supervisorPidFile "run-qwen-v2-campaign.ps1" }
+
+# A live process is not the same as a working one. The campaign once sat for
+# eleven hours on a model request that never returned, so silence in the log is
+# treated as death.
+function Test-SupervisorStalled {
+  $latest = $null
+  foreach ($file in $heartbeatFiles) {
+    if (-not (Test-Path -LiteralPath $file)) { continue }
+    $written = (Get-Item -LiteralPath $file).LastWriteTime
+    if (-not $latest -or $written -gt $latest) { $latest = $written }
+  }
+  if (-not $latest) { return $false }
+  return (((Get-Date) - $latest).TotalMinutes -gt $StallMinutes)
 }
 
-if (Test-Path -LiteralPath $watchdogPidFile) {
-  $previous = Get-Content -LiteralPath $watchdogPidFile -ErrorAction SilentlyContinue
-  if ($previous -and (Get-Process -Id ([int]$previous) -ErrorAction SilentlyContinue)) { throw "Watchdog PID $previous is already running." }
-}
+$livePid = Read-QwenPid $watchdogPidFile "run-qwen-v2-watchdog.ps1"
+if ($livePid) { throw "Watchdog PID $livePid is already running." }
 $PID | Set-Content -LiteralPath $watchdogPidFile -Encoding ascii
 Write-Watchdog "Watchdog started as PID $PID. Checking every $CheckSeconds seconds."
 
@@ -58,10 +69,16 @@ try {
       break
     }
 
-    if (Test-SupervisorRunning) {
-      $lastComplaint = ""
-      Start-Sleep -Seconds $CheckSeconds
-      continue
+    $supervisorPid = Get-SupervisorPid
+    if ($supervisorPid) {
+      if (-not (Test-SupervisorStalled)) {
+        $lastComplaint = ""
+        Start-Sleep -Seconds $CheckSeconds
+        continue
+      }
+      Write-Watchdog "Campaign PID $supervisorPid wrote nothing for $StallMinutes minutes. Stopping it and its children."
+      Stop-QwenTree $supervisorPid
+      Start-Sleep -Seconds 5
     }
 
     # A dirty tree is the one condition a restart cannot fix, so say it once

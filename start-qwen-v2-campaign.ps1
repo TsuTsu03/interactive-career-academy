@@ -7,13 +7,12 @@ param(
 )
 $ErrorActionPreference = "Stop"
 $repo = $PSScriptRoot
+. (Join-Path $PSScriptRoot "qwen-v2-process.ps1")
 $runtimeDir = Join-Path $repo ".qwen-v2-campaign"
 New-Item -ItemType Directory -Path $runtimeDir -Force | Out-Null
 $pidFile = Join-Path $runtimeDir "supervisor.pid"
-if (Test-Path -LiteralPath $pidFile) {
-  $previousPid = Get-Content -LiteralPath $pidFile -ErrorAction SilentlyContinue
-  if ($previousPid -and (Get-Process -Id ([int]$previousPid) -ErrorAction SilentlyContinue)) { throw "Campaign supervisor PID $previousPid is already running." }
-}
+$livePid = Read-QwenPid $pidFile "run-qwen-v2-campaign.ps1"
+if ($livePid) { throw "Campaign supervisor PID $livePid is already running." }
 $out = Join-Path $runtimeDir "supervisor.out.log"
 $err = Join-Path $runtimeDir "supervisor.err.log"
 $arguments = @(
