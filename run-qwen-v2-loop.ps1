@@ -157,14 +157,39 @@ if (mode === "snapshot") {
     // An empty list remains expressible so the model can stop instead of padding.
     // The local validator below accepts only a full batch and aborts on empty.
     const schema = { type: "object", additionalProperties: false, required: isNew ? ["steps", "projectTitle", "seed"] : ["steps"], properties: { steps: { type: "array", minItems: 0, maxItems: count, items: stepSchema }, ...(isNew ? { projectTitle: string, seed: isSql ? string : { type: "object" } } : {}) } };
-    const body = { model, messages: [{ role: "system", content: prompt }, { role: "user", content: user }], temperature: 0.2, max_tokens: 6500, stream: false, response_format: { type: "json_schema", json_schema: { name: "curriculum_batch", strict: true, schema } } };
-    const response = await fetch(`${endpoint.replace(/\/$/, "")}/v1/chat/completions`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal: AbortSignal.timeout(600000) });
+    // Streamed, and not for the tokens. A non-streamed reply sends no headers
+    // until generation finishes, and undici gives up waiting for headers after
+    // five minutes - a limit AbortSignal.timeout cannot raise and this Node
+    // exposes no way to configure. A slow model then fails every attempt with
+    // HeadersTimeoutError. Streaming makes the headers arrive at once.
+    const body = { model, messages: [{ role: "system", content: prompt }, { role: "user", content: user }], temperature: 0.2, max_tokens: 6500, stream: true, response_format: { type: "json_schema", json_schema: { name: "curriculum_batch", strict: true, schema } } };
+    const response = await fetch(`${endpoint.replace(/\/$/, "")}/v1/chat/completions`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal: AbortSignal.timeout(1800000) });
     if (!response.ok) throw Error(`LM Studio returned HTTP ${response.status}: ${(await response.text()).slice(0, 500)}`);
-    const envelope = await response.json();
-    const raw = envelope.choices?.[0]?.message?.content;
-    if (typeof raw !== "string" || raw.length > 200000) throw Error("Missing or oversized model result.");
+    let raw = "";
+    let finishReason = null;
+    let pending = "";
+    const decoder = new TextDecoder();
+    for await (const chunk of response.body) {
+      pending += decoder.decode(chunk, { stream: true });
+      const lines = pending.split(String.fromCharCode(10));
+      pending = lines.pop() ?? "";
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed.startsWith("data:")) continue;
+        const payload = trimmed.slice(5).trim();
+        if (payload === "[DONE]") continue;
+        let parsed;
+        try { parsed = JSON.parse(payload); } catch { throw Error("LM Studio sent a stream chunk that is not JSON."); }
+        const choice = parsed.choices?.[0];
+        if (!choice) continue;
+        if (typeof choice.delta?.content === "string") raw += choice.delta.content;
+        if (choice.finish_reason) finishReason = choice.finish_reason;
+        if (raw.length > 200000) throw Error("Missing or oversized model result.");
+      }
+    }
+    if (!raw) throw Error("Missing or oversized model result.");
     fs.writeFileSync(receiptPath + ".model.txt", raw);
-    if (envelope.choices[0].finish_reason === "length") throw Error("Model output was truncated; no changes applied.");
+    if (finishReason === "length") throw Error("Model output was truncated; no changes applied.");
     const candidate = raw.trim().replace(/\nNEXT:[^\n]*\s*$/, "");
     let data;
     try { data = JSON.parse(candidate); } catch { throw Error("Expected one JSON batch, optionally followed by NEXT. No batch applied."); }
