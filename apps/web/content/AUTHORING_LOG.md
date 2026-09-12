@@ -3339,3 +3339,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-12: Local Qwen authored sql-basics/jeepney-service-queue, steps 171-175; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
 
 - 2026-09-12: Local Qwen authored sql-basics/jeepney-service-queue, steps 176-180; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/jeepney-supplier-list, steps 181-185; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
