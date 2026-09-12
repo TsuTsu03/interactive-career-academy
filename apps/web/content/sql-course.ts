@@ -9248,3 +9248,244 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: jeepney-delivery-log.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-jeepney-delivery-log-206",
+    "index": 206,
+    "task": "Count the number of records for each group label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10 ORDER BY record.amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows group labels with their record counts",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "North Team",
+            2
+          ],
+          [
+            "South Team",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count all rows in each group."
+      },
+      {
+        "level": 2,
+        "text": "Group by group_info.label to get one row per group."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT group_info.label, COUNT(*) AS record_count FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-delivery-log",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-jeepney-delivery-log-207",
+    "index": 207,
+    "task": "Sum the amount for each group label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT group_info.label, COUNT(*) AS record_count FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows group labels with their total amounts",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "North Team",
+            10
+          ],
+          [
+            "South Team",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use SUM(record.amount) to add up the amounts for each group."
+      },
+      {
+        "level": 2,
+        "text": "Group by group_info.label to get one row per group."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-delivery-log",
+    "conceptIds": [
+      "sql-sum"
+    ]
+  },
+  {
+    "id": "sql-jeepney-delivery-log-208",
+    "index": 208,
+    "task": "Keep only groups with total amount above 12 using HAVING.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only groups with total amount above 12",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "South Team",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add HAVING SUM(record.amount) > 12 to filter groups by total amount."
+      },
+      {
+        "level": 2,
+        "text": "Only South Team (25) meets the condition."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label HAVING SUM(record.amount) > 12;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-delivery-log",
+    "conceptIds": [
+      "sql-having"
+    ]
+  },
+  {
+    "id": "sql-jeepney-delivery-log-209",
+    "index": 209,
+    "task": "Remove HAVING to restore both groups and sort their totals descending.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label HAVING SUM(record.amount) > 12;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows both groups sorted by total amount descending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "South Team",
+            25
+          ],
+          [
+            "North Team",
+            10
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Remove HAVING to restore all groups."
+      },
+      {
+        "level": 2,
+        "text": "Add ORDER BY total_amount DESC to sort totals from largest to smallest."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label ORDER BY total_amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-delivery-log",
+    "conceptIds": [
+      "sql-descending"
+    ]
+  },
+  {
+    "id": "sql-jeepney-delivery-log-210",
+    "index": 210,
+    "task": "Limit the restored grouped report to the largest group.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label ORDER BY total_amount DESC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only the largest group",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "South Team",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT 1 to keep only the first row after sorting."
+      },
+      {
+        "level": 2,
+        "text": "The largest group is South Team with 25."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label ORDER BY total_amount DESC LIMIT 1;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-delivery-log",
+    "conceptIds": [
+      "sql-limit"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
