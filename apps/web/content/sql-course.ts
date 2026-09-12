@@ -6767,3 +6767,255 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: jeepney-inventory-report.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-jeepney-inventory-report-6",
+    "index": 156,
+    "task": "Insert a new jeepney record with id 6, name 'Backup Record', category 'Local', amount 4, status 'Open', group_id 1, then read it.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nSELECT id, name FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The Backup Record is inserted and retrieved correctly",
+        "kind": "sql-row-contains",
+        "row": [
+          6,
+          "Backup Record",
+          4
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert the new record with id 6 using INSERT INTO record VALUES (...)."
+      },
+      {
+        "level": 2,
+        "text": "Then select only the row with id = 6 to verify the insertion."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nSELECT id, name, amount FROM record WHERE id = 6;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "jeepney-inventory-report",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-jeepney-inventory-report-7",
+    "index": 157,
+    "task": "Update the category of the Backup Record (id 6) to 'Regional', then read it.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nSELECT id, name, amount FROM record WHERE id = 6;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The Backup Record's category is updated to 'Regional'",
+        "kind": "sql-row-contains",
+        "row": [
+          6,
+          "Backup Record",
+          "Regional",
+          4
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Update the category using UPDATE record SET category = 'Regional' WHERE id = 6."
+      },
+      {
+        "level": 2,
+        "text": "Then select the row to verify the change."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nSELECT id, name, category, amount FROM record WHERE id = 6;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "jeepney-inventory-report",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-jeepney-inventory-report-8",
+    "index": 158,
+    "task": "Delete the Cubao record (id 1), then read the remaining rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nSELECT id, name, category, amount FROM record WHERE id = 6;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The Cubao record is deleted, and the remaining records are shown",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            2,
+            "Quiapo",
+            20
+          ],
+          [
+            3,
+            "Divisoria",
+            2
+          ],
+          [
+            5,
+            "New Record",
+            9
+          ],
+          [
+            6,
+            "Backup Record",
+            4
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Delete the Cubao record using DELETE FROM record WHERE id = 1."
+      },
+      {
+        "level": 2,
+        "text": "Then select all remaining rows to verify the deletion."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nDELETE FROM record WHERE id = 1;\nSELECT id, name, amount FROM record;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "jeepney-inventory-report",
+    "conceptIds": [
+      "sql-delete"
+    ]
+  },
+  {
+    "id": "sql-jeepney-inventory-report-9",
+    "index": 159,
+    "task": "Count all remaining rows after deletion.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nDELETE FROM record WHERE id = 1;\nSELECT id, name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The count of remaining rows is 4",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 4
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count all rows in the record table."
+      },
+      {
+        "level": 2,
+        "text": "The result should be 4 after deleting id 1."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nDELETE FROM record WHERE id = 1;\nSELECT COUNT(*) FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-inventory-report",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-jeepney-inventory-report-10",
+    "index": 160,
+    "task": "Show remaining names and amounts sorted by amount ascending.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nDELETE FROM record WHERE id = 1;\nSELECT COUNT(*) FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The names and amounts are sorted by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Divisoria",
+            2
+          ],
+          [
+            "Backup Record",
+            4
+          ],
+          [
+            "New Record",
+            9
+          ],
+          [
+            "Quiapo",
+            20
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Select name and amount columns and sort by amount using ORDER BY amount ASC."
+      },
+      {
+        "level": 2,
+        "text": "The output should list records in ascending order of amount."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nINSERT INTO record VALUES (6, 'Backup Record', 'Local', 4, 'Open', 1);\nUPDATE record SET category = 'Regional' WHERE id = 6;\nDELETE FROM record WHERE id = 1;\nSELECT name, amount FROM record ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "jeepney-inventory-report",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
