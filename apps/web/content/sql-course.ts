@@ -8956,3 +8956,295 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: jeepney-delivery-log.
+sqlCourse.projects.push({"id":"jeepney-delivery-log","title":"Jeepney Dispatch Delivery Log"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-jeepney-delivery-log-201",
+    "index": 201,
+    "task": "Read the record names and group IDs from the delivery log.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows record names and group IDs",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cubao",
+            1
+          ],
+          [
+            "Quiapo",
+            2
+          ],
+          [
+            "Divisoria",
+            1
+          ],
+          [
+            "Marikina",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use qualified column names to select record.name and record.group_id."
+      },
+      {
+        "level": 2,
+        "text": "This step selects only the name and group_id from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-delivery-log",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-jeepney-delivery-log-202",
+    "index": 202,
+    "task": "Join the record table with group_info to show the group label for each delivery.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows record names and their group labels",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cubao",
+            "North Team"
+          ],
+          [
+            "Quiapo",
+            "South Team"
+          ],
+          [
+            "Divisoria",
+            "North Team"
+          ],
+          [
+            "Marikina",
+            "South Team"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use an INNER JOIN to link record.group_id with group_info.id."
+      },
+      {
+        "level": 2,
+        "text": "Select record.name and group_info.label to show the delivery name and its group label."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "jeepney-delivery-log",
+    "conceptIds": [
+      "sql-inner-join"
+    ]
+  },
+  {
+    "id": "sql-jeepney-delivery-log-203",
+    "index": 203,
+    "task": "Add the amount column to the report for each delivery.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows record names, group labels, and amounts",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cubao",
+            "North Team",
+            8
+          ],
+          [
+            "Quiapo",
+            "South Team",
+            20
+          ],
+          [
+            "Divisoria",
+            "North Team",
+            2
+          ],
+          [
+            "Marikina",
+            "South Team",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add record.amount to the SELECT list to include the delivery amount."
+      },
+      {
+        "level": 2,
+        "text": "The join remains unchanged; just add the amount column."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-delivery-log",
+    "conceptIds": [
+      "sql-qualified-column"
+    ]
+  },
+  {
+    "id": "sql-jeepney-delivery-log-204",
+    "index": 204,
+    "task": "Filter the report to show only deliveries with amount less than or equal to 10.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only deliveries with amount <= 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cubao",
+            "North Team",
+            8
+          ],
+          [
+            "Divisoria",
+            "North Team",
+            2
+          ],
+          [
+            "Marikina",
+            "South Team",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter rows where record.amount <= 10."
+      },
+      {
+        "level": 2,
+        "text": "This removes Quiapo (20) from the report."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-delivery-log",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-jeepney-delivery-log-205",
+    "index": 205,
+    "task": "Sort the filtered deliveries by amount in ascending order.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows filtered deliveries sorted by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Divisoria",
+            "North Team",
+            2
+          ],
+          [
+            "Marikina",
+            "South Team",
+            5
+          ],
+          [
+            "Cubao",
+            "North Team",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY record.amount ASC to sort the filtered rows by amount."
+      },
+      {
+        "level": 2,
+        "text": "The order must be ascending to match the expected result."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10 ORDER BY record.amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-delivery-log",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
