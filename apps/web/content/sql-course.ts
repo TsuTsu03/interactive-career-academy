@@ -7987,3 +7987,254 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: jeepney-supplier-list.
+sqlCourse.projects.push({"id":"jeepney-supplier-list","title":"Jeepney Dispatch Supplier List"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-jeepney-supplier-list-1",
+    "index": 181,
+    "task": "Select the name and status of all jeepney suppliers.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains the name and status of all suppliers",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cubao",
+            "Open"
+          ],
+          [
+            "Quiapo",
+            "Done"
+          ],
+          [
+            "Divisoria",
+            "Open"
+          ],
+          [
+            "Marikina",
+            "Done"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the fields the requested report needs."
+      },
+      {
+        "level": 2,
+        "text": "Read the named fields from the example data."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-supplier-list"
+  },
+  {
+    "id": "sql-jeepney-supplier-list-2",
+    "index": 182,
+    "task": "Filter to show only suppliers with status 'Open'.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains only suppliers with status 'Open'",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cubao",
+            "Open"
+          ],
+          [
+            "Divisoria",
+            "Open"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use WHERE to filter rows based on a condition."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where status equals 'Open'."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Open';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-supplier-list"
+  },
+  {
+    "id": "sql-jeepney-supplier-list-3",
+    "index": 183,
+    "task": "Filter to show only suppliers with amount less than or equal to 8.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Open';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains only suppliers with amount <= 8",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cubao",
+            "Open"
+          ],
+          [
+            "Divisoria",
+            "Open"
+          ],
+          [
+            "Marikina",
+            "Done"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use WHERE to filter rows based on a condition."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where amount is less than or equal to 8."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record WHERE amount <= 8;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-supplier-list"
+  },
+  {
+    "id": "sql-jeepney-supplier-list-4",
+    "index": 184,
+    "task": "Filter to show only suppliers that are 'Open' AND have amount <= 8.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE amount <= 8;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains only suppliers that are 'Open' AND amount <= 8",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cubao",
+            "Open"
+          ],
+          [
+            "Divisoria",
+            "Open"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use AND to combine two conditions."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where status is 'Open' AND amount is <= 8."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Open' AND amount <= 8;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-supplier-list"
+  },
+  {
+    "id": "sql-jeepney-supplier-list-5",
+    "index": 185,
+    "task": "Filter to show suppliers that are 'Done' OR have amount less than 3.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Open' AND amount <= 8;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains suppliers that are 'Done' OR amount < 3",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Quiapo",
+            "Done"
+          ],
+          [
+            "Divisoria",
+            "Open"
+          ],
+          [
+            "Marikina",
+            "Done"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use OR to combine two conditions."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where status is 'Done' OR amount is less than 3."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Done' OR amount < 3;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-supplier-list"
+  }
+] satisfies typeof sqlCourse.steps));
