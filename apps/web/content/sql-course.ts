@@ -9489,3 +9489,266 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: barangay-clinic-inventory-report.
+sqlCourse.projects.push({"id":"barangay-clinic-inventory-report","title":"Barangay Clinic Inventory Report"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-barangay-clinic-inventory-report-1",
+    "index": 211,
+    "task": "Select the record name and group_id from the record table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains four rows with name and group_id",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Consultation",
+            1
+          ],
+          [
+            "Vaccination",
+            2
+          ],
+          [
+            "Checkup",
+            1
+          ],
+          [
+            "Medicine",
+            null
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the fields the report needs: name and group_id."
+      },
+      {
+        "level": 2,
+        "text": "Use the table name 'record' and its columns."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-inventory-report"
+  },
+  {
+    "id": "sql-barangay-clinic-inventory-report-2",
+    "index": 212,
+    "task": "LEFT JOIN group_info to show every record with its group label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains four rows with name and group label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Consultation",
+            "North Team"
+          ],
+          [
+            "Vaccination",
+            "South Team"
+          ],
+          [
+            "Checkup",
+            "North Team"
+          ],
+          [
+            "Medicine",
+            null
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Join the record table with group_info using LEFT JOIN."
+      },
+      {
+        "level": 2,
+        "text": "Match group_info.id with record.group_id."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "barangay-clinic-inventory-report"
+  },
+  {
+    "id": "sql-barangay-clinic-inventory-report-3",
+    "index": 213,
+    "task": "Use COALESCE to display 'Unassigned' for missing group labels.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains four rows with name and group_label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Consultation",
+            "North Team"
+          ],
+          [
+            "Vaccination",
+            "South Team"
+          ],
+          [
+            "Checkup",
+            "North Team"
+          ],
+          [
+            "Medicine",
+            "Unassigned"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COALESCE to substitute 'Unassigned' when group_info.label is NULL."
+      },
+      {
+        "level": 2,
+        "text": "Alias the new column as group_label."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "barangay-clinic-inventory-report"
+  },
+  {
+    "id": "sql-barangay-clinic-inventory-report-4",
+    "index": 214,
+    "task": "Filter for the row whose group_id is NULL (Medicine).",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains one row with Medicine and Unassigned",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Medicine",
+            "Unassigned"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter for group_id IS NULL."
+      },
+      {
+        "level": 2,
+        "text": "Only Medicine matches this condition."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id WHERE record.group_id IS NULL;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "barangay-clinic-inventory-report"
+  },
+  {
+    "id": "sql-barangay-clinic-inventory-report-5",
+    "index": 215,
+    "task": "Switch back to all rows and sort by the displayed group_label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id WHERE record.group_id IS NULL;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains four rows sorted by group_label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Consultation",
+            "North Team"
+          ],
+          [
+            "Checkup",
+            "North Team"
+          ],
+          [
+            "Vaccination",
+            "South Team"
+          ],
+          [
+            "Medicine",
+            "Unassigned"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Remove the WHERE clause to show all rows."
+      },
+      {
+        "level": 2,
+        "text": "Add ORDER BY group_label ASC to sort alphabetically."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id ORDER BY group_label ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "barangay-clinic-inventory-report"
+  }
+] satisfies typeof sqlCourse.steps));
