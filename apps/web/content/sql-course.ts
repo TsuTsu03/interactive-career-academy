@@ -8500,3 +8500,214 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: jeepney-community-schedule.
+sqlCourse.projects.push({"id":"jeepney-community-schedule","title":"Jeepney Community Schedule"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-jeepney-community-schedule-1",
+    "index": 191,
+    "task": "Count all rows in the record table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "count",
+        "label": "The count is 4",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 4
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count all rows in the table."
+      },
+      {
+        "level": 2,
+        "text": "The result is a single scalar value."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-community-schedule"
+  },
+  {
+    "id": "sql-jeepney-community-schedule-2",
+    "index": 192,
+    "task": "Name the count as record_count.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "record-count",
+        "label": "The count is named record_count",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 4
+      },
+      {
+        "id": "alias-heading",
+        "label": "The result column is named record_count",
+        "kind": "sql-columns-equal",
+        "columns": [
+          "record_count"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use AS to rename the count column."
+      },
+      {
+        "level": 2,
+        "text": "The result is still a single scalar value."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) AS record_count FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-community-schedule"
+  },
+  {
+    "id": "sql-jeepney-community-schedule-3",
+    "index": 193,
+    "task": "Calculate the total amount of all records.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) AS record_count FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "total-amount",
+        "label": "The total amount is 35",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 35
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use SUM(amount) to calculate the total."
+      },
+      {
+        "level": 2,
+        "text": "The result is a single scalar value."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT SUM(amount) AS total_amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-community-schedule"
+  },
+  {
+    "id": "sql-jeepney-community-schedule-4",
+    "index": 194,
+    "task": "Calculate the average amount of all records.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT SUM(amount) AS total_amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "average-amount",
+        "label": "The average amount is 8.75",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 8.75
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use AVG(amount) to calculate the average."
+      },
+      {
+        "level": 2,
+        "text": "The result is a single scalar value."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT AVG(amount) AS average_amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-community-schedule"
+  },
+  {
+    "id": "sql-jeepney-community-schedule-5",
+    "index": 195,
+    "task": "Group records by category and count each category.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT AVG(amount) AS average_amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "category-counts",
+        "label": "Local has 2 records, Regional has 2 records",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Local",
+            2
+          ],
+          [
+            "Regional",
+            2
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use GROUP BY category to group by category."
+      },
+      {
+        "level": 2,
+        "text": "Use COUNT(*) to count records in each group."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, COUNT(*) AS record_count FROM record GROUP BY category;"
+    },
+    "estimatedMinutes": 6,
+    "projectId": "jeepney-community-schedule"
+  }
+] satisfies typeof sqlCourse.steps));
