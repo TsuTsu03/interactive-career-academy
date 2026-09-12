@@ -8238,3 +8238,265 @@ sqlCourse.steps.push(...([
     "projectId": "jeepney-supplier-list"
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: jeepney-supplier-list.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-jeepney-supplier-list-6",
+    "index": 186,
+    "task": "Select names beginning with the first letter of the first seeded name using LIKE.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Done' OR amount < 3;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains names beginning with 'C'",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cubao"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use LIKE to match names starting with 'C'."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where name starts with 'C'."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name FROM record WHERE name LIKE 'C%';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-supplier-list",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-jeepney-supplier-list-7",
+    "index": 187,
+    "task": "Show name, category, and amount for Local rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name FROM record WHERE name LIKE 'C%';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains Local rows with name, category, and amount",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cubao",
+            "Local",
+            8
+          ],
+          [
+            "Divisoria",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Select the three fields: name, category, and amount."
+      },
+      {
+        "level": 2,
+        "text": "Filter for rows where category is 'Local'."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-supplier-list",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-jeepney-supplier-list-8",
+    "index": 188,
+    "task": "Include Local rows OR amount = 20.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains Local rows and the row with amount = 20",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cubao",
+            "Local",
+            8
+          ],
+          [
+            "Quiapo",
+            "Regional",
+            20
+          ],
+          [
+            "Divisoria",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use OR to combine the two conditions."
+      },
+      {
+        "level": 2,
+        "text": "Include rows where category is 'Local' OR amount is 20."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-supplier-list",
+    "conceptIds": [
+      "sql-or"
+    ]
+  },
+  {
+    "id": "sql-jeepney-supplier-list-9",
+    "index": 189,
+    "task": "Sort that three-row report by amount descending so the 20 row comes first.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result is sorted by amount descending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Quiapo",
+            "Regional",
+            20
+          ],
+          [
+            "Cubao",
+            "Local",
+            8
+          ],
+          [
+            "Divisoria",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY amount DESC to sort by amount descending."
+      },
+      {
+        "level": 2,
+        "text": "The row with amount 20 should come first."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-supplier-list",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  },
+  {
+    "id": "sql-jeepney-supplier-list-10",
+    "index": 190,
+    "task": "Limit it to the first 2 rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result is limited to the first 2 rows",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Quiapo",
+            "Regional",
+            20
+          ],
+          [
+            "Cubao",
+            "Local",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT 2 to restrict output to the first two rows."
+      },
+      {
+        "level": 2,
+        "text": "Only the first two rows should appear in the result."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC LIMIT 2;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-supplier-list",
+    "conceptIds": [
+      "sql-limit"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
