@@ -7495,3 +7495,258 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: jeepney-service-queue.
+sqlCourse.projects.push({"id":"jeepney-service-queue","title":"Jeepney Dispatch Service Queue"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-jeepney-service-queue-1",
+    "index": 171,
+    "task": "Select only the jeepney names from the record table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows all jeepney names",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cubao"
+          ],
+          [
+            "Quiapo"
+          ],
+          [
+            "Divisoria"
+          ],
+          [
+            "Marikina"
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the field the report needs: jeepney name."
+      },
+      {
+        "level": 2,
+        "text": "Read the name field from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-service-queue"
+  },
+  {
+    "id": "sql-jeepney-service-queue-2",
+    "index": 172,
+    "task": "Add the amount field to the report.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows names and amounts",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cubao",
+            8
+          ],
+          [
+            "Quiapo",
+            20
+          ],
+          [
+            "Divisoria",
+            2
+          ],
+          [
+            "Marikina",
+            5
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the amount field to the SELECT clause."
+      },
+      {
+        "level": 2,
+        "text": "The solution adds one field to the existing SELECT."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-service-queue"
+  },
+  {
+    "id": "sql-jeepney-service-queue-3",
+    "index": 173,
+    "task": "Filter the report to show only jeepneys with amount <= 10.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only jeepneys with amount <= 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Cubao",
+            8
+          ],
+          [
+            "Divisoria",
+            2
+          ],
+          [
+            "Marikina",
+            5
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter by amount."
+      },
+      {
+        "level": 2,
+        "text": "Use <= to include amounts equal to 10."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-service-queue"
+  },
+  {
+    "id": "sql-jeepney-service-queue-4",
+    "index": 174,
+    "task": "Sort the filtered report by amount in ascending order.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report is sorted by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Divisoria",
+            2
+          ],
+          [
+            "Marikina",
+            5
+          ],
+          [
+            "Cubao",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY amount ASC to sort by amount."
+      },
+      {
+        "level": 2,
+        "text": "The sort must be ascending to match the requested order."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-service-queue"
+  },
+  {
+    "id": "sql-jeepney-service-queue-5",
+    "index": 175,
+    "task": "Limit the sorted report to only 2 rows for a priority list.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only 2 rows for priority list",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Divisoria",
+            2
+          ],
+          [
+            "Marikina",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT 2 to restrict output to 2 rows."
+      },
+      {
+        "level": 2,
+        "text": "The limit removes the highest amount row (Cubao)."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC LIMIT 2;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-service-queue"
+  }
+] satisfies typeof sqlCourse.steps));
