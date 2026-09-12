@@ -7267,3 +7267,231 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: jeepney-daily-record.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-jeepney-daily-record-6",
+    "index": 166,
+    "task": "Insert the row for id 4 from source_record into report and select it.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-has-id-4",
+        "label": "The report includes the row for id 4",
+        "kind": "sql-row-contains",
+        "row": [
+          4,
+          "Marikina",
+          5
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add WHERE id IN (1, 2, 3, 4) to the INSERT to include id 4."
+      },
+      {
+        "level": 2,
+        "text": "The expected row is Marikina with amount 5."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-daily-record",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-jeepney-daily-record-7",
+    "index": 167,
+    "task": "Update the amount of the Quiapo record (id 2) to 18, then select it.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "quiapo-amount-updated",
+        "label": "The Quiapo record's amount is now 18",
+        "kind": "sql-value-equals",
+        "row": 1,
+        "column": 2,
+        "value": 18,
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add UPDATE report SET amount = 18 WHERE id = 2 to change the amount."
+      },
+      {
+        "level": 2,
+        "text": "The expected row is Quiapo with amount 18."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nUPDATE report SET amount = 18 WHERE id = 2;\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-daily-record",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-jeepney-daily-record-8",
+    "index": 168,
+    "task": "Delete the Divisoria record (id 3), then select the remaining rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nUPDATE report SET amount = 18 WHERE id = 2;\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "divisoria-deleted",
+        "label": "The Divisoria record is no longer in the report",
+        "kind": "sql-row-count",
+        "count": 3,
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add DELETE FROM report WHERE id = 3 to remove the Divisoria row."
+      },
+      {
+        "level": 2,
+        "text": "The remaining rows are Cubao 8, Quiapo 18, Marikina 5."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-daily-record",
+    "conceptIds": [
+      "sql-delete"
+    ]
+  },
+  {
+    "id": "sql-jeepney-daily-record-9",
+    "index": 169,
+    "task": "Count the remaining rows in the report after deletion.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "count-remaining-rows",
+        "label": "The report has 3 rows remaining",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 3,
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add SELECT COUNT(*) FROM report to count the rows."
+      },
+      {
+        "level": 2,
+        "text": "The expected count is 3."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT COUNT(*) FROM report;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-daily-record",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-jeepney-daily-record-10",
+    "index": 170,
+    "task": "Show id, name, and amount ordered by id ascending.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT COUNT(*) FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Cubao', 'Local', 8, 'Open', 1), (2, 'Quiapo', 'Regional', 20, 'Done', 2), (3, 'Divisoria', 'Local', 2, 'Open', 1), (4, 'Marikina', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "ordered-by-id",
+        "label": "Rows are sorted by id ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Cubao",
+            8
+          ],
+          [
+            2,
+            "Quiapo",
+            18
+          ],
+          [
+            4,
+            "Marikina",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY id ASC to sort the rows by id ascending."
+      },
+      {
+        "level": 2,
+        "text": "The expected rows are Cubao 8, Quiapo 18, Marikina 5."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3, 4);\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY id ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "jeepney-daily-record",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
