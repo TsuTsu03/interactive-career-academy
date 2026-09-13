@@ -1424,3 +1424,655 @@ nosqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof nosqlCourse.steps));
+
+// Validated local authoring batch: palengke-document-orders.
+nosqlCourse.projects.push({"id":"palengke-document-orders","title":"Palengke Document Orders"});
+nosqlCourse.steps.push(...([
+  {
+    "id": "nosql-palengke-document-orders-1",
+    "index": 31,
+    "task": "Find records with status equal to Open.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": ""
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Tomatoes",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Eggplant",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Carrots",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Cabbage",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Returns Tomatoes and Carrots",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 1,
+            "name": "Tomatoes",
+            "category": "Local",
+            "amount": 8,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 3,
+            "name": "Carrots",
+            "category": "Local",
+            "amount": 2,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use $eq to match exact status value."
+      },
+      {
+        "level": 2,
+        "text": "Filter by status: Open"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"status\": { \"$eq\": \"Open\" } } }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-document-orders",
+    "conceptIds": [
+      "nosql-equality"
+    ]
+  },
+  {
+    "id": "nosql-palengke-document-orders-2",
+    "index": 32,
+    "task": "Find records with status not equal to Open.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"status\": { \"$eq\": \"Open\" } } }"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Tomatoes",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Eggplant",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Carrots",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Cabbage",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Returns Eggplant and Cabbage",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 2,
+            "name": "Eggplant",
+            "category": "Regional",
+            "amount": 20,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 4,
+            "name": "Cabbage",
+            "category": "Regional",
+            "amount": 5,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use $ne to exclude Open status."
+      },
+      {
+        "level": 2,
+        "text": "Filter by status: not Open"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"status\": { \"$ne\": \"Open\" } } }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-document-orders",
+    "conceptIds": [
+      "nosql-not-equal"
+    ]
+  },
+  {
+    "id": "nosql-palengke-document-orders-3",
+    "index": 33,
+    "task": "Find records with amount less than or equal to 8.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"status\": { \"$ne\": \"Open\" } } }"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Tomatoes",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Eggplant",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Carrots",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Cabbage",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Returns Tomatoes, Carrots, and Cabbage",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 1,
+            "name": "Tomatoes",
+            "category": "Local",
+            "amount": 8,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 3,
+            "name": "Carrots",
+            "category": "Local",
+            "amount": 2,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 4,
+            "name": "Cabbage",
+            "category": "Regional",
+            "amount": 5,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use $lte for inclusive upper bound."
+      },
+      {
+        "level": 2,
+        "text": "Filter by amount: <= 8"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"amount\": { \"$lte\": 8 } } }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-document-orders",
+    "conceptIds": [
+      "nosql-upper-bound"
+    ]
+  },
+  {
+    "id": "nosql-palengke-document-orders-4",
+    "index": 34,
+    "task": "Find records with amount greater than or equal to 8.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"amount\": { \"$lte\": 8 } } }"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Tomatoes",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Eggplant",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Carrots",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Cabbage",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Returns Tomatoes and Eggplant",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 1,
+            "name": "Tomatoes",
+            "category": "Local",
+            "amount": 8,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 2,
+            "name": "Eggplant",
+            "category": "Regional",
+            "amount": 20,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use $gte for inclusive lower bound."
+      },
+      {
+        "level": 2,
+        "text": "Filter by amount: >= 8"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"amount\": { \"$gte\": 8 } } }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-document-orders",
+    "conceptIds": [
+      "nosql-lower-bound"
+    ]
+  },
+  {
+    "id": "nosql-palengke-document-orders-5",
+    "index": 35,
+    "task": "Find records with status Open AND amount <= 8.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"amount\": { \"$gte\": 8 } } }"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Tomatoes",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Eggplant",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Carrots",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Cabbage",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Returns Tomatoes and Carrots",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 1,
+            "name": "Tomatoes",
+            "category": "Local",
+            "amount": 8,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 3,
+            "name": "Carrots",
+            "category": "Local",
+            "amount": 2,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use $and to combine two conditions."
+      },
+      {
+        "level": 2,
+        "text": "Filter by status: Open AND amount <= 8"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"$and\": [{ \"status\": \"Open\" }, { \"amount\": { \"$lte\": 8 } }] } }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-document-orders",
+    "conceptIds": [
+      "nosql-and"
+    ]
+  }
+] satisfies typeof nosqlCourse.steps));
