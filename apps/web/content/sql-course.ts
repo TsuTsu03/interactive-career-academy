@@ -11013,3 +11013,273 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: barangay-clinic-supplier-list.
+sqlCourse.projects.push({"id":"barangay-clinic-supplier-list","title":"Barangay Clinic Supplier List"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-barangay-clinic-supplier-list-241",
+    "index": 241,
+    "task": "Select only the supplier name from the record table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only supplier names",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Consultation"
+          ],
+          [
+            "Vaccination"
+          ],
+          [
+            "Checkup"
+          ],
+          [
+            "Medicine"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose only the name column from the record table."
+      },
+      {
+        "level": 2,
+        "text": "The solution is a SELECT statement with only one field: name."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-supplier-list",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-supplier-list-242",
+    "index": 242,
+    "task": "Add the amount column to the report.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report includes supplier names and amounts",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Consultation",
+            8
+          ],
+          [
+            "Vaccination",
+            20
+          ],
+          [
+            "Checkup",
+            2
+          ],
+          [
+            "Medicine",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the amount column to the SELECT clause."
+      },
+      {
+        "level": 2,
+        "text": "The solution adds one field: amount, to the existing SELECT."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-supplier-list",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-supplier-list-243",
+    "index": 243,
+    "task": "Filter the report to show only suppliers with amount <= 10.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only suppliers with amount <= 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Consultation",
+            8
+          ],
+          [
+            "Checkup",
+            2
+          ],
+          [
+            "Medicine",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter rows where amount is less than or equal to 10."
+      },
+      {
+        "level": 2,
+        "text": "The solution adds WHERE amount <= 10 to filter the rows."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-supplier-list",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-supplier-list-244",
+    "index": 244,
+    "task": "Sort the filtered suppliers by amount in ascending order.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report sorts suppliers by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Checkup",
+            2
+          ],
+          [
+            "Medicine",
+            5
+          ],
+          [
+            "Consultation",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY amount ASC to sort the filtered rows by amount."
+      },
+      {
+        "level": 2,
+        "text": "The solution adds ORDER BY amount ASC to sort the rows."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-supplier-list",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-supplier-list-245",
+    "index": 245,
+    "task": "Limit the sorted report to only 2 rows for a short priority list.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report limits to 2 rows for priority list",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Checkup",
+            2
+          ],
+          [
+            "Medicine",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT 2 to restrict the output to two rows."
+      },
+      {
+        "level": 2,
+        "text": "The solution adds LIMIT 2 to cap the result to two rows."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC LIMIT 2;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-supplier-list",
+    "conceptIds": [
+      "sql-limit"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
