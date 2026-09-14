@@ -12514,3 +12514,295 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: public-school-inventory-report.
+sqlCourse.projects.push({"id":"public-school-inventory-report","title":"Public School Inventory Report"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-public-school-inventory-report-271",
+    "index": 271,
+    "task": "Read record.name and record.group_id with qualified names",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains record.name and record.group_id",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Notebook",
+            1
+          ],
+          [
+            "Pencil",
+            2
+          ],
+          [
+            "Ruler",
+            1
+          ],
+          [
+            "Paper",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use qualified column names to specify the exact fields from the record table."
+      },
+      {
+        "level": 2,
+        "text": "The solution selects only the name and group_id columns from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "public-school-inventory-report",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-public-school-inventory-report-272",
+    "index": 272,
+    "task": "Join group_info on matching group ids and show record name plus group label",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains record.name and group_info.label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Notebook",
+            "North Team"
+          ],
+          [
+            "Pencil",
+            "South Team"
+          ],
+          [
+            "Ruler",
+            "North Team"
+          ],
+          [
+            "Paper",
+            "South Team"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Join the record and group_info tables using the matching group_id and id fields."
+      },
+      {
+        "level": 2,
+        "text": "The solution selects the record name and group label from the joined tables."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "public-school-inventory-report",
+    "conceptIds": [
+      "sql-inner-join"
+    ]
+  },
+  {
+    "id": "sql-public-school-inventory-report-273",
+    "index": 273,
+    "task": "Add amount to the joined result",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains record.name, group_info.label, and record.amount",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Notebook",
+            "North Team",
+            8
+          ],
+          [
+            "Pencil",
+            "South Team",
+            20
+          ],
+          [
+            "Ruler",
+            "North Team",
+            2
+          ],
+          [
+            "Paper",
+            "South Team",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the record.amount column to the SELECT clause."
+      },
+      {
+        "level": 2,
+        "text": "The solution includes the amount for each item in the joined result."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "public-school-inventory-report",
+    "conceptIds": [
+      "sql-qualified-column"
+    ]
+  },
+  {
+    "id": "sql-public-school-inventory-report-274",
+    "index": 274,
+    "task": "Filter joined rows to amount <= 10",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains only items with amount <= 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Notebook",
+            "North Team",
+            8
+          ],
+          [
+            "Ruler",
+            "North Team",
+            2
+          ],
+          [
+            "Paper",
+            "South Team",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter rows where amount is less than or equal to 10."
+      },
+      {
+        "level": 2,
+        "text": "The solution removes the Pencil row because its amount (20) exceeds the limit."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "public-school-inventory-report",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-public-school-inventory-report-275",
+    "index": 275,
+    "task": "Sort filtered joined rows by amount ascending",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result is sorted by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Ruler",
+            "North Team",
+            2
+          ],
+          [
+            "Paper",
+            "South Team",
+            5
+          ],
+          [
+            "Notebook",
+            "North Team",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add an ORDER BY clause to sort the filtered rows by amount in ascending order."
+      },
+      {
+        "level": 2,
+        "text": "The solution sorts the rows so that the smallest amount (2) comes first, followed by 5 and 8."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10 ORDER BY record.amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "public-school-inventory-report",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
