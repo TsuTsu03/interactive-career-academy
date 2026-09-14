@@ -11512,3 +11512,269 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: barangay-clinic-community-schedule.
+sqlCourse.projects.push({"id":"barangay-clinic-community-schedule","title":"Barangay Clinic Community Schedule"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-barangay-clinic-community-schedule-251",
+    "index": 251,
+    "task": "Select the name and status of all records in the barangay clinic community schedule.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report includes Consultation, Vaccination, Checkup, and Medicine with their statuses",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Consultation",
+            "Open"
+          ],
+          [
+            "Vaccination",
+            "Done"
+          ],
+          [
+            "Checkup",
+            "Open"
+          ],
+          [
+            "Medicine",
+            "Done"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the name and status columns from the record table."
+      },
+      {
+        "level": 2,
+        "text": "This is the base query to retrieve all records."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-community-schedule",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-community-schedule-252",
+    "index": 252,
+    "task": "Filter the records to only include those with status 'Open'.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report includes only Consultation and Checkup with status 'Open'",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Consultation",
+            "Open"
+          ],
+          [
+            "Checkup",
+            "Open"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter by status."
+      },
+      {
+        "level": 2,
+        "text": "Use the exact string 'Open' to match the status."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Open';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-community-schedule",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-community-schedule-253",
+    "index": 253,
+    "task": "Filter the records to only include those with amount less than or equal to 8.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Open';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report includes Consultation, Checkup, and Medicine with amount <= 8",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Consultation",
+            "Open"
+          ],
+          [
+            "Checkup",
+            "Open"
+          ],
+          [
+            "Medicine",
+            "Done"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the <= operator to include records with amount 8 or less."
+      },
+      {
+        "level": 2,
+        "text": "This filters by the amount column, not status."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record WHERE amount <= 8;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-community-schedule",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-community-schedule-254",
+    "index": 254,
+    "task": "Filter the records to only include those that are 'Open' AND have amount <= 8.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE amount <= 8;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report includes only Consultation and Checkup with status 'Open' and amount <= 8",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Consultation",
+            "Open"
+          ],
+          [
+            "Checkup",
+            "Open"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Combine two conditions with AND to require both to be true."
+      },
+      {
+        "level": 2,
+        "text": "This filters by both status and amount."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Open' AND amount <= 8;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-community-schedule",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-community-schedule-255",
+    "index": 255,
+    "task": "Filter the records to include those that are 'Done' OR have amount less than 3.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Open' AND amount <= 8;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report includes Vaccination, Checkup, and Medicine with status 'Done' or amount < 3",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Vaccination",
+            "Done"
+          ],
+          [
+            "Checkup",
+            "Open"
+          ],
+          [
+            "Medicine",
+            "Done"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the OR operator to include records that meet either condition."
+      },
+      {
+        "level": 2,
+        "text": "This filters by status 'Done' or amount less than 3."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Done' OR amount < 3;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-community-schedule",
+    "conceptIds": [
+      "sql-or"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
