@@ -154,9 +154,13 @@ if (mode === "snapshot") {
       id: { type: "string", pattern: `^${idPrefix}[a-z0-9]+(?:-[a-z0-9]+)*$`, maxLength: 100 }, task: string, solution: string, tests: { type: "array", minItems: 1, maxItems: 2, items: testSchema },
       hints: { type: "array", minItems: 2, maxItems: 2, items: string }, conceptIds: { type: "array", maxItems: 1, items: string }, estimatedMinutes: { type: "integer", minimum: 1, maximum: 10 },
     } };
-    // An empty list remains expressible so the model can stop instead of padding.
-    // The local validator below accepts only a full batch and aborts on empty.
-    const schema = { type: "object", additionalProperties: false, required: isNew ? ["steps", "projectTitle", "seed"] : ["steps"], properties: { steps: { type: "array", minItems: 0, maxItems: count, items: stepSchema }, ...(isNew ? { projectTitle: string, seed: isSql ? string : { type: "object" } } : {}) } };
+    // Without a brief, an empty list stays expressible so the model can stop
+    // instead of padding a finished project.
+    // With a brief it may not. Asking in prose did not work: an 8B model reads
+    // five named goals and still answers {"steps": []}, which the driver can
+    // only reject, so the campaign spent six hours re-asking the same question.
+    // The floor in the grammar makes an empty array unrepresentable instead.
+    const schema = { type: "object", additionalProperties: false, required: isNew ? ["steps", "projectTitle", "seed"] : ["steps"], properties: { steps: { type: "array", minItems: ownerBatchBrief ? count : 0, maxItems: count, items: stepSchema }, ...(isNew ? { projectTitle: string, seed: isSql ? string : { type: "object" } } : {}) } };
     // Streamed, and not for the tokens. A non-streamed reply sends no headers
     // until generation finishes, and undici gives up waiting for headers after
     // five minutes - a limit AbortSignal.timeout cannot raise and this Node
@@ -228,6 +232,15 @@ if (mode === "snapshot") {
     if (typeof start !== "string") throw Error("The previous step needs a reference solution.");
     const generated = data.steps.map((draft, i) => {
       only(draft, ["id", "task", "solution", "tests", "hints", "conceptIds", "estimatedMinutes"]);
+      // A document-store command is one line in every authored step, but the
+      // model keeps pretty-printing it across nine or twelve, which the shape
+      // check reads as twelve ideas in one step and rejects. Collapsing the
+      // whitespace changes the formatting and nothing else: same command, same
+      // documents, same assertions. Only a solution that is already valid JSON
+      // is touched, so an unparseable one still fails the way it should.
+      if (!isSql && typeof draft.solution === "string" && draft.solution.includes("\n")) {
+        try { draft.solution = JSON.stringify(JSON.parse(draft.solution), null, 1).replace(/\n\s*/g, " "); } catch { /* leave it to fail the checks below */ }
+      }
       if (!text(draft.id, 100) || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(draft.id) || ids.has(draft.id)) throw Error("Step ids must be new and unique.");
       if (!draft.id.startsWith(idPrefix)) throw Error(`Step ids must start with ${idPrefix}. Do not copy exemplar ids.`);
       ids.add(draft.id);
