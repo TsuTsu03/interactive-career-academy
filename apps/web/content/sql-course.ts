@@ -11778,3 +11778,268 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: barangay-clinic-community-schedule.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-barangay-clinic-community-schedule-256",
+    "index": 256,
+    "task": "Select the names of all records that begin with the letter 'C'.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Done' OR amount < 3;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report includes Consultation and Checkup with names starting with 'C'",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Consultation"
+          ],
+          [
+            "Checkup"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the LIKE operator with 'C%' to match names starting with 'C'."
+      },
+      {
+        "level": 2,
+        "text": "This filters records whose names start with the letter 'C'."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name FROM record WHERE name LIKE 'C%';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-community-schedule",
+    "conceptIds": [
+      "sql-like"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-community-schedule-257",
+    "index": 257,
+    "task": "Select the name, category, and amount for all records with category 'Local'.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name FROM record WHERE name LIKE 'C%';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report includes Consultation with amount 8 and Checkup with amount 2",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Consultation",
+            "Local",
+            8
+          ],
+          [
+            "Checkup",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Select the name, category, and amount columns for records where category is 'Local'."
+      },
+      {
+        "level": 2,
+        "text": "This retrieves only Local category records with their details."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-community-schedule",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-community-schedule-258",
+    "index": 258,
+    "task": "Include records that are 'Local' OR have amount equal to 20.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report includes Consultation 8, Vaccination 20, and Checkup 2",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Consultation",
+            "Local",
+            8
+          ],
+          [
+            "Vaccination",
+            "Regional",
+            20
+          ],
+          [
+            "Checkup",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the OR operator to include records that meet either condition: category = 'Local' or amount = 20."
+      },
+      {
+        "level": 2,
+        "text": "This filters to include Consultation, Vaccination, and Checkup."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-community-schedule",
+    "conceptIds": [
+      "sql-or"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-community-schedule-259",
+    "index": 259,
+    "task": "Sort the filtered records by amount in descending order.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report includes Vaccination 20, Consultation 8, and Checkup 2 sorted by amount descending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Vaccination",
+            "Regional",
+            20
+          ],
+          [
+            "Consultation",
+            "Local",
+            8
+          ],
+          [
+            "Checkup",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY amount DESC to sort the rows by amount in descending order."
+      },
+      {
+        "level": 2,
+        "text": "This ensures the highest amount row appears first."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-community-schedule",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-community-schedule-260",
+    "index": 260,
+    "task": "Limit the sorted report to only the first two rows for a priority list.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report includes only Vaccination 20 and Consultation 8",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Vaccination",
+            "Regional",
+            20
+          ],
+          [
+            "Consultation",
+            "Local",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT 2 at the end to restrict output to only the first two rows."
+      },
+      {
+        "level": 2,
+        "text": "This ensures only the highest amounts are shown for priority."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC LIMIT 2;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-community-schedule",
+    "conceptIds": [
+      "sql-limit"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
