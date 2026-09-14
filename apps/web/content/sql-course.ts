@@ -13574,3 +13574,280 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: public-school-service-queue.
+sqlCourse.projects.push({"id":"public-school-service-queue","title":"Public School Service Queue"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-public-school-service-queue-291",
+    "index": 291,
+    "task": "Select id, name, and amount from the record table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The initial report shows four rows with id, name, and amount",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Notebook",
+            8
+          ],
+          [
+            2,
+            "Pencil",
+            20
+          ],
+          [
+            3,
+            "Ruler",
+            2
+          ],
+          [
+            4,
+            "Paper",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the three fields: id, name, and amount from the record table."
+      },
+      {
+        "level": 2,
+        "text": "Use SELECT to fetch these fields from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT id, name, amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "public-school-service-queue",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-public-school-service-queue-292",
+    "index": 292,
+    "task": "Insert a new record with id 5, name 'New Record', category 'Local', amount 7, status 'Open', group_id 1, then read all rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT id, name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report now includes New Record with id 5 and amount 7",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Notebook",
+            8
+          ],
+          [
+            2,
+            "Pencil",
+            20
+          ],
+          [
+            3,
+            "Ruler",
+            2
+          ],
+          [
+            4,
+            "Paper",
+            5
+          ],
+          [
+            5,
+            "New Record",
+            7
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert the new record using INSERT INTO with id 5 and the given values."
+      },
+      {
+        "level": 2,
+        "text": "Then select all id, name, and amount to verify the new row."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nSELECT id, name, amount FROM record;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "public-school-service-queue",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-public-school-service-queue-293",
+    "index": 293,
+    "task": "Update only id 5 amount to 9, then read it.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nSELECT id, name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows New Record with updated amount 9",
+        "kind": "sql-row-contains",
+        "row": [
+          5,
+          "New Record",
+          9
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Update the amount for id 5 using SET amount = 9 WHERE id = 5."
+      },
+      {
+        "level": 2,
+        "text": "Then select only id 5 to verify the change."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nSELECT id, name, amount FROM record WHERE id = 5;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "public-school-service-queue",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-public-school-service-queue-294",
+    "index": 294,
+    "task": "Update only id 2 status to 'Open', then read id 2.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nSELECT id, name, amount FROM record WHERE id = 5;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows Pencil with status 'Open'",
+        "kind": "sql-row-contains",
+        "row": [
+          2,
+          "Pencil",
+          "Open"
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Update the status for id 2 using SET status = 'Open' WHERE id = 2."
+      },
+      {
+        "level": 2,
+        "text": "Then select only id 2 to verify the change."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nSELECT id, name, status FROM record WHERE id = 2;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "public-school-service-queue",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-public-school-service-queue-295",
+    "index": 295,
+    "task": "Delete only id 4, then read remaining ids and names.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nSELECT id, name, status FROM record WHERE id = 2;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows remaining records with ids 1, 2, 3, 5",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Notebook"
+          ],
+          [
+            2,
+            "Pencil"
+          ],
+          [
+            3,
+            "Ruler"
+          ],
+          [
+            5,
+            "New Record"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Delete id 4 using DELETE FROM record WHERE id = 4."
+      },
+      {
+        "level": 2,
+        "text": "Then select id and name to verify the deletion."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nSELECT id, name FROM record;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "public-school-service-queue",
+    "conceptIds": [
+      "sql-delete"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
