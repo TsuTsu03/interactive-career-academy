@@ -12269,3 +12269,248 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: barangay-clinic-delivery-log.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-barangay-clinic-delivery-log-266",
+    "index": 266,
+    "task": "Change the grouped calculation to SUM(amount) as total_amount, giving Local 10 and Regional 25.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, COUNT(*) AS record_count FROM record GROUP BY category;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "sum-by-category",
+        "label": "Local has total 10, Regional has total 25",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Local",
+            10
+          ],
+          [
+            "Regional",
+            25
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use SUM(amount) to calculate the total amount per category."
+      },
+      {
+        "level": 2,
+        "text": "Replace COUNT(*) with SUM(amount) and rename the alias to total_amount."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-delivery-log",
+    "conceptIds": [
+      "sql-sum"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-delivery-log-267",
+    "index": 267,
+    "task": "Sort both group totals descending.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "sorted-descending",
+        "label": "Regional 25 then Local 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Regional",
+            25
+          ],
+          [
+            "Local",
+            10
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY total_amount DESC to sort totals from highest to lowest."
+      },
+      {
+        "level": 2,
+        "text": "The starting data has Regional 25 and Local 10, so descending order is Regional first."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category ORDER BY total_amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-delivery-log",
+    "conceptIds": [
+      "sql-descending"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-delivery-log-268",
+    "index": 268,
+    "task": "Keep only totals above 12 with HAVING.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category ORDER BY total_amount DESC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "filtered-having",
+        "label": "Regional 25 only",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Regional",
+            25
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add HAVING SUM(amount) > 12 to filter groups with totals above 12."
+      },
+      {
+        "level": 2,
+        "text": "Only Regional (25) meets the condition; Local (10) is excluded."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category HAVING SUM(amount) > 12;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-delivery-log",
+    "conceptIds": [
+      "sql-having"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-delivery-log-269",
+    "index": 269,
+    "task": "Remove HAVING to restore both complete category totals.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category HAVING SUM(amount) > 12;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "restored-grouped",
+        "label": "Local 10 and Regional 25",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Local",
+            10
+          ],
+          [
+            "Regional",
+            25
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Remove the HAVING clause to show all category totals again."
+      },
+      {
+        "level": 2,
+        "text": "The solution reverts to the original grouped query without filtering."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-delivery-log",
+    "conceptIds": [
+      "sql-group-by"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-delivery-log-270",
+    "index": 270,
+    "task": "Order those two restored totals from largest to smallest.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "final-sorted",
+        "label": "Regional 25 then Local 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Regional",
+            25
+          ],
+          [
+            "Local",
+            10
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY total_amount DESC to sort the restored totals descending."
+      },
+      {
+        "level": 2,
+        "text": "Regional (25) comes first, then Local (10), as in the previous step."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category ORDER BY total_amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-delivery-log",
+    "conceptIds": [
+      "sql-descending"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
