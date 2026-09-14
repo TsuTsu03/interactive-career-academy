@@ -2723,3 +2723,637 @@ nosqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof nosqlCourse.steps));
+
+// Validated local authoring batch: cebu-route-deliveries.
+nosqlCourse.projects.push({"id":"cebu-route-deliveries","title":"Cebu Route Deliveries"});
+nosqlCourse.steps.push(...([
+  {
+    "id": "nosql-cebu-route-deliveries-1",
+    "index": 41,
+    "task": "Insert a new record named 'New Record' with category 'Local', amount 7, and status 'Open'.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": ""
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Lahug",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Mandaue",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Lapu-Lapu",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Talisay",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "inserted-record",
+        "label": "New Record is inserted without note",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "New Record",
+            "category": "Local",
+            "amount": 7,
+            "status": "Open"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use insert to add one document."
+      },
+      {
+        "level": 2,
+        "text": "Copy the exact solution string; do not add or remove fields."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"insert\", \"documents\": [ { \"name\": \"New Record\", \"category\": \"Local\", \"amount\": 7, \"status\": \"Open\" } ] }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cebu-route-deliveries",
+    "conceptIds": [
+      "nosql-insert"
+    ]
+  },
+  {
+    "id": "nosql-cebu-route-deliveries-2",
+    "index": 42,
+    "task": "Add a 'note' field to the inserted document with value 'Community order'.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"insert\", \"documents\": [ { \"name\": \"New Record\", \"category\": \"Local\", \"amount\": 7, \"status\": \"Open\" } ] }"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Lahug",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Mandaue",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Lapu-Lapu",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Talisay",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "record-with-note",
+        "label": "New Record has note 'Community order'",
+        "kind": "nosql-doc-contains",
+        "document": {
+          "name": "New Record",
+          "category": "Local",
+          "amount": 7,
+          "status": "Open",
+          "note": "Community order"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the note field to the existing document."
+      },
+      {
+        "level": 2,
+        "text": "Copy the exact solution string; do not change field order."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"insert\", \"documents\": [ { \"name\": \"New Record\", \"category\": \"Local\", \"amount\": 7, \"status\": \"Open\", \"note\": \"Community order\" } ] }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cebu-route-deliveries",
+    "conceptIds": [
+      "nosql-insert"
+    ]
+  },
+  {
+    "id": "nosql-cebu-route-deliveries-3",
+    "index": 43,
+    "task": "Insert a second document named 'Backup Record' with category 'Local', amount 4, and status 'Open'.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"insert\", \"documents\": [ { \"name\": \"New Record\", \"category\": \"Local\", \"amount\": 7, \"status\": \"Open\", \"note\": \"Community order\" } ] }"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Lahug",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Mandaue",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Lapu-Lapu",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Talisay",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "both-inserted-records",
+        "label": "Both New Record and Backup Record are inserted",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "New Record",
+            "category": "Local",
+            "amount": 7,
+            "status": "Open",
+            "note": "Community order"
+          },
+          {
+            "name": "Backup Record",
+            "category": "Local",
+            "amount": 4,
+            "status": "Open"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the Backup Record to the existing insert command."
+      },
+      {
+        "level": 2,
+        "text": "Copy the exact solution string; do not reorder or remove fields."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"insert\", \"documents\": [ { \"name\": \"New Record\", \"category\": \"Local\", \"amount\": 7, \"status\": \"Open\", \"note\": \"Community order\" }, { \"name\": \"Backup Record\", \"category\": \"Local\", \"amount\": 4, \"status\": \"Open\" } ] }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cebu-route-deliveries",
+    "conceptIds": [
+      "nosql-insert"
+    ]
+  },
+  {
+    "id": "nosql-cebu-route-deliveries-4",
+    "index": 44,
+    "task": "Use a command sequence to insert both records and then find all records.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"insert\", \"documents\": [ { \"name\": \"New Record\", \"category\": \"Local\", \"amount\": 7, \"status\": \"Open\", \"note\": \"Community order\" }, { \"name\": \"Backup Record\", \"category\": \"Local\", \"amount\": 4, \"status\": \"Open\" } ] }"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Lahug",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Mandaue",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Lapu-Lapu",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Talisay",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "command-sequence-insert-find",
+        "label": "Command sequence inserts then finds all records",
+        "kind": "nosql-runs"
+      },
+      {
+        "id": "all-records-after-insert",
+        "label": "All four seed records plus two inserted records",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 1,
+            "name": "Lahug",
+            "category": "Local",
+            "amount": 8,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 2,
+            "name": "Mandaue",
+            "category": "Regional",
+            "amount": 20,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 3,
+            "name": "Lapu-Lapu",
+            "category": "Local",
+            "amount": 2,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 4,
+            "name": "Talisay",
+            "category": "Regional",
+            "amount": 5,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "name": "New Record",
+            "category": "Local",
+            "amount": 7,
+            "status": "Open",
+            "note": "Community order"
+          },
+          {
+            "name": "Backup Record",
+            "category": "Local",
+            "amount": 4,
+            "status": "Open"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Wrap the insert and find commands in an array."
+      },
+      {
+        "level": 2,
+        "text": "Copy the exact solution string; do not change the order or structure."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[ { \"collection\": \"records\", \"operation\": \"insert\", \"documents\": [ { \"name\": \"New Record\", \"category\": \"Local\", \"amount\": 7, \"status\": \"Open\", \"note\": \"Community order\" }, { \"name\": \"Backup Record\", \"category\": \"Local\", \"amount\": 4, \"status\": \"Open\" } ] }, { \"collection\": \"records\", \"operation\": \"find\" } ]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cebu-route-deliveries",
+    "conceptIds": [
+      "nosql-command-sequence"
+    ]
+  },
+  {
+    "id": "nosql-cebu-route-deliveries-5",
+    "index": 45,
+    "task": "Project only the name and amount fields in the final find command.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[ { \"collection\": \"records\", \"operation\": \"insert\", \"documents\": [ { \"name\": \"New Record\", \"category\": \"Local\", \"amount\": 7, \"status\": \"Open\", \"note\": \"Community order\" }, { \"name\": \"Backup Record\", \"category\": \"Local\", \"amount\": 4, \"status\": \"Open\" } ] }, { \"collection\": \"records\", \"operation\": \"find\" } ]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Lahug",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Mandaue",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Lapu-Lapu",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Talisay",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "projected-fields",
+        "label": "Only name and amount are projected",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Lahug",
+            "amount": 8
+          },
+          {
+            "name": "Mandaue",
+            "amount": 20
+          },
+          {
+            "name": "Lapu-Lapu",
+            "amount": 2
+          },
+          {
+            "name": "Talisay",
+            "amount": 5
+          },
+          {
+            "name": "New Record",
+            "amount": 7
+          },
+          {
+            "name": "Backup Record",
+            "amount": 4
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add projection to the find command."
+      },
+      {
+        "level": 2,
+        "text": "Copy the exact solution string; do not change the order or structure."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[ { \"collection\": \"records\", \"operation\": \"insert\", \"documents\": [ { \"name\": \"New Record\", \"category\": \"Local\", \"amount\": 7, \"status\": \"Open\", \"note\": \"Community order\" }, { \"name\": \"Backup Record\", \"category\": \"Local\", \"amount\": 4, \"status\": \"Open\" } ] }, { \"collection\": \"records\", \"operation\": \"find\", \"projection\": [ \"name\", \"amount\" ] } ]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cebu-route-deliveries",
+    "conceptIds": [
+      "nosql-projection"
+    ]
+  }
+] satisfies typeof nosqlCourse.steps));
