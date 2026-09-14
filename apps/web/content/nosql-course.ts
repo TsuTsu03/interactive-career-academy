@@ -2076,3 +2076,650 @@ nosqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof nosqlCourse.steps));
+
+// Validated local authoring batch: palengke-document-orders.
+nosqlCourse.steps.push(...([
+  {
+    "id": "nosql-palengke-document-orders-6",
+    "index": 36,
+    "task": "Use $or for status Done or amount < 3.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"$and\": [{ \"status\": \"Open\" }, { \"amount\": { \"$lte\": 8 } }] } }"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Tomatoes",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Eggplant",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Carrots",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Cabbage",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Returns Eggplant, Carrots, Cabbage",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 2,
+            "name": "Eggplant",
+            "category": "Regional",
+            "amount": 20,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 3,
+            "name": "Carrots",
+            "category": "Local",
+            "amount": 2,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 4,
+            "name": "Cabbage",
+            "category": "Regional",
+            "amount": 5,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use $or to match either status Done or amount less than 3."
+      },
+      {
+        "level": 2,
+        "text": "Filter by status: Done OR amount < 3"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"$or\": [{ \"status\": \"Done\" }, { \"amount\": { \"$lt\": 3 } }] } }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-document-orders",
+    "conceptIds": [
+      "nosql-or"
+    ]
+  },
+  {
+    "id": "nosql-palengke-document-orders-7",
+    "index": 37,
+    "task": "Use $in for category Local or Regional.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"$or\": [{ \"status\": \"Done\" }, { \"amount\": { \"$lt\": 3 } }] } }"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Tomatoes",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Eggplant",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Carrots",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Cabbage",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Returns all four records",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 1,
+            "name": "Tomatoes",
+            "category": "Local",
+            "amount": 8,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 2,
+            "name": "Eggplant",
+            "category": "Regional",
+            "amount": 20,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 3,
+            "name": "Carrots",
+            "category": "Local",
+            "amount": 2,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 4,
+            "name": "Cabbage",
+            "category": "Regional",
+            "amount": 5,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use $in to match category values Local or Regional."
+      },
+      {
+        "level": 2,
+        "text": "Filter by category: Local or Regional"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"category\": { \"$in\": [\"Local\", \"Regional\"] } } }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-document-orders",
+    "conceptIds": [
+      "nosql-in"
+    ]
+  },
+  {
+    "id": "nosql-palengke-document-orders-8",
+    "index": 38,
+    "task": "Project name and amount from that result.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"category\": { \"$in\": [\"Local\", \"Regional\"] } } }"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Tomatoes",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Eggplant",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Carrots",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Cabbage",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Projects name and amount for all records",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Tomatoes",
+            "amount": 8
+          },
+          {
+            "name": "Eggplant",
+            "amount": 20
+          },
+          {
+            "name": "Carrots",
+            "amount": 2
+          },
+          {
+            "name": "Cabbage",
+            "amount": 5
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use projection to show only name and amount fields."
+      },
+      {
+        "level": 2,
+        "text": "Project: name, amount"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"category\": { \"$in\": [\"Local\", \"Regional\"] } }, \"projection\": [\"name\", \"amount\"] }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-document-orders",
+    "conceptIds": [
+      "nosql-projection"
+    ]
+  },
+  {
+    "id": "nosql-palengke-document-orders-9",
+    "index": 39,
+    "task": "Sort by amount ascending.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"category\": { \"$in\": [\"Local\", \"Regional\"] } }, \"projection\": [\"name\", \"amount\"] }"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Tomatoes",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Eggplant",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Carrots",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Cabbage",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Sorts by amount ascending: Carrots 2, Cabbage 5, Tomatoes 8, Eggplant 20",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Carrots",
+            "amount": 2
+          },
+          {
+            "name": "Cabbage",
+            "amount": 5
+          },
+          {
+            "name": "Tomatoes",
+            "amount": 8
+          },
+          {
+            "name": "Eggplant",
+            "amount": 20
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use sort with amount: 1 for ascending order."
+      },
+      {
+        "level": 2,
+        "text": "Sort by amount ascending"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"category\": { \"$in\": [\"Local\", \"Regional\"] } }, \"projection\": [\"name\", \"amount\"], \"sort\": { \"amount\": 1 } }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-document-orders",
+    "conceptIds": [
+      "nosql-sort"
+    ]
+  },
+  {
+    "id": "nosql-palengke-document-orders-10",
+    "index": 40,
+    "task": "Limit to 3.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"category\": { \"$in\": [\"Local\", \"Regional\"] } }, \"projection\": [\"name\", \"amount\"], \"sort\": { \"amount\": 1 } }"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Tomatoes",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Eggplant",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Carrots",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Cabbage",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Limits to 3: Carrots, Cabbage, Tomatoes",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Carrots",
+            "amount": 2
+          },
+          {
+            "name": "Cabbage",
+            "amount": 5
+          },
+          {
+            "name": "Tomatoes",
+            "amount": 8
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use limit to show only the first three results."
+      },
+      {
+        "level": 2,
+        "text": "Limit to 3"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{ \"collection\": \"records\", \"operation\": \"find\", \"filter\": { \"category\": { \"$in\": [\"Local\", \"Regional\"] } }, \"projection\": [\"name\", \"amount\"], \"sort\": { \"amount\": 1 }, \"limit\": 3 }"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "palengke-document-orders",
+    "conceptIds": [
+      "nosql-limit"
+    ]
+  }
+] satisfies typeof nosqlCourse.steps));
