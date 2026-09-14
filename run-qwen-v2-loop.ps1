@@ -105,6 +105,14 @@ if (mode === "snapshot") {
     const index = { type: "integer", minimum: 0 };
     const boolean = { type: "boolean" };
     const cell = { anyOf: [{ type: "null" }, { type: "number" }, { type: "string" }, { type: "array", items: { type: "integer", minimum: 0, maximum: 255 } }] };
+    // A field assertion compares one field against one value. Left open, the
+    // model wrapped the value in the field again - value {"note":"Community
+    // order"} for the field note - which reads as a field holding an object and
+    // fails against the plain string the document actually holds. The IR still
+    // allows an object there, and the grader still compares it structurally;
+    // this narrows only what a generated batch may ask for. No authored step
+    // uses an object-valued field assertion, or any field assertion at all.
+    const fieldValue = { anyOf: [{ type: "null" }, { type: "number" }, { type: "string" }, { type: "boolean" }] };
     const row = { type: "array", items: cell };
     const document = { type: "object" };
     const assertionSpecs = {
@@ -115,7 +123,7 @@ if (mode === "snapshot") {
       "sql-table-columns": { table: scalarText, columns: { type: "array", items: scalarText } },
       "nosql-runs": {}, "nosql-doc-count": { count: index },
       "nosql-docs-equal": { documents: { type: "array", items: document }, ignoreOrder: boolean },
-      "nosql-doc-contains": { document }, "nosql-field-equals": { document: index, field: scalarText, value: {} },
+      "nosql-doc-contains": { document }, "nosql-field-equals": { document: index, field: scalarText, value: fieldValue },
       "nosql-collection-exists": { collection: scalarText },
     };
     const family = Object.entries(assertionSpecs).filter(([kind]) => kind.startsWith(isSql ? "sql-" : "nosql-"));
