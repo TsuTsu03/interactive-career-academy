@@ -12043,3 +12043,229 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: barangay-clinic-delivery-log.
+sqlCourse.projects.push({"id":"barangay-clinic-delivery-log","title":"Barangay Clinic Delivery Log"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-barangay-clinic-delivery-log-261",
+    "index": 261,
+    "task": "Count all delivery records in the clinic log.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "count-all-rows",
+        "label": "The count of all rows is 4",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 4
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count all rows in the table."
+      },
+      {
+        "level": 2,
+        "text": "The starting data has exactly four records."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-delivery-log",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-delivery-log-262",
+    "index": 262,
+    "task": "Name the count as record_count for clarity.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "named-count",
+        "label": "The count is named record_count",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 4
+      },
+      {
+        "id": "alias-heading",
+        "label": "The result column is named record_count",
+        "kind": "sql-columns-equal",
+        "columns": [
+          "record_count"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add AS record_count to rename the count column."
+      },
+      {
+        "level": 2,
+        "text": "This makes the output more readable for reports."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) AS record_count FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-delivery-log",
+    "conceptIds": [
+      "sql-alias"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-delivery-log-263",
+    "index": 263,
+    "task": "Calculate the total amount spent on all deliveries.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) AS record_count FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "total-amount",
+        "label": "The total amount is 35",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 35
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use SUM(amount) to add up all the amounts."
+      },
+      {
+        "level": 2,
+        "text": "The total is 8 + 20 + 2 + 5 = 35."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT SUM(amount) AS total_amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-delivery-log",
+    "conceptIds": [
+      "sql-sum"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-delivery-log-264",
+    "index": 264,
+    "task": "Calculate the average amount per delivery.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT SUM(amount) AS total_amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "average-amount",
+        "label": "The average amount is 8.75",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 8.75
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use AVG(amount) to compute the average."
+      },
+      {
+        "level": 2,
+        "text": "The average is 35 divided by 4, which equals 8.75."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT AVG(amount) AS average_amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-delivery-log",
+    "conceptIds": [
+      "sql-average"
+    ]
+  },
+  {
+    "id": "sql-barangay-clinic-delivery-log-265",
+    "index": 265,
+    "task": "Group deliveries by category and count how many of each type.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT AVG(amount) AS average_amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Consultation', 'Local', 8, 'Open', 1), (2, 'Vaccination', 'Regional', 20, 'Done', 2), (3, 'Checkup', 'Local', 2, 'Open', 1), (4, 'Medicine', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "grouped-by-category",
+        "label": "Local has 2 records, Regional has 2 records",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Local",
+            2
+          ],
+          [
+            "Regional",
+            2
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use GROUP BY category to group by category."
+      },
+      {
+        "level": 2,
+        "text": "COUNT(*) will count how many records are in each group."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, COUNT(*) AS record_count FROM record GROUP BY category;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "barangay-clinic-delivery-log",
+    "conceptIds": [
+      "sql-group-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
