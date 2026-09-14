@@ -152,7 +152,15 @@ if (mode === "snapshot") {
     const string = { type: "string" };
     const stepSchema = { type: "object", additionalProperties: false, required: ["id", "task", "solution", "tests", "hints", "estimatedMinutes"], properties: {
       id: { type: "string", pattern: `^${idPrefix}[a-z0-9]+(?:-[a-z0-9]+)*$`, maxLength: 100 }, task: string, solution: string, tests: { type: "array", minItems: 1, maxItems: 2, items: testSchema },
-      hints: { type: "array", minItems: 2, maxItems: 2, items: string }, conceptIds: { type: "array", maxItems: 1, items: string }, estimatedMinutes: { type: "integer", minimum: 1, maximum: 10 },
+      // The validator below rejects any concept id the repo does not define, and
+      // rightly so: a new concept needs the four authored representations, which
+      // is owner work. The model does not learn that from the error. It tagged a
+      // step "sql-and", a concept that has never existed here, on four attempts
+      // in a row, two of them at a loosened temperature, with the rejection text
+      // fed back each time. Naming the registered ids in the grammar removes the
+      // option instead of arguing about it. The list is the same one the
+      // validator checks, so the two cannot drift apart.
+      hints: { type: "array", minItems: 2, maxItems: 2, items: string }, conceptIds: { type: "array", maxItems: 1, items: { type: "string", enum: registered.map(item => item.id) } }, estimatedMinutes: { type: "integer", minimum: 1, maximum: 10 },
     } };
     // Without a brief, an empty list stays expressible so the model can stop
     // instead of padding a finished project.
