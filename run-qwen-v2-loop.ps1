@@ -155,7 +155,18 @@ if (mode === "snapshot") {
     // Keep the bounded owner brief last, close to where generation begins.
     if (ownerBatchBrief) context.ownerBatchBrief = ownerBatchBrief;
     const prompt = fs.readFileSync(promptPath, "utf8");
-    const user = JSON.stringify(context);
+    let user = JSON.stringify(context);
+    // The budget is a real limit and stays. But a retry adds up to 3,600
+    // characters of the previous rejection to a context that already carries a
+    // brief, and aborting on that meant attempts 2, 3 and 4 never reached the
+    // model at all - the batch failed once on its own merits and three more
+    // times on arithmetic. The rejection is the most compressible thing here
+    // and its tail carries the message, so shorten it until it fits.
+    for (const size of [1200, 600, 300, 0]) {
+      if (prompt.length + user.length <= 30000 || !context.retryFeedback) break;
+      context.retryFeedback = size ? context.retryFeedback.slice(-size) : undefined;
+      user = JSON.stringify(context);
+    }
     if (prompt.length + user.length > 30000) throw Error("Compact context exceeds 30,000 characters; stop before requesting more tokens.");
     const string = { type: "string" };
     const stepSchema = { type: "object", additionalProperties: false, required: ["id", "task", "solution", "tests", "hints", "estimatedMinutes"], properties: {
