@@ -27363,3 +27363,281 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: rice-mill-delivery-log.
+sqlCourse.projects.push({"id":"rice-mill-delivery-log","title":"Rice Mill Delivery Log"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-rice-mill-delivery-log-561",
+    "index": 561,
+    "task": "Select the record name and group_id for all delivery records.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains four rows with name and group_id",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Dinorado",
+            1
+          ],
+          [
+            "Sinandomeng",
+            2
+          ],
+          [
+            "Malagkit",
+            1
+          ],
+          [
+            "Brown Rice",
+            null
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the name and group_id fields from the record table."
+      },
+      {
+        "level": 2,
+        "text": "Use SELECT to fetch these two columns from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-delivery-log",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-rice-mill-delivery-log-562",
+    "index": 562,
+    "task": "LEFT JOIN group_info to show every record with its group label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains four rows with name and group label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Dinorado",
+            "North Team"
+          ],
+          [
+            "Sinandomeng",
+            "South Team"
+          ],
+          [
+            "Malagkit",
+            "North Team"
+          ],
+          [
+            "Brown Rice",
+            null
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Join the record table with group_info using LEFT JOIN."
+      },
+      {
+        "level": 2,
+        "text": "Match group_info.id with record.group_id to show the label."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "rice-mill-delivery-log",
+    "conceptIds": [
+      "sql-left-join"
+    ]
+  },
+  {
+    "id": "sql-rice-mill-delivery-log-563",
+    "index": 563,
+    "task": "Use COALESCE to display 'Unassigned' for missing group labels.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains four rows with name and group_label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Dinorado",
+            "North Team"
+          ],
+          [
+            "Sinandomeng",
+            "South Team"
+          ],
+          [
+            "Malagkit",
+            "North Team"
+          ],
+          [
+            "Brown Rice",
+            "Unassigned"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COALESCE to replace NULL with 'Unassigned' for missing labels."
+      },
+      {
+        "level": 2,
+        "text": "Alias the new column as group_label."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "rice-mill-delivery-log",
+    "conceptIds": [
+      "sql-coalesce"
+    ]
+  },
+  {
+    "id": "sql-rice-mill-delivery-log-564",
+    "index": 564,
+    "task": "Filter for the row whose group_id is NULL to show only unassigned records.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains one row with name and group_label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Brown Rice",
+            "Unassigned"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter for records with group_id IS NULL."
+      },
+      {
+        "level": 2,
+        "text": "Only Brown Rice should appear in the result."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id WHERE record.group_id IS NULL;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "rice-mill-delivery-log",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-rice-mill-delivery-log-565",
+    "index": 565,
+    "task": "Switch back to all rows and sort by the displayed group label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id WHERE record.group_id IS NULL;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains four rows sorted by group_label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Dinorado",
+            "North Team"
+          ],
+          [
+            "Malagkit",
+            "North Team"
+          ],
+          [
+            "Sinandomeng",
+            "South Team"
+          ],
+          [
+            "Brown Rice",
+            "Unassigned"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Remove the WHERE clause to show all rows again."
+      },
+      {
+        "level": 2,
+        "text": "Add ORDER BY group_label ASC to sort the results alphabetically."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id ORDER BY group_label ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "rice-mill-delivery-log",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
