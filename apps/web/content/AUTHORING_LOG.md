@@ -3505,3 +3505,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-16: Local Qwen authored sql-basics/fishing-harbor-inventory-report, steps 571-575; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
 
 - 2026-09-16: Local Qwen authored sql-basics/fishing-harbor-inventory-report, steps 576-580; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/fishing-harbor-daily-record, steps 581-585; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
