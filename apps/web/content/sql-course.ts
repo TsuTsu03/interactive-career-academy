@@ -21548,3 +21548,231 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: carinderia-delivery-log.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-carinderia-delivery-log-446",
+    "index": 446,
+    "task": "Insert the row for id 4 from source_record into report and select it.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-has-id-4",
+        "label": "Report contains row for id 4",
+        "kind": "sql-row-contains",
+        "row": [
+          4,
+          "Rice Meal",
+          5
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add an INSERT statement to add the row for id 4 from source_record into report."
+      },
+      {
+        "level": 2,
+        "text": "Verify that the row for id 4 appears in the SELECT output."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-delivery-log",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-carinderia-delivery-log-447",
+    "index": 447,
+    "task": "Update report id 2 amount to 18.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "id-2-amount-updated",
+        "label": "Report row for id 2 has amount 18",
+        "kind": "sql-value-equals",
+        "row": 3,
+        "column": 2,
+        "value": 18,
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use an UPDATE statement to change the amount for id 2 to 18."
+      },
+      {
+        "level": 2,
+        "text": "Verify that the amount for id 2 is now 18 in the SELECT output."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-delivery-log",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-carinderia-delivery-log-448",
+    "index": 448,
+    "task": "Delete report id 3.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "id-3-deleted",
+        "label": "Report does not contain row for id 3",
+        "kind": "sql-row-count",
+        "count": 3,
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use a DELETE statement to remove the row for id 3 from report."
+      },
+      {
+        "level": 2,
+        "text": "Verify that the SELECT output no longer contains id 3."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-delivery-log",
+    "conceptIds": [
+      "sql-delete"
+    ]
+  },
+  {
+    "id": "sql-carinderia-delivery-log-449",
+    "index": 449,
+    "task": "Count report rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-row-count",
+        "label": "Report has 3 rows",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 3,
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use a COUNT(*) statement to count the rows in report."
+      },
+      {
+        "level": 2,
+        "text": "Verify that the count is 3."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT COUNT(*) FROM report;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-delivery-log",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-carinderia-delivery-log-450",
+    "index": 450,
+    "task": "Show id, name, and amount ordered by id.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT COUNT(*) FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "ordered-by-id",
+        "label": "Rows are ordered by id ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Adobo",
+            8
+          ],
+          [
+            2,
+            "Sinigang",
+            18
+          ],
+          [
+            4,
+            "Rice Meal",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY id ASC to the SELECT statement to sort rows by id ascending."
+      },
+      {
+        "level": 2,
+        "text": "Verify that the rows are ordered from lowest to highest id."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY id ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-delivery-log",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
