@@ -14869,3 +14869,232 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: public-school-community-schedule.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-public-school-community-schedule-316",
+    "index": 316,
+    "task": "Replace the entire prior SELECT with COUNT(*) for amount <= 10 and check the scalar value 3, not the output row count.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC LIMIT 2;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The count is 3 for items with amount <= 10",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 3
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count matching rows, not to list them."
+      },
+      {
+        "level": 2,
+        "text": "The solution counts only Ruler, Paper, and Notebook: three rows."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) FROM record WHERE amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "public-school-community-schedule",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-public-school-community-schedule-317",
+    "index": 317,
+    "task": "Alias that count as priority_count and check that exact result column heading.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) FROM record WHERE amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The column heading is exactly priority_count",
+        "kind": "sql-columns-equal",
+        "columns": [
+          "priority_count"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add AS priority_count to rename the count column."
+      },
+      {
+        "level": 2,
+        "text": "The solution returns one column named priority_count."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) AS priority_count FROM record WHERE amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "public-school-community-schedule",
+    "conceptIds": [
+      "sql-alias"
+    ]
+  },
+  {
+    "id": "sql-public-school-community-schedule-318",
+    "index": 318,
+    "task": "Replace the entire count query with category and SUM(amount) grouped across all four rows, giving Local 10 and Regional 25.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) AS priority_count FROM record WHERE amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Local 10 and Regional 25 grouped by category",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Local",
+            10
+          ],
+          [
+            "Regional",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Group by category and sum the amounts for each group."
+      },
+      {
+        "level": 2,
+        "text": "The solution returns Local 10 (Notebook 8 + Ruler 2) and Regional 25 (Pencil 20 + Paper 5)."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "public-school-community-schedule",
+    "conceptIds": [
+      "sql-sum"
+    ]
+  },
+  {
+    "id": "sql-public-school-community-schedule-319",
+    "index": 319,
+    "task": "Keep only the Regional 25 total by using HAVING above 12.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Only Regional 25 remains after filtering by HAVING",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Regional",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add HAVING SUM(amount) > 12 to filter groups by total amount."
+      },
+      {
+        "level": 2,
+        "text": "The solution keeps only Regional 25, since Local 10 is less than 12."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category HAVING SUM(amount) > 12;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "public-school-community-schedule",
+    "conceptIds": [
+      "sql-having"
+    ]
+  },
+  {
+    "id": "sql-public-school-community-schedule-320",
+    "index": 320,
+    "task": "Lower HAVING to above 8 to restore both totals and sort them largest first so Regional 25 comes before Local 10.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category HAVING SUM(amount) > 12;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Regional 25 then Local 10 sorted largest first",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Regional",
+            25
+          ],
+          [
+            "Local",
+            10
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Lower HAVING to > 8 to include both groups."
+      },
+      {
+        "level": 2,
+        "text": "Add ORDER BY total_amount DESC to sort largest first: Regional 25 before Local 10."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category HAVING SUM(amount) > 8 ORDER BY total_amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "public-school-community-schedule",
+    "conceptIds": [
+      "sql-descending"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));

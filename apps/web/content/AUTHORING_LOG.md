@@ -3399,3 +3399,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-16: Local Qwen authored sql-basics/public-school-supplier-list, steps 306-310; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
 
 - 2026-09-16: Local Qwen authored sql-basics/public-school-community-schedule, steps 311-315; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/public-school-community-schedule, steps 316-320; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
