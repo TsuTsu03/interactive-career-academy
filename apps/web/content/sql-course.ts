@@ -28667,3 +28667,231 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: fishing-harbor-daily-record.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-fishing-harbor-daily-record-586",
+    "index": 586,
+    "task": "Insert the row for id 4 from source_record into report.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-contains-id-4",
+        "label": "Report contains row for id 4: Tuna 5",
+        "kind": "sql-row-contains",
+        "row": [
+          4,
+          "Tuna",
+          5
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add id 4 from source_record to the report table using INSERT."
+      },
+      {
+        "level": 2,
+        "text": "Use WHERE id IN (1, 2, 3, 4) to include id 4 in the insert."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "fishing-harbor-daily-record",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-fishing-harbor-daily-record-587",
+    "index": 587,
+    "task": "Update report id 2 amount to 18.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-id-2-amount-updated",
+        "label": "Report row id 2 amount is 18: Tilapia 18",
+        "kind": "sql-value-equals",
+        "row": 3,
+        "column": 2,
+        "value": 18,
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change the amount for id 2 to 18 using UPDATE."
+      },
+      {
+        "level": 2,
+        "text": "Use WHERE id = 2 to target only this row."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "fishing-harbor-daily-record",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-fishing-harbor-daily-record-588",
+    "index": 588,
+    "task": "Delete report id 3.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-id-3-deleted",
+        "label": "Report row id 3 is deleted: Galunggong gone",
+        "kind": "sql-row-count",
+        "count": 3,
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Remove id 3 from report using DELETE."
+      },
+      {
+        "level": 2,
+        "text": "Use WHERE id = 3 to target only this row."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "fishing-harbor-daily-record",
+    "conceptIds": [
+      "sql-delete"
+    ]
+  },
+  {
+    "id": "sql-fishing-harbor-daily-record-589",
+    "index": 589,
+    "task": "Count the rows in report after deletion.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-count-after-deletion",
+        "label": "Report has 3 rows after deletion",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 3,
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Count all rows in report using COUNT(*)."
+      },
+      {
+        "level": 2,
+        "text": "Use SELECT COUNT(*) FROM report."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT COUNT(*) FROM report;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "fishing-harbor-daily-record",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-fishing-harbor-daily-record-590",
+    "index": 590,
+    "task": "Show id, name, and amount ordered by id ascending.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT COUNT(*) FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-ordered-by-id",
+        "label": "Report rows ordered by id: 1 Bangus 8, 2 Tilapia 18, 4 Tuna 5",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Bangus",
+            8
+          ],
+          [
+            2,
+            "Tilapia",
+            18
+          ],
+          [
+            4,
+            "Tuna",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Sort the report rows by id ascending using ORDER BY id ASC."
+      },
+      {
+        "level": 2,
+        "text": "Use ORDER BY id ASC to arrange the rows by id."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY id ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "fishing-harbor-daily-record",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
