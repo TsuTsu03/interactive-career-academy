@@ -16389,3 +16389,244 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: cooperative-daily-record.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-cooperative-daily-record-346",
+    "index": 346,
+    "task": "Count records for each group label",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10 ORDER BY record.amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report counts records for each group label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "North Team",
+            2
+          ],
+          [
+            "South Team",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count the number of records per group."
+      },
+      {
+        "level": 2,
+        "text": "Group by group_info.label to get counts per group."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT group_info.label, COUNT(*) AS record_count FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-daily-record",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-cooperative-daily-record-347",
+    "index": 347,
+    "task": "Sum amount for each group label",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT group_info.label, COUNT(*) AS record_count FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report sums amount for each group label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "North Team",
+            10
+          ],
+          [
+            "South Team",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use SUM(record.amount) to calculate total amount per group."
+      },
+      {
+        "level": 2,
+        "text": "Group by group_info.label to get totals per group."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-daily-record",
+    "conceptIds": [
+      "sql-sum"
+    ]
+  },
+  {
+    "id": "sql-cooperative-daily-record-348",
+    "index": 348,
+    "task": "Keep only group sums above 12 with HAVING",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report keeps only group sums above 12",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "South Team",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add HAVING SUM(record.amount) > 12 to filter groups with total amount above 12."
+      },
+      {
+        "level": 2,
+        "text": "The GROUP BY clause remains unchanged."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label HAVING SUM(record.amount) > 12;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-daily-record",
+    "conceptIds": [
+      "sql-having"
+    ]
+  },
+  {
+    "id": "sql-cooperative-daily-record-349",
+    "index": 349,
+    "task": "Remove HAVING to restore both groups and sort their sums descending",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label HAVING SUM(record.amount) > 12;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report restores both groups and sorts their sums descending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "South Team",
+            25
+          ],
+          [
+            "North Team",
+            10
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Remove HAVING to restore all groups."
+      },
+      {
+        "level": 2,
+        "text": "Add ORDER BY total_amount DESC to sort sums descending."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label ORDER BY total_amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-daily-record",
+    "conceptIds": [
+      "sql-descending"
+    ]
+  },
+  {
+    "id": "sql-cooperative-daily-record-350",
+    "index": 350,
+    "task": "Limit the restored grouped report to the largest group",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label ORDER BY total_amount DESC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report limits to the largest group",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "South Team",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT 1 to keep only the largest group."
+      },
+      {
+        "level": 2,
+        "text": "The ORDER BY clause remains unchanged."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label ORDER BY total_amount DESC LIMIT 1;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-daily-record",
+    "conceptIds": [
+      "sql-limit"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
