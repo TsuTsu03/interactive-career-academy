@@ -29925,3 +29925,214 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: fishing-harbor-community-schedule.
+sqlCourse.projects.push({"id":"fishing-harbor-community-schedule","title":"Fishing Harbor Community Schedule"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-fishing-harbor-community-schedule-611",
+    "index": 611,
+    "task": "Count all rows in the record table",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "count-all-rows",
+        "label": "The count of all rows is 4",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 4
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count all rows in the record table."
+      },
+      {
+        "level": 2,
+        "text": "The result is a single scalar value."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-community-schedule"
+  },
+  {
+    "id": "sql-fishing-harbor-community-schedule-612",
+    "index": 612,
+    "task": "Name the count as record_count",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "named-count",
+        "label": "The count is named record_count",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 4
+      },
+      {
+        "id": "alias-heading",
+        "label": "The result column is named record_count",
+        "kind": "sql-columns-equal",
+        "columns": [
+          "record_count"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use AS to rename the COUNT(*) result as record_count."
+      },
+      {
+        "level": 2,
+        "text": "The alias appears in the output column."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) AS record_count FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-community-schedule"
+  },
+  {
+    "id": "sql-fishing-harbor-community-schedule-613",
+    "index": 613,
+    "task": "Calculate the sum of amounts as total_amount",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) AS record_count FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "sum-of-amounts",
+        "label": "The sum of amounts is 35",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 35
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use SUM(amount) to calculate the total amount."
+      },
+      {
+        "level": 2,
+        "text": "Alias it as total_amount for clarity."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT SUM(amount) AS total_amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-community-schedule"
+  },
+  {
+    "id": "sql-fishing-harbor-community-schedule-614",
+    "index": 614,
+    "task": "Calculate the average of amounts as average_amount",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT SUM(amount) AS total_amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "average-of-amounts",
+        "label": "The average of amounts is 8.75",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 8.75
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use AVG(amount) to calculate the average amount."
+      },
+      {
+        "level": 2,
+        "text": "Alias it as average_amount for clarity."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT AVG(amount) AS average_amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-community-schedule"
+  },
+  {
+    "id": "sql-fishing-harbor-community-schedule-615",
+    "index": 615,
+    "task": "Select category and count grouped by category",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT AVG(amount) AS average_amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "grouped-by-category",
+        "label": "Local has 2 records, Regional has 2 records",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Local",
+            2
+          ],
+          [
+            "Regional",
+            2
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use GROUP BY category to group rows by category."
+      },
+      {
+        "level": 2,
+        "text": "Count each group with COUNT(*) and alias it as record_count."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, COUNT(*) AS record_count FROM record GROUP BY category;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-community-schedule"
+  }
+] satisfies typeof sqlCourse.steps));
