@@ -16630,3 +16630,281 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: cooperative-service-queue.
+sqlCourse.projects.push({"id":"cooperative-service-queue","title":"Community Cooperative Service Queue"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-cooperative-service-queue-351",
+    "index": 351,
+    "task": "Select record name and group_id to start the report.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows four rows with name and group_id",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice Loan",
+            1
+          ],
+          [
+            "Seed Fund",
+            2
+          ],
+          [
+            "Tool Share",
+            1
+          ],
+          [
+            "Market Stall",
+            null
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Start by selecting the name and group_id from the record table."
+      },
+      {
+        "level": 2,
+        "text": "This is the first step: just select the required fields."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-service-queue",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-cooperative-service-queue-352",
+    "index": 352,
+    "task": "LEFT JOIN group_info to show every record with its group label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows four rows with name and group label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice Loan",
+            "North Team"
+          ],
+          [
+            "Seed Fund",
+            "South Team"
+          ],
+          [
+            "Tool Share",
+            "North Team"
+          ],
+          [
+            "Market Stall",
+            null
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Join the group_info table using LEFT JOIN to include all records."
+      },
+      {
+        "level": 2,
+        "text": "Use ON group_info.id = record.group_id to match the group_id."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "cooperative-service-queue",
+    "conceptIds": [
+      "sql-left-join"
+    ]
+  },
+  {
+    "id": "sql-cooperative-service-queue-353",
+    "index": 353,
+    "task": "Use COALESCE to display 'Unassigned' for missing group labels.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows four rows with name and group_label including Unassigned",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice Loan",
+            "North Team"
+          ],
+          [
+            "Seed Fund",
+            "South Team"
+          ],
+          [
+            "Tool Share",
+            "North Team"
+          ],
+          [
+            "Market Stall",
+            "Unassigned"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COALESCE to replace NULL with 'Unassigned' for missing group labels."
+      },
+      {
+        "level": 2,
+        "text": "Alias the result as group_label for clarity."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "cooperative-service-queue",
+    "conceptIds": [
+      "sql-coalesce"
+    ]
+  },
+  {
+    "id": "sql-cooperative-service-queue-354",
+    "index": 354,
+    "task": "Filter for the row whose group_id is NULL to isolate the unassigned record.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only one row for the unassigned record",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Market Stall",
+            "Unassigned"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter for records with group_id IS NULL."
+      },
+      {
+        "level": 2,
+        "text": "This isolates the unassigned record for business reporting."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id WHERE record.group_id IS NULL;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "cooperative-service-queue",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-cooperative-service-queue-355",
+    "index": 355,
+    "task": "Switch back to all rows and sort by the displayed group_label for business reporting.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id WHERE record.group_id IS NULL;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows all four rows sorted by group_label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice Loan",
+            "North Team"
+          ],
+          [
+            "Tool Share",
+            "North Team"
+          ],
+          [
+            "Seed Fund",
+            "South Team"
+          ],
+          [
+            "Market Stall",
+            "Unassigned"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Remove the WHERE clause to return all rows."
+      },
+      {
+        "level": 2,
+        "text": "Add ORDER BY group_label ASC to sort by the displayed label."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id ORDER BY group_label ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "cooperative-service-queue",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
