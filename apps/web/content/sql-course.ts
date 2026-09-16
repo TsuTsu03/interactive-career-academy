@@ -16908,3 +16908,252 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: cooperative-service-queue.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-cooperative-service-queue-356",
+    "index": 356,
+    "task": "Count every record after the LEFT JOIN.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id ORDER BY group_label ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The count is 4",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 4
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count all rows in the joined result."
+      },
+      {
+        "level": 2,
+        "text": "The LEFT JOIN ensures all records are counted, even if group_info is missing."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-service-queue",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-cooperative-service-queue-357",
+    "index": 357,
+    "task": "Count records per displayed group label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Group counts: North Team 2, South Team 1, Unassigned 1",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "North Team",
+            2
+          ],
+          [
+            "South Team",
+            1
+          ],
+          [
+            "Unassigned",
+            1
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Group by the displayed group_label using GROUP BY."
+      },
+      {
+        "level": 2,
+        "text": "Use COUNT(*) to count records per group, and COALESCE to handle NULLs."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, COUNT(*) AS record_count FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "cooperative-service-queue",
+    "conceptIds": [
+      "sql-group-by"
+    ]
+  },
+  {
+    "id": "sql-cooperative-service-queue-358",
+    "index": 358,
+    "task": "Sum amount per displayed group label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, COUNT(*) AS record_count FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Group sums: North Team 10, South Team 20, Unassigned 5",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "North Team",
+            10
+          ],
+          [
+            "South Team",
+            20
+          ],
+          [
+            "Unassigned",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use SUM(record.amount) to calculate total amount per group."
+      },
+      {
+        "level": 2,
+        "text": "Group by group_label and use COALESCE to handle missing labels."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "cooperative-service-queue",
+    "conceptIds": [
+      "sql-sum"
+    ]
+  },
+  {
+    "id": "sql-cooperative-service-queue-359",
+    "index": 359,
+    "task": "Keep displayed groups whose sum exceeds 8.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Groups with sum > 8: North Team 10, South Team 20",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "North Team",
+            10
+          ],
+          [
+            "South Team",
+            20
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add HAVING SUM(record.amount) > 8 to filter groups by total amount."
+      },
+      {
+        "level": 2,
+        "text": "This removes the 'Unassigned' row since its sum is 5, which is not > 8."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label HAVING SUM(record.amount) > 8;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "cooperative-service-queue",
+    "conceptIds": [
+      "sql-having"
+    ]
+  },
+  {
+    "id": "sql-cooperative-service-queue-360",
+    "index": 360,
+    "task": "Order those group sums descending.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label HAVING SUM(record.amount) > 8;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "Groups ordered descending: South Team 20, North Team 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "South Team",
+            20
+          ],
+          [
+            "North Team",
+            10
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY total_amount DESC to sort groups by their sums in descending order."
+      },
+      {
+        "level": 2,
+        "text": "This ensures the highest sum appears first in the report."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label HAVING SUM(record.amount) > 8 ORDER BY total_amount DESC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "cooperative-service-queue",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
