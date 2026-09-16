@@ -17934,3 +17934,282 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: cooperative-community-schedule.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-cooperative-community-schedule-376",
+    "index": 376,
+    "task": "Insert source row id 4 into report",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-rows-after-inserting-id-4",
+        "label": "Report rows after inserting id 4: Tool Share 2, Rice Loan 8, Seed Fund 20, Market Stall 5",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            3,
+            "Tool Share",
+            2
+          ],
+          [
+            4,
+            "Market Stall",
+            5
+          ],
+          [
+            1,
+            "Rice Loan",
+            8
+          ],
+          [
+            2,
+            "Seed Fund",
+            20
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a new INSERT statement to include id 4 from source_record."
+      },
+      {
+        "level": 2,
+        "text": "Use INSERT INTO report SELECT id, name, amount FROM source_record WHERE id = 4;"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-community-schedule",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-cooperative-community-schedule-377",
+    "index": 377,
+    "task": "Update report id 2 amount to 18",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-rows-after-updating-id-2",
+        "label": "Report rows after updating id 2 amount to 18: Tool Share 2, Rice Loan 8, Seed Fund 18, Market Stall 5",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            3,
+            "Tool Share",
+            2
+          ],
+          [
+            4,
+            "Market Stall",
+            5
+          ],
+          [
+            1,
+            "Rice Loan",
+            8
+          ],
+          [
+            2,
+            "Seed Fund",
+            18
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use UPDATE report SET amount = 18 WHERE id = 2;"
+      },
+      {
+        "level": 2,
+        "text": "This changes the amount for Seed Fund from 20 to 18."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-community-schedule",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-cooperative-community-schedule-378",
+    "index": 378,
+    "task": "Delete report id 3",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-rows-after-deleting-id-3",
+        "label": "Report rows after deleting id 3: Tool Share 2, Rice Loan 8, Seed Fund 18, Market Stall 5",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            4,
+            "Market Stall",
+            5
+          ],
+          [
+            1,
+            "Rice Loan",
+            8
+          ],
+          [
+            2,
+            "Seed Fund",
+            18
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a DELETE statement to remove id 3."
+      },
+      {
+        "level": 2,
+        "text": "Use DELETE FROM report WHERE id = 3;"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-community-schedule",
+    "conceptIds": [
+      "sql-delete"
+    ]
+  },
+  {
+    "id": "sql-cooperative-community-schedule-379",
+    "index": 379,
+    "task": "Count report rows",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-row-count-after-deletion",
+        "label": "Report row count after deleting id 3: 3",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 3
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use SELECT COUNT(*) FROM report;"
+      },
+      {
+        "level": 2,
+        "text": "This counts the remaining rows after deletion."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT COUNT(*) FROM report;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-community-schedule",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-cooperative-community-schedule-380",
+    "index": 380,
+    "task": "Show id, name, and amount ordered by id",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT COUNT(*) FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-rows-ordered-by-id",
+        "label": "Report rows ordered by id: Rice Loan 8, Seed Fund 18, Market Stall 5",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Rice Loan",
+            8
+          ],
+          [
+            2,
+            "Seed Fund",
+            18
+          ],
+          [
+            4,
+            "Market Stall",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY id ASC to sort by id ascending."
+      },
+      {
+        "level": 2,
+        "text": "This ensures rows are listed in order of id: 1, 2, 4."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY id ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-community-schedule",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
