@@ -14104,3 +14104,251 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: public-school-supplier-list.
+sqlCourse.projects.push({"id":"public-school-supplier-list","title":"Public School Supplier List"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-public-school-supplier-list-301",
+    "index": 301,
+    "task": "Create a report table with id and name columns.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-table-exists",
+        "label": "The report table exists with id and name columns",
+        "kind": "sql-table-columns",
+        "table": "report",
+        "columns": [
+          "id",
+          "name"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Create a new table named 'report' with columns 'id' and 'name'."
+      },
+      {
+        "level": 2,
+        "text": "Use the exact CREATE TABLE syntax from the seed."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT);"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "public-school-supplier-list",
+    "conceptIds": [
+      "sql-create-table"
+    ]
+  },
+  {
+    "id": "sql-public-school-supplier-list-302",
+    "index": 302,
+    "task": "Add the amount column to the report table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT);"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-table-columns",
+        "label": "The report table now has id, name, and amount columns",
+        "kind": "sql-table-columns",
+        "table": "report",
+        "columns": [
+          "id",
+          "name",
+          "amount"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the column 'amount' of type INTEGER to the report table."
+      },
+      {
+        "level": 2,
+        "text": "Use the exact CREATE TABLE syntax from the seed."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "public-school-supplier-list",
+    "conceptIds": [
+      "sql-create-table"
+    ]
+  },
+  {
+    "id": "sql-public-school-supplier-list-303",
+    "index": 303,
+    "task": "Insert the row for id 1 from source_record into report and select it.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "row-1-inserted",
+        "label": "The row for id 1 is inserted and visible",
+        "kind": "sql-row-contains",
+        "row": [
+          1,
+          "Notebook",
+          8
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert the row from source_record where id = 1 into report."
+      },
+      {
+        "level": 2,
+        "text": "Then select all rows from report to verify the insertion."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id = 1;\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 6,
+    "projectId": "public-school-supplier-list",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-public-school-supplier-list-304",
+    "index": 304,
+    "task": "Insert rows for ids 2 and 3 from source_record into report and select them.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id = 1;\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "rows-1-2-3-inserted",
+        "label": "Rows for ids 1, 2, and 3 are inserted and visible",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Notebook",
+            8
+          ],
+          [
+            2,
+            "Pencil",
+            20
+          ],
+          [
+            3,
+            "Ruler",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert rows from source_record where id is in (1, 2, 3) into report."
+      },
+      {
+        "level": 2,
+        "text": "Then select all rows from report to verify the insertion."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 6,
+    "projectId": "public-school-supplier-list",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-public-school-supplier-list-305",
+    "index": 305,
+    "task": "Sort the report rows by amount in ascending order.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Notebook', 'Local', 8, 'Open', 1), (2, 'Pencil', 'Regional', 20, 'Done', 2), (3, 'Ruler', 'Local', 2, 'Open', 1), (4, 'Paper', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "rows-sorted-by-amount",
+        "label": "Rows are sorted by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            3,
+            "Ruler",
+            2
+          ],
+          [
+            1,
+            "Notebook",
+            8
+          ],
+          [
+            2,
+            "Pencil",
+            20
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY amount ASC to the SELECT statement."
+      },
+      {
+        "level": 2,
+        "text": "The rows should appear in order: Ruler (2), Notebook (8), Pencil (20)."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 6,
+    "projectId": "public-school-supplier-list",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
