@@ -21300,3 +21300,251 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: carinderia-delivery-log.
+sqlCourse.projects.push({"id":"carinderia-delivery-log","title":"Carinderia Delivery Log"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-carinderia-delivery-log-441",
+    "index": 441,
+    "task": "Create a report table with id and name columns.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-table-exists",
+        "label": "The report table exists with id and name columns",
+        "kind": "sql-table-columns",
+        "table": "report",
+        "columns": [
+          "id",
+          "name"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Create a new table named report with two columns: id and name."
+      },
+      {
+        "level": 2,
+        "text": "Use the CREATE TABLE statement to define the table structure."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT);"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "carinderia-delivery-log",
+    "conceptIds": [
+      "sql-create-table"
+    ]
+  },
+  {
+    "id": "sql-carinderia-delivery-log-442",
+    "index": 442,
+    "task": "Add the amount column to the report table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT);"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-table-columns",
+        "label": "The report table has id, name, and amount columns",
+        "kind": "sql-table-columns",
+        "table": "report",
+        "columns": [
+          "id",
+          "name",
+          "amount"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the amount column to the report table definition."
+      },
+      {
+        "level": 2,
+        "text": "Use the CREATE TABLE statement to redefine the table with the new column."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "carinderia-delivery-log",
+    "conceptIds": [
+      "sql-create-table"
+    ]
+  },
+  {
+    "id": "sql-carinderia-delivery-log-443",
+    "index": 443,
+    "task": "Insert the row for id 1 from source_record into report and select it.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "row-1-exists",
+        "label": "The row with id 1 exists in report",
+        "kind": "sql-row-contains",
+        "row": [
+          1,
+          "Adobo",
+          8
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert the row from source_record where id is 1 into the report table."
+      },
+      {
+        "level": 2,
+        "text": "Then select all rows from report to verify the insertion."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id = 1;\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-delivery-log",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-carinderia-delivery-log-444",
+    "index": 444,
+    "task": "Insert rows for ids 2 and 3 from source_record into report.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id = 1;\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "rows-1-2-3-exist",
+        "label": "Rows with ids 1, 2, and 3 exist in report",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Adobo",
+            8
+          ],
+          [
+            2,
+            "Sinigang",
+            20
+          ],
+          [
+            3,
+            "Pancit",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert rows from source_record where id is in (1, 2, 3) into report."
+      },
+      {
+        "level": 2,
+        "text": "Then select all rows from report to verify the insertion."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-delivery-log",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-carinderia-delivery-log-445",
+    "index": 445,
+    "task": "Sort the report rows by amount in ascending order.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "sorted-by-amount",
+        "label": "Rows are sorted by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            3,
+            "Pancit",
+            2
+          ],
+          [
+            1,
+            "Adobo",
+            8
+          ],
+          [
+            2,
+            "Sinigang",
+            20
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY amount ASC to the SELECT statement to sort rows by amount."
+      },
+      {
+        "level": 2,
+        "text": "Verify that the rows are ordered from lowest to highest amount."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-delivery-log",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
