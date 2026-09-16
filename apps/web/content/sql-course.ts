@@ -31953,3 +31953,251 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: water-station-service-queue.
+sqlCourse.projects.push({"id":"water-station-service-queue","title":"Water Refill Station Service Queue"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-water-station-service-queue-1",
+    "index": 651,
+    "task": "Create a report table with id and name columns.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-table-exists",
+        "label": "The report table exists with id and name columns",
+        "kind": "sql-table-columns",
+        "table": "report",
+        "columns": [
+          "id",
+          "name"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Create a new table named report with two columns: id and name."
+      },
+      {
+        "level": 2,
+        "text": "Use the exact CREATE TABLE syntax with the correct column types."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT);"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-service-queue",
+    "conceptIds": [
+      "sql-create-table"
+    ]
+  },
+  {
+    "id": "sql-water-station-service-queue-2",
+    "index": 652,
+    "task": "Add the amount column to the report table definition.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT);"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-table-columns",
+        "label": "The report table has id, name, and amount columns",
+        "kind": "sql-table-columns",
+        "table": "report",
+        "columns": [
+          "id",
+          "name",
+          "amount"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the amount column as an INTEGER after name."
+      },
+      {
+        "level": 2,
+        "text": "Keep the existing id and name columns in the same order."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-service-queue",
+    "conceptIds": [
+      "sql-create-table"
+    ]
+  },
+  {
+    "id": "sql-water-station-service-queue-3",
+    "index": 653,
+    "task": "Insert the row for source_record id 1 into report and select it.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "row-1-exists",
+        "label": "The report contains the row for id 1: Refill with amount 8",
+        "kind": "sql-row-contains",
+        "row": [
+          1,
+          "Refill",
+          8
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert the row from source_record where id equals 1."
+      },
+      {
+        "level": 2,
+        "text": "Then select all columns from the report table to verify."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id = 1;\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "water-station-service-queue",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-water-station-service-queue-4",
+    "index": 654,
+    "task": "Insert source_record rows for ids 2 and 3 into report and select them.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id = 1;\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "rows-1-2-3-exist",
+        "label": "The report contains rows for ids 1, 2, and 3",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Refill",
+            8
+          ],
+          [
+            2,
+            "Container",
+            20
+          ],
+          [
+            3,
+            "Delivery",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert rows for ids 1, 2, and 3 using IN clause."
+      },
+      {
+        "level": 2,
+        "text": "Verify all three rows appear in the report table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "water-station-service-queue",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-water-station-service-queue-5",
+    "index": 655,
+    "task": "Sort the report rows by amount in ascending order.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "sorted-by-amount",
+        "label": "Rows are sorted by amount ascending: Delivery 2, Refill 8, Container 20",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            3,
+            "Delivery",
+            2
+          ],
+          [
+            1,
+            "Refill",
+            8
+          ],
+          [
+            2,
+            "Container",
+            20
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY amount ASC to sort the results."
+      },
+      {
+        "level": 2,
+        "text": "The smallest amount (Delivery 2) should come first."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "water-station-service-queue",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
