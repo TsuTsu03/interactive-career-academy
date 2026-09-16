@@ -20003,3 +20003,244 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: carinderia-service-queue.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-carinderia-service-queue-416",
+    "index": 416,
+    "task": "Count records for each group label",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10 ORDER BY record.amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report counts records for each group label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "North Team",
+            2
+          ],
+          [
+            "South Team",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count rows per group."
+      },
+      {
+        "level": 2,
+        "text": "Group by group_info.label to get one row per group."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT group_info.label, COUNT(*) AS record_count FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-service-queue",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-carinderia-service-queue-417",
+    "index": 417,
+    "task": "Sum amount for each group label",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT group_info.label, COUNT(*) AS record_count FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report sums amount for each group label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "North Team",
+            10
+          ],
+          [
+            "South Team",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use SUM(record.amount) to add up amounts per group."
+      },
+      {
+        "level": 2,
+        "text": "Group by group_info.label to get one row per group."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-service-queue",
+    "conceptIds": [
+      "sql-sum"
+    ]
+  },
+  {
+    "id": "sql-carinderia-service-queue-418",
+    "index": 418,
+    "task": "Keep only group sums above 12 with HAVING",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report keeps only group sums above 12",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "South Team",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add HAVING SUM(record.amount) > 12 to filter groups by total amount."
+      },
+      {
+        "level": 2,
+        "text": "Only South Team (25) meets the condition."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label HAVING SUM(record.amount) > 12;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-service-queue",
+    "conceptIds": [
+      "sql-having"
+    ]
+  },
+  {
+    "id": "sql-carinderia-service-queue-419",
+    "index": 419,
+    "task": "Remove HAVING to restore both groups and sort their sums descending",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label HAVING SUM(record.amount) > 12;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report restores both groups and sorts their sums descending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "South Team",
+            25
+          ],
+          [
+            "North Team",
+            10
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Remove HAVING to show all groups again."
+      },
+      {
+        "level": 2,
+        "text": "Add ORDER BY total_amount DESC to sort by total amount descending."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label ORDER BY total_amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-service-queue",
+    "conceptIds": [
+      "sql-descending"
+    ]
+  },
+  {
+    "id": "sql-carinderia-service-queue-420",
+    "index": 420,
+    "task": "Limit the restored grouped report to the largest group",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label ORDER BY total_amount DESC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report limits the restored grouped report to the largest group",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "South Team",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT 1 to keep only the top group by total amount."
+      },
+      {
+        "level": 2,
+        "text": "South Team (25) is the largest group."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT group_info.label, SUM(record.amount) AS total_amount FROM record JOIN group_info ON group_info.id = record.group_id GROUP BY group_info.label ORDER BY total_amount DESC LIMIT 1;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-service-queue",
+    "conceptIds": [
+      "sql-limit"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
