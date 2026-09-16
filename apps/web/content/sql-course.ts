@@ -28419,3 +28419,251 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: fishing-harbor-daily-record.
+sqlCourse.projects.push({"id":"fishing-harbor-daily-record","title":"Fishing Harbor Daily Record"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-fishing-harbor-daily-record-581",
+    "index": 581,
+    "task": "Create a report table with id and name columns.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-table-exists",
+        "label": "The report table exists with id and name",
+        "kind": "sql-table-columns",
+        "table": "report",
+        "columns": [
+          "id",
+          "name"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Create a new table named report with two columns: id and name."
+      },
+      {
+        "level": 2,
+        "text": "Use the CREATE TABLE statement to define the table structure."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT);"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-daily-record",
+    "conceptIds": [
+      "sql-create-table"
+    ]
+  },
+  {
+    "id": "sql-fishing-harbor-daily-record-582",
+    "index": 582,
+    "task": "Add amount INTEGER to the report table definition.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT);"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-table-columns",
+        "label": "The report table has id, name, and amount columns",
+        "kind": "sql-table-columns",
+        "table": "report",
+        "columns": [
+          "id",
+          "name",
+          "amount"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the amount column to the report table definition."
+      },
+      {
+        "level": 2,
+        "text": "The column should be of type INTEGER."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-daily-record",
+    "conceptIds": [
+      "sql-create-table"
+    ]
+  },
+  {
+    "id": "sql-fishing-harbor-daily-record-583",
+    "index": 583,
+    "task": "Insert the row for id 1 from source_record and read the report.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-row-1",
+        "label": "Report contains row for id 1: Bangus with amount 8",
+        "kind": "sql-row-contains",
+        "row": [
+          1,
+          "Bangus",
+          8
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert the row with id 1 from source_record into report."
+      },
+      {
+        "level": 2,
+        "text": "Then select all rows from report to verify the insertion."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id = 1;\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "fishing-harbor-daily-record",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-fishing-harbor-daily-record-584",
+    "index": 584,
+    "task": "Insert rows for source_record ids 2 and 3 into report.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id = 1;\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-rows-1-2-3",
+        "label": "Report contains rows for ids 1, 2, and 3",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Bangus",
+            8
+          ],
+          [
+            2,
+            "Tilapia",
+            20
+          ],
+          [
+            3,
+            "Galunggong",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert rows for ids 2 and 3 from source_record into report."
+      },
+      {
+        "level": 2,
+        "text": "Use the IN clause to select multiple ids."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "fishing-harbor-daily-record",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-fishing-harbor-daily-record-585",
+    "index": 585,
+    "task": "Sort the report rows by amount in ascending order.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-sorted-by-amount",
+        "label": "Report rows sorted by amount ascending: Galunggong, Bangus, Tilapia",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            3,
+            "Galunggong",
+            2
+          ],
+          [
+            1,
+            "Bangus",
+            8
+          ],
+          [
+            2,
+            "Tilapia",
+            20
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Sort the report rows by the amount column in ascending order."
+      },
+      {
+        "level": 2,
+        "text": "Use ORDER BY amount ASC to arrange the rows."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "fishing-harbor-daily-record",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
