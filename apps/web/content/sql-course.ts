@@ -22526,3 +22526,265 @@ sqlCourse.steps.push(...([
     "projectId": "bakery-daily-record"
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: bakery-daily-record.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-bakery-daily-record-466",
+    "index": 466,
+    "task": "Select names beginning with the first letter of the first seeded name using LIKE.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Done' OR amount < 3;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only names starting with 'P'",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Pandesal"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use LIKE to match names starting with 'P'."
+      },
+      {
+        "level": 2,
+        "text": "Check the first seeded name: 'Pandesal' starts with 'P'."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name FROM record WHERE name LIKE 'P%';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-daily-record",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-bakery-daily-record-467",
+    "index": 467,
+    "task": "Show name, category, and amount for Local rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name FROM record WHERE name LIKE 'P%';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows Local items with name, category, and amount",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Pandesal",
+            "Local",
+            8
+          ],
+          [
+            "Monay",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Filter for category = 'Local'."
+      },
+      {
+        "level": 2,
+        "text": "Select the three fields: name, category, amount."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-daily-record",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-bakery-daily-record-468",
+    "index": 468,
+    "task": "Include Local rows OR amount = 20.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report includes Local items and the item with amount 20",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Pandesal",
+            "Local",
+            8
+          ],
+          [
+            "Ensaymada",
+            "Regional",
+            20
+          ],
+          [
+            "Monay",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use OR to include both Local items and the 20-amount item."
+      },
+      {
+        "level": 2,
+        "text": "Check that Ensaymada (20) is included."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-daily-record",
+    "conceptIds": [
+      "sql-or"
+    ]
+  },
+  {
+    "id": "sql-bakery-daily-record-469",
+    "index": 469,
+    "task": "Sort that three-row report by amount descending so the 20 row comes first.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report is sorted by amount descending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Ensaymada",
+            "Regional",
+            20
+          ],
+          [
+            "Pandesal",
+            "Local",
+            8
+          ],
+          [
+            "Monay",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY amount DESC to sort descending."
+      },
+      {
+        "level": 2,
+        "text": "Verify that Ensaymada (20) is first."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-daily-record",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  },
+  {
+    "id": "sql-bakery-daily-record-470",
+    "index": 470,
+    "task": "Limit it to the first 2 rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report is limited to the first 2 rows",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Ensaymada",
+            "Regional",
+            20
+          ],
+          [
+            "Pandesal",
+            "Local",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT 2 to restrict output to two rows."
+      },
+      {
+        "level": 2,
+        "text": "Verify that Ensaymada (20) and Pandesal (8) are shown."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC LIMIT 2;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-daily-record",
+    "conceptIds": [
+      "sql-limit"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
