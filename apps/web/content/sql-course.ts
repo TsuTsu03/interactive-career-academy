@@ -22275,3 +22275,254 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: bakery-daily-record.
+sqlCourse.projects.push({"id":"bakery-daily-record","title":"Neighborhood Bakery Daily Record"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-bakery-daily-record-461",
+    "index": 461,
+    "task": "Select the name and status of all bakery items.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows name and status for all items",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Pandesal",
+            "Open"
+          ],
+          [
+            "Ensaymada",
+            "Done"
+          ],
+          [
+            "Monay",
+            "Open"
+          ],
+          [
+            "Hopia",
+            "Done"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the two fields requested: name and status."
+      },
+      {
+        "level": 2,
+        "text": "Use SELECT to retrieve these fields from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-daily-record"
+  },
+  {
+    "id": "sql-bakery-daily-record-462",
+    "index": 462,
+    "task": "Filter to show only items with status 'Open'.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only Open items",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Pandesal",
+            "Open"
+          ],
+          [
+            "Monay",
+            "Open"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter by status."
+      },
+      {
+        "level": 2,
+        "text": "Use 'Open' as the exact string value for status."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Open';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-daily-record"
+  },
+  {
+    "id": "sql-bakery-daily-record-463",
+    "index": 463,
+    "task": "Filter to show only items with amount less than or equal to 8.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Open';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only items with amount <= 8",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Pandesal",
+            "Open"
+          ],
+          [
+            "Monay",
+            "Open"
+          ],
+          [
+            "Hopia",
+            "Done"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the <= operator to include items with amount 8 or less."
+      },
+      {
+        "level": 2,
+        "text": "Check the amount column in the WHERE clause."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record WHERE amount <= 8;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-daily-record"
+  },
+  {
+    "id": "sql-bakery-daily-record-464",
+    "index": 464,
+    "task": "Filter to show only items that are 'Open' AND have amount <= 8.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE amount <= 8;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only Open items with amount <= 8",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Pandesal",
+            "Open"
+          ],
+          [
+            "Monay",
+            "Open"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Combine two conditions with AND."
+      },
+      {
+        "level": 2,
+        "text": "Both status and amount must match for a row to be included."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Open' AND amount <= 8;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-daily-record"
+  },
+  {
+    "id": "sql-bakery-daily-record-465",
+    "index": 465,
+    "task": "Filter to show only items that are 'Done' OR have amount less than 3.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Open' AND amount <= 8;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only Done items or items with amount < 3",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Ensaymada",
+            "Done"
+          ],
+          [
+            "Monay",
+            "Open"
+          ],
+          [
+            "Hopia",
+            "Done"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use OR to include items that meet either condition."
+      },
+      {
+        "level": 2,
+        "text": "Check status for 'Done' or amount for less than 3."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Done' OR amount < 3;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-daily-record"
+  }
+] satisfies typeof sqlCourse.steps));
