@@ -24070,3 +24070,252 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: bakery-community-schedule.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-bakery-community-schedule-496",
+    "index": 496,
+    "task": "Count every record after the LEFT JOIN.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id ORDER BY group_label ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result is a scalar count of 4",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 4
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count all rows returned by the LEFT JOIN."
+      },
+      {
+        "level": 2,
+        "text": "The solution is a single SELECT with no FROM clause needed beyond the JOIN."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-community-schedule",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-bakery-community-schedule-497",
+    "index": 497,
+    "task": "Count records per displayed group label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains three rows with group_label and record_count",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "North Team",
+            2
+          ],
+          [
+            "South Team",
+            1
+          ],
+          [
+            "Unassigned",
+            1
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Group by the displayed group_label using GROUP BY."
+      },
+      {
+        "level": 2,
+        "text": "Use COUNT(*) to count records per group, and alias the group_label."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, COUNT(*) AS record_count FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "bakery-community-schedule",
+    "conceptIds": [
+      "sql-group-by"
+    ]
+  },
+  {
+    "id": "sql-bakery-community-schedule-498",
+    "index": 498,
+    "task": "Sum amount per displayed group label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, COUNT(*) AS record_count FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains three rows with group_label and total_amount",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "North Team",
+            10
+          ],
+          [
+            "South Team",
+            20
+          ],
+          [
+            "Unassigned",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use SUM(record.amount) to calculate total amount per group."
+      },
+      {
+        "level": 2,
+        "text": "Group by the displayed group_label using GROUP BY."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "bakery-community-schedule",
+    "conceptIds": [
+      "sql-sum"
+    ]
+  },
+  {
+    "id": "sql-bakery-community-schedule-499",
+    "index": 499,
+    "task": "Keep displayed groups whose sum exceeds 8.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains two rows with group_label and total_amount",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "North Team",
+            10
+          ],
+          [
+            "South Team",
+            20
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use HAVING to filter groups whose total amount exceeds 8."
+      },
+      {
+        "level": 2,
+        "text": "The HAVING clause must follow GROUP BY and use SUM(record.amount) > 8."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label HAVING SUM(record.amount) > 8;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "bakery-community-schedule",
+    "conceptIds": [
+      "sql-having"
+    ]
+  },
+  {
+    "id": "sql-bakery-community-schedule-500",
+    "index": 500,
+    "task": "Order those group sums descending.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label HAVING SUM(record.amount) > 8;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains two rows ordered by total_amount descending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "South Team",
+            20
+          ],
+          [
+            "North Team",
+            10
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY total_amount DESC to sort the groups by their sums descending."
+      },
+      {
+        "level": 2,
+        "text": "The solution must include the HAVING clause and ORDER BY clause."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label HAVING SUM(record.amount) > 8 ORDER BY total_amount DESC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "bakery-community-schedule",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
