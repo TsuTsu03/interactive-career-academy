@@ -20771,3 +20771,280 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: carinderia-community-schedule.
+sqlCourse.projects.push({"id":"carinderia-community-schedule","title":"Carinderia Community Schedule"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-carinderia-community-schedule-431",
+    "index": 431,
+    "task": "Select the id, name, and amount of all records in the carinderia community schedule.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The initial report shows all records with id, name, and amount",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Adobo",
+            8
+          ],
+          [
+            2,
+            "Sinigang",
+            20
+          ],
+          [
+            3,
+            "Pancit",
+            2
+          ],
+          [
+            4,
+            "Rice Meal",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the fields: id, name, and amount from the record table."
+      },
+      {
+        "level": 2,
+        "text": "Use SELECT to list these fields from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT id, name, amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-community-schedule",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-carinderia-community-schedule-432",
+    "index": 432,
+    "task": "Insert a new record with id 5, name 'New Record', category 'Local', amount 7, status 'Open', group_id 1, then read all rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT id, name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "After inserting, all records including New Record are shown",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Adobo",
+            8
+          ],
+          [
+            2,
+            "Sinigang",
+            20
+          ],
+          [
+            3,
+            "Pancit",
+            2
+          ],
+          [
+            4,
+            "Rice Meal",
+            5
+          ],
+          [
+            5,
+            "New Record",
+            7
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert the new record using INSERT INTO record VALUES (...)."
+      },
+      {
+        "level": 2,
+        "text": "Then select all id, name, amount to verify the insertion."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nSELECT id, name, amount FROM record;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "carinderia-community-schedule",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-carinderia-community-schedule-433",
+    "index": 433,
+    "task": "Update only id 5 amount to 9, then read it.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nSELECT id, name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "After updating, only id 5 shows amount 9",
+        "kind": "sql-row-contains",
+        "row": [
+          5,
+          "New Record",
+          9
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Update the amount for id 5 using UPDATE record SET amount = 9 WHERE id = 5."
+      },
+      {
+        "level": 2,
+        "text": "Then select only id 5 to verify the change."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nSELECT id, name, amount FROM record WHERE id = 5;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "carinderia-community-schedule",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-carinderia-community-schedule-434",
+    "index": 434,
+    "task": "Update only id 2 status to 'Open', then read id 2.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nSELECT id, name, amount FROM record WHERE id = 5;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "After updating, id 2 shows status 'Open'",
+        "kind": "sql-row-contains",
+        "row": [
+          2,
+          "Sinigang",
+          "Open"
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Update the status for id 2 using UPDATE record SET status = 'Open' WHERE id = 2."
+      },
+      {
+        "level": 2,
+        "text": "Then select only id 2 to verify the change."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nSELECT id, name, status FROM record WHERE id = 2;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "carinderia-community-schedule",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-carinderia-community-schedule-435",
+    "index": 435,
+    "task": "Delete only id 4, then read remaining ids and names.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nSELECT id, name, status FROM record WHERE id = 2;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "After deleting id 4, remaining records show ids 1, 2, 3, 5",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Adobo"
+          ],
+          [
+            2,
+            "Sinigang"
+          ],
+          [
+            3,
+            "Pancit"
+          ],
+          [
+            5,
+            "New Record"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Delete id 4 using DELETE FROM record WHERE id = 4."
+      },
+      {
+        "level": 2,
+        "text": "Then select id and name to verify the deletion."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nSELECT id, name FROM record;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "carinderia-community-schedule",
+    "conceptIds": [
+      "sql-delete"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
