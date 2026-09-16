@@ -26097,3 +26097,265 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: rice-mill-service-queue.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-rice-mill-service-queue-536",
+    "index": 536,
+    "task": "Select the name and status of all records in the rice mill service queue.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Done' OR amount < 3;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows name and status for all records",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Dinorado"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the fields the requested report needs: name and status."
+      },
+      {
+        "level": 2,
+        "text": "Read the named fields from the example data."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name FROM record WHERE name LIKE 'D%';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-service-queue",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-rice-mill-service-queue-537",
+    "index": 537,
+    "task": "Filter the report to show only records with status 'Open'.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name FROM record WHERE name LIKE 'D%';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only records with status 'Open'",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Dinorado",
+            "Local",
+            8
+          ],
+          [
+            "Malagkit",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the WHERE clause to filter rows based on status."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where status is 'Open'."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-service-queue",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-rice-mill-service-queue-538",
+    "index": 538,
+    "task": "Filter the report to show only records with amount less than or equal to 8.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only records with amount <= 8",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Dinorado",
+            "Local",
+            8
+          ],
+          [
+            "Sinandomeng",
+            "Regional",
+            20
+          ],
+          [
+            "Malagkit",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the WHERE clause to filter rows based on amount."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where amount is less than or equal to 8."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-service-queue",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-rice-mill-service-queue-539",
+    "index": 539,
+    "task": "Filter the report to show only records that are 'Open' AND have amount <= 8.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only records that are 'Open' AND have amount <= 8",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Sinandomeng",
+            "Regional",
+            20
+          ],
+          [
+            "Dinorado",
+            "Local",
+            8
+          ],
+          [
+            "Malagkit",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the AND operator to combine two conditions."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where status is 'Open' AND amount is less than or equal to 8."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-service-queue",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-rice-mill-service-queue-540",
+    "index": 540,
+    "task": "Filter the report to show records that are 'Done' OR have amount less than 3.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows Done records or those with amount < 3",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Sinandomeng",
+            "Regional",
+            20
+          ],
+          [
+            "Dinorado",
+            "Local",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the OR operator to combine two conditions."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where status is 'Done' OR amount is less than 3."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC LIMIT 2;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-service-queue",
+    "conceptIds": [
+      "sql-or"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
