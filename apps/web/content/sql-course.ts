@@ -31439,3 +31439,265 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: water-station-daily-record.
+sqlCourse.projects.push({"id":"water-station-daily-record","title":"Water Refill Station Daily Record"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-water-station-daily-record-1",
+    "index": 641,
+    "task": "Select id, name, and amount from the record table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains id, name, and amount for all records",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Refill",
+            8
+          ],
+          [
+            2,
+            "Container",
+            20
+          ],
+          [
+            3,
+            "Delivery",
+            2
+          ],
+          [
+            4,
+            "Dispenser",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the three fields requested: id, name, and amount."
+      },
+      {
+        "level": 2,
+        "text": "Use SELECT to read these fields from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT id, name, amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-daily-record"
+  },
+  {
+    "id": "sql-water-station-daily-record-2",
+    "index": 642,
+    "task": "Insert a new record with id 5, name 'New Record', category 'Local', amount 7, status 'Open', group_id 1, then read all rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT id, name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result includes the new record with id 5 and amount 7",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Refill",
+            8
+          ],
+          [
+            2,
+            "Container",
+            20
+          ],
+          [
+            3,
+            "Delivery",
+            2
+          ],
+          [
+            4,
+            "Dispenser",
+            5
+          ],
+          [
+            5,
+            "New Record",
+            7
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert the new record using INSERT INTO with the exact values."
+      },
+      {
+        "level": 2,
+        "text": "Then read all rows with the same SELECT as before."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nSELECT id, name, amount FROM record;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "water-station-daily-record"
+  },
+  {
+    "id": "sql-water-station-daily-record-3",
+    "index": 643,
+    "task": "Update only id 5 amount to 9, then read it.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nSELECT id, name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result shows id 5 with amount 9",
+        "kind": "sql-row-contains",
+        "row": [
+          5,
+          "New Record",
+          9
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Update the amount for id 5 using SET amount = 9 WHERE id = 5."
+      },
+      {
+        "level": 2,
+        "text": "Then read only id 5 with a WHERE clause."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nSELECT id, name, amount FROM record WHERE id = 5;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "water-station-daily-record"
+  },
+  {
+    "id": "sql-water-station-daily-record-4",
+    "index": 644,
+    "task": "Update only id 2 status to 'Open', then read id 2.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nSELECT id, name, amount FROM record WHERE id = 5;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result shows id 2 with status 'Open'",
+        "kind": "sql-row-contains",
+        "row": [
+          2,
+          "Container",
+          "Open"
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Update the status for id 2 using SET status = 'Open' WHERE id = 2."
+      },
+      {
+        "level": 2,
+        "text": "Then read only id 2 with a WHERE clause and include status."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nSELECT id, name, status FROM record WHERE id = 2;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "water-station-daily-record"
+  },
+  {
+    "id": "sql-water-station-daily-record-5",
+    "index": 645,
+    "task": "Delete only id 4, then read remaining ids and names.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nSELECT id, name, status FROM record WHERE id = 2;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains ids 1, 2, 3, 5 and their names",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Refill"
+          ],
+          [
+            2,
+            "Container"
+          ],
+          [
+            3,
+            "Delivery"
+          ],
+          [
+            5,
+            "New Record"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Delete id 4 using DELETE FROM record WHERE id = 4."
+      },
+      {
+        "level": 2,
+        "text": "Then read only id and name with a SELECT."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nSELECT id, name FROM record;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "water-station-daily-record"
+  }
+] satisfies typeof sqlCourse.steps));
