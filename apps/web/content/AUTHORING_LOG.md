@@ -3501,3 +3501,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-16: Local Qwen authored sql-basics/rice-mill-delivery-log, steps 561-565; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
 
 - 2026-09-16: Local Qwen authored sql-basics/rice-mill-delivery-log, steps 566-570; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/fishing-harbor-inventory-report, steps 571-575; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
