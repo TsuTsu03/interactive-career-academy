@@ -18213,3 +18213,273 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: cooperative-delivery-log.
+sqlCourse.projects.push({"id":"cooperative-delivery-log","title":"Community Cooperative Delivery Log"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-cooperative-delivery-log-381",
+    "index": 381,
+    "task": "Select only the name of each delivery record.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows all names",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice Loan"
+          ],
+          [
+            "Seed Fund"
+          ],
+          [
+            "Tool Share"
+          ],
+          [
+            "Market Stall"
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose only the name field from the record table."
+      },
+      {
+        "level": 2,
+        "text": "The solution is a SELECT with one field."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-delivery-log",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-cooperative-delivery-log-382",
+    "index": 382,
+    "task": "Add the amount field to the report.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows names and amounts",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice Loan",
+            8
+          ],
+          [
+            "Seed Fund",
+            20
+          ],
+          [
+            "Tool Share",
+            2
+          ],
+          [
+            "Market Stall",
+            5
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the amount column to the SELECT list."
+      },
+      {
+        "level": 2,
+        "text": "The solution adds one field to the existing SELECT."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-delivery-log",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-cooperative-delivery-log-383",
+    "index": 383,
+    "task": "Filter the report to show only records with amount <= 10.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only records with amount <= 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Rice Loan",
+            8
+          ],
+          [
+            "Tool Share",
+            2
+          ],
+          [
+            "Market Stall",
+            5
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter by amount."
+      },
+      {
+        "level": 2,
+        "text": "Use <= to include 10 and below."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-delivery-log",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-cooperative-delivery-log-384",
+    "index": 384,
+    "task": "Sort the filtered records by amount in ascending order.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows filtered records sorted by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Tool Share",
+            2
+          ],
+          [
+            "Market Stall",
+            5
+          ],
+          [
+            "Rice Loan",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY amount ASC to sort the filtered rows."
+      },
+      {
+        "level": 2,
+        "text": "The sort must be ascending to match the goal."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-delivery-log",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  },
+  {
+    "id": "sql-cooperative-delivery-log-385",
+    "index": 385,
+    "task": "Limit the sorted report to only two rows for a priority list.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only two rows for priority",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Tool Share",
+            2
+          ],
+          [
+            "Market Stall",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT 2 to restrict output to two rows."
+      },
+      {
+        "level": 2,
+        "text": "The limit removes the last row, Rice Loan, from the sorted list."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC LIMIT 2;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-delivery-log",
+    "conceptIds": [
+      "sql-limit"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
