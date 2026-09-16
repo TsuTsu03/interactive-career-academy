@@ -27641,3 +27641,252 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: rice-mill-delivery-log.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-rice-mill-delivery-log-566",
+    "index": 566,
+    "task": "Count every record after the LEFT JOIN.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id ORDER BY group_label ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result is a scalar count of 4",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 4
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count all rows returned by the LEFT JOIN."
+      },
+      {
+        "level": 2,
+        "text": "The solution is a single SELECT with no WHERE or GROUP BY."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-delivery-log",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-rice-mill-delivery-log-567",
+    "index": 567,
+    "task": "Count records per displayed group label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains three rows: North Team 2, South Team 1, Unassigned 1",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "North Team",
+            2
+          ],
+          [
+            "South Team",
+            1
+          ],
+          [
+            "Unassigned",
+            1
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Group by the displayed group label using GROUP BY group_label."
+      },
+      {
+        "level": 2,
+        "text": "Use COUNT(*) to count records in each group, and alias it as record_count."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, COUNT(*) AS record_count FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "rice-mill-delivery-log",
+    "conceptIds": [
+      "sql-group-by"
+    ]
+  },
+  {
+    "id": "sql-rice-mill-delivery-log-568",
+    "index": 568,
+    "task": "Sum amount per displayed group label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, COUNT(*) AS record_count FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains three rows: North Team 10, South Team 20, Unassigned 5",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "North Team",
+            10
+          ],
+          [
+            "South Team",
+            20
+          ],
+          [
+            "Unassigned",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use SUM(record.amount) to calculate the total amount for each group."
+      },
+      {
+        "level": 2,
+        "text": "Group by the displayed group label using GROUP BY group_label."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "rice-mill-delivery-log",
+    "conceptIds": [
+      "sql-sum"
+    ]
+  },
+  {
+    "id": "sql-rice-mill-delivery-log-569",
+    "index": 569,
+    "task": "Keep displayed groups whose sum exceeds 8.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains two rows: North Team 10, South Team 20",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "North Team",
+            10
+          ],
+          [
+            "South Team",
+            20
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add HAVING SUM(record.amount) > 8 to filter groups whose total exceeds 8."
+      },
+      {
+        "level": 2,
+        "text": "The HAVING clause filters groups after GROUP BY, not before."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label HAVING SUM(record.amount) > 8;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "rice-mill-delivery-log",
+    "conceptIds": [
+      "sql-having"
+    ]
+  },
+  {
+    "id": "sql-rice-mill-delivery-log-570",
+    "index": 570,
+    "task": "Order those group sums descending.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label HAVING SUM(record.amount) > 8;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains two rows: South Team 20, North Team 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "South Team",
+            20
+          ],
+          [
+            "North Team",
+            10
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY total_amount DESC to sort the groups by total amount descending."
+      },
+      {
+        "level": 2,
+        "text": "The ORDER BY clause sorts the final result after HAVING and GROUP BY."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COALESCE(group_info.label, 'Unassigned') AS group_label, SUM(record.amount) AS total_amount FROM record LEFT JOIN group_info ON group_info.id = record.group_id GROUP BY group_label HAVING SUM(record.amount) > 8 ORDER BY total_amount DESC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "rice-mill-delivery-log",
+    "conceptIds": [
+      "sql-descending"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
