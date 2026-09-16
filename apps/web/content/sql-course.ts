@@ -18712,3 +18712,269 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: carinderia-inventory-report.
+sqlCourse.projects.push({"id":"carinderia-inventory-report","title":"Carinderia Inventory Report"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-carinderia-inventory-report-391",
+    "index": 391,
+    "task": "Select the name and status of all items in the inventory.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows name and status for all items",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Adobo",
+            "Open"
+          ],
+          [
+            "Sinigang",
+            "Done"
+          ],
+          [
+            "Pancit",
+            "Open"
+          ],
+          [
+            "Rice Meal",
+            "Done"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the two fields requested: name and status."
+      },
+      {
+        "level": 2,
+        "text": "Use SELECT to fetch these fields from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-inventory-report",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-carinderia-inventory-report-392",
+    "index": 392,
+    "task": "Filter to show only items with status 'Open'.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only Open items",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Adobo",
+            "Open"
+          ],
+          [
+            "Pancit",
+            "Open"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter by status."
+      },
+      {
+        "level": 2,
+        "text": "Use 'Open' as the exact string value for status."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Open';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-inventory-report",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-carinderia-inventory-report-393",
+    "index": 393,
+    "task": "Filter to show only items with amount less than or equal to 8.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Open';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only items with amount <= 8",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Adobo",
+            "Open"
+          ],
+          [
+            "Pancit",
+            "Open"
+          ],
+          [
+            "Rice Meal",
+            "Done"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the <= operator to include items with amount 8 or less."
+      },
+      {
+        "level": 2,
+        "text": "Check the amount column in the WHERE clause."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record WHERE amount <= 8;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-inventory-report",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-carinderia-inventory-report-394",
+    "index": 394,
+    "task": "Filter to show only items that are 'Open' AND have amount <= 8.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE amount <= 8;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only Open items with amount <= 8",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Adobo",
+            "Open"
+          ],
+          [
+            "Pancit",
+            "Open"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Combine two conditions with AND."
+      },
+      {
+        "level": 2,
+        "text": "Both status and amount must match."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Open' AND amount <= 8;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-inventory-report",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-carinderia-inventory-report-395",
+    "index": 395,
+    "task": "Filter to show items that are 'Done' OR have amount less than 3.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Open' AND amount <= 8;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows Done items or items with amount < 3",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Sinigang",
+            "Done"
+          ],
+          [
+            "Pancit",
+            "Open"
+          ],
+          [
+            "Rice Meal",
+            "Done"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use OR to include items that meet either condition."
+      },
+      {
+        "level": 2,
+        "text": "Check status for 'Done' or amount for < 3."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Done' OR amount < 3;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-inventory-report",
+    "conceptIds": [
+      "sql-or"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
