@@ -29663,3 +29663,265 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: fishing-harbor-supplier-list.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-fishing-harbor-supplier-list-6",
+    "index": 606,
+    "task": "Select names beginning with the first letter of the first seeded name using LIKE.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Done' OR amount < 3;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains only names starting with 'B'",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Bangus"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use LIKE to match names starting with 'B'."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where name starts with 'B'."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name FROM record WHERE name LIKE 'B%';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-supplier-list",
+    "conceptIds": [
+      "sql-like"
+    ]
+  },
+  {
+    "id": "sql-fishing-harbor-supplier-list-7",
+    "index": 607,
+    "task": "Show name, category, and amount for Local rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name FROM record WHERE name LIKE 'B%';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains only Local rows with name, category, and amount",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Bangus",
+            "Local",
+            8
+          ],
+          [
+            "Galunggong",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Filter for rows where category is 'Local'."
+      },
+      {
+        "level": 2,
+        "text": "Select name, category, and amount for those rows."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-supplier-list",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-fishing-harbor-supplier-list-8",
+    "index": 608,
+    "task": "Include Local rows OR amount = 20.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains Local rows and the row with amount = 20",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Bangus",
+            "Local",
+            8
+          ],
+          [
+            "Tilapia",
+            "Regional",
+            20
+          ],
+          [
+            "Galunggong",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use OR to include both Local rows and the row with amount = 20."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where category is 'Local' OR amount is 20."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-supplier-list",
+    "conceptIds": [
+      "sql-or"
+    ]
+  },
+  {
+    "id": "sql-fishing-harbor-supplier-list-9",
+    "index": 609,
+    "task": "Sort that three-row report by amount descending so the 20 row comes first.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result is sorted by amount descending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Tilapia",
+            "Regional",
+            20
+          ],
+          [
+            "Bangus",
+            "Local",
+            8
+          ],
+          [
+            "Galunggong",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use ORDER BY amount DESC to sort descending."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where category is 'Local' OR amount is 20, then sort by amount descending."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-supplier-list",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  },
+  {
+    "id": "sql-fishing-harbor-supplier-list-10",
+    "index": 610,
+    "task": "Limit it to the first 2 rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result is limited to the first 2 rows",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Tilapia",
+            "Regional",
+            20
+          ],
+          [
+            "Bangus",
+            "Local",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use LIMIT 2 to restrict output to the first two rows."
+      },
+      {
+        "level": 2,
+        "text": "Only include rows where category is 'Local' OR amount is 20, sort by amount descending, then limit to two rows."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC LIMIT 2;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-supplier-list",
+    "conceptIds": [
+      "sql-limit"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
