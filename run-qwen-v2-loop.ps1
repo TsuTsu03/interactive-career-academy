@@ -50,6 +50,7 @@ import path from "node:path";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { pathToFileURL } from "node:url";
+import { createRequire } from "node:module";
 const [mode, root, courseId, projectArgument, batchText, endpoint, model, promptPath, receiptPath, briefArgument] = process.argv.slice(2);
 const requestedProject = projectArgument === "__last_project__" ? "" : projectArgument;
 const ownerBatchBrief = briefArgument && briefArgument !== "__no_batch_brief__" ? Buffer.from(briefArgument, "base64").toString("utf8") : undefined;
@@ -342,6 +343,92 @@ if (mode === "snapshot") {
       start = draft.solution;
       return step;
     });
+    // The model can reproduce a supplied solution, but it cannot predict what
+    // that solution returns. SQL row order after an update or a delete is not
+    // derivable from the brief's facts, and neither is the document set a
+    // store query comes back with. Four rounds of prose instruction did not
+    // move it, and on 2026-09-17 it stalled both courses at once: every batch
+    // on both tracks failed with solution-fails, four attempts each, for two
+    // hours. Owner decision, same day: derive the expected values by running
+    // the solution instead of asking the model to guess them.
+    //
+    // The model still chooses which assertion each step makes and what it is
+    // called. Only the values compared against come from the run, and the
+    // model's own value is kept wherever it is actually present, so a wrong
+    // row index is corrected without silently changing what the step asserts.
+    // A step that asserts nothing new is still caught by the content gate's
+    // teaches-nothing check, which runs the tests against the starting code
+    // and is untouched here.
+    const canonical = (value) => JSON.stringify(value, (_, inner) => inner && typeof inner === "object" && !Array.isArray(inner)
+      ? Object.fromEntries(Object.keys(inner).sort().map(key => [key, inner[key]])) : inner);
+    const same = (left, right) => canonical(left) === canonical(right);
+    const deriveSql = (test, run) => {
+      if (test.kind === "sql-runs") return test;
+      if (test.kind === "sql-table-exists") return run.tables.includes(test.table) || !run.tables.length ? test : { ...test, table: run.tables[0] };
+      if (test.kind === "sql-table-columns") { const columns = run.schema[test.table]; return columns?.length ? { ...test, columns } : test; }
+      const result = run.results[test.resultIndex ?? 0];
+      if (!result) return test;
+      const { rows, columns } = result;
+      if (test.kind === "sql-row-count") return { ...test, count: rows.length };
+      if (test.kind === "sql-columns-equal") return columns?.length ? { ...test, columns } : test;
+      if (test.kind === "sql-rows-equal") return { ...test, rows };
+      if (test.kind === "sql-row-contains") return rows.some(row => same(row, test.row)) || !rows.length ? test : { ...test, row: rows[0] };
+      if (test.kind === "sql-value-equals") {
+        const column = Number.isInteger(test.column) && test.column < (columns?.length ?? 0) ? test.column : 0;
+        // Prefer the row that actually carries the value the brief supplied:
+        // the value is right and the index is what the model gets wrong.
+        const found = rows.findIndex(row => same(row[column], test.value));
+        const row = found >= 0 ? found : (Number.isInteger(test.row) && rows[test.row] ? test.row : 0);
+        return rows[row] === undefined ? test : { ...test, row, column, value: rows[row][column] };
+      }
+      return test;
+    };
+    const deriveNosql = (test, run) => {
+      if (test.kind === "nosql-runs") return test;
+      if (test.kind === "nosql-collection-exists") return run.collections.includes(test.collection) || !run.collections.length ? test : { ...test, collection: run.collections[0] };
+      if (test.kind === "nosql-doc-count") return { ...test, count: run.documents.length };
+      if (test.kind === "nosql-docs-equal") return { ...test, documents: run.documents };
+      if (test.kind === "nosql-doc-contains") return run.documents.some(doc => same(doc, test.document)) || !run.documents.length ? test : { ...test, document: run.documents[0] };
+      if (test.kind === "nosql-field-equals") {
+        const found = run.documents.findIndex(doc => doc && Object.hasOwn(doc, test.field) && same(doc[test.field], test.value));
+        const index = found >= 0 ? found : (Number.isInteger(test.document) && run.documents[test.document] ? test.document : 0);
+        const doc = run.documents[index];
+        return doc && Object.hasOwn(doc, test.field) ? { ...test, document: index, value: doc[test.field] } : test;
+      }
+      return test;
+    };
+    let sqlEngine = null;
+    if (isSql) {
+      // Only the vendored engine is executed as code. The queries stay data.
+      const engineModule = { exports: {} };
+      const glue = fs.readFileSync(resolve("apps/web/public/sql/sql-wasm.txt"), "utf8");
+      new Function("module", "exports", "require", "__dirname", glue)(engineModule, engineModule.exports, createRequire(pathToFileURL(resolve("apps/web/tools/check-content.mjs"))), ".");
+      sqlEngine = await engineModule.exports({ wasmBinary: fs.readFileSync(resolve("apps/web/public/sql/sql-wasm.wasm")) });
+    }
+    const { executeNosql } = isSql ? {} : await import(pathToFileURL(resolve("apps/web/lib/nosql-store.ts")));
+    const runSolution = (step) => {
+      if (!isSql) return executeNosql(step.nosqlSeed ?? {}, step.solution[file] ?? "");
+      const db = new sqlEngine.Database();
+      const run = { ok: true, results: [], tables: [], schema: {} };
+      try {
+        try { db.run(step.sqlSeed ?? ""); } catch (error) { return { ...run, ok: false, seedError: String(error) }; }
+        try {
+          run.results = db.exec(step.solution[file] ?? "").map(({ columns, values }) => ({
+            columns, rows: values.map(row => row.map(value => value instanceof Uint8Array ? Array.from(value) : value)),
+          }));
+        } catch (error) { run.ok = false; run.error = String(error); }
+        run.tables = db.exec("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name")[0]?.values.map(row => String(row[0])) ?? [];
+        for (const table of run.tables) run.schema[table] = db.exec("SELECT name FROM pragma_table_info(?)", [table])[0]?.values.map(row => String(row[0])) ?? [];
+        return run;
+      } finally { db.close(); }
+    };
+    for (const step of generated) {
+      const run = runSolution(step);
+      // A solution that does not execute is a real failure. Leave its tests
+      // alone so the gates reject the batch rather than paper over it.
+      if (!run.ok || run.error || run.seedError) continue;
+      step.tests = step.tests.map(test => isSql ? deriveSql(test, run) : deriveNosql(test, run));
+    }
     const { checkShape } = await import(pathToFileURL(resolve("apps/web/lib/content-shape.ts")));
     for (const step of generated) { const findings = checkShape(step); if (findings.length) throw Error(`${step.id}: ${findings.map(finding => finding.message).join("; ")}`); }
     const symbol = isSql ? "sqlCourse" : "nosqlCourse";
