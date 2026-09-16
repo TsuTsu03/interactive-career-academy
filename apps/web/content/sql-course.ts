@@ -23259,3 +23259,295 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: bakery-supplier-list.
+sqlCourse.projects.push({"id":"bakery-supplier-list","title":"Neighborhood Bakery Supplier List"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-bakery-supplier-list-481",
+    "index": 481,
+    "task": "Read record.name and record.group_id with qualified names",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains record.name and record.group_id",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Pandesal",
+            1
+          ],
+          [
+            "Ensaymada",
+            2
+          ],
+          [
+            "Monay",
+            1
+          ],
+          [
+            "Hopia",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use qualified column names to specify which table each field comes from."
+      },
+      {
+        "level": 2,
+        "text": "The solution selects only the name and group_id columns from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-supplier-list",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-bakery-supplier-list-482",
+    "index": 482,
+    "task": "Join group_info on matching group ids and show record name plus group label",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains record.name and group_info.label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Pandesal",
+            "North Team"
+          ],
+          [
+            "Ensaymada",
+            "South Team"
+          ],
+          [
+            "Monay",
+            "North Team"
+          ],
+          [
+            "Hopia",
+            "South Team"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use an INNER JOIN to combine record and group_info tables where group_id matches id."
+      },
+      {
+        "level": 2,
+        "text": "The solution selects the record name and group label from the joined tables."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "bakery-supplier-list",
+    "conceptIds": [
+      "sql-inner-join"
+    ]
+  },
+  {
+    "id": "sql-bakery-supplier-list-483",
+    "index": 483,
+    "task": "Add amount to the joined report",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains record.name, group_info.label, and record.amount",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Pandesal",
+            "North Team",
+            8
+          ],
+          [
+            "Ensaymada",
+            "South Team",
+            20
+          ],
+          [
+            "Monay",
+            "North Team",
+            2
+          ],
+          [
+            "Hopia",
+            "South Team",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the amount column from the record table to the SELECT list."
+      },
+      {
+        "level": 2,
+        "text": "The solution includes the amount value for each supplier."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-supplier-list",
+    "conceptIds": [
+      "sql-qualified-column"
+    ]
+  },
+  {
+    "id": "sql-bakery-supplier-list-484",
+    "index": 484,
+    "task": "Filter joined rows to amount <= 10",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains only rows where amount <= 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Pandesal",
+            "North Team",
+            8
+          ],
+          [
+            "Monay",
+            "North Team",
+            2
+          ],
+          [
+            "Hopia",
+            "South Team",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter rows where amount is less than or equal to 10."
+      },
+      {
+        "level": 2,
+        "text": "The solution removes Ensaymada (20) from the result."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-supplier-list",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-bakery-supplier-list-485",
+    "index": 485,
+    "task": "Sort filtered joined rows by amount ascending",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result is sorted by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Monay",
+            "North Team",
+            2
+          ],
+          [
+            "Hopia",
+            "South Team",
+            5
+          ],
+          [
+            "Pandesal",
+            "North Team",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add an ORDER BY clause to sort the filtered rows by amount in ascending order."
+      },
+      {
+        "level": 2,
+        "text": "The solution sorts Monay (2), Hopia (5), and Pandesal (8) by amount."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10 ORDER BY record.amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-supplier-list",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
