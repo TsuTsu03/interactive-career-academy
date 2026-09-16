@@ -29160,3 +29160,240 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: fishing-harbor-service-queue.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-fishing-harbor-service-queue-596",
+    "index": 596,
+    "task": "Replace the entire prior SELECT with COUNT(*) for amount <= 10 and check the scalar value 3, not the output row count.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC LIMIT 2;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The count query returns scalar value 3",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 3
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count matching rows, not rows returned."
+      },
+      {
+        "level": 2,
+        "text": "The filter amount <= 10 matches Bangus, Galunggong, and Tuna."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) FROM record WHERE amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-service-queue",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-fishing-harbor-service-queue-597",
+    "index": 597,
+    "task": "Alias that count as priority_count and check that exact result column heading.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) FROM record WHERE amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The count query returns column priority_count with value 3",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 3
+      },
+      {
+        "id": "alias-heading",
+        "label": "The result column is named priority_count",
+        "kind": "sql-columns-equal",
+        "columns": [
+          "priority_count"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use AS to rename the count column to priority_count."
+      },
+      {
+        "level": 2,
+        "text": "The column heading must match exactly: priority_count."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) AS priority_count FROM record WHERE amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-service-queue",
+    "conceptIds": [
+      "sql-alias"
+    ]
+  },
+  {
+    "id": "sql-fishing-harbor-service-queue-598",
+    "index": 598,
+    "task": "Replace the entire count query with category and SUM(amount) grouped across all four rows, giving Local 10 and Regional 25.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) AS priority_count FROM record WHERE amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The grouped query returns Local 10 and Regional 25",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Local",
+            10
+          ],
+          [
+            "Regional",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Group by category to aggregate amounts per group."
+      },
+      {
+        "level": 2,
+        "text": "Local: 8 + 2 = 10; Regional: 20 + 5 = 25."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-service-queue",
+    "conceptIds": [
+      "sql-group-by"
+    ]
+  },
+  {
+    "id": "sql-fishing-harbor-service-queue-599",
+    "index": 599,
+    "task": "Keep only the Regional 25 total by using HAVING above 12.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The grouped query returns only Regional 25",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Regional",
+            25
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use HAVING to filter groups after aggregation."
+      },
+      {
+        "level": 2,
+        "text": "Only Regional (25) exceeds 12; Local (10) is filtered out."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category HAVING SUM(amount) > 12;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-service-queue",
+    "conceptIds": [
+      "sql-having"
+    ]
+  },
+  {
+    "id": "sql-fishing-harbor-service-queue-600",
+    "index": 600,
+    "task": "Lower HAVING to above 8 to restore both totals and sort them largest first so Regional 25 comes before Local 10.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category HAVING SUM(amount) > 12;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Bangus', 'Local', 8, 'Open', 1), (2, 'Tilapia', 'Regional', 20, 'Done', 2), (3, 'Galunggong', 'Local', 2, 'Open', 1), (4, 'Tuna', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The grouped query returns Regional 25 then Local 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Regional",
+            25
+          ],
+          [
+            "Local",
+            10
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Lower HAVING to 8 to include both groups."
+      },
+      {
+        "level": 2,
+        "text": "Sort descending to show Regional 25 first."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, SUM(amount) AS total_amount FROM record GROUP BY category HAVING SUM(amount) > 8 ORDER BY total_amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "fishing-harbor-service-queue",
+    "conceptIds": [
+      "sql-descending"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
