@@ -32446,3 +32446,273 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: water-station-supplier-list.
+sqlCourse.projects.push({"id":"water-station-supplier-list","title":"Water Refill Station Supplier List"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-water-station-supplier-list-1",
+    "index": 661,
+    "task": "Select only the supplier names from the record table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report returns the names of all suppliers",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Refill"
+          ],
+          [
+            "Container"
+          ],
+          [
+            "Delivery"
+          ],
+          [
+            "Dispenser"
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the field the report needs: supplier name."
+      },
+      {
+        "level": 2,
+        "text": "Read the name field from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-supplier-list",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-water-station-supplier-list-2",
+    "index": 662,
+    "task": "Add the amount column to the report.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report returns supplier names and their amounts",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Refill",
+            8
+          ],
+          [
+            "Container",
+            20
+          ],
+          [
+            "Delivery",
+            2
+          ],
+          [
+            "Dispenser",
+            5
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the amount field to show cost per supplier."
+      },
+      {
+        "level": 2,
+        "text": "Select both name and amount from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-supplier-list",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-water-station-supplier-list-3",
+    "index": 663,
+    "task": "Filter the report to show only suppliers with amount <= 10.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only suppliers with amount <= 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Refill",
+            8
+          ],
+          [
+            "Delivery",
+            2
+          ],
+          [
+            "Dispenser",
+            5
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter by amount."
+      },
+      {
+        "level": 2,
+        "text": "Keep only rows where amount is less than or equal to 10."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-supplier-list",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-water-station-supplier-list-4",
+    "index": 664,
+    "task": "Sort the filtered suppliers by amount in ascending order.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows suppliers sorted by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Delivery",
+            2
+          ],
+          [
+            "Dispenser",
+            5
+          ],
+          [
+            "Refill",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY to sort by amount ascending."
+      },
+      {
+        "level": 2,
+        "text": "Sort the filtered rows by amount from lowest to highest."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-supplier-list",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  },
+  {
+    "id": "sql-water-station-supplier-list-5",
+    "index": 665,
+    "task": "Limit the sorted report to only 2 rows for a priority list.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only the top 2 suppliers by amount",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Delivery",
+            2
+          ],
+          [
+            "Dispenser",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT 2 to show only the top two rows."
+      },
+      {
+        "level": 2,
+        "text": "Limit the sorted output to two rows for priority."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC LIMIT 2;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-supplier-list",
+    "conceptIds": [
+      "sql-limit"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
