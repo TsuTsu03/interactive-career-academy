@@ -19711,3 +19711,295 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: carinderia-service-queue.
+sqlCourse.projects.push({"id":"carinderia-service-queue","title":"Carinderia Service Queue"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-carinderia-service-queue-411",
+    "index": 411,
+    "task": "Read record.name and record.group_id with qualified names",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows record.name and record.group_id",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Adobo",
+            1
+          ],
+          [
+            "Sinigang",
+            2
+          ],
+          [
+            "Pancit",
+            1
+          ],
+          [
+            "Rice Meal",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use qualified column names: record.name and record.group_id."
+      },
+      {
+        "level": 2,
+        "text": "Select only the two fields requested: name and group_id."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-service-queue",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-carinderia-service-queue-412",
+    "index": 412,
+    "task": "Join group_info on matching group ids and show record name plus group label",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows record.name and group_info.label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Adobo",
+            "North Team"
+          ],
+          [
+            "Sinigang",
+            "South Team"
+          ],
+          [
+            "Pancit",
+            "North Team"
+          ],
+          [
+            "Rice Meal",
+            "South Team"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Join record and group_info using ON group_info.id = record.group_id."
+      },
+      {
+        "level": 2,
+        "text": "Select record.name and group_info.label to show the joined data."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-service-queue",
+    "conceptIds": [
+      "sql-inner-join"
+    ]
+  },
+  {
+    "id": "sql-carinderia-service-queue-413",
+    "index": 413,
+    "task": "Add record.amount to the joined report",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows record.name, group_info.label, and record.amount",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Adobo",
+            "North Team",
+            8
+          ],
+          [
+            "Sinigang",
+            "South Team",
+            20
+          ],
+          [
+            "Pancit",
+            "North Team",
+            2
+          ],
+          [
+            "Rice Meal",
+            "South Team",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add record.amount to the SELECT list."
+      },
+      {
+        "level": 2,
+        "text": "Keep the existing JOIN and SELECT fields."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-service-queue",
+    "conceptIds": [
+      "sql-qualified-column"
+    ]
+  },
+  {
+    "id": "sql-carinderia-service-queue-414",
+    "index": 414,
+    "task": "Filter joined rows to amount <= 10",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report filters rows to amount <= 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Adobo",
+            "North Team",
+            8
+          ],
+          [
+            "Pancit",
+            "North Team",
+            2
+          ],
+          [
+            "Rice Meal",
+            "South Team",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add WHERE record.amount <= 10 to filter rows."
+      },
+      {
+        "level": 2,
+        "text": "Keep the existing JOIN and SELECT fields."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-service-queue",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-carinderia-service-queue-415",
+    "index": 415,
+    "task": "Sort filtered joined rows by amount ascending",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Adobo', 'Local', 8, 'Open', 1), (2, 'Sinigang', 'Regional', 20, 'Done', 2), (3, 'Pancit', 'Local', 2, 'Open', 1), (4, 'Rice Meal', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report sorts filtered rows by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Pancit",
+            "North Team",
+            2
+          ],
+          [
+            "Rice Meal",
+            "South Team",
+            5
+          ],
+          [
+            "Adobo",
+            "North Team",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY record.amount ASC to sort by amount ascending."
+      },
+      {
+        "level": 2,
+        "text": "Keep the existing JOIN, WHERE, and SELECT fields."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10 ORDER BY record.amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-service-queue",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
