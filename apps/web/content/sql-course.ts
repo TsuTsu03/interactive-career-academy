@@ -25096,3 +25096,231 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: rice-mill-inventory-report.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-rice-mill-inventory-report-516",
+    "index": 516,
+    "task": "Insert the row for id 4 from source_record into report.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "insert-id-4",
+        "label": "Rows include id 4 Brown Rice with amount 5",
+        "kind": "sql-row-contains",
+        "row": [
+          4,
+          "Brown Rice",
+          5
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add WHERE id IN (1, 2, 3, 4) to include id 4."
+      },
+      {
+        "level": 2,
+        "text": "Verify the row appears in the sorted output: Malagkit, Dinorado, Brown Rice, Sinandomeng."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-inventory-report",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-rice-mill-inventory-report-517",
+    "index": 517,
+    "task": "Update report id 2 amount to 18.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "updated-id-2",
+        "label": "Row id 2 Sinandomeng has amount 18",
+        "kind": "sql-value-equals",
+        "row": 3,
+        "column": 2,
+        "value": 18,
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add UPDATE report SET amount = 18 WHERE id = 2;"
+      },
+      {
+        "level": 2,
+        "text": "Verify Sinandomeng’s amount is now 18 in the sorted output."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-inventory-report",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-rice-mill-inventory-report-518",
+    "index": 518,
+    "task": "Delete report id 3.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "deleted-id-3",
+        "label": "Row id 3 is removed from output",
+        "kind": "sql-row-count",
+        "count": 3,
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add DELETE FROM report WHERE id = 3;"
+      },
+      {
+        "level": 2,
+        "text": "Verify the output now has only 3 rows: Malagkit, Dinorado, Sinandomeng."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-inventory-report",
+    "conceptIds": [
+      "sql-delete"
+    ]
+  },
+  {
+    "id": "sql-rice-mill-inventory-report-519",
+    "index": 519,
+    "task": "Count report rows after deletion.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "count-after-deletion",
+        "label": "Count is 3",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 3,
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Replace the final SELECT with SELECT COUNT(*) FROM report;"
+      },
+      {
+        "level": 2,
+        "text": "Verify the scalar result is 3."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT COUNT(*) FROM report;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-inventory-report",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-rice-mill-inventory-report-520",
+    "index": 520,
+    "task": "Show id, name, and amount ordered by id ascending.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT COUNT(*) FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Dinorado', 'Local', 8, 'Open', 1), (2, 'Sinandomeng', 'Regional', 20, 'Done', 2), (3, 'Malagkit', 'Local', 2, 'Open', 1), (4, 'Brown Rice', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "ordered-by-id",
+        "label": "Rows ordered by id: 1 Dinorado 8, 2 Sinandomeng 18, 4 Brown Rice 5",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Dinorado",
+            8
+          ],
+          [
+            2,
+            "Sinandomeng",
+            18
+          ],
+          [
+            4,
+            "Brown Rice",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Replace ORDER BY amount ASC with ORDER BY id ASC;"
+      },
+      {
+        "level": 2,
+        "text": "Verify the rows appear in id order: Dinorado, Sinandomeng, Brown Rice."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY id ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-inventory-report",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
