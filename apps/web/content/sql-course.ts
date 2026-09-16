@@ -17686,3 +17686,251 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: cooperative-community-schedule.
+sqlCourse.projects.push({"id":"cooperative-community-schedule","title":"Cooperative Community Schedule"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-cooperative-community-schedule-371",
+    "index": 371,
+    "task": "Create a report table with id and name columns",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-table-exists",
+        "label": "The report table exists with id and name",
+        "kind": "sql-table-columns",
+        "table": "report",
+        "columns": [
+          "id",
+          "name"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Create a new table named report with two columns: id and name."
+      },
+      {
+        "level": 2,
+        "text": "Use the CREATE TABLE statement to define the table structure."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT);"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-community-schedule",
+    "conceptIds": [
+      "sql-create-table"
+    ]
+  },
+  {
+    "id": "sql-cooperative-community-schedule-372",
+    "index": 372,
+    "task": "Add amount INTEGER to the report table definition",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT);"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-table-columns",
+        "label": "The report table has id, name, and amount columns",
+        "kind": "sql-table-columns",
+        "table": "report",
+        "columns": [
+          "id",
+          "name",
+          "amount"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the amount column to the report table definition."
+      },
+      {
+        "level": 2,
+        "text": "Use the CREATE TABLE statement to redefine the table with the new column."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cooperative-community-schedule",
+    "conceptIds": [
+      "sql-create-table"
+    ]
+  },
+  {
+    "id": "sql-cooperative-community-schedule-373",
+    "index": 373,
+    "task": "Insert row from source_record id 1 and read report",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-row-1",
+        "label": "Report contains row for id 1: Rice Loan with amount 8",
+        "kind": "sql-row-contains",
+        "row": [
+          1,
+          "Rice Loan",
+          8
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert the row from source_record with id 1 into the report table."
+      },
+      {
+        "level": 2,
+        "text": "Then select all rows from the report table to verify the insertion."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id = 1;\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 6,
+    "projectId": "cooperative-community-schedule",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-cooperative-community-schedule-374",
+    "index": 374,
+    "task": "Insert source rows ids 2 and 3 into report",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id = 1;\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-rows-1-2-3",
+        "label": "Report contains rows for ids 1, 2, and 3",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Rice Loan",
+            8
+          ],
+          [
+            2,
+            "Seed Fund",
+            20
+          ],
+          [
+            3,
+            "Tool Share",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert rows from source_record with ids 2 and 3 into the report table."
+      },
+      {
+        "level": 2,
+        "text": "Then select all rows from the report table to verify the insertion."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 6,
+    "projectId": "cooperative-community-schedule",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-cooperative-community-schedule-375",
+    "index": 375,
+    "task": "Sort report rows by amount ascending",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Rice Loan', 'Local', 8, 'Open', 1), (2, 'Seed Fund', 'Regional', 20, 'Done', 2), (3, 'Tool Share', 'Local', 2, 'Open', 1), (4, 'Market Stall', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-rows-sorted-by-amount",
+        "label": "Report rows sorted by amount ascending: Tool Share, Rice Loan, Seed Fund",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            3,
+            "Tool Share",
+            2
+          ],
+          [
+            1,
+            "Rice Loan",
+            8
+          ],
+          [
+            2,
+            "Seed Fund",
+            20
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Sort the report rows by the amount column in ascending order."
+      },
+      {
+        "level": 2,
+        "text": "Use the ORDER BY clause with ASC to sort the rows."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 6,
+    "projectId": "cooperative-community-schedule",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
