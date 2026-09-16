@@ -257,8 +257,32 @@ if (mode === "snapshot") {
     const file = isSql ? "query.sql" : "query.json";
     let start = isNew ? "" : last.solution?.[file];
     if (typeof start !== "string") throw Error("The previous step needs a reference solution.");
+    // The brief already dictates every solution string character for character,
+    // and the cumulative chain it supplies passes the granularity gate on its
+    // own. An 8B model will not reliably copy it: it keeps emitting only the
+    // changed statements and dropping the ones carried over from earlier steps,
+    // which then reads as a five-line rewrite and is rejected every attempt.
+    // Prose cannot fix that, so the supplied strings are applied here instead
+    // of being asked for. The model still authors the task, the checks, the
+    // hints, and the estimate. Anything unexpected about the brief leaves the
+    // previous behaviour in place.
+    const suppliedSolutions = (() => {
+      if (!ownerBatchBrief) return null;
+      const marker = "Copy these five complete solution strings unchanged and in order: ";
+      const at = ownerBatchBrief.indexOf(marker);
+      if (at < 0) return null;
+      const rest = ownerBatchBrief.slice(at + marker.length);
+      const end = rest.indexOf("]. Required result facts");
+      if (end < 0) return null;
+      try {
+        const parsed = JSON.parse(rest.slice(0, end + 1));
+        if (!Array.isArray(parsed) || parsed.length !== count) return null;
+        return parsed.every(entry => typeof entry === "string" && entry.trim()) ? parsed : null;
+      } catch { return null; }
+    })();
     const generated = data.steps.map((draft, i) => {
       only(draft, ["id", "task", "solution", "tests", "hints", "conceptIds", "estimatedMinutes"]);
+      if (suppliedSolutions) draft.solution = suppliedSolutions[i];
       // A document-store command is one line in every authored step, but the
       // model keeps pretty-printing it across nine or twelve, which the shape
       // check reads as twelve ideas in one step and rejects. Collapsing the
