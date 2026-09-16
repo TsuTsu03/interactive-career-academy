@@ -145,7 +145,16 @@ if (mode === "snapshot") {
       courseId, projectId, projectTitle: project?.title, newProject: isNew, batchSize: count,
       requestedTopic: projectId.replaceAll("-", " "), requiredStepIdPrefix: idPrefix || undefined,
       currentStepCount: course.steps.length, nextIndex: course.steps.length + 1,
-      existingStepIds: isNew ? undefined : course.steps.map(step => step.id),
+      // Every id in the course used to be sent here, which grew with the
+      // course itself: at 310 steps it was about 12,000 characters, and
+      // together with a batch brief it pushed the context past the 30,000
+      // budget before the model was contacted at all. Every attempt on
+      // cooperative-daily-record batch 2 died that way on 2026-09-17, and it
+      // would only have worsened on the way to 750. The list was never what
+      // enforced uniqueness anyway - the validator below rejects a duplicate
+      // or reused id regardless of what the model was shown - so a recent
+      // window is enough to convey the naming pattern, and it stays bounded.
+      existingStepIds: isNew ? undefined : course.steps.slice(-40).map(step => step.id),
       recentOutline: isNew ? course.steps.slice(-12).map(({ id }) => id) : course.steps.slice(-12).map(({ id, task }) => ({ id, task })),
       lastStep: isNew ? null : last, seed, registeredConcepts: registered, exemplar,
       allowedAssertions: testSchema.oneOf.map(spec => ({ required: spec.required, fields: spec.properties })),
