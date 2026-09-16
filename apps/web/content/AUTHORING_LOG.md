@@ -3465,3 +3465,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-16: Local Qwen authored sql-basics/bakery-service-queue, steps 471-475; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
 
 - 2026-09-16: Local Qwen authored sql-basics/bakery-service-queue, steps 476-480; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/bakery-supplier-list, steps 481-485; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
