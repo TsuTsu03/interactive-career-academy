@@ -21776,3 +21776,273 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: bakery-inventory-report.
+sqlCourse.projects.push({"id":"bakery-inventory-report","title":"Neighborhood Bakery Inventory Report"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-bakery-inventory-report-451",
+    "index": 451,
+    "task": "Select only the product names from the bakery inventory.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "names-list",
+        "label": "The report lists all product names",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Pandesal"
+          ],
+          [
+            "Ensaymada"
+          ],
+          [
+            "Monay"
+          ],
+          [
+            "Hopia"
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the field that names the product."
+      },
+      {
+        "level": 2,
+        "text": "Read the name field from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name FROM record;"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "bakery-inventory-report",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-bakery-inventory-report-452",
+    "index": 452,
+    "task": "Add the amount column to show how many units are available.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "names-and-amounts",
+        "label": "The report shows names and their amounts",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Pandesal",
+            8
+          ],
+          [
+            "Ensaymada",
+            20
+          ],
+          [
+            "Monay",
+            2
+          ],
+          [
+            "Hopia",
+            5
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the amount field to the SELECT list."
+      },
+      {
+        "level": 2,
+        "text": "Include the amount column from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record;"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "bakery-inventory-report",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-bakery-inventory-report-453",
+    "index": 453,
+    "task": "Filter the report to show only products with amount less than or equal to 10.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "filtered-products",
+        "label": "The report shows only products with amount <= 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Pandesal",
+            8
+          ],
+          [
+            "Monay",
+            2
+          ],
+          [
+            "Hopia",
+            5
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter by amount."
+      },
+      {
+        "level": 2,
+        "text": "Use <= to include amounts equal to 10."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10;"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "bakery-inventory-report",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-bakery-inventory-report-454",
+    "index": 454,
+    "task": "Sort the filtered products by amount in ascending order.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "sorted-by-amount",
+        "label": "The report sorts products by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Monay",
+            2
+          ],
+          [
+            "Hopia",
+            5
+          ],
+          [
+            "Pandesal",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY to sort by amount."
+      },
+      {
+        "level": 2,
+        "text": "Use ASC for ascending order."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "bakery-inventory-report",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  },
+  {
+    "id": "sql-bakery-inventory-report-455",
+    "index": 455,
+    "task": "Limit the report to only two rows for a short priority list.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Pandesal', 'Local', 8, 'Open', 1), (2, 'Ensaymada', 'Regional', 20, 'Done', 2), (3, 'Monay', 'Local', 2, 'Open', 1), (4, 'Hopia', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "limited-to-two",
+        "label": "The report limits output to two rows",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Monay",
+            2
+          ],
+          [
+            "Hopia",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT to restrict output to two rows."
+      },
+      {
+        "level": 2,
+        "text": "Use 2 as the limit value."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC LIMIT 2;"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "bakery-inventory-report",
+    "conceptIds": [
+      "sql-limit"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
