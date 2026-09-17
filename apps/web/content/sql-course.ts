@@ -35765,3 +35765,248 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: ukay-ukay-supplier-list.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-ukay-ukay-supplier-list-6",
+    "index": 726,
+    "task": "Insert the row for id 4 from source_record into report and select it.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "insert-id-4",
+        "label": "Row for id 4 (Dress) is inserted and selected: Dress 5",
+        "kind": "sql-row-contains",
+        "row": [
+          4,
+          "Dress",
+          5
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add INSERT INTO report SELECT ... WHERE id IN (1,2,3,4) to include id 4."
+      },
+      {
+        "level": 2,
+        "text": "Verify the output includes the row for id 4 with its actual values."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-supplier-list",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-supplier-list-7",
+    "index": 727,
+    "task": "Update report id 2 amount to 18.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "updated-amount-id-2",
+        "label": "Row for id 2 (Jeans) has amount updated to 18: Jeans 18",
+        "kind": "sql-row-contains",
+        "row": [
+          2,
+          "Jeans",
+          18
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add UPDATE report SET amount = 18 WHERE id = 2 to modify the row."
+      },
+      {
+        "level": 2,
+        "text": "Verify the output shows id 2 with amount 18."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-supplier-list",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-supplier-list-8",
+    "index": 728,
+    "task": "Delete report id 3.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "deleted-id-3",
+        "label": "Row for id 3 (Jacket) is deleted; remaining rows: Shirt 8, Jeans 18, Dress 5",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            4,
+            "Dress",
+            5
+          ],
+          [
+            1,
+            "Shirt",
+            8
+          ],
+          [
+            2,
+            "Jeans",
+            18
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add DELETE FROM report WHERE id = 3 to remove the row."
+      },
+      {
+        "level": 2,
+        "text": "Verify the output excludes id 3 and lists the remaining rows."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-supplier-list",
+    "conceptIds": [
+      "sql-delete"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-supplier-list-9",
+    "index": 729,
+    "task": "Count report rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "count-rows",
+        "label": "Report has 3 rows after deletion",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 3
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add SELECT COUNT(*) FROM report to count the rows."
+      },
+      {
+        "level": 2,
+        "text": "Verify the scalar result is 3."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT COUNT(*) FROM report;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-supplier-list",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-supplier-list-10",
+    "index": 730,
+    "task": "Show id, name, and amount ordered by id.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT COUNT(*) FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "ordered-by-id",
+        "label": "Rows ordered by id: Shirt 8, Jeans 18, Dress 5",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Shirt",
+            8
+          ],
+          [
+            2,
+            "Jeans",
+            18
+          ],
+          [
+            4,
+            "Dress",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY id ASC to sort by id ascending."
+      },
+      {
+        "level": 2,
+        "text": "Verify the output lists rows in id order: 1, 2, 4."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record;\nUPDATE report SET amount = 18 WHERE id = 2;\nDELETE FROM report WHERE id = 3;\nSELECT id, name, amount FROM report ORDER BY id ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-supplier-list",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
