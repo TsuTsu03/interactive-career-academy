@@ -33211,3 +33211,265 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: water-station-community-schedule.
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-water-station-community-schedule-6",
+    "index": 676,
+    "task": "Select names beginning with the first letter of the first seeded name using LIKE.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, status FROM record WHERE status = 'Done' OR amount < 3;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains only names starting with 'R'",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Refill"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use LIKE with 'R%' to match names starting with 'R'."
+      },
+      {
+        "level": 2,
+        "text": "Refill is the only name starting with 'R' in the seed."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name FROM record WHERE name LIKE 'R%';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-community-schedule",
+    "conceptIds": [
+      "sql-like"
+    ]
+  },
+  {
+    "id": "sql-water-station-community-schedule-7",
+    "index": 677,
+    "task": "Show name, category, and amount for Local rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name FROM record WHERE name LIKE 'R%';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains name, category, and amount for Local rows",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Refill",
+            "Local",
+            8
+          ],
+          [
+            "Delivery",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Filter for category = 'Local' to show only Local rows."
+      },
+      {
+        "level": 2,
+        "text": "Refill has category 'Local' and amount 8; Delivery has category 'Local' and amount 2."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local';"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-community-schedule",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-water-station-community-schedule-8",
+    "index": 678,
+    "task": "Include Local rows OR amount = 20.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local';"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains Local rows and the row with amount = 20",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Refill",
+            "Local",
+            8
+          ],
+          [
+            "Container",
+            "Regional",
+            20
+          ],
+          [
+            "Delivery",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use OR to include both Local rows and the row with amount = 20."
+      },
+      {
+        "level": 2,
+        "text": "Container has amount 20 and is not Local; Refill and Delivery are Local."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-community-schedule",
+    "conceptIds": [
+      "sql-or"
+    ]
+  },
+  {
+    "id": "sql-water-station-community-schedule-9",
+    "index": 679,
+    "task": "Sort that three-row report by amount descending so the 20 row comes first.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result is sorted by amount descending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Container",
+            "Regional",
+            20
+          ],
+          [
+            "Refill",
+            "Local",
+            8
+          ],
+          [
+            "Delivery",
+            "Local",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY amount DESC to sort by amount in descending order."
+      },
+      {
+        "level": 2,
+        "text": "Container (20) comes first, then Refill (8), then Delivery (2)."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-community-schedule",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  },
+  {
+    "id": "sql-water-station-community-schedule-10",
+    "index": 680,
+    "task": "Limit it to the first 2 rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result is limited to the first 2 rows",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Container",
+            "Regional",
+            20
+          ],
+          [
+            "Refill",
+            "Local",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT 2 to restrict output to the first two rows."
+      },
+      {
+        "level": 2,
+        "text": "Container (20) and Refill (8) are the first two rows after sorting."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, category, amount FROM record WHERE category = 'Local' OR amount = 20 ORDER BY amount DESC LIMIT 2;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-community-schedule",
+    "conceptIds": [
+      "sql-limit"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
