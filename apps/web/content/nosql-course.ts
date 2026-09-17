@@ -19041,3 +19041,555 @@ nosqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof nosqlCourse.steps));
+
+// Validated local authoring batch: medicine-stock.
+nosqlCourse.steps.push(...([
+  {
+    "id": "nosql-medicine-stock-6",
+    "index": 176,
+    "task": "Limit the sorted result to only two records.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":10}},\"sort\":{\"amount\":1}}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Paracetamol",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Vitamin C",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Bandage",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Alcohol",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Sorted records limited to two",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Bandage",
+            "amount": 2
+          },
+          {
+            "name": "Alcohol",
+            "amount": 5
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a 'limit' field with value 2 to restrict output to two records."
+      },
+      {
+        "level": 2,
+        "text": "This ensures only Bandage and Alcohol appear, in ascending order by amount."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":10}},\"sort\":{\"amount\":1},\"limit\":2}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "medicine-stock",
+    "conceptIds": [
+      "nosql-limit"
+    ]
+  },
+  {
+    "id": "nosql-medicine-stock-7",
+    "index": 177,
+    "task": "Change the filter to only include medicines with amount greater than 5.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":10}},\"sort\":{\"amount\":1},\"limit\":2}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Paracetamol",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Vitamin C",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Bandage",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Alcohol",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Filtered records with amount > 5",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Paracetamol",
+            "amount": 8
+          },
+          {
+            "name": "Vitamin C",
+            "amount": 20
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Replace the filter condition with {\"amount\": {\"$gt\": 5}} to exclude items with amount 5 or less."
+      },
+      {
+        "level": 2,
+        "text": "This now includes Alcohol (5) and Paracetamol (8), maintaining ascending order."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$gt\":5}},\"sort\":{\"amount\":1},\"limit\":2}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "medicine-stock",
+    "conceptIds": [
+      "nosql-upper-bound"
+    ]
+  },
+  {
+    "id": "nosql-medicine-stock-8",
+    "index": 178,
+    "task": "Sort the filtered records by amount in descending order.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$gt\":5}},\"sort\":{\"amount\":1},\"limit\":2}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Paracetamol",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Vitamin C",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Bandage",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Alcohol",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Filtered records sorted descending by amount",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Vitamin C",
+            "amount": 20
+          },
+          {
+            "name": "Paracetamol",
+            "amount": 8
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change the sort field to {\"amount\": -1} to sort in descending order."
+      },
+      {
+        "level": 2,
+        "text": "This now shows Paracetamol (8) first, then Alcohol (5)."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$gt\":5}},\"sort\":{\"amount\":-1},\"limit\":2}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "medicine-stock",
+    "conceptIds": [
+      "nosql-sort"
+    ]
+  },
+  {
+    "id": "nosql-medicine-stock-9",
+    "index": 179,
+    "task": "Project only the medicine name while keeping the filter and sort.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$gt\":5}},\"sort\":{\"amount\":-1},\"limit\":2}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Paracetamol",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Vitamin C",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Bandage",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Alcohol",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Projected names only, sorted descending",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Vitamin C"
+          },
+          {
+            "name": "Paracetamol"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Update the projection to [\"name\"] to return only the medicine name."
+      },
+      {
+        "level": 2,
+        "text": "This removes the amount field from output while preserving filter and sort."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\"],\"filter\":{\"amount\":{\"$gt\":5}},\"sort\":{\"amount\":-1},\"limit\":2}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "medicine-stock",
+    "conceptIds": [
+      "nosql-projection"
+    ]
+  },
+  {
+    "id": "nosql-medicine-stock-10",
+    "index": 180,
+    "task": "Limit the result to only one medicine name.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\"],\"filter\":{\"amount\":{\"$gt\":5}},\"sort\":{\"amount\":-1},\"limit\":2}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Paracetamol",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Vitamin C",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Bandage",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Alcohol",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Single medicine name after limit",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Vitamin C"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change the limit to 1 to return only the top record."
+      },
+      {
+        "level": 2,
+        "text": "This now returns only Paracetamol, the highest amount above 5."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\"],\"filter\":{\"amount\":{\"$gt\":5}},\"sort\":{\"amount\":-1},\"limit\":1}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "medicine-stock",
+    "conceptIds": [
+      "nosql-limit"
+    ]
+  }
+] satisfies typeof nosqlCourse.steps));
