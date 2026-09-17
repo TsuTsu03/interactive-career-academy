@@ -3357,3 +3357,610 @@ nosqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof nosqlCourse.steps));
+
+// Validated local authoring batch: cebu-route-deliveries.
+nosqlCourse.steps.push(...([
+  {
+    "id": "nosql-cebu-route-deliveries-6",
+    "index": 46,
+    "task": "Filter the final find to amount <= 7.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[ { \"collection\": \"records\", \"operation\": \"insert\", \"documents\": [ { \"name\": \"New Record\", \"category\": \"Local\", \"amount\": 7, \"status\": \"Open\", \"note\": \"Community order\" }, { \"name\": \"Backup Record\", \"category\": \"Local\", \"amount\": 4, \"status\": \"Open\" } ] }, { \"collection\": \"records\", \"operation\": \"find\", \"projection\": [ \"name\", \"amount\" ] } ]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Lahug",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Mandaue",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Lapu-Lapu",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Talisay",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "filtered-amounts",
+        "label": "Only records with amount <= 7 are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Lapu-Lapu",
+            "amount": 2
+          },
+          {
+            "name": "Talisay",
+            "amount": 5
+          },
+          {
+            "name": "New Record",
+            "amount": 7
+          },
+          {
+            "name": "Backup Record",
+            "amount": 4
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a filter condition using $lte for amount."
+      },
+      {
+        "level": 2,
+        "text": "Copy the exact solution string; do not change the order or structure."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}}}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cebu-route-deliveries",
+    "conceptIds": [
+      "nosql-filter"
+    ]
+  },
+  {
+    "id": "nosql-cebu-route-deliveries-7",
+    "index": 47,
+    "task": "Sort those documents by amount.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}}}]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Lahug",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Mandaue",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Lapu-Lapu",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Talisay",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "sorted-by-amount",
+        "label": "Documents are sorted by amount ascending",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Lapu-Lapu",
+            "amount": 2
+          },
+          {
+            "name": "Backup Record",
+            "amount": 4
+          },
+          {
+            "name": "Talisay",
+            "amount": 5
+          },
+          {
+            "name": "New Record",
+            "amount": 7
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a sort condition on amount with value 1 for ascending."
+      },
+      {
+        "level": 2,
+        "text": "Copy the exact solution string; do not change the order or structure."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}},\"sort\":{\"amount\":1}}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cebu-route-deliveries",
+    "conceptIds": [
+      "nosql-sort"
+    ]
+  },
+  {
+    "id": "nosql-cebu-route-deliveries-8",
+    "index": 48,
+    "task": "Limit to 2.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}},\"sort\":{\"amount\":1}}]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Lahug",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Mandaue",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Lapu-Lapu",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Talisay",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "limited-to-two",
+        "label": "Only two documents are returned",
+        "kind": "nosql-doc-count",
+        "count": 2
+      },
+      {
+        "id": "limited-docs",
+        "label": "The two documents are Lapu-Lapu and Backup Record",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Lapu-Lapu",
+            "amount": 2
+          },
+          {
+            "name": "Backup Record",
+            "amount": 4
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a limit condition with value 2."
+      },
+      {
+        "level": 2,
+        "text": "Copy the exact solution string; do not change the order or structure."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}},\"sort\":{\"amount\":1},\"limit\":2}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cebu-route-deliveries",
+    "conceptIds": [
+      "nosql-limit"
+    ]
+  },
+  {
+    "id": "nosql-cebu-route-deliveries-9",
+    "index": 49,
+    "task": "Change the second inserted document status to Done in its source document and find Done records.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}},\"sort\":{\"amount\":1},\"limit\":2}]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Lahug",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Mandaue",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Lapu-Lapu",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Talisay",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "done-records",
+        "label": "Only Done records are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 2,
+            "name": "Mandaue",
+            "category": "Regional",
+            "amount": 20,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 4,
+            "name": "Talisay",
+            "category": "Regional",
+            "amount": 5,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "name": "Backup Record",
+            "category": "Local",
+            "amount": 4,
+            "status": "Done"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Update the status of the second document to 'Done' in the insert command."
+      },
+      {
+        "level": 2,
+        "text": "Copy the exact solution string; do not change the order or structure."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Done\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"status\":\"Done\"}}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cebu-route-deliveries",
+    "conceptIds": [
+      "nosql-insert"
+    ]
+  },
+  {
+    "id": "nosql-cebu-route-deliveries-10",
+    "index": 50,
+    "task": "Project only name and status from the Done result.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Done\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"status\":\"Done\"}}]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Lahug",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Mandaue",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Lapu-Lapu",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Talisay",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "projected-fields-done",
+        "label": "Only name and status are projected from Done records",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Mandaue",
+            "status": "Done"
+          },
+          {
+            "name": "Talisay",
+            "status": "Done"
+          },
+          {
+            "name": "Backup Record",
+            "status": "Done"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a projection array with fields 'name' and 'status'."
+      },
+      {
+        "level": 2,
+        "text": "Copy the exact solution string; do not change the order or structure."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Done\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"status\":\"Done\"},\"projection\":[\"name\",\"status\"]}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cebu-route-deliveries",
+    "conceptIds": [
+      "nosql-projection"
+    ]
+  }
+] satisfies typeof nosqlCourse.steps));
