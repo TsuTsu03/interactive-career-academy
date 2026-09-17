@@ -3597,3 +3597,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-17: Local Qwen authored nosql-basics/bakery-orders, steps 96-100; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
 
 - 2026-09-17: Local Qwen authored nosql-basics/rice-mill-batches, steps 101-105; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/rice-mill-batches, steps 106-110; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
