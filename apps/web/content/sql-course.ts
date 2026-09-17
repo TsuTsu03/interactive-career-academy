@@ -35533,3 +35533,235 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: ukay-ukay-supplier-list.
+sqlCourse.projects.push({"id":"ukay-ukay-supplier-list","title":"Ukay-Ukay Shop Supplier List"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-ukay-ukay-supplier-list-1",
+    "index": 721,
+    "task": "Create a report table with id and name columns.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-table-exists",
+        "label": "The report table exists with id and name columns",
+        "kind": "sql-table-columns",
+        "table": "report",
+        "columns": [
+          "id",
+          "name"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use CREATE TABLE to define the report structure."
+      },
+      {
+        "level": 2,
+        "text": "Include only the id and name columns as specified."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT);"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "ukay-ukay-supplier-list",
+    "conceptIds": [
+      "sql-create-table"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-supplier-list-2",
+    "index": 722,
+    "task": "Add the amount column to the report table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT);"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "report-table-columns",
+        "label": "The report table now has id, name, and amount columns",
+        "kind": "sql-table-columns",
+        "table": "report",
+        "columns": [
+          "id",
+          "name",
+          "amount"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Extend the CREATE TABLE statement to include amount INTEGER."
+      },
+      {
+        "level": 2,
+        "text": "Keep the existing columns in declaration order."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "ukay-ukay-supplier-list",
+    "conceptIds": [
+      "sql-create-table"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-supplier-list-3",
+    "index": 723,
+    "task": "Insert the row for id 1 from source_record into report and select it.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "shirt-row-present",
+        "label": "The report contains the row for id 1: Shirt, amount 8",
+        "kind": "sql-row-contains",
+        "row": [
+          1,
+          "Shirt",
+          8
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert the row using a SELECT from source_record filtered by id = 1."
+      },
+      {
+        "level": 2,
+        "text": "Then select all rows from report to verify the insertion."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id = 1;\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-supplier-list",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-supplier-list-4",
+    "index": 724,
+    "task": "Insert rows for ids 2 and 3 from source_record into report.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id = 1;\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "three-rows-present",
+        "label": "The report contains rows for ids 1, 2, and 3",
+        "kind": "sql-row-count",
+        "count": 3,
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use IN (1, 2, 3) to select rows for multiple ids."
+      },
+      {
+        "level": 2,
+        "text": "Ensure all three rows are inserted and selected."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-supplier-list",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-supplier-list-5",
+    "index": 725,
+    "task": "Sort the report rows by amount in ascending order.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE source_record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO source_record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);",
+    "tests": [
+      {
+        "id": "sorted-by-amount",
+        "label": "Rows are sorted by amount ascending: Jacket 2, Shirt 8, Jeans 20",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            3,
+            "Jacket",
+            2
+          ],
+          [
+            1,
+            "Shirt",
+            8
+          ],
+          [
+            2,
+            "Jeans",
+            20
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY amount ASC to sort the output."
+      },
+      {
+        "level": 2,
+        "text": "Verify the order matches the expected values."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "CREATE TABLE report (id INTEGER, name TEXT, amount INTEGER);\nINSERT INTO report SELECT id, name, amount FROM source_record WHERE id IN (1, 2, 3);\nSELECT id, name, amount FROM report ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-supplier-list",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
