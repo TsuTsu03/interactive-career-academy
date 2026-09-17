@@ -8803,3 +8803,568 @@ nosqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof nosqlCourse.steps));
+
+// Validated local authoring batch: bakery-orders.
+nosqlCourse.projects.push({"id":"bakery-orders","title":"Bakery Orders"});
+nosqlCourse.steps.push(...([
+  {
+    "id": "nosql-bakery-orders-1",
+    "index": 91,
+    "task": "Insert a new record named 'New Record' with category 'Local', amount 7, and status 'Open'.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": ""
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Pandesal",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Ensaymada",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Monay",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Hopia",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "inserted-record",
+        "label": "New Record is inserted",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "New Record",
+            "category": "Local",
+            "amount": 7,
+            "status": "Open"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the insert operation to add a new document to the records collection."
+      },
+      {
+        "level": 2,
+        "text": "Copy the exact solution string; do not modify the field names or values."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\"}]}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-orders"
+  },
+  {
+    "id": "nosql-bakery-orders-2",
+    "index": 92,
+    "task": "Add a note field to the inserted record with the value 'Community order'.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\"}]}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Pandesal",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Ensaymada",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Monay",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Hopia",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "record-with-note",
+        "label": "New Record includes note field",
+        "kind": "nosql-doc-contains",
+        "document": {
+          "name": "New Record",
+          "category": "Local",
+          "amount": 7,
+          "status": "Open",
+          "note": "Community order"
+        }
+      },
+      {
+        "id": "note-value",
+        "label": "Note field has correct value",
+        "kind": "nosql-field-equals",
+        "document": 0,
+        "field": "note",
+        "value": "Community order"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the note field to the document being inserted."
+      },
+      {
+        "level": 2,
+        "text": "The note field must be named exactly 'note' and set to 'Community order'."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"}]}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-orders"
+  },
+  {
+    "id": "nosql-bakery-orders-3",
+    "index": 93,
+    "task": "Insert a second document named 'Backup Record' with category 'Local', amount 4, and status 'Open'.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"}]}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Pandesal",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Ensaymada",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Monay",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Hopia",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "backup-record-inserted",
+        "label": "Backup Record is inserted",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "New Record",
+            "category": "Local",
+            "amount": 7,
+            "status": "Open",
+            "note": "Community order"
+          },
+          {
+            "name": "Backup Record",
+            "category": "Local",
+            "amount": 4,
+            "status": "Open"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Insert the Backup Record document after the New Record."
+      },
+      {
+        "level": 2,
+        "text": "Copy the exact solution string; do not change the field names or values."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-orders"
+  },
+  {
+    "id": "nosql-bakery-orders-4",
+    "index": 94,
+    "task": "Use a command sequence to insert both records and then find all records.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Pandesal",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Ensaymada",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Monay",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Hopia",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "command-sequence-inserts",
+        "label": "Command sequence inserts both records",
+        "kind": "nosql-runs"
+      },
+      {
+        "id": "command-sequence-finds-all",
+        "label": "Command sequence finds all records",
+        "kind": "nosql-doc-count",
+        "count": 6
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Wrap the insert and find operations in a command array."
+      },
+      {
+        "level": 2,
+        "text": "The command sequence must contain exactly two commands: insert then find."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\"}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-orders"
+  },
+  {
+    "id": "nosql-bakery-orders-5",
+    "index": 95,
+    "task": "Project only the name and amount fields in the final find command.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\"}]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Pandesal",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Ensaymada",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Monay",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Hopia",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "projection-applied",
+        "label": "Projection includes only name and amount",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Pandesal",
+            "amount": 8
+          },
+          {
+            "name": "Ensaymada",
+            "amount": 20
+          },
+          {
+            "name": "Monay",
+            "amount": 2
+          },
+          {
+            "name": "Hopia",
+            "amount": 5
+          },
+          {
+            "name": "New Record",
+            "amount": 7
+          },
+          {
+            "name": "Backup Record",
+            "amount": 4
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the projection field to the find command."
+      },
+      {
+        "level": 2,
+        "text": "The projection must be an array with exactly two fields: 'name' and 'amount'."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"]}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "bakery-orders"
+  }
+] satisfies typeof nosqlCourse.steps));
