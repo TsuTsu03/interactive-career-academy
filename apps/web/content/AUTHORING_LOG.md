@@ -3575,3 +3575,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-17: Local Qwen authored sql-basics/ukay-ukay-delivery-log, steps 746-750; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
 
 - 2026-09-17: Local Qwen authored nosql-basics/cebu-route-deliveries, steps 46-50; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/barangay-services, steps 51-55; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
