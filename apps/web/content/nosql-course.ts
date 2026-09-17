@@ -12352,3 +12352,608 @@ nosqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof nosqlCourse.steps));
+
+// Validated local authoring batch: water-refills.
+nosqlCourse.projects.push({"id":"water-refills","title":"Water Refills"});
+nosqlCourse.steps.push(...([
+  {
+    "id": "nosql-water-refills-1",
+    "index": 121,
+    "task": "Find every document in the records collection.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": ""
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Refill",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Container",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Delivery",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Dispenser",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "All four records are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 1,
+            "name": "Refill",
+            "category": "Local",
+            "amount": 8,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 2,
+            "name": "Container",
+            "category": "Regional",
+            "amount": 20,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 3,
+            "name": "Delivery",
+            "category": "Local",
+            "amount": 2,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 4,
+            "name": "Dispenser",
+            "category": "Regional",
+            "amount": 5,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the find operation to retrieve all documents from the records collection."
+      },
+      {
+        "level": 2,
+        "text": "The solution is a single find command with no projection or filter."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\"}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-refills"
+  },
+  {
+    "id": "nosql-water-refills-2",
+    "index": 122,
+    "task": "Project only the name field from the records collection.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\"}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Refill",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Container",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Delivery",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Dispenser",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Only the name field is projected",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Refill"
+          },
+          {
+            "name": "Container"
+          },
+          {
+            "name": "Delivery"
+          },
+          {
+            "name": "Dispenser"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a projection array with the field name to return only that field."
+      },
+      {
+        "level": 2,
+        "text": "The projection must include only the name field."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\"]}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-refills"
+  },
+  {
+    "id": "nosql-water-refills-3",
+    "index": 123,
+    "task": "Add the amount field to the projection.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\"]}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Refill",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Container",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Delivery",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Dispenser",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Name and amount fields are projected",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Refill",
+            "amount": 8
+          },
+          {
+            "name": "Container",
+            "amount": 20
+          },
+          {
+            "name": "Delivery",
+            "amount": 2
+          },
+          {
+            "name": "Dispenser",
+            "amount": 5
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the amount field to the projection array."
+      },
+      {
+        "level": 2,
+        "text": "The projection must include both name and amount."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"]}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-refills"
+  },
+  {
+    "id": "nosql-water-refills-4",
+    "index": 124,
+    "task": "Filter documents where amount is less than or equal to 10.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"]}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Refill",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Container",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Delivery",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Dispenser",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Only documents with amount <= 10 are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Refill",
+            "amount": 8
+          },
+          {
+            "name": "Delivery",
+            "amount": 2
+          },
+          {
+            "name": "Dispenser",
+            "amount": 5
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a filter with the amount field and $lte condition."
+      },
+      {
+        "level": 2,
+        "text": "The filter must include amount: { \"$lte\": 10 }."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":10}}}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-refills"
+  },
+  {
+    "id": "nosql-water-refills-5",
+    "index": 125,
+    "task": "Sort the filtered documents by amount in ascending order.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":10}}}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Refill",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Container",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Delivery",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Dispenser",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Documents sorted by amount ascending",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Delivery",
+            "amount": 2
+          },
+          {
+            "name": "Dispenser",
+            "amount": 5
+          },
+          {
+            "name": "Refill",
+            "amount": 8
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a sort object with amount: 1 for ascending order."
+      },
+      {
+        "level": 2,
+        "text": "The sort must be { \"amount\": 1 }."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":10}},\"sort\":{\"amount\":1}}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-refills"
+  }
+] satisfies typeof nosqlCourse.steps));
