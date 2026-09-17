@@ -36010,3 +36010,273 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: ukay-ukay-community-schedule.
+sqlCourse.projects.push({"id":"ukay-ukay-community-schedule","title":"Ukay-Ukay Shop Community Schedule"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-ukay-ukay-community-schedule-731",
+    "index": 731,
+    "task": "Select only the item names from the record table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows all item names",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Shirt"
+          ],
+          [
+            "Jeans"
+          ],
+          [
+            "Jacket"
+          ],
+          [
+            "Dress"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose only the name column from the record table."
+      },
+      {
+        "level": 2,
+        "text": "The solution is a SELECT statement with one field."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "ukay-ukay-community-schedule",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-community-schedule-732",
+    "index": 732,
+    "task": "Add the amount column to the report.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows names and amounts",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Shirt",
+            8
+          ],
+          [
+            "Jeans",
+            20
+          ],
+          [
+            "Jacket",
+            2
+          ],
+          [
+            "Dress",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the amount column to the SELECT list."
+      },
+      {
+        "level": 2,
+        "text": "The solution adds one more field to the SELECT."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "ukay-ukay-community-schedule",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-community-schedule-733",
+    "index": 733,
+    "task": "Filter the report to show only items with amount <= 10.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only items with amount <= 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Shirt",
+            8
+          ],
+          [
+            "Jacket",
+            2
+          ],
+          [
+            "Dress",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter by amount."
+      },
+      {
+        "level": 2,
+        "text": "Use <= to include items with amount 10 or less."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "ukay-ukay-community-schedule",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-community-schedule-734",
+    "index": 734,
+    "task": "Sort the filtered items by amount in ascending order.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows filtered items sorted by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Jacket",
+            2
+          ],
+          [
+            "Dress",
+            5
+          ],
+          [
+            "Shirt",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY amount ASC to sort by amount ascending."
+      },
+      {
+        "level": 2,
+        "text": "The solution adds a sort clause after the WHERE."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "ukay-ukay-community-schedule",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-community-schedule-735",
+    "index": 735,
+    "task": "Limit the sorted report to only 2 rows for a short priority list.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows only 2 rows from the sorted filtered list",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Jacket",
+            2
+          ],
+          [
+            "Dress",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add LIMIT 2 to restrict output to two rows."
+      },
+      {
+        "level": 2,
+        "text": "The solution adds LIMIT after the ORDER BY."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT name, amount FROM record WHERE amount <= 10 ORDER BY amount ASC LIMIT 2;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "ukay-ukay-community-schedule",
+    "conceptIds": [
+      "sql-limit"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
