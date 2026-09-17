@@ -3625,3 +3625,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-17: Local Qwen authored nosql-basics/community-library, steps 166-170; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
 
 - 2026-09-17: Local Qwen authored nosql-basics/medicine-stock, steps 171-175; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/medicine-stock, steps 176-180; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
