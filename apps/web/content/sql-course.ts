@@ -33944,3 +33944,295 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: ukay-ukay-inventory-report.
+sqlCourse.projects.push({"id":"ukay-ukay-inventory-report","title":"Ukay-Ukay Shop Inventory Report"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-ukay-ukay-inventory-report-1",
+    "index": 691,
+    "task": "Read record.name and record.group_id with qualified names",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows record.name and record.group_id",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Shirt",
+            1
+          ],
+          [
+            "Jeans",
+            2
+          ],
+          [
+            "Jacket",
+            1
+          ],
+          [
+            "Dress",
+            2
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use qualified column names to select record.name and record.group_id."
+      },
+      {
+        "level": 2,
+        "text": "The solution selects only the two required fields from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "ukay-ukay-inventory-report",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-inventory-report-2",
+    "index": 692,
+    "task": "Join group_info on matching group ids and show record name plus group label",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report shows record name and group label after joining",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Shirt",
+            "North Team"
+          ],
+          [
+            "Jeans",
+            "South Team"
+          ],
+          [
+            "Jacket",
+            "North Team"
+          ],
+          [
+            "Dress",
+            "South Team"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use INNER JOIN to link record and group_info tables by matching group_id and id."
+      },
+      {
+        "level": 2,
+        "text": "Select record.name and group_info.label to show the required output."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-inventory-report",
+    "conceptIds": [
+      "sql-inner-join"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-inventory-report-3",
+    "index": 693,
+    "task": "Add record.amount to the joined report",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report includes record.amount after joining",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Shirt",
+            "North Team",
+            8
+          ],
+          [
+            "Jeans",
+            "South Team",
+            20
+          ],
+          [
+            "Jacket",
+            "North Team",
+            2
+          ],
+          [
+            "Dress",
+            "South Team",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add record.amount to the SELECT list to include the amount in the report."
+      },
+      {
+        "level": 2,
+        "text": "The solution keeps the JOIN and adds the amount field."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "ukay-ukay-inventory-report",
+    "conceptIds": [
+      "sql-qualified-column"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-inventory-report-4",
+    "index": 694,
+    "task": "Filter joined rows to amount <= 10",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report filters rows to amount <= 10",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Shirt",
+            "North Team",
+            8
+          ],
+          [
+            "Jacket",
+            "North Team",
+            2
+          ],
+          [
+            "Dress",
+            "South Team",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter rows where record.amount is less than or equal to 10."
+      },
+      {
+        "level": 2,
+        "text": "The solution keeps the JOIN and adds the filter condition."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-inventory-report",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-inventory-report-5",
+    "index": 695,
+    "task": "Sort filtered joined rows by amount ascending",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The report sorts filtered rows by amount ascending",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Jacket",
+            "North Team",
+            2
+          ],
+          [
+            "Dress",
+            "South Team",
+            5
+          ],
+          [
+            "Shirt",
+            "North Team",
+            8
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ORDER BY record.amount ASC to sort the filtered rows by amount in ascending order."
+      },
+      {
+        "level": 2,
+        "text": "The solution keeps the JOIN, WHERE, and adds the sorting clause."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label, record.amount FROM record JOIN group_info ON group_info.id = record.group_id WHERE record.amount <= 10 ORDER BY record.amount ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-inventory-report",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
