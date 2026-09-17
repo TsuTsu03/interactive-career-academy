@@ -3603,3 +3603,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-17: Local Qwen authored nosql-basics/fishing-catch, steps 111-115; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
 
 - 2026-09-17: Local Qwen authored nosql-basics/fishing-catch, steps 116-120; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/water-refills, steps 121-125; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
