@@ -3615,3 +3615,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-17: Local Qwen authored nosql-basics/tricycle-queue, steps 141-145; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
 
 - 2026-09-17: Local Qwen authored nosql-basics/tricycle-queue, steps 146-150; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/farm-harvest, steps 151-155; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
