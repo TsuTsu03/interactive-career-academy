@@ -33473,3 +33473,229 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: water-station-delivery-log.
+sqlCourse.projects.push({"id":"water-station-delivery-log","title":"Water Refill Station Delivery Log"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-water-station-delivery-log-1",
+    "index": 681,
+    "task": "Count all delivery records in the water station log.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "count-all-rows",
+        "label": "The count of all rows is 4",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 4
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COUNT(*) to count all rows in the record table."
+      },
+      {
+        "level": 2,
+        "text": "The result is a single scalar value."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-delivery-log",
+    "conceptIds": [
+      "sql-count"
+    ]
+  },
+  {
+    "id": "sql-water-station-delivery-log-2",
+    "index": 682,
+    "task": "Name the count as record_count for clarity in reports.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "named-count",
+        "label": "The count is named record_count",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 4
+      },
+      {
+        "id": "alias-heading",
+        "label": "The result column is named record_count",
+        "kind": "sql-columns-equal",
+        "columns": [
+          "record_count"
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use AS to rename the count column to record_count."
+      },
+      {
+        "level": 2,
+        "text": "The result is still a single scalar value."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT COUNT(*) AS record_count FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-delivery-log",
+    "conceptIds": [
+      "sql-alias"
+    ]
+  },
+  {
+    "id": "sql-water-station-delivery-log-3",
+    "index": 683,
+    "task": "Calculate the total amount of water delivered across all records.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT COUNT(*) AS record_count FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "total-amount",
+        "label": "The total amount is 35",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 35
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use SUM(amount) to add all amounts together."
+      },
+      {
+        "level": 2,
+        "text": "The result is a single scalar value."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT SUM(amount) AS total_amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-delivery-log",
+    "conceptIds": [
+      "sql-sum"
+    ]
+  },
+  {
+    "id": "sql-water-station-delivery-log-4",
+    "index": 684,
+    "task": "Calculate the average amount of water delivered per record.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT SUM(amount) AS total_amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "average-amount",
+        "label": "The average amount is 8.75",
+        "kind": "sql-value-equals",
+        "row": 0,
+        "column": 0,
+        "value": 8.75
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use AVG(amount) to compute the average of all amounts."
+      },
+      {
+        "level": 2,
+        "text": "The result is a single scalar value."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT AVG(amount) AS average_amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-delivery-log",
+    "conceptIds": [
+      "sql-average"
+    ]
+  },
+  {
+    "id": "sql-water-station-delivery-log-5",
+    "index": 685,
+    "task": "Group records by category and count how many of each category exist.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT AVG(amount) AS average_amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Refill', 'Local', 8, 'Open', 1), (2, 'Container', 'Regional', 20, 'Done', 2), (3, 'Delivery', 'Local', 2, 'Open', 1), (4, 'Dispenser', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "grouped-counts",
+        "label": "Local has 2 records and Regional has 2 records",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Local",
+            2
+          ],
+          [
+            "Regional",
+            2
+          ]
+        ],
+        "ignoreOrder": true
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use GROUP BY category to group records by their category."
+      },
+      {
+        "level": 2,
+        "text": "Use COUNT(*) to count records in each group."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT category, COUNT(*) AS record_count FROM record GROUP BY category;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-station-delivery-log",
+    "conceptIds": [
+      "sql-group-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
