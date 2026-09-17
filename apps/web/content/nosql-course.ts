@@ -12957,3 +12957,555 @@ nosqlCourse.steps.push(...([
     "projectId": "water-refills"
   }
 ] satisfies typeof nosqlCourse.steps));
+
+// Validated local authoring batch: water-refills.
+nosqlCourse.steps.push(...([
+  {
+    "id": "nosql-water-refills-6",
+    "index": 126,
+    "task": "Limit the sorted result to 2.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":10}},\"sort\":{\"amount\":1}}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Refill",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Container",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Delivery",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Dispenser",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Two documents returned, sorted by amount ascending",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Delivery",
+            "amount": 2
+          },
+          {
+            "name": "Dispenser",
+            "amount": 5
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a limit object with the value 2 to restrict output to two rows."
+      },
+      {
+        "level": 2,
+        "text": "The limit must be { \"limit\": 2 }."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":10}},\"sort\":{\"amount\":1},\"limit\":2}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-refills",
+    "conceptIds": [
+      "nosql-limit"
+    ]
+  },
+  {
+    "id": "nosql-water-refills-7",
+    "index": 127,
+    "task": "Change the filter to amount > 5.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":10}},\"sort\":{\"amount\":1},\"limit\":2}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Refill",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Container",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Delivery",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Dispenser",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Two documents returned, filtered by amount > 5",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Refill",
+            "amount": 8
+          },
+          {
+            "name": "Container",
+            "amount": 20
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Replace the filter condition with {\"amount\": {\"$gt\": 5}}."
+      },
+      {
+        "level": 2,
+        "text": "The filter must be { \"amount\": { \"$gt\": 5 } }."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$gt\":5}},\"sort\":{\"amount\":1},\"limit\":2}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-refills",
+    "conceptIds": [
+      "nosql-upper-bound"
+    ]
+  },
+  {
+    "id": "nosql-water-refills-8",
+    "index": 128,
+    "task": "Sort that result descending.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$gt\":5}},\"sort\":{\"amount\":1},\"limit\":2}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Refill",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Container",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Delivery",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Dispenser",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Two documents returned, sorted by amount descending",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Container",
+            "amount": 20
+          },
+          {
+            "name": "Refill",
+            "amount": 8
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change the sort to {\"amount\": -1} for descending order."
+      },
+      {
+        "level": 2,
+        "text": "The sort must be { \"amount\": -1 }."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$gt\":5}},\"sort\":{\"amount\":-1},\"limit\":2}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-refills",
+    "conceptIds": [
+      "nosql-sort"
+    ]
+  },
+  {
+    "id": "nosql-water-refills-9",
+    "index": 129,
+    "task": "Project name only while keeping the filter and sort.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$gt\":5}},\"sort\":{\"amount\":-1},\"limit\":2}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Refill",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Container",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Delivery",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Dispenser",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "Two documents returned, projecting only name",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Container"
+          },
+          {
+            "name": "Refill"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change the projection to [\"name\"] to show only the name field."
+      },
+      {
+        "level": 2,
+        "text": "The projection must be [ \"name\" ]."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\"],\"filter\":{\"amount\":{\"$gt\":5}},\"sort\":{\"amount\":-1},\"limit\":2}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-refills",
+    "conceptIds": [
+      "nosql-projection"
+    ]
+  },
+  {
+    "id": "nosql-water-refills-10",
+    "index": 130,
+    "task": "Limit to 1.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\"],\"filter\":{\"amount\":{\"$gt\":5}},\"sort\":{\"amount\":-1},\"limit\":2}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Refill",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Container",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Delivery",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Dispenser",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result",
+        "label": "One document returned, limited to 1",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Container"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change the limit to 1 to restrict output to one row."
+      },
+      {
+        "level": 2,
+        "text": "The limit must be { \"limit\": 1 }."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\"],\"filter\":{\"amount\":{\"$gt\":5}},\"sort\":{\"amount\":-1},\"limit\":1}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "water-refills",
+    "conceptIds": [
+      "nosql-limit"
+    ]
+  }
+] satisfies typeof nosqlCourse.steps));
