@@ -34477,3 +34477,281 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: ukay-ukay-daily-record.
+sqlCourse.projects.push({"id":"ukay-ukay-daily-record","title":"Ukay-Ukay Shop Daily Record"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-ukay-ukay-daily-record-1",
+    "index": 701,
+    "task": "Select the record name and group_id for all items.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains four rows with name and group_id",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Shirt",
+            1
+          ],
+          [
+            "Jeans",
+            2
+          ],
+          [
+            "Jacket",
+            1
+          ],
+          [
+            "Dress",
+            null
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the fields the report needs: name and group_id."
+      },
+      {
+        "level": 2,
+        "text": "Use SELECT to fetch these fields from the record table."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "ukay-ukay-daily-record",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-daily-record-2",
+    "index": 702,
+    "task": "LEFT JOIN group_info to show every record with its group label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, record.group_id FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains four rows with name and group label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Shirt",
+            "North Team"
+          ],
+          [
+            "Jeans",
+            "South Team"
+          ],
+          [
+            "Jacket",
+            "North Team"
+          ],
+          [
+            "Dress",
+            null
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Join record with group_info using LEFT JOIN to include all records."
+      },
+      {
+        "level": 2,
+        "text": "Match group_info.id with record.group_id in the ON clause."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, group_info.label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-daily-record",
+    "conceptIds": [
+      "sql-left-join"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-daily-record-3",
+    "index": 703,
+    "task": "Use COALESCE to display 'Unassigned' for missing group labels.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, group_info.label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains four rows with name and group_label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Shirt",
+            "North Team"
+          ],
+          [
+            "Jeans",
+            "South Team"
+          ],
+          [
+            "Jacket",
+            "North Team"
+          ],
+          [
+            "Dress",
+            "Unassigned"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use COALESCE to replace NULL with 'Unassigned' for missing labels."
+      },
+      {
+        "level": 2,
+        "text": "Alias the new column as group_label."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-daily-record",
+    "conceptIds": [
+      "sql-coalesce"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-daily-record-4",
+    "index": 704,
+    "task": "Filter for the row whose group_id is NULL (Dress).",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains one row with Dress and Unassigned",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Dress",
+            "Unassigned"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a WHERE clause to filter for records with group_id IS NULL."
+      },
+      {
+        "level": 2,
+        "text": "Only Dress matches this condition."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id WHERE record.group_id IS NULL;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-daily-record",
+    "conceptIds": [
+      "sql-filter"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-daily-record-5",
+    "index": 705,
+    "task": "Switch back to all rows and sort by the displayed group label.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id WHERE record.group_id IS NULL;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', NULL);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result",
+        "label": "The result contains four rows sorted by group_label",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            "Shirt",
+            "North Team"
+          ],
+          [
+            "Jacket",
+            "North Team"
+          ],
+          [
+            "Jeans",
+            "South Team"
+          ],
+          [
+            "Dress",
+            "Unassigned"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Remove the WHERE clause to return all rows."
+      },
+      {
+        "level": 2,
+        "text": "Add ORDER BY group_label ASC to sort alphabetically."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT record.name, COALESCE(group_info.label, 'Unassigned') AS group_label FROM record LEFT JOIN group_info ON group_info.id = record.group_id ORDER BY group_label ASC;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-daily-record",
+    "conceptIds": [
+      "sql-order-by"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
