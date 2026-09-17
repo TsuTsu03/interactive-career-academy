@@ -35004,3 +35004,280 @@ sqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof sqlCourse.steps));
+
+// Validated local authoring batch: ukay-ukay-service-queue.
+sqlCourse.projects.push({"id":"ukay-ukay-service-queue","title":"Ukay-Ukay Shop Service Queue"});
+sqlCourse.steps.push(...([
+  {
+    "id": "sql-ukay-ukay-service-queue-711",
+    "index": 711,
+    "task": "Select id, name, and amount from the record table.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": ""
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result-1",
+        "label": "The initial report shows four rows with id, name, and amount",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Shirt",
+            8
+          ],
+          [
+            2,
+            "Jeans",
+            20
+          ],
+          [
+            3,
+            "Jacket",
+            2
+          ],
+          [
+            4,
+            "Dress",
+            5
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Choose the three fields: id, name, and amount from the record table."
+      },
+      {
+        "level": 2,
+        "text": "Run a SELECT with these three columns to see the initial data."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "SELECT id, name, amount FROM record;"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "ukay-ukay-service-queue",
+    "conceptIds": [
+      "sql-select"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-service-queue-712",
+    "index": 712,
+    "task": "Insert a new record with id 5, name 'New Record', category 'Local', amount 7, status 'Open', group_id 1, then read all rows.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "SELECT id, name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result-2",
+        "label": "After insertion, five rows are shown including New Record with amount 7",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Shirt",
+            8
+          ],
+          [
+            2,
+            "Jeans",
+            20
+          ],
+          [
+            3,
+            "Jacket",
+            2
+          ],
+          [
+            4,
+            "Dress",
+            5
+          ],
+          [
+            5,
+            "New Record",
+            7
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the new record using INSERT with id 5 and name 'New Record'."
+      },
+      {
+        "level": 2,
+        "text": "Then SELECT all id, name, amount to verify the new row."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nSELECT id, name, amount FROM record;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-service-queue",
+    "conceptIds": [
+      "sql-insert"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-service-queue-713",
+    "index": 713,
+    "task": "Update only id 5 amount to 9, then read it.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nSELECT id, name, amount FROM record;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result-3",
+        "label": "After updating id 5, its amount is 9",
+        "kind": "sql-row-contains",
+        "row": [
+          5,
+          "New Record",
+          9
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use UPDATE to change the amount of id 5 to 9."
+      },
+      {
+        "level": 2,
+        "text": "Then SELECT only id 5 to confirm the change."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nSELECT id, name, amount FROM record WHERE id = 5;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-service-queue",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-service-queue-714",
+    "index": 714,
+    "task": "Update only id 2 status to 'Open', then read id 2.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nSELECT id, name, amount FROM record WHERE id = 5;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result-4",
+        "label": "After updating id 2, its status is 'Open'",
+        "kind": "sql-row-contains",
+        "row": [
+          2,
+          "Jeans",
+          "Open"
+        ],
+        "resultIndex": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use UPDATE to change the status of id 2 to 'Open'."
+      },
+      {
+        "level": 2,
+        "text": "Then SELECT only id 2 to confirm the change."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nSELECT id, name, status FROM record WHERE id = 2;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-service-queue",
+    "conceptIds": [
+      "sql-update"
+    ]
+  },
+  {
+    "id": "sql-ukay-ukay-service-queue-715",
+    "index": 715,
+    "task": "Delete only id 4, then read remaining ids and names.",
+    "kind": "sql",
+    "inputMode": "free",
+    "files": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nSELECT id, name, status FROM record WHERE id = 2;"
+    },
+    "activeFile": "query.sql",
+    "sqlSeed": "CREATE TABLE record (id INTEGER, name TEXT, category TEXT, amount INTEGER, status TEXT, group_id INTEGER);\nINSERT INTO record VALUES (1, 'Shirt', 'Local', 8, 'Open', 1), (2, 'Jeans', 'Regional', 20, 'Done', 2), (3, 'Jacket', 'Local', 2, 'Open', 1), (4, 'Dress', 'Regional', 5, 'Done', 2);\nCREATE TABLE group_info (id INTEGER, label TEXT);\nINSERT INTO group_info VALUES (1, 'North Team'), (2, 'South Team');",
+    "tests": [
+      {
+        "id": "result-5",
+        "label": "After deleting id 4, remaining rows show ids 1, 2, 3, 5",
+        "kind": "sql-rows-equal",
+        "rows": [
+          [
+            1,
+            "Shirt"
+          ],
+          [
+            2,
+            "Jeans"
+          ],
+          [
+            3,
+            "Jacket"
+          ],
+          [
+            5,
+            "New Record"
+          ]
+        ],
+        "ignoreOrder": false
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use DELETE to remove id 4 from the record table."
+      },
+      {
+        "level": 2,
+        "text": "Then SELECT id and name to see the remaining rows."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.sql": "INSERT INTO record VALUES (5, 'New Record', 'Local', 7, 'Open', 1);\nUPDATE record SET amount = 9 WHERE id = 5;\nUPDATE record SET status = 'Open' WHERE id = 2;\nDELETE FROM record WHERE id = 4;\nSELECT id, name FROM record;"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "ukay-ukay-service-queue",
+    "conceptIds": [
+      "sql-delete"
+    ]
+  }
+] satisfies typeof sqlCourse.steps));
