@@ -5780,3 +5780,555 @@ nosqlCourse.steps.push(...([
     "projectId": "school-supplies"
   }
 ] satisfies typeof nosqlCourse.steps));
+
+// Validated local authoring batch: school-supplies.
+nosqlCourse.steps.push(...([
+  {
+    "id": "nosql-school-supplies-6",
+    "index": 66,
+    "task": "Query the groups collection instead and find all group documents.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"groupId\"],\"filter\":{\"groupId\":1},\"sort\":{\"amount\":1},\"limit\":1}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Notebook",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Pencil",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Ruler",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Paper",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "all-groups",
+        "label": "Both group documents are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 1,
+            "label": "North Team",
+            "area": "North"
+          },
+          {
+            "id": 2,
+            "label": "South Team",
+            "area": "South"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the groups collection to find all items."
+      },
+      {
+        "level": 2,
+        "text": "The find operation returns all documents without any filter."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"groups\",\"operation\":\"find\"}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "school-supplies",
+    "conceptIds": [
+      "nosql-document"
+    ]
+  },
+  {
+    "id": "nosql-school-supplies-7",
+    "index": 67,
+    "task": "Project group id and label.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"groups\",\"operation\":\"find\"}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Notebook",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Pencil",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Ruler",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Paper",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "projected-fields",
+        "label": "Only id and label are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 1,
+            "label": "North Team"
+          },
+          {
+            "id": 2,
+            "label": "South Team"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use projection to select only id and label fields."
+      },
+      {
+        "level": 2,
+        "text": "Remove the area field from the output."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"groups\",\"operation\":\"find\",\"projection\":[\"id\",\"label\"]}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "school-supplies",
+    "conceptIds": [
+      "nosql-projection"
+    ]
+  },
+  {
+    "id": "nosql-school-supplies-8",
+    "index": 68,
+    "task": "Sort the two groups by label descending.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"groups\",\"operation\":\"find\",\"projection\":[\"id\",\"label\"]}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Notebook",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Pencil",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Ruler",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Paper",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "sorted-descending",
+        "label": "South Team then North Team",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 2,
+            "label": "South Team"
+          },
+          {
+            "id": 1,
+            "label": "North Team"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use sort with label: -1 to reverse the order."
+      },
+      {
+        "level": 2,
+        "text": "The South Team label comes after North Team alphabetically."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"groups\",\"operation\":\"find\",\"projection\":[\"id\",\"label\"],\"sort\":{\"label\":-1}}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "school-supplies",
+    "conceptIds": [
+      "nosql-sort"
+    ]
+  },
+  {
+    "id": "nosql-school-supplies-9",
+    "index": 69,
+    "task": "Use $in to keep only group id 1.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"groups\",\"operation\":\"find\",\"projection\":[\"id\",\"label\"],\"sort\":{\"label\":-1}}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Notebook",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Pencil",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Ruler",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Paper",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "only-id-1",
+        "label": "Only North Team is returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 1,
+            "label": "North Team"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use $in to match the id field against a list."
+      },
+      {
+        "level": 2,
+        "text": "Only group id 1 matches the filter."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"groups\",\"operation\":\"find\",\"projection\":[\"id\",\"label\"],\"sort\":{\"label\":-1},\"filter\":{\"id\":{\"$in\":[1]}}}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "school-supplies",
+    "conceptIds": [
+      "nosql-filter"
+    ]
+  },
+  {
+    "id": "nosql-school-supplies-10",
+    "index": 70,
+    "task": "Project only the label from that one group.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"groups\",\"operation\":\"find\",\"projection\":[\"id\",\"label\"],\"sort\":{\"label\":-1},\"filter\":{\"id\":{\"$in\":[1]}}}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Notebook",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Pencil",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Ruler",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Paper",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "only-label",
+        "label": "Only label North Team is returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "label": "North Team"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use projection to select only the label field."
+      },
+      {
+        "level": 2,
+        "text": "Remove id and area from the output."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"groups\",\"operation\":\"find\",\"projection\":[\"label\"],\"sort\":{\"label\":-1},\"filter\":{\"id\":{\"$in\":[1]}}}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "school-supplies",
+    "conceptIds": [
+      "nosql-projection"
+    ]
+  }
+] satisfies typeof nosqlCourse.steps));
