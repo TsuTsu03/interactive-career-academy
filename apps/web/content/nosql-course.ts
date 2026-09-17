@@ -8156,3 +8156,650 @@ nosqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof nosqlCourse.steps));
+
+// Validated local authoring batch: carinderia-menu.
+nosqlCourse.steps.push(...([
+  {
+    "id": "nosql-carinderia-menu-6",
+    "index": 86,
+    "task": "Find records with status Done or amount less than 3 using $or.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"$and\":[{\"status\":\"Open\"},{\"amount\":{\"$lte\":8}}]}}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Adobo",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Sinigang",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Pancit",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Rice Meal",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result-6",
+        "label": "Find records with status Done or amount < 3",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 2,
+            "name": "Sinigang",
+            "category": "Regional",
+            "amount": 20,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 3,
+            "name": "Pancit",
+            "category": "Local",
+            "amount": 2,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 4,
+            "name": "Rice Meal",
+            "category": "Regional",
+            "amount": 5,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use $or to combine status Done and amount < 3."
+      },
+      {
+        "level": 2,
+        "text": "The solution uses filter with $or containing two conditions."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"$or\":[{\"status\":\"Done\"},{\"amount\":{\"$lt\":3}}]}}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-menu",
+    "conceptIds": [
+      "nosql-or"
+    ]
+  },
+  {
+    "id": "nosql-carinderia-menu-7",
+    "index": 87,
+    "task": "Find records with category Local or Regional using $in.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"$or\":[{\"status\":\"Done\"},{\"amount\":{\"$lt\":3}}]}}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Adobo",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Sinigang",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Pancit",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Rice Meal",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result-7",
+        "label": "Find records with category Local or Regional",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 1,
+            "name": "Adobo",
+            "category": "Local",
+            "amount": 8,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 2,
+            "name": "Sinigang",
+            "category": "Regional",
+            "amount": 20,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 3,
+            "name": "Pancit",
+            "category": "Local",
+            "amount": 2,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 4,
+            "name": "Rice Meal",
+            "category": "Regional",
+            "amount": 5,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use $in to match category with Local or Regional."
+      },
+      {
+        "level": 2,
+        "text": "The solution uses filter with $in containing the two categories."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"category\":{\"$in\":[\"Local\",\"Regional\"]}}}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-menu",
+    "conceptIds": [
+      "nosql-in"
+    ]
+  },
+  {
+    "id": "nosql-carinderia-menu-8",
+    "index": 88,
+    "task": "Project only the name and amount fields from the previous result.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"category\":{\"$in\":[\"Local\",\"Regional\"]}}}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Adobo",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Sinigang",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Pancit",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Rice Meal",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result-8",
+        "label": "Project name and amount from category Local or Regional",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Adobo",
+            "amount": 8
+          },
+          {
+            "name": "Sinigang",
+            "amount": 20
+          },
+          {
+            "name": "Pancit",
+            "amount": 2
+          },
+          {
+            "name": "Rice Meal",
+            "amount": 5
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add projection with fields name and amount."
+      },
+      {
+        "level": 2,
+        "text": "The solution includes projection array with those two fields."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"category\":{\"$in\":[\"Local\",\"Regional\"]}},\"projection\":[\"name\",\"amount\"]}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-menu",
+    "conceptIds": [
+      "nosql-projection"
+    ]
+  },
+  {
+    "id": "nosql-carinderia-menu-9",
+    "index": 89,
+    "task": "Sort the projected result by amount in ascending order.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"category\":{\"$in\":[\"Local\",\"Regional\"]}},\"projection\":[\"name\",\"amount\"]}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Adobo",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Sinigang",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Pancit",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Rice Meal",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result-9",
+        "label": "Sort by amount ascending",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Pancit",
+            "amount": 2
+          },
+          {
+            "name": "Rice Meal",
+            "amount": 5
+          },
+          {
+            "name": "Adobo",
+            "amount": 8
+          },
+          {
+            "name": "Sinigang",
+            "amount": 20
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add sort with amount: 1 for ascending order."
+      },
+      {
+        "level": 2,
+        "text": "The solution includes sort field with value 1 for amount."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"category\":{\"$in\":[\"Local\",\"Regional\"]}},\"projection\":[\"name\",\"amount\"],\"sort\":{\"amount\":1}}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-menu",
+    "conceptIds": [
+      "nosql-sort"
+    ]
+  },
+  {
+    "id": "nosql-carinderia-menu-10",
+    "index": 90,
+    "task": "Limit the sorted result to only three rows.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"category\":{\"$in\":[\"Local\",\"Regional\"]}},\"projection\":[\"name\",\"amount\"],\"sort\":{\"amount\":1}}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Adobo",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Sinigang",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Pancit",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Rice Meal",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "result-10",
+        "label": "Limit to three rows",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Pancit",
+            "amount": 2
+          },
+          {
+            "name": "Rice Meal",
+            "amount": 5
+          },
+          {
+            "name": "Adobo",
+            "amount": 8
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add limit with value 3 to restrict output to three rows."
+      },
+      {
+        "level": 2,
+        "text": "The solution includes limit field with value 3."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"category\":{\"$in\":[\"Local\",\"Regional\"]}},\"projection\":[\"name\",\"amount\"],\"sort\":{\"amount\":1},\"limit\":3}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "carinderia-menu",
+    "conceptIds": [
+      "nosql-limit"
+    ]
+  }
+] satisfies typeof nosqlCourse.steps));
