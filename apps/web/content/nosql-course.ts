@@ -16038,3 +16038,663 @@ nosqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof nosqlCourse.steps));
+
+// Validated local authoring batch: farm-harvest.
+nosqlCourse.projects.push({"id":"farm-harvest","title":"Farm Harvest"});
+nosqlCourse.steps.push(...([
+  {
+    "id": "nosql-farm-harvest-1",
+    "index": 151,
+    "task": "Find all harvest records and observe the embedded details.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": ""
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Mango",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Banana",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Coconut",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Papaya",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "all-docs",
+        "label": "All four records are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 1,
+            "name": "Mango",
+            "category": "Local",
+            "amount": 8,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 2,
+            "name": "Banana",
+            "category": "Regional",
+            "amount": 20,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 3,
+            "name": "Coconut",
+            "category": "Local",
+            "amount": 2,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 4,
+            "name": "Papaya",
+            "category": "Regional",
+            "amount": 5,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use find to retrieve all documents."
+      },
+      {
+        "level": 2,
+        "text": "The details object is embedded within each document."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\"}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "farm-harvest",
+    "conceptIds": [
+      "nosql-document"
+    ]
+  },
+  {
+    "id": "nosql-farm-harvest-2",
+    "index": 152,
+    "task": "Project the name and details fields from the records.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\"}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Mango",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Banana",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Coconut",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Papaya",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "projected-fields",
+        "label": "Only name and details are projected",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Mango",
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "name": "Banana",
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "name": "Coconut",
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "name": "Papaya",
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a projection array to select only name and details."
+      },
+      {
+        "level": 2,
+        "text": "Remove amount and category from the projection."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"details\"]}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "farm-harvest",
+    "conceptIds": [
+      "nosql-projection"
+    ]
+  },
+  {
+    "id": "nosql-farm-harvest-3",
+    "index": 153,
+    "task": "Add the amount field to the projection.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"details\"]}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Mango",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Banana",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Coconut",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Papaya",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "with-amount",
+        "label": "Name, details, and amount are projected",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Mango",
+            "details": {
+              "source": "Community",
+              "checked": true
+            },
+            "amount": 8
+          },
+          {
+            "name": "Banana",
+            "details": {
+              "source": "Community",
+              "checked": true
+            },
+            "amount": 20
+          },
+          {
+            "name": "Coconut",
+            "details": {
+              "source": "Community",
+              "checked": true
+            },
+            "amount": 2
+          },
+          {
+            "name": "Papaya",
+            "details": {
+              "source": "Community",
+              "checked": true
+            },
+            "amount": 5
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add amount to the projection array."
+      },
+      {
+        "level": 2,
+        "text": "Keep name and details as they are."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"details\",\"amount\"]}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "farm-harvest",
+    "conceptIds": [
+      "nosql-projection"
+    ]
+  },
+  {
+    "id": "nosql-farm-harvest-4",
+    "index": 154,
+    "task": "Filter records where category equals 'Local'.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"details\",\"amount\"]}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Mango",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Banana",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Coconut",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Papaya",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "filter-local",
+        "label": "Only Local category records are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Mango",
+            "details": {
+              "source": "Community",
+              "checked": true
+            },
+            "amount": 8
+          },
+          {
+            "name": "Coconut",
+            "details": {
+              "source": "Community",
+              "checked": true
+            },
+            "amount": 2
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a filter with category equal to 'Local'."
+      },
+      {
+        "level": 2,
+        "text": "Only documents matching this filter should appear."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"details\",\"amount\"],\"filter\":{\"category\":\"Local\"}}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "farm-harvest",
+    "conceptIds": [
+      "nosql-filter"
+    ]
+  },
+  {
+    "id": "nosql-farm-harvest-5",
+    "index": 155,
+    "task": "Sort the filtered Local records by amount in ascending order.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"details\",\"amount\"],\"filter\":{\"category\":\"Local\"}}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Mango",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Banana",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Coconut",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Papaya",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "sorted-by-amount",
+        "label": "Local records sorted by amount ascending",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Coconut",
+            "details": {
+              "source": "Community",
+              "checked": true
+            },
+            "amount": 2
+          },
+          {
+            "name": "Mango",
+            "details": {
+              "source": "Community",
+              "checked": true
+            },
+            "amount": 8
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a sort object with amount: 1 for ascending order."
+      },
+      {
+        "level": 2,
+        "text": "The Coconut record (amount 2) should come first."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"details\",\"amount\"],\"filter\":{\"category\":\"Local\"},\"sort\":{\"amount\":1}}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "farm-harvest",
+    "conceptIds": [
+      "nosql-sort"
+    ]
+  }
+] satisfies typeof nosqlCourse.steps));
