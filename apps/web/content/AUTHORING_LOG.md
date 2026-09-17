@@ -3541,3 +3541,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-16: Local Qwen authored sql-basics/water-station-supplier-list, steps 661-665; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
 
 - 2026-09-16: Local Qwen authored sql-basics/water-station-supplier-list, steps 666-670; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/water-station-community-schedule, steps 671-675; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
