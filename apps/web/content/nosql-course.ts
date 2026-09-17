@@ -10629,3 +10629,566 @@ nosqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof nosqlCourse.steps));
+
+// Validated local authoring batch: rice-mill-batches.
+nosqlCourse.steps.push(...([
+  {
+    "id": "nosql-rice-mill-batches-6",
+    "index": 106,
+    "task": "Limit the two sorted Local documents to only one.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"details\",\"amount\"],\"filter\":{\"category\":\"Local\"},\"sort\":{\"amount\":1}}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Dinorado",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Sinandomeng",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Malagkit",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Brown Rice",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "malagkit-only",
+        "label": "Only Malagkit is returned after limiting",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Malagkit",
+            "details": {
+              "source": "Community",
+              "checked": true
+            },
+            "amount": 2
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a limit object with {\"limit\": 1} to restrict output to one row."
+      },
+      {
+        "level": 2,
+        "text": "Malagkit (amount 2) is the first row after sorting by amount ascending."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"details\",\"amount\"],\"filter\":{\"category\":\"Local\"},\"sort\":{\"amount\":1},\"limit\":1}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-batches",
+    "conceptIds": [
+      "nosql-limit"
+    ]
+  },
+  {
+    "id": "nosql-rice-mill-batches-7",
+    "index": 107,
+    "task": "Switch the filter to status Open and remove the limit so two documents return.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"details\",\"amount\"],\"filter\":{\"category\":\"Local\"},\"sort\":{\"amount\":1},\"limit\":1}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Dinorado",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Sinandomeng",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Malagkit",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Brown Rice",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "two-open-docs",
+        "label": "Two Open documents are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Malagkit",
+            "details": {
+              "source": "Community",
+              "checked": true
+            },
+            "amount": 2
+          },
+          {
+            "name": "Dinorado",
+            "details": {
+              "source": "Community",
+              "checked": true
+            },
+            "amount": 8
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change the filter to {\"status\": \"Open\"} to match only Open records."
+      },
+      {
+        "level": 2,
+        "text": "Remove the limit to return all matching rows."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"details\",\"amount\"],\"filter\":{\"status\":\"Open\"},\"sort\":{\"amount\":1}}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-batches",
+    "conceptIds": [
+      "nosql-filter"
+    ]
+  },
+  {
+    "id": "nosql-rice-mill-batches-8",
+    "index": 108,
+    "task": "Project only the name and status fields from the results.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"details\",\"amount\"],\"filter\":{\"status\":\"Open\"},\"sort\":{\"amount\":1}}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Dinorado",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Sinandomeng",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Malagkit",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Brown Rice",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "projected-fields",
+        "label": "Only name and status are projected",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Malagkit",
+            "status": "Open"
+          },
+          {
+            "name": "Dinorado",
+            "status": "Open"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Update the projection array to [\"name\", \"status\"] to exclude amount and details."
+      },
+      {
+        "level": 2,
+        "text": "The projection removes the amount field and keeps only name and status."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"status\"],\"filter\":{\"status\":\"Open\"},\"sort\":{\"amount\":1}}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-batches",
+    "conceptIds": [
+      "nosql-projection"
+    ]
+  },
+  {
+    "id": "nosql-rice-mill-batches-9",
+    "index": 109,
+    "task": "Sort the two Open documents by amount in descending order.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"status\"],\"filter\":{\"status\":\"Open\"},\"sort\":{\"amount\":1}}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Dinorado",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Sinandomeng",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Malagkit",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Brown Rice",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "sorted-descending",
+        "label": "Open documents sorted by amount descending",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Dinorado",
+            "status": "Open"
+          },
+          {
+            "name": "Malagkit",
+            "status": "Open"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change the sort to {\"amount\": -1} to sort in descending order."
+      },
+      {
+        "level": 2,
+        "text": "Dinorado (8) comes before Malagkit (2) when sorted descending."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"status\"],\"filter\":{\"status\":\"Open\"},\"sort\":{\"amount\":-1}}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-batches",
+    "conceptIds": [
+      "nosql-sort"
+    ]
+  },
+  {
+    "id": "nosql-rice-mill-batches-10",
+    "index": 110,
+    "task": "Limit the sorted Open documents to only the first one.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"status\"],\"filter\":{\"status\":\"Open\"},\"sort\":{\"amount\":-1}}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Dinorado",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Sinandomeng",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Malagkit",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Brown Rice",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "first-document-only",
+        "label": "Only the first Open document is returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Dinorado",
+            "status": "Open"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a limit object with {\"limit\": 1} to restrict output to one row."
+      },
+      {
+        "level": 2,
+        "text": "Dinorado is the first row after sorting by amount descending."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"status\"],\"filter\":{\"status\":\"Open\"},\"sort\":{\"amount\":-1},\"limit\":1}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "rice-mill-batches",
+    "conceptIds": [
+      "nosql-limit"
+    ]
+  }
+] satisfies typeof nosqlCourse.steps));
