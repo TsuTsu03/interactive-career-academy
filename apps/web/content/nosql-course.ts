@@ -23332,3 +23332,592 @@ nosqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof nosqlCourse.steps));
+
+// Validated local authoring batch: tour-bookings.
+nosqlCourse.projects.push({"id":"tour-bookings","title":"Tour Bookings"});
+nosqlCourse.steps.push(...([
+  {
+    "id": "nosql-tour-bookings-1",
+    "index": 211,
+    "task": "Find all tour booking records.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": ""
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Museum",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "River",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Market",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Park",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "all-records",
+        "label": "All four records are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 1,
+            "name": "Museum",
+            "category": "Local",
+            "amount": 8,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 2,
+            "name": "River",
+            "category": "Regional",
+            "amount": 20,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 3,
+            "name": "Market",
+            "category": "Local",
+            "amount": 2,
+            "status": "Open",
+            "groupId": 1,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 4,
+            "name": "Park",
+            "category": "Regional",
+            "amount": 5,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Start with a find command on the records collection."
+      },
+      {
+        "level": 2,
+        "text": "The seed contains four records; verify all are returned."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\"}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "tour-bookings"
+  },
+  {
+    "id": "nosql-tour-bookings-2",
+    "index": 212,
+    "task": "Project only the name and groupId fields from the records.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\"}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Museum",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "River",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Market",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Park",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "projected-fields",
+        "label": "Only name and groupId are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Museum",
+            "groupId": 1
+          },
+          {
+            "name": "River",
+            "groupId": 2
+          },
+          {
+            "name": "Market",
+            "groupId": 1
+          },
+          {
+            "name": "Park",
+            "groupId": 2
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a projection array with the fields name and groupId."
+      },
+      {
+        "level": 2,
+        "text": "Remove all other fields from the output."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"groupId\"]}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "tour-bookings"
+  },
+  {
+    "id": "nosql-tour-bookings-3",
+    "index": 213,
+    "task": "Filter records to only those with groupId equal to 1.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"groupId\"]}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Museum",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "River",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Market",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Park",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "filtered-group-1",
+        "label": "Only records with groupId 1 are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Museum",
+            "groupId": 1
+          },
+          {
+            "name": "Market",
+            "groupId": 1
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a filter with groupId equal to 1."
+      },
+      {
+        "level": 2,
+        "text": "Only Museum and Market should match."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"groupId\"],\"filter\":{\"groupId\":1}}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "tour-bookings"
+  },
+  {
+    "id": "nosql-tour-bookings-4",
+    "index": 214,
+    "task": "Sort the filtered records by amount in ascending order.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"groupId\"],\"filter\":{\"groupId\":1}}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Museum",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "River",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Market",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Park",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "sorted-by-amount",
+        "label": "Records sorted by amount ascending",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Market",
+            "groupId": 1
+          },
+          {
+            "name": "Museum",
+            "groupId": 1
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a sort object with amount set to 1 for ascending."
+      },
+      {
+        "level": 2,
+        "text": "Market (amount 2) comes before Museum (amount 8)."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"groupId\"],\"filter\":{\"groupId\":1},\"sort\":{\"amount\":1}}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "tour-bookings"
+  },
+  {
+    "id": "nosql-tour-bookings-5",
+    "index": 215,
+    "task": "Limit the sorted records to only the first one.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"groupId\"],\"filter\":{\"groupId\":1},\"sort\":{\"amount\":1}}"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Museum",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "River",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Market",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Park",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "limited-to-one",
+        "label": "Only the first record is returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Market",
+            "groupId": 1
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a limit of 1 to return only the first record."
+      },
+      {
+        "level": 2,
+        "text": "Market is the only result because it has the lowest amount."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"groupId\"],\"filter\":{\"groupId\":1},\"sort\":{\"amount\":1},\"limit\":1}"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "tour-bookings"
+  }
+] satisfies typeof nosqlCourse.steps));
