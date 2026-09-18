@@ -3649,3 +3649,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-18: Local Qwen authored nosql-basics/garden-plants, steps 226-230; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
 
 - 2026-09-18: Local Qwen authored nosql-basics/recycling-pickups, steps 231-235; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-18: Local Qwen authored nosql-basics/recycling-pickups, steps 236-240; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
