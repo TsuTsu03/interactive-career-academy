@@ -21517,3 +21517,610 @@ nosqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof nosqlCourse.steps));
+
+// Validated local authoring batch: laundry-jobs.
+nosqlCourse.steps.push(...([
+  {
+    "id": "nosql-laundry-jobs-6",
+    "index": 196,
+    "task": "Filter the final find to amount <= 7.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"]}]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Wash",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Dry",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Fold",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Pickup",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "filtered-by-amount",
+        "label": "Only records with amount <= 7 are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Fold",
+            "amount": 2
+          },
+          {
+            "name": "Pickup",
+            "amount": 5
+          },
+          {
+            "name": "New Record",
+            "amount": 7
+          },
+          {
+            "name": "Backup Record",
+            "amount": 4
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a filter with $lte to limit amount to 7 or less."
+      },
+      {
+        "level": 2,
+        "text": "The filter must be exactly {\"amount\":{\"$lte\":7}}."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}}}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "laundry-jobs",
+    "conceptIds": [
+      "nosql-filter"
+    ]
+  },
+  {
+    "id": "nosql-laundry-jobs-7",
+    "index": 197,
+    "task": "Sort those documents by amount in ascending order.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}}}]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Wash",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Dry",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Fold",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Pickup",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "sorted-by-amount",
+        "label": "Documents sorted by amount ascending",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Fold",
+            "amount": 2
+          },
+          {
+            "name": "Backup Record",
+            "amount": 4
+          },
+          {
+            "name": "Pickup",
+            "amount": 5
+          },
+          {
+            "name": "New Record",
+            "amount": 7
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a sort field with amount:1 to sort ascending."
+      },
+      {
+        "level": 2,
+        "text": "The sort must be exactly {\"amount\":1}."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}},\"sort\":{\"amount\":1}}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "laundry-jobs",
+    "conceptIds": [
+      "nosql-sort"
+    ]
+  },
+  {
+    "id": "nosql-laundry-jobs-8",
+    "index": 198,
+    "task": "Limit the sorted result to only two records.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}},\"sort\":{\"amount\":1}}]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Wash",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Dry",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Fold",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Pickup",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "limited-to-two",
+        "label": "Only two records are returned",
+        "kind": "nosql-doc-count",
+        "count": 2
+      },
+      {
+        "id": "limited-docs",
+        "label": "The two records are Fold and Backup Record",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Fold",
+            "amount": 2
+          },
+          {
+            "name": "Backup Record",
+            "amount": 4
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a limit of 2 to the find command."
+      },
+      {
+        "level": 2,
+        "text": "The limit must be exactly 2."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}},\"sort\":{\"amount\":1},\"limit\":2}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "laundry-jobs",
+    "conceptIds": [
+      "nosql-limit"
+    ]
+  },
+  {
+    "id": "nosql-laundry-jobs-9",
+    "index": 199,
+    "task": "Change the second inserted document status to Done in its source document and find Done records.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}},\"sort\":{\"amount\":1},\"limit\":2}]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Wash",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Dry",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Fold",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Pickup",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "done-records",
+        "label": "Only Done records are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 2,
+            "name": "Dry",
+            "category": "Regional",
+            "amount": 20,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 4,
+            "name": "Pickup",
+            "category": "Regional",
+            "amount": 5,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "name": "Backup Record",
+            "category": "Local",
+            "amount": 4,
+            "status": "Done"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Update the second document's status to Done before finding."
+      },
+      {
+        "level": 2,
+        "text": "The second document must be {\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Done\"}."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Done\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"status\":\"Done\"}}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "laundry-jobs",
+    "conceptIds": [
+      "nosql-insert"
+    ]
+  },
+  {
+    "id": "nosql-laundry-jobs-10",
+    "index": 200,
+    "task": "Project only name and status from the Done result.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Done\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"status\":\"Done\"}}]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Wash",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Dry",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Fold",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Pickup",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "projected-done",
+        "label": "Only name and status are projected",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Dry",
+            "status": "Done"
+          },
+          {
+            "name": "Pickup",
+            "status": "Done"
+          },
+          {
+            "name": "Backup Record",
+            "status": "Done"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a projection array with name and status."
+      },
+      {
+        "level": 2,
+        "text": "The projection must be exactly [\"name\",\"status\"]."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Done\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"status\":\"Done\"},\"projection\":[\"name\",\"status\"]}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "laundry-jobs",
+    "conceptIds": [
+      "nosql-projection"
+    ]
+  }
+] satisfies typeof nosqlCourse.steps));
