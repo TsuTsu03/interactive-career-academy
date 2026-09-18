@@ -27558,3 +27558,604 @@ nosqlCourse.steps.push(...([
     ]
   }
 ] satisfies typeof nosqlCourse.steps));
+
+// Validated local authoring batch: food-pantry.
+nosqlCourse.steps.push(...([
+  {
+    "id": "nosql-food-pantry-6",
+    "index": 246,
+    "task": "Filter the final find to amount <= 7.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"]}]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Rice",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Beans",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Noodles",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Milk",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "filtered-by-amount",
+        "label": "Only records with amount <= 7 are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Noodles",
+            "amount": 2
+          },
+          {
+            "name": "Milk",
+            "amount": 5
+          },
+          {
+            "name": "New Record",
+            "amount": 7
+          },
+          {
+            "name": "Backup Record",
+            "amount": 4
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a filter condition to the find command using $lte for amount."
+      },
+      {
+        "level": 2,
+        "text": "Only documents with amount 2, 7, and 4 should appear."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}}}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "food-pantry",
+    "conceptIds": [
+      "nosql-filter"
+    ]
+  },
+  {
+    "id": "nosql-food-pantry-7",
+    "index": 247,
+    "task": "Sort those documents by amount in ascending order.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}}}]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Rice",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Beans",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Noodles",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Milk",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "sorted-by-amount",
+        "label": "Documents are sorted by amount in ascending order",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Noodles",
+            "amount": 2
+          },
+          {
+            "name": "Backup Record",
+            "amount": 4
+          },
+          {
+            "name": "Milk",
+            "amount": 5
+          },
+          {
+            "name": "New Record",
+            "amount": 7
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a sort field to the find command with amount: 1 for ascending."
+      },
+      {
+        "level": 2,
+        "text": "The order must be Noodles (2), Backup Record (4), New Record (7)."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}},\"sort\":{\"amount\":1}}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "food-pantry",
+    "conceptIds": [
+      "nosql-sort"
+    ]
+  },
+  {
+    "id": "nosql-food-pantry-8",
+    "index": 248,
+    "task": "Limit the sorted result to only the first two records.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}},\"sort\":{\"amount\":1}}]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Rice",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Beans",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Noodles",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Milk",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "limited-to-two",
+        "label": "Only the first two records are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Noodles",
+            "amount": 2
+          },
+          {
+            "name": "Backup Record",
+            "amount": 4
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a limit field to the find command with value 2."
+      },
+      {
+        "level": 2,
+        "text": "Only Noodles and Backup Record should appear."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}},\"sort\":{\"amount\":1},\"limit\":2}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "food-pantry",
+    "conceptIds": [
+      "nosql-limit"
+    ]
+  },
+  {
+    "id": "nosql-food-pantry-9",
+    "index": 249,
+    "task": "Change the second inserted document status to Done in its source document and find Done records.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Open\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"projection\":[\"name\",\"amount\"],\"filter\":{\"amount\":{\"$lte\":7}},\"sort\":{\"amount\":1},\"limit\":2}]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Rice",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Beans",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Noodles",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Milk",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "done-records-found",
+        "label": "Only records with status 'Done' are returned",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "id": 2,
+            "name": "Beans",
+            "category": "Regional",
+            "amount": 20,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "id": 4,
+            "name": "Milk",
+            "category": "Regional",
+            "amount": 5,
+            "status": "Done",
+            "groupId": 2,
+            "details": {
+              "source": "Community",
+              "checked": true
+            }
+          },
+          {
+            "name": "Backup Record",
+            "category": "Local",
+            "amount": 4,
+            "status": "Done"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Update the second document's status to 'Done' before the find."
+      },
+      {
+        "level": 2,
+        "text": "The find should return Beans, Milk, and Backup Record."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Done\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"status\":\"Done\"}}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "food-pantry",
+    "conceptIds": [
+      "nosql-insert"
+    ]
+  },
+  {
+    "id": "nosql-food-pantry-10",
+    "index": 250,
+    "task": "Project only name and status from the Done result.",
+    "kind": "nosql",
+    "inputMode": "free",
+    "files": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Done\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"status\":\"Done\"}}]"
+    },
+    "activeFile": "query.json",
+    "nosqlSeed": {
+      "records": [
+        {
+          "id": 1,
+          "name": "Rice",
+          "category": "Local",
+          "amount": 8,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Beans",
+          "category": "Regional",
+          "amount": 20,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Noodles",
+          "category": "Local",
+          "amount": 2,
+          "status": "Open",
+          "groupId": 1,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        },
+        {
+          "id": 4,
+          "name": "Milk",
+          "category": "Regional",
+          "amount": 5,
+          "status": "Done",
+          "groupId": 2,
+          "details": {
+            "source": "Community",
+            "checked": true
+          }
+        }
+      ],
+      "groups": [
+        {
+          "id": 1,
+          "label": "North Team",
+          "area": "North"
+        },
+        {
+          "id": 2,
+          "label": "South Team",
+          "area": "South"
+        }
+      ]
+    },
+    "tests": [
+      {
+        "id": "projected-fields-only",
+        "label": "Only name and status are returned for Done records",
+        "kind": "nosql-docs-equal",
+        "documents": [
+          {
+            "name": "Beans",
+            "status": "Done"
+          },
+          {
+            "name": "Milk",
+            "status": "Done"
+          },
+          {
+            "name": "Backup Record",
+            "status": "Done"
+          }
+        ]
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a projection field to the find command with name and status."
+      },
+      {
+        "level": 2,
+        "text": "Only the name and status fields should appear in results."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "query.json": "[{\"collection\":\"records\",\"operation\":\"insert\",\"documents\":[{\"name\":\"New Record\",\"category\":\"Local\",\"amount\":7,\"status\":\"Open\",\"note\":\"Community order\"},{\"name\":\"Backup Record\",\"category\":\"Local\",\"amount\":4,\"status\":\"Done\"}]},{\"collection\":\"records\",\"operation\":\"find\",\"filter\":{\"status\":\"Done\"},\"projection\":[\"name\",\"status\"]}]"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "food-pantry",
+    "conceptIds": [
+      "nosql-projection"
+    ]
+  }
+] satisfies typeof nosqlCourse.steps));
