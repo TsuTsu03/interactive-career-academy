@@ -59,11 +59,43 @@ function Save-State($Progress, [string]$Status, [string]$Detail) {
 
 function Get-JobKey($Job) { "{0}|{1}|{2}" -f $Job.courseId, $Job.projectId, $Job.batch }
 
+# git loses a race with the child driver often enough to matter. A checkpoint
+# lands right after a rejected batch is rolled back, .git/index.lock can still
+# be held, and then `branch --show-current` answers with nothing at all. A
+# blank answer is not the wrong branch, but it read as one, and the campaign
+# ended on it twice: 2026-09-17 06:55 and 2026-09-18 07:15, roughly 37 idle
+# hours between the two. Ask again before believing it.
+function Read-GitValue([string[]]$Arguments) {
+  for ($attempt = 1; $attempt -le 5; $attempt++) {
+    # Capture first and read the exit code before anything else touches the
+    # pipeline: piping straight into Select-Object -First stops git early and
+    # leaves $LASTEXITCODE at -1 even on a clean read, which would quietly
+    # turn every push into a skipped one.
+    $output = & git -c "safe.directory=$repo" @Arguments 2>$null
+    $code = $LASTEXITCODE
+    if ($code -eq 0) {
+      $value = @($output) | Select-Object -First 1
+      if ($value) { return ([string]$value).Trim() }
+    }
+    Start-Sleep -Seconds 2
+  }
+  return $null
+}
+
+# Both refusals below still stop the run, because a genuinely wrong branch or
+# origin means something is badly off and pushing anyway would be worse. What
+# no longer stops the run is not knowing, or the push itself failing: the
+# commits are already safe locally, so the campaign says so and keeps
+# authoring rather than idling until someone notices.
 function Push-Checkpoint {
-  if ((& git -c "safe.directory=$repo" branch --show-current) -ne "codex/v2-backbone") { throw "Refusing to push outside codex/v2-backbone." }
-  if ((& git -c "safe.directory=$repo" remote get-url origin) -ne "https://github.com/TsuTsu03/interactive-career-academy.git") { throw "Unexpected origin; refusing to push." }
+  $branch = Read-GitValue @("branch", "--show-current")
+  if (-not $branch) { Write-Campaign "Could not read the current branch; leaving the checkpoint unpushed and carrying on."; return }
+  if ($branch -ne "codex/v2-backbone") { throw "Refusing to push outside codex/v2-backbone." }
+  $origin = Read-GitValue @("remote", "get-url", "origin")
+  if (-not $origin) { Write-Campaign "Could not read the origin URL; leaving the checkpoint unpushed and carrying on."; return }
+  if ($origin -ne "https://github.com/TsuTsu03/interactive-career-academy.git") { throw "Unexpected origin; refusing to push." }
   & git -c "safe.directory=$repo" push origin codex/v2-backbone
-  if ($LASTEXITCODE -ne 0) { throw "Checkpoint push failed." }
+  if ($LASTEXITCODE -ne 0) { Write-Campaign "Checkpoint push failed; the commits stay local and the next checkpoint retries."; return }
   $script:sincePush = 0
   Write-Campaign "Pushed validated checkpoints to origin/codex/v2-backbone."
 }
