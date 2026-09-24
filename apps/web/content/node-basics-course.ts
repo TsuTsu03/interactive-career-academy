@@ -12663,3 +12663,245 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "cli-school-club"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: config-school-club.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-config-school-club-1",
+    "index": 261,
+    "task": "You will read the PLACE environment variable. It tells the club's name. The checker sets it to School Club. Add the two lines at the end of app.js. Then run the checker to see the result.\n\nIn app.js:\n```\nconst place = process.env.PLACE;\nconsole.log(`Place: ${place}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "place",
+        "label": "With PLACE=School Club it prints Place: School Club",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "PLACE": "School Club"
+        },
+        "value": "Place: School Club"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use process.env.PLACE to get the value from the environment."
+      },
+      {
+        "level": 2,
+        "text": "Add the lines at the end of app.js, after the existing code.\n\nIn app.js:\n```\nconst place = process.env.PLACE;\nconsole.log(`Place: ${place}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE;\nconsole.log(`Place: ${place}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "config-school-club"
+  },
+  {
+    "id": "node-config-school-club-2",
+    "index": 262,
+    "task": "If PLACE is not set, you want to use 'Unknown place' instead. Change the line that reads PLACE to use the ?? operator. This lets you fall back to the default. Run the checker to test it.\n\nIn app.js:\n```\nconst place = process.env.PLACE ?? \"Unknown place\";\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "fallback",
+        "label": "Without PLACE it prints Place: Unknown place",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Place: Unknown place"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use ?? to give a default value if the variable is empty."
+      },
+      {
+        "level": 2,
+        "text": "Put the new line at the end of app.js, after the previous code.\n\nIn app.js:\n```\nconst place = process.env.PLACE ?? \"Unknown place\";\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "config-school-club"
+  },
+  {
+    "id": "node-config-school-club-3",
+    "index": 263,
+    "task": "You will read LIMIT as a number. If not set, use 5. Add two lines at the end of app.js. The first line converts the string to a number. The second prints the value. Run the checker to test it.\n\nIn app.js:\n```\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "limit",
+        "label": "With LIMIT=12 it prints Limit: 12",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "LIMIT": "12"
+        },
+        "value": "Limit: 12"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use Number() to convert the string to a number."
+      },
+      {
+        "level": 2,
+        "text": "Add the lines at the end of app.js, after the previous code.\n\nIn app.js:\n```\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "config-school-club"
+  },
+  {
+    "id": "node-config-school-club-4",
+    "index": 264,
+    "task": "You will turn on debug mode only if DEBUG is set to 'true'. Add two lines at the end of app.js. The first line checks if DEBUG equals 'true'. The second prints a message if true. Run the checker to test it.\n\nIn app.js:\n```\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "debug",
+        "label": "With DEBUG=true it prints Debug mode on",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "DEBUG": "true"
+        },
+        "value": "Debug mode on"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use === to check if the string is exactly 'true'."
+      },
+      {
+        "level": 2,
+        "text": "Add the lines at the end of app.js, after the previous code.\n\nIn app.js:\n```\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "config-school-club"
+  },
+  {
+    "id": "node-config-school-club-5",
+    "index": 265,
+    "task": "You will collect all settings into one object. Add two lines at the end of app.js. The first line creates the object with place, limit, and debug. The second prints it as JSON. Run the checker to test it.\n\nIn app.js:\n```\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "json",
+        "label": "With PLACE=Hall and LIMIT=3 it prints the settings as JSON",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "PLACE": "Hall",
+          "LIMIT": "3"
+        },
+        "value": "{\"place\":\"Hall\",\"limit\":3,\"debug\":false}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use { place, limit, debug } to create the object."
+      },
+      {
+        "level": 2,
+        "text": "Add the lines at the end of app.js, after the previous code.\n\nIn app.js:\n```\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "config-school-club"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
