@@ -4541,3 +4541,226 @@ cliGitCourse.steps.push(...([
     "projectId": "branches-barangay"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: merging-barangay.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-merging-barangay-1",
+    "index": 101,
+    "task": "You turn this folder into a Git project. Git will track all your files. The first branch will be named main. This is the start of your work. Run this command exactly as shown. Then run the checker and paste its report.\n\nType this command in your terminal:\n`git init -b main`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "repo",
+        "label": "The folder is a Git repository",
+        "kind": "local-git-repo"
+      },
+      {
+        "id": "untracked",
+        "label": "fees.txt is not tracked yet",
+        "kind": "local-git-untracked",
+        "path": "fees.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are starting a Git project. The branch name is main. This is the first step."
+      },
+      {
+        "level": 2,
+        "text": "git init -b main"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git init -b main"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "merging-barangay"
+  },
+  {
+    "id": "cli-merging-barangay-2",
+    "index": 102,
+    "task": "Git needs to know who you are. This helps identify your work. You set your name and email. Run these two commands one after the other. Then run the checker and paste its report.\n\nType these commands in your terminal:\n`git config user.name \"Jose Reyes\"`\n`git config user.email \"jose@example.com\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "Commits will be signed by Jose Reyes",
+        "kind": "local-git-config",
+        "key": "user.name",
+        "value": "Jose Reyes"
+      },
+      {
+        "id": "email",
+        "label": "The commit email is jose@example.com",
+        "kind": "local-git-config",
+        "key": "user.email",
+        "value": "jose@example.com"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You tell Git your name and email. This is like signing your work. Do not change the email."
+      },
+      {
+        "level": 2,
+        "text": "git config user.name \"Jose Reyes\"\ngit config user.email \"jose@example.com\""
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.name \"Jose Reyes\"\ngit config user.email \"jose@example.com\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "merging-barangay"
+  },
+  {
+    "id": "cli-merging-barangay-3",
+    "index": 103,
+    "task": "You prepare all files for saving. Git will track them together. You use a dot to mean all files. Run this command exactly as shown. Then run the checker and paste its report.\n\nType this command in your terminal:\n`git add .`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "file",
+        "label": "fees.txt is staged",
+        "kind": "local-git-staged",
+        "path": "fees.txt"
+      },
+      {
+        "id": "readme",
+        "label": "README.txt is staged",
+        "kind": "local-git-staged",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You stage all files at once. The dot means all files. This is like packing everything for saving."
+      },
+      {
+        "level": 2,
+        "text": "git add .\n\nNote: The dot is not a typo. It means all files."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add ."
+    },
+    "estimatedMinutes": 2,
+    "projectId": "merging-barangay"
+  },
+  {
+    "id": "cli-merging-barangay-4",
+    "index": 104,
+    "task": "You save the files you prepared. This is your first commit. The message says what you did. Run this command exactly as shown. Then run the checker and paste its report.\n\nType this command in your terminal:\n`git commit -m \"Start barangay office list\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has one commit",
+        "kind": "local-git-commit-count",
+        "count": 1
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You save your files with a message. The message explains what you did. This is your first save."
+      },
+      {
+        "level": 2,
+        "text": "git commit -m \"Start barangay office list\""
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Start barangay office list\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "merging-barangay"
+  },
+  {
+    "id": "cli-merging-barangay-5",
+    "index": 105,
+    "task": "You create a new branch named new-fees. You move onto it. This branch will hold your new work. Run this command exactly as shown. Then run the checker and paste its report.\n\nType this command in your terminal:\n`git switch -c new-fees`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "on-branch",
+        "label": "You are on new-fees",
+        "kind": "local-git-branch",
+        "value": "new-fees"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You make a new branch called new-fees. You switch to it. This is where you will work on new fees."
+      },
+      {
+        "level": 2,
+        "text": "git switch -c new-fees"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git switch -c new-fees"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "merging-barangay"
+  }
+] satisfies typeof cliGitCourse.steps));
