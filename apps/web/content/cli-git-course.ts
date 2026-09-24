@@ -2100,3 +2100,234 @@ cliGitCourse.steps.push(...([
     "projectId": "merging-sari-sari"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: merging-sari-sari.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-merging-sari-sari-6",
+    "index": 46,
+    "task": "You will add the price for Soap 25 to the prices.txt file. This is the first step to make the change visible in your branch. You will use a command to write the price into the file. After you run the command, check if the file has an unstaged change. This means your change is ready to be saved but not yet saved.\n\nType this command in your terminal:\n`echo \"Soap 25\" >> prices.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "unstaged",
+        "label": "prices.txt has an unstaged change",
+        "kind": "local-git-unstaged",
+        "path": "prices.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are adding a line to a file. Think of it like writing a new price on a paper list."
+      },
+      {
+        "level": 2,
+        "text": "Run: `echo \"Soap 25\" >> prices.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Soap 25\" >> prices.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "merging-sari-sari"
+  },
+  {
+    "id": "cli-merging-sari-sari-7",
+    "index": 47,
+    "task": "Now you will save the change you made. You will use a command to record the change in your branch. This makes the change part of your work. After you run the command, check if your branch has two commits and nothing is left uncommitted. This means your change is saved and ready to be shared.\n\nType this command in your terminal:\n`git commit -am \"Add Soap 25\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The branch has two commits",
+        "kind": "local-git-commit-count",
+        "count": 2
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are saving your change with a message. Think of it like writing a note on your work log."
+      },
+      {
+        "level": 2,
+        "text": "Run: `git commit -am \"Add Soap 25\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -am \"Add Soap 25\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "merging-sari-sari"
+  },
+  {
+    "id": "cli-merging-sari-sari-8",
+    "index": 48,
+    "task": "Now you will go back to the main branch. The main branch does not have the Soap 25 price yet. You will use a command to switch to the main branch. After you run the command, check if you are on main and if main does not have Soap 25. This means you are ready to bring the change into main.\n\nType this command in your terminal:\n`git switch main`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "main",
+        "label": "You are on main",
+        "kind": "local-git-branch",
+        "value": "main"
+      },
+      {
+        "id": "not-yet",
+        "label": "main does not have Soap 25 yet",
+        "kind": "local-file-lacks",
+        "path": "prices.txt",
+        "value": "Soap 25"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are switching to the main branch. Think of it like going to the main store counter."
+      },
+      {
+        "level": 2,
+        "text": "Run: `git switch main`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git switch main"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "merging-sari-sari"
+  },
+  {
+    "id": "cli-merging-sari-sari-9",
+    "index": 49,
+    "task": "You will bring the work from the update-prices branch into the main branch. This is called merging. You will use a command to merge the branch. After you run the command, check if update-prices is merged into main and if main now has Soap 25. This means the change is now part of the main store's records.\n\nType this command in your terminal:\n`git merge update-prices`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "merged",
+        "label": "update-prices is merged into main",
+        "kind": "local-git-merged",
+        "branch": "update-prices"
+      },
+      {
+        "id": "arrived",
+        "label": "main now has Soap 25",
+        "kind": "local-file-contains",
+        "path": "prices.txt",
+        "value": "Soap 25"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are combining the work from one branch into another. Think of it like adding a new item to the main store's price list."
+      },
+      {
+        "level": 2,
+        "text": "Run: `git merge update-prices`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git merge update-prices"
+    },
+    "conceptIds": [
+      "git-merge"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "merging-sari-sari"
+  },
+  {
+    "id": "cli-merging-sari-sari-10",
+    "index": 50,
+    "task": "You will delete the update-prices branch. Its work is now in main, so it is no longer needed. You will use a command to delete the branch. After you run the command, check if the update-prices branch is deleted and if Soap 25 is still in main. This means the branch is gone but the change is safe.\n\nType this command in your terminal:\n`git branch -d update-prices`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "deleted",
+        "label": "The update-prices branch is deleted",
+        "kind": "local-git-branch-missing",
+        "branch": "update-prices"
+      },
+      {
+        "id": "kept",
+        "label": "Soap 25 is still in main",
+        "kind": "local-file-contains",
+        "path": "prices.txt",
+        "value": "Soap 25"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are removing a branch name. Think of it like closing a temporary work station after the task is done."
+      },
+      {
+        "level": 2,
+        "text": "Run: `git branch -d update-prices`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git branch -d update-prices"
+    },
+    "conceptIds": [
+      "git-delete-branch"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "merging-sari-sari"
+  }
+] satisfies typeof cliGitCourse.steps));
