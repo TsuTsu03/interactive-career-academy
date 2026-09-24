@@ -219,3 +219,290 @@ export const apiBasicsCourse: Course = {
   "kind": "local",
   "steps": []
 };
+
+// Validated local authoring batch: first-server-sari-sari.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-first-server-sari-sari-1",
+    "index": 1,
+    "task": "You will change the answer your server sends. The code below says the server answers every request with 'Sari-Sari Store API'.\n\nThis is the first answer your server gives. It tells users your server is ready.\n\nRun the checker to confirm your server answers GET / with 'Sari-Sari Store API'.\n\nIn server.js:\n```\n  res.end(\"Sari-Sari Store API\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "root",
+        "label": "GET / answers Sari-Sari Store API",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "Sari-Sari Store API"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Your server must answer every request with the same message."
+      },
+      {
+        "level": 2,
+        "text": "Change the res.end line in server.js to say 'Sari-Sari Store API'.\n\nIn server.js:\n```\n  res.end(\"Sari-Sari Store API\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Sari-Sari Store API\");\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-server"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "first-server-sari-sari"
+  },
+  {
+    "id": "api-first-server-sari-sari-2",
+    "index": 2,
+    "task": "You will add a header to tell the client the answer is plain text. The code below sets the Content-Type header.\n\nThis header tells the browser or tool how to read your answer. Without it, the answer might not show right.\n\nRun the checker to confirm your server says its body is plain text.\n\nIn server.js:\n```\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "type",
+        "label": "GET / says its body is plain text",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "header": {
+          "name": "content-type",
+          "value": "text/plain"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a header before res.end to tell the client the answer format."
+      },
+      {
+        "level": 2,
+        "text": "Add the line above res.end in server.js to set Content-Type.\n\nIn server.js:\n```\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.end(\"Sari-Sari Store API\");\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-header"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "first-server-sari-sari"
+  },
+  {
+    "id": "api-first-server-sari-sari-3",
+    "index": 3,
+    "task": "You will add a custom header to name the place. The code below adds X-Place: sari-sari.\n\nThis header helps tools know where your server is located. It's like a tag on your answer.\n\nRun the checker to confirm your server sends X-Place: sari-sari.\n\nIn server.js:\n```\n  res.setHeader(\"X-Place\", \"sari-sari\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "custom",
+        "label": "GET / sends X-Place: sari-sari",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "header": {
+          "name": "x-place",
+          "value": "sari-sari"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a header to mark your server's location."
+      },
+      {
+        "level": 2,
+        "text": "Add the line above res.end in server.js to set X-Place.\n\nIn server.js:\n```\n  res.setHeader(\"X-Place\", \"sari-sari\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"sari-sari\");\n  res.end(\"Sari-Sari Store API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-server-sari-sari"
+  },
+  {
+    "id": "api-first-server-sari-sari-4",
+    "index": 4,
+    "task": "You will add a route for /health. The code below checks if the request is for /health.\n\nThis route lets tools check if your server is running. It answers with 'healthy'.\n\nRun the checker to confirm your server answers GET /health with 'healthy'.\n\nIn server.js:\n```\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "health",
+        "label": "GET /health answers healthy",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/health"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "healthy"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a condition to check if the request is for /health."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the top of the handler in server.js.\n\nIn server.js:\n```\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"sari-sari\");\n  res.end(\"Sari-Sari Store API\");\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-route"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "first-server-sari-sari"
+  },
+  {
+    "id": "api-first-server-sari-sari-5",
+    "index": 5,
+    "task": "You will add a rule for any other path. The code below sets status 404 for any URL that is not / or /health.\n\nThis tells users the path they asked for does not exist. It helps your server stay organized.\n\nRun the checker to confirm your server answers 404 for /missing and still answers 200 for /.\n\nIn server.js:\n```\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "missing",
+        "label": "GET /missing answers 404",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/missing"
+          }
+        ],
+        "status": 404
+      },
+      {
+        "id": "root",
+        "label": "GET / still answers 200",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "status": 200
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a rule to handle any path that is not / or /health."
+      },
+      {
+        "level": 2,
+        "text": "Add the line right after the /health line in server.js.\n\nIn server.js:\n```\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"sari-sari\");\n  res.end(\"Sari-Sari Store API\");\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "real-response-status"
+    ],
+    "estimatedMinutes": 5,
+    "projectId": "first-server-sari-sari"
+  }
+] satisfies typeof apiBasicsCourse.steps));
