@@ -620,3 +620,234 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "scripts-sari-sari"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: modules-sari-sari.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-modules-sari-sari-1",
+    "index": 11,
+    "task": "Make a new file named prices.js. Write one line inside it. That line tells other files the store's name. The code below does that. Run the checker to see if it works.\n\nIn prices.js:\n```\nexport const storeName = \"Sari-Sari Store\";\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "export",
+        "label": "prices.js exports storeName",
+        "kind": "local-file-contains",
+        "path": "prices.js",
+        "value": "export const storeName"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of prices.js as a notebook that holds the store's name. Other files can read from it."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in a file called prices.js in your project folder.\n\nIn prices.js:\n```\nexport const storeName = \"Sari-Sari Store\";\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"Sari-Sari Store\";\n"
+    },
+    "conceptIds": [
+      "node-export"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "modules-sari-sari"
+  },
+  {
+    "id": "node-modules-sari-sari-2",
+    "index": 12,
+    "task": "Open app.js. Add one line at the top to bring in the store name. Add another line at the end to print it. The code below does that. Run the checker to see if it prints the name.\n\nIn app.js:\n```\nimport { storeName } from \"./prices.js\";\nconsole.log(storeName);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "imported",
+        "label": "node app.js prints Sari-Sari Store from prices.js",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Sari-Sari Store"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You need to tell app.js to get the store name from prices.js. Use import for that."
+      },
+      {
+        "level": 2,
+        "text": "Put the import line at the top of app.js, and the console.log line at the bottom.\n\nIn app.js:\n```\nimport { storeName } from \"./prices.js\";\nconsole.log(storeName);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { storeName } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\n"
+    },
+    "conceptIds": [
+      "node-import"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "modules-sari-sari"
+  },
+  {
+    "id": "node-modules-sari-sari-3",
+    "index": 13,
+    "task": "Add a new object called prices to prices.js. It holds the cost of items. Then in app.js, import that object and print the price of Rice. The code below does that. Run the checker to see if it prints 50.\n\nIn prices.js:\n```\nexport const prices = { \"Rice\": 50, \"Soap\": 25, \"Egg\": 9 };\n```\n\nIn app.js:\n```\nimport { storeName, prices } from \"./prices.js\";\nconsole.log(prices[\"Rice\"]);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "price",
+        "label": "The script prints 50 on its own line",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "50\n"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The prices object holds the cost of items like Rice and Soap. You need to add it to prices.js."
+      },
+      {
+        "level": 2,
+        "text": "In app.js, after importing storeName, add prices to the import list, then print prices[\"Rice\"].\n\nIn prices.js:\n```\nexport const prices = { \"Rice\": 50, \"Soap\": 25, \"Egg\": 9 };\n```\n\nIn app.js:\n```\nimport { storeName, prices } from \"./prices.js\";\nconsole.log(prices[\"Rice\"]);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"Sari-Sari Store\";\nexport const prices = { \"Rice\": 50, \"Soap\": 25, \"Egg\": 9 };\n",
+      "app.js": "import { storeName, prices } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Rice\"]);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "modules-sari-sari"
+  },
+  {
+    "id": "node-modules-sari-sari-4",
+    "index": 14,
+    "task": "Add a new function called priceOf to prices.js. It takes an item name and returns its price. If the item is not found, it returns 0. The code below does that. Run the checker to see if it confirms the function is exported.\n\nIn prices.js:\n```\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "function",
+        "label": "prices.js exports priceOf",
+        "kind": "local-file-contains",
+        "path": "prices.js",
+        "value": "export function priceOf(name)"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The function priceOf looks up a price in the prices object. If the item doesn't exist, it returns 0."
+      },
+      {
+        "level": 2,
+        "text": "Put the function at the end of prices.js, after the prices object.\n\nIn prices.js:\n```\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"Sari-Sari Store\";\nexport const prices = { \"Rice\": 50, \"Soap\": 25, \"Egg\": 9 };\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-sari-sari"
+  },
+  {
+    "id": "node-modules-sari-sari-5",
+    "index": 15,
+    "task": "In app.js, import the new function priceOf. Then print the price of Soap using that function. The code below does that. Run the checker to see if it prints Soap: 25.\n\nIn app.js:\n```\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(`Soap: ${priceOf(\"Soap\")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "lookup",
+        "label": "The script prints Soap: 25",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Soap: 25"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You need to add priceOf to the import list in app.js. Then use it to print the price of Soap."
+      },
+      {
+        "level": 2,
+        "text": "Put the import line at the top of app.js, and the console.log line at the end.\n\nIn app.js:\n```\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(`Soap: ${priceOf(\"Soap\")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Rice\"]);\nconsole.log(`Soap: ${priceOf(\"Soap\")}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-sari-sari"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
