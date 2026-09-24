@@ -3851,3 +3851,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-24: Local Qwen wrote the lesson text for node-basics/files-tricycle, steps 301-305; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
 
 - 2026-09-24: Local Qwen wrote the lesson text for node-basics/files-tricycle, steps 306-310; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/async-tricycle, steps 311-315; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
