@@ -3270,3 +3270,306 @@ apiBasicsCourse.steps.push(...([
     "projectId": "middleware-sari-sari"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: middleware-sari-sari.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-middleware-sari-sari-6",
+    "index": 56,
+    "task": "You add a function called requireKey. This function checks if the request has the right API key. If not, it sends a 401 error. You add this function to the middleware list. Then, when the loop runs, it stops early if requireKey returns true. The code below shows what to add. Run the checker to confirm it works.\n\nIn server.js:\n```\nfunction requireKey(req, res) { if (req.headers[\"x-api-key\"] !== \"secret123\") { send(res, 401, { error: \"Missing or wrong API key\" }); return true; } }\nconst middleware = [addRequestId, addPlace, addPoweredBy, allowBrowsers, requireKey];\n  for (const step of middleware) if (step(req, res)) return;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "nokey",
+        "label": "GET /items without a key answers 401",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "status": 401
+      },
+      {
+        "id": "key",
+        "label": "GET /items with the key answers 200",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items",
+            "headers": {
+              "x-api-key": "secret123"
+            }
+          }
+        ],
+        "status": 200
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The key check must happen before any other middleware, so put it in the list after allowBrowsers."
+      },
+      {
+        "level": 2,
+        "text": "Add the requireKey function right before the middleware list, then add it to the list.\n\nIn server.js:\n```\nfunction requireKey(req, res) { if (req.headers[\"x-api-key\"] !== \"secret123\") { send(res, 401, { error: \"Missing or wrong API key\" }); return true; } }\nconst middleware = [addRequestId, addPlace, addPoweredBy, allowBrowsers, requireKey];\n  for (const step of middleware) if (step(req, res)) return;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"sari-sari\"); }\nfunction addPoweredBy(req, res) { res.setHeader(\"X-Powered-By\", \"Node built-ins\"); }\nfunction allowBrowsers(req, res) { res.setHeader(\"Access-Control-Allow-Origin\", \"*\"); }\nfunction requireKey(req, res) { if (req.headers[\"x-api-key\"] !== \"secret123\") { send(res, 401, { error: \"Missing or wrong API key\" }); return true; } }\nconst middleware = [addRequestId, addPlace, addPoweredBy, allowBrowsers, requireKey];\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  for (const step of middleware) if (step(req, res)) return;\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-api-key"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "middleware-sari-sari"
+  },
+  {
+    "id": "api-middleware-sari-sari-7",
+    "index": 57,
+    "task": "You add a line at the top of the handler. This line checks if the request is for /health. If so, it sends a 200 OK response and stops the loop. This lets monitors check the server without a key. The code below shows what to add. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "health",
+        "label": "GET /health answers without a key",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/health"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "\"ok\":true"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Put this check right after the start of the handler, before the loop runs."
+      },
+      {
+        "level": 2,
+        "text": "The /health check must happen before the key check, so put it before requireKey.\n\nIn server.js:\n```\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"sari-sari\"); }\nfunction addPoweredBy(req, res) { res.setHeader(\"X-Powered-By\", \"Node built-ins\"); }\nfunction allowBrowsers(req, res) { res.setHeader(\"Access-Control-Allow-Origin\", \"*\"); }\nfunction requireKey(req, res) { if (req.headers[\"x-api-key\"] !== \"secret123\") { send(res, 401, { error: \"Missing or wrong API key\" }); return true; } }\nconst middleware = [addRequestId, addPlace, addPoweredBy, allowBrowsers, requireKey];\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  for (const step of middleware) if (step(req, res)) return;\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "middleware-sari-sari"
+  },
+  {
+    "id": "api-middleware-sari-sari-8",
+    "index": 58,
+    "task": "You change the allowBrowsers function. Now, if the request method is OPTIONS, you send a 204 status and stop the loop. This lets browsers ask permission before making real requests. The code below shows what to change. Run the checker to confirm it works.\n\nIn server.js:\n```\nfunction allowBrowsers(req, res) { res.setHeader(\"Access-Control-Allow-Origin\", \"*\"); if (req.method === \"OPTIONS\") { res.statusCode = 204; res.end(); return true; } }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "preflight",
+        "label": "OPTIONS /items answers 204 without a key",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "OPTIONS",
+            "path": "/items"
+          }
+        ],
+        "status": 204
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The preflight check must happen before the key check, so put it before requireKey."
+      },
+      {
+        "level": 2,
+        "text": "The OPTIONS check must come right after setting the Access-Control-Allow-Origin header.\n\nIn server.js:\n```\nfunction allowBrowsers(req, res) { res.setHeader(\"Access-Control-Allow-Origin\", \"*\"); if (req.method === \"OPTIONS\") { res.statusCode = 204; res.end(); return true; } }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"sari-sari\"); }\nfunction addPoweredBy(req, res) { res.setHeader(\"X-Powered-By\", \"Node built-ins\"); }\nfunction allowBrowsers(req, res) { res.setHeader(\"Access-Control-Allow-Origin\", \"*\"); if (req.method === \"OPTIONS\") { res.statusCode = 204; res.end(); return true; } }\nfunction requireKey(req, res) { if (req.headers[\"x-api-key\"] !== \"secret123\") { send(res, 401, { error: \"Missing or wrong API key\" }); return true; } }\nconst middleware = [addRequestId, addPlace, addPoweredBy, allowBrowsers, requireKey];\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  for (const step of middleware) if (step(req, res)) return;\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-preflight"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "middleware-sari-sari"
+  },
+  {
+    "id": "api-middleware-sari-sari-9",
+    "index": 59,
+    "task": "You add a line after the loop. This line checks if the request is for /stats. If so, it sends a 200 OK response with the number of requests served. The code below shows what to add. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (req.url === \"/stats\") return send(res, 200, { served: nextId - 1 });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "stats",
+        "label": "After two requests, GET /stats answers served 3",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items",
+            "headers": {
+              "x-api-key": "secret123"
+            }
+          },
+          {
+            "method": "GET",
+            "path": "/items",
+            "headers": {
+              "x-api-key": "secret123"
+            }
+          },
+          {
+            "method": "GET",
+            "path": "/stats",
+            "headers": {
+              "x-api-key": "secret123"
+            }
+          }
+        ],
+        "bodyContains": "\"served\":3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Put this check right after the loop, so it runs after all middleware."
+      },
+      {
+        "level": 2,
+        "text": "The /stats check must happen after the key check, so put it after requireKey.\n\nIn server.js:\n```\n  if (req.url === \"/stats\") return send(res, 200, { served: nextId - 1 });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"sari-sari\"); }\nfunction addPoweredBy(req, res) { res.setHeader(\"X-Powered-By\", \"Node built-ins\"); }\nfunction allowBrowsers(req, res) { res.setHeader(\"Access-Control-Allow-Origin\", \"*\"); if (req.method === \"OPTIONS\") { res.statusCode = 204; res.end(); return true; } }\nfunction requireKey(req, res) { if (req.headers[\"x-api-key\"] !== \"secret123\") { send(res, 401, { error: \"Missing or wrong API key\" }); return true; } }\nconst middleware = [addRequestId, addPlace, addPoweredBy, allowBrowsers, requireKey];\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  for (const step of middleware) if (step(req, res)) return;\n  if (req.url === \"/stats\") return send(res, 200, { served: nextId - 1 });\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "middleware-sari-sari"
+  },
+  {
+    "id": "api-middleware-sari-sari-10",
+    "index": 60,
+    "task": "You add a function called secureHeaders. This function adds a security header to every response. You add this function to the middleware list. The code below shows what to add. Run the checker to confirm it works.\n\nIn server.js:\n```\nfunction secureHeaders(req, res) { res.setHeader(\"X-Content-Type-Options\", \"nosniff\"); }\nconst middleware = [addRequestId, addPlace, addPoweredBy, allowBrowsers, secureHeaders, requireKey];\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "nosniff",
+        "label": "Answers send X-Content-Type-Options: nosniff",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items",
+            "headers": {
+              "x-api-key": "secret123"
+            }
+          }
+        ],
+        "header": {
+          "name": "x-content-type-options",
+          "value": "nosniff"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The secureHeaders function must run after all other middleware, so put it last in the list."
+      },
+      {
+        "level": 2,
+        "text": "Add the secureHeaders function right before the middleware list, then add it to the list.\n\nIn server.js:\n```\nfunction secureHeaders(req, res) { res.setHeader(\"X-Content-Type-Options\", \"nosniff\"); }\nconst middleware = [addRequestId, addPlace, addPoweredBy, allowBrowsers, secureHeaders, requireKey];\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"sari-sari\"); }\nfunction addPoweredBy(req, res) { res.setHeader(\"X-Powered-By\", \"Node built-ins\"); }\nfunction allowBrowsers(req, res) { res.setHeader(\"Access-Control-Allow-Origin\", \"*\"); if (req.method === \"OPTIONS\") { res.statusCode = 204; res.end(); return true; } }\nfunction requireKey(req, res) { if (req.headers[\"x-api-key\"] !== \"secret123\") { send(res, 401, { error: \"Missing or wrong API key\" }); return true; } }\nfunction secureHeaders(req, res) { res.setHeader(\"X-Content-Type-Options\", \"nosniff\"); }\nconst middleware = [addRequestId, addPlace, addPoweredBy, allowBrowsers, secureHeaders, requireKey];\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  for (const step of middleware) if (step(req, res)) return;\n  if (req.url === \"/stats\") return send(res, 200, { served: nextId - 1 });\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-security-header"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "middleware-sari-sari"
+  }
+] satisfies typeof apiBasicsCourse.steps));
