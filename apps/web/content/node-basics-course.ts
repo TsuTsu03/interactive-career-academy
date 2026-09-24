@@ -14773,3 +14773,246 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "files-tricycle"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: files-tricycle.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-files-tricycle-6",
+    "index": 306,
+    "task": "You will save the item objects to a file called stock.json. This file will hold the data in JSON format. The code below writes the items to that file. Run node app.js to test it. Then check the output to see if stock.json holds Market as JSON.\n\nIn app.js:\n```\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Market,20\nSchool,30\nClinic,25\n"
+    },
+    "tests": [
+      {
+        "id": "json",
+        "label": "stock.json holds Market as JSON",
+        "kind": "local-file-contains",
+        "path": "stock.json",
+        "value": "\"name\": \"Market\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The file stock.json will store the data you made earlier."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the items array.\n\nIn app.js:\n```\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-tricycle"
+  },
+  {
+    "id": "node-files-tricycle-7",
+    "index": 307,
+    "task": "You will read the saved file back into objects and print how many items were saved. The code below reads the file and logs the count. Add these lines at the end of app.js. Run the script to check if it prints Saved: 3 items.\n\nIn app.js:\n```\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Market,20\nSchool,30\nClinic,25\n"
+    },
+    "tests": [
+      {
+        "id": "saved",
+        "label": "The script prints Saved: 3 items",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Saved: 3 items"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use JSON.parse to turn the text back into objects."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the writeFile line.\n\nIn app.js:\n```\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-tricycle"
+  },
+  {
+    "id": "node-files-tricycle-8",
+    "index": 308,
+    "task": "You will add a line to report.txt without deleting what's already there. The code below uses appendFile to add the text. Add this code to the imports and at the end of app.js. Then run node app.js. Check that report.txt ends with Checked today but still says Items: 3.\n\nIn app.js:\n```\nimport { readFile, writeFile, appendFile } from \"node:fs/promises\";\nawait appendFile(\"report.txt\", \"Checked today\\n\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Market,20\nSchool,30\nClinic,25\n"
+    },
+    "tests": [
+      {
+        "id": "appended",
+        "label": "report.txt ends with Checked today",
+        "kind": "local-file-contains",
+        "path": "report.txt",
+        "value": "Checked today"
+      },
+      {
+        "id": "kept",
+        "label": "report.txt still says Items: 3",
+        "kind": "local-file-contains",
+        "path": "report.txt",
+        "value": "Items: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "appendFile adds to the end of a file, not overwriting it."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the import line, and right before the console.log.\n\nIn app.js:\n```\nimport { readFile, writeFile, appendFile } from \"node:fs/promises\";\nawait appendFile(\"report.txt\", \"Checked today\\n\");\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile, appendFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\nawait appendFile(\"report.txt\", \"Checked today\\n\");\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-tricycle"
+  },
+  {
+    "id": "node-files-tricycle-9",
+    "index": 309,
+    "task": "You will raise the first saved price by 7 and write the file again. The code below changes the first item's price and writes it back. Add these lines at the end of app.js. Run node app.js. Check that stock.json now has Market at 27.\n\nIn app.js:\n```\nsaved[0].price += 7;\nawait writeFile(\"stock.json\", JSON.stringify(saved, null, 2));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Market,20\nSchool,30\nClinic,25\n"
+    },
+    "tests": [
+      {
+        "id": "raised",
+        "label": "stock.json now has Market at 27",
+        "kind": "local-file-contains",
+        "path": "stock.json",
+        "value": "\"price\": 27"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use saved[0] to get the first item in the array."
+      },
+      {
+        "level": 2,
+        "text": "Add the code right after the saved variable is read.\n\nIn app.js:\n```\nsaved[0].price += 7;\nawait writeFile(\"stock.json\", JSON.stringify(saved, null, 2));\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile, appendFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\nawait appendFile(\"report.txt\", \"Checked today\\n\");\nsaved[0].price += 7;\nawait writeFile(\"stock.json\", JSON.stringify(saved, null, 2));\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-tricycle"
+  },
+  {
+    "id": "node-files-tricycle-10",
+    "index": 310,
+    "task": "You will read a file that does not exist and handle the error without crashing. The code below uses try and catch to report the error code. Add this code at the end of app.js. Run the script. Check that it reports Could not read: ENOENT and still finishes normally.\n\nIn app.js:\n```\ntry { await readFile(\"missing.txt\", \"utf8\"); }\ncatch (error) { console.error(`Could not read: ${error.code}`); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Market,20\nSchool,30\nClinic,25\n"
+    },
+    "tests": [
+      {
+        "id": "code",
+        "label": "The script reports Could not read: ENOENT",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "value": "Could not read: ENOENT"
+      },
+      {
+        "id": "finishes",
+        "label": "The script still finishes normally",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use try...catch to handle errors safely."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the very end of app.js, after all other code.\n\nIn app.js:\n```\ntry { await readFile(\"missing.txt\", \"utf8\"); }\ncatch (error) { console.error(`Could not read: ${error.code}`); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile, appendFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\nawait appendFile(\"report.txt\", \"Checked today\\n\");\nsaved[0].price += 7;\nawait writeFile(\"stock.json\", JSON.stringify(saved, null, 2));\ntry { await readFile(\"missing.txt\", \"utf8\"); }\ncatch (error) { console.error(`Could not read: ${error.code}`); }\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "files-tricycle"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
