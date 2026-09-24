@@ -14544,3 +14544,232 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "modules-tricycle"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: files-tricycle.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-files-tricycle-1",
+    "index": 301,
+    "task": "You will read the file stock.txt. This file has data about tricycle trips. You replace the console.log line in app.js with two lines. The first line reads the file. The second line prints what it found. This lets you see the data before you do more with it.\n\nIn app.js:\n```\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Market,20\nSchool,30\nClinic,25\n"
+    },
+    "tests": [
+      {
+        "id": "text",
+        "label": "The script prints the line Market,20 from stock.txt",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Market,20"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of readFile as asking the computer to open a file and read its contents."
+      },
+      {
+        "level": 2,
+        "text": "Put the two lines at the end of app.js, right after the import line.\n\nIn app.js:\n```\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-tricycle"
+  },
+  {
+    "id": "node-files-tricycle-2",
+    "index": 302,
+    "task": "You split the text into lines. This helps you count how many lines there are. You add two lines at the end. The first line splits the text by newlines. The second line prints the count. This helps you know how many items are in the file.\n\nIn app.js:\n```\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Market,20\nSchool,30\nClinic,25\n"
+    },
+    "tests": [
+      {
+        "id": "lines",
+        "label": "The script prints Lines: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Lines: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Splitting by newline means you break the text into parts where each part is one line."
+      },
+      {
+        "level": 2,
+        "text": "Put these two lines at the end of app.js, after the previous code.\n\nIn app.js:\n```\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-tricycle"
+  },
+  {
+    "id": "node-files-tricycle-3",
+    "index": 303,
+    "task": "You split each line by the comma. This lets you get the name of the second item. You add two lines at the end. The first line splits each line into parts. The second line prints the second part's name. This helps you get the name of the item.\n\nIn app.js:\n```\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Market,20\nSchool,30\nClinic,25\n"
+    },
+    "tests": [
+      {
+        "id": "second",
+        "label": "The script prints Second item: School",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Second item: School"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The comma is the separator. You split each line into parts using it."
+      },
+      {
+        "level": 2,
+        "text": "Put these two lines at the end of app.js, after the previous code.\n\nIn app.js:\n```\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-tricycle"
+  },
+  {
+    "id": "node-files-tricycle-4",
+    "index": 304,
+    "task": "You turn each row into an object with a name and price. You print the cheapest price. You add two lines at the end. The first line makes each row into an object. The second line finds the smallest price and prints it. This helps you know the lowest cost.\n\nIn app.js:\n```\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Market,20\nSchool,30\nClinic,25\n"
+    },
+    "tests": [
+      {
+        "id": "cheapest",
+        "label": "The script prints Cheapest: 20",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Cheapest: 20"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Each row becomes an object with a name and a price. Use Number to turn the price into a number."
+      },
+      {
+        "level": 2,
+        "text": "Put these two lines at the end of app.js, after the previous code.\n\nIn app.js:\n```\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "files-tricycle"
+  },
+  {
+    "id": "node-files-tricycle-5",
+    "index": 305,
+    "task": "You write a report file. You add two lines to app.js. The first line imports writeFile. The second line writes a short report to report.txt. Then you run `node app.js` in the terminal. This saves your result for later.\n\nIn app.js:\n```\nimport { readFile, writeFile } from \"node:fs/promises\";\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Market,20\nSchool,30\nClinic,25\n"
+    },
+    "tests": [
+      {
+        "id": "report",
+        "label": "report.txt says Items: 3",
+        "kind": "local-file-contains",
+        "path": "report.txt",
+        "value": "Items: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "WriteFile saves text to a file. You use it to save your report."
+      },
+      {
+        "level": 2,
+        "text": "Put the import line at the top, after the other imports. Put the write line at the end of app.js.\n\nIn app.js:\n```\nimport { readFile, writeFile } from \"node:fs/promises\";\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "files-tricycle"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
