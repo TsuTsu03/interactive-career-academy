@@ -3010,3 +3010,217 @@ cliGitCourse.steps.push(...([
     "projectId": "files-barangay"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: files-barangay.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-files-barangay-6",
+    "index": 66,
+    "task": "You will make a new folder called archive. This is like a storage box for old files. You type the command exactly as shown. Then you run the checker to see if the folder was made. This helps you keep your files organized.\n\nType this command in your terminal:\n`mkdir archive`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "archive",
+        "label": "The archive folder exists",
+        "kind": "local-dir-exists",
+        "path": "archive"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of a new box for old papers. You name it 'archive'."
+      },
+      {
+        "level": 2,
+        "text": "`mkdir archive`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "mkdir archive"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-barangay"
+  },
+  {
+    "id": "cli-files-barangay-7",
+    "index": 67,
+    "task": "You will move the file backup.txt into the archive folder. This keeps your backup safe. You type the command exactly as shown. Then you run the checker to make sure the file moved and is no longer in the requests folder.\n\nType this command in your terminal:\n`mv requests/backup.txt archive/backup.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "moved",
+        "label": "archive/backup.txt exists",
+        "kind": "local-file-exists",
+        "path": "archive/backup.txt"
+      },
+      {
+        "id": "gone",
+        "label": "backup.txt is no longer in requests",
+        "kind": "local-path-missing",
+        "path": "requests/backup.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Take the backup file and put it inside the archive box."
+      },
+      {
+        "level": 2,
+        "text": "`mv requests/backup.txt archive/backup.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "mv requests/backup.txt archive/backup.txt"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-barangay"
+  },
+  {
+    "id": "cli-files-barangay-8",
+    "index": 68,
+    "task": "You will add ID 20 to the working file only. This means the backup file stays unchanged. You type the command exactly as shown. Then you run the checker to see if ID 20 is now in fees.txt and not in the backup.\n\nType this command in your terminal:\n`echo \"ID 20\" >> requests/fees.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "third",
+        "label": "fees.txt now says ID 20",
+        "kind": "local-file-contains",
+        "path": "requests/fees.txt",
+        "value": "ID 20"
+      },
+      {
+        "id": "backup-old",
+        "label": "The backup does not have ID 20",
+        "kind": "local-file-lacks",
+        "path": "archive/backup.txt",
+        "value": "ID 20"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add ID 20 to the working file, not the backup. Use the echo command."
+      },
+      {
+        "level": 2,
+        "text": "`echo \"ID 20\" >> requests/fees.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"ID 20\" >> requests/fees.txt"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-barangay"
+  },
+  {
+    "id": "cli-files-barangay-9",
+    "index": 69,
+    "task": "You will delete the old backup file. This frees up space and keeps things clean. You type the command exactly as shown. Then you run the checker to see if the old backup is gone.\n\nType this command in your terminal:\n`rm archive/backup.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "deleted",
+        "label": "The old backup is deleted",
+        "kind": "local-path-missing",
+        "path": "archive/backup.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Remove the backup file from the archive folder. Use the rm command."
+      },
+      {
+        "level": 2,
+        "text": "`rm archive/backup.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "rm archive/backup.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-barangay"
+  },
+  {
+    "id": "cli-files-barangay-10",
+    "index": 70,
+    "task": "You will remove the empty archive folder. This cleans up your space. You type the command exactly as shown. Then you run the checker to see if the folder is gone and the requests folder is still there.\n\nType this command in your terminal:\n`rm -r archive`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "no-archive",
+        "label": "The archive folder is gone",
+        "kind": "local-path-missing",
+        "path": "archive"
+      },
+      {
+        "id": "kept",
+        "label": "The requests folder is still there",
+        "kind": "local-dir-exists",
+        "path": "requests"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Delete the whole archive folder. Use rm with the -r flag."
+      },
+      {
+        "level": 2,
+        "text": "`rm -r archive`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "rm -r archive"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-barangay"
+  }
+] satisfies typeof cliGitCourse.steps));
