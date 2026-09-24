@@ -37,3 +37,19 @@ function Stop-QwenTree([int]$ProcessId) {
   }
   Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue
 }
+
+# A log line must never end the run. On Windows a reader that holds a log open
+# (a tail, an editor, a monitor) makes Add-Content throw, and on 2026-09-24 that
+# alone killed both the campaign and the watchdog after one batch. Retry
+# briefly, then drop the line rather than the process.
+function Write-QwenLine([string]$Path, [string]$Line) {
+  for ($attempt = 1; $attempt -le 20; $attempt++) {
+    try { Add-Content -LiteralPath $Path -Value $Line -Encoding utf8 -ErrorAction Stop; return } catch { Start-Sleep -Milliseconds 250 }
+  }
+}
+
+function Write-QwenFile([string]$Path, [string]$Text) {
+  for ($attempt = 1; $attempt -le 20; $attempt++) {
+    try { Set-Content -LiteralPath $Path -Value $Text -Encoding utf8 -ErrorAction Stop; return } catch { Start-Sleep -Milliseconds 250 }
+  }
+}

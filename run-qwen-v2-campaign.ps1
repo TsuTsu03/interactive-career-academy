@@ -37,7 +37,7 @@ $modelLoaded = $false
 function Write-Campaign([string]$Message) {
   $line = "{0} {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $Message
   Write-Host $line
-  Add-Content -LiteralPath $campaignLog -Value $line -Encoding utf8
+  Write-QwenLine $campaignLog $line
 }
 
 function Read-Progress {
@@ -56,7 +56,7 @@ function Save-State($Progress, [string]$Status, [string]$Detail) {
     sql = $Progress.sql
     nosql = $Progress.nosql
     cligit = $Progress.cligit
-  } | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $stateFile -Encoding utf8
+  } | ConvertTo-Json -Depth 8 | ForEach-Object { Write-QwenFile $stateFile $_ }
 }
 
 function Get-JobKey($Job) { "{0}|{1}|{2}" -f $Job.courseId, $Job.projectId, $Job.batch }

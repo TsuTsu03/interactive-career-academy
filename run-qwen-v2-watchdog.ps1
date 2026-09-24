@@ -38,7 +38,7 @@ function Write-Watchdog([string]$Message) {
   $line = "{0} {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $Message
   Write-Host $line
   # Never hold this file open; a reader would lock the writer out.
-  Add-Content -LiteralPath $watchdogLog -Value $line -Encoding utf8
+  Write-QwenLine $watchdogLog $line
 }
 
 function Get-SupervisorPid { Read-QwenPid $supervisorPidFile "run-qwen-v2-campaign.ps1" }
