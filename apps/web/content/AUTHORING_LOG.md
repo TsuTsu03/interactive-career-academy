@@ -3723,3 +3723,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-24: Local Qwen wrote the lesson text for cli-git/merging-school-club, steps 161-165; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
 
 - 2026-09-24: Local Qwen wrote the lesson text for cli-git/merging-school-club, steps 166-170; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/tidy-school-club, steps 171-175; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.

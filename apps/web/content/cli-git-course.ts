@@ -7638,3 +7638,237 @@ cliGitCourse.steps.push(...([
     "projectId": "merging-school-club"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: tidy-school-club.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-tidy-school-club-1",
+    "index": 171,
+    "task": "You turn this folder into a Git repository. Git tracks changes to files. You name the first branch main. This is the start of your project's history. Run this command exactly: `git init -b main`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "repo",
+        "label": "The folder is a Git repository",
+        "kind": "local-git-repo"
+      },
+      {
+        "id": "untracked",
+        "label": "schedule.txt is not tracked yet",
+        "kind": "local-git-untracked",
+        "path": "schedule.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You make Git start watching this folder. The branch name main is the default for new projects."
+      },
+      {
+        "level": 2,
+        "text": "`git init -b main`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git init -b main"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-school-club"
+  },
+  {
+    "id": "cli-tidy-school-club-2",
+    "index": 172,
+    "task": "You tell Git who is making the changes. This helps others know who did what. You set the name to Ana Cruz and the email to ana@example.com. Run these commands exactly: `git config user.name \"Ana Cruz\"` and `git config user.email \"ana@example.com\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "Commits will be signed by Ana Cruz",
+        "kind": "local-git-config",
+        "key": "user.name",
+        "value": "Ana Cruz"
+      },
+      {
+        "id": "email",
+        "label": "The commit email is ana@example.com",
+        "kind": "local-git-config",
+        "key": "user.email",
+        "value": "ana@example.com"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You set your identity so your commits show your name and email. This is needed for every commit."
+      },
+      {
+        "level": 2,
+        "text": "`git config user.name \"Ana Cruz\"` and `git config user.email \"ana@example.com\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.name \"Ana Cruz\"\ngit config user.email \"ana@example.com\""
+    },
+    "estimatedMinutes": 4,
+    "projectId": "tidy-school-club"
+  },
+  {
+    "id": "cli-tidy-school-club-3",
+    "index": 173,
+    "task": "You prepare all files for saving. Git will save them together as one step. You use a dot (.) to mean all files. Run this command exactly: `git add .`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "file",
+        "label": "schedule.txt is staged",
+        "kind": "local-git-staged",
+        "path": "schedule.txt"
+      },
+      {
+        "id": "readme",
+        "label": "README.txt is staged",
+        "kind": "local-git-staged",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You tell Git to track all files in the folder. The dot means everything."
+      },
+      {
+        "level": 2,
+        "text": "`git add .` is the command to stage all files."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add ."
+    },
+    "estimatedMinutes": 2,
+    "projectId": "tidy-school-club"
+  },
+  {
+    "id": "cli-tidy-school-club-4",
+    "index": 174,
+    "task": "You save the files you prepared. This is the first time you save anything. You give it a message: Start school club files. Run this command exactly: `git commit -m \"Start school club files\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has one commit",
+        "kind": "local-git-commit-count",
+        "count": 1
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You make a commit to save your changes. The message explains what you did."
+      },
+      {
+        "level": 2,
+        "text": "`git commit -m \"Start school club files\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Start school club files\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-school-club"
+  },
+  {
+    "id": "cli-tidy-school-club-5",
+    "index": 175,
+    "task": "You rename schedule.txt to club-schedule.txt. Git will record this change. You use git mv to rename. Run this command exactly: `git mv schedule.txt club-schedule.txt`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "renamed",
+        "label": "club-schedule.txt is staged",
+        "kind": "local-git-staged",
+        "path": "club-schedule.txt"
+      },
+      {
+        "id": "old-gone",
+        "label": "schedule.txt no longer exists",
+        "kind": "local-path-missing",
+        "path": "schedule.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You rename a file. Git sees this as a change and will track it. Use git mv for renaming."
+      },
+      {
+        "level": 2,
+        "text": "`git mv schedule.txt club-schedule.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git mv schedule.txt club-schedule.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-school-club"
+  }
+] satisfies typeof cliGitCourse.steps));
