@@ -2568,3 +2568,241 @@ cliGitCourse.steps.push(...([
     "projectId": "tidy-sari-sari"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: tidy-sari-sari.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-tidy-sari-sari-6",
+    "index": 56,
+    "task": "You are now ready to save the rename. Type the command exactly as shown. This saves your change so others can see it. After you run it, check the result with the checker. It will confirm the rename is saved and nothing else is left to save.\n\nType this command in your terminal:\n`git commit -m \"Rename prices.txt\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "in-commit",
+        "label": "The last commit includes price-list.txt",
+        "kind": "local-git-head-has-file",
+        "path": "price-list.txt"
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are saving the rename so it becomes part of the project's history."
+      },
+      {
+        "level": 2,
+        "text": "`git commit -m \"Rename prices.txt\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Rename prices.txt\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-sari-sari"
+  },
+  {
+    "id": "cli-tidy-sari-sari-7",
+    "index": 57,
+    "task": "You will now delete the file draft.txt. Use the command shown. This removes the file from your project and prepares it for saving. After you run it, check the result. The checker will confirm the file is gone and the deletion is ready to be saved.\n\nType this command in your terminal:\n`git rm draft.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "gone",
+        "label": "draft.txt is deleted",
+        "kind": "local-path-missing",
+        "path": "draft.txt"
+      },
+      {
+        "id": "staged",
+        "label": "The deletion is staged",
+        "kind": "local-git-staged",
+        "path": "draft.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This command deletes the file and prepares it for the next commit."
+      },
+      {
+        "level": 2,
+        "text": "`git rm draft.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git rm draft.txt"
+    },
+    "conceptIds": [
+      "git-rm"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "tidy-sari-sari"
+  },
+  {
+    "id": "cli-tidy-sari-sari-8",
+    "index": 58,
+    "task": "Now you save the deletion. Type the command exactly as shown. This adds the deletion to the project's history. After you run it, check the result. The checker will confirm the project now has three commits and nothing is left to save.\n\nType this command in your terminal:\n`git commit -m \"Remove old draft\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has three commits",
+        "kind": "local-git-commit-count",
+        "count": 3
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This saves the deletion so others will see draft.txt is gone."
+      },
+      {
+        "level": 2,
+        "text": "`git commit -m \"Remove old draft\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Remove old draft\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-sari-sari"
+  },
+  {
+    "id": "cli-tidy-sari-sari-9",
+    "index": 59,
+    "task": "You will now create a .gitignore file. This file tells Git to ignore all files ending in .log. Type the command exactly as shown. This creates the file. After you run it, check the result. The checker will confirm the file is created and not yet saved to the project.\n\nType this command in your terminal:\n`echo \"*.log\" > .gitignore`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "rule",
+        "label": ".gitignore lists *.log",
+        "kind": "local-file-contains",
+        "path": ".gitignore",
+        "value": "*.log"
+      },
+      {
+        "id": "new",
+        "label": ".gitignore is a new, untracked file",
+        "kind": "local-git-untracked",
+        "path": ".gitignore"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This file tells Git to ignore log files so they don't get saved."
+      },
+      {
+        "level": 2,
+        "text": "`echo \"*.log\" > .gitignore`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"*.log\" > .gitignore"
+    },
+    "conceptIds": [
+      "git-ignore"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "tidy-sari-sari"
+  },
+  {
+    "id": "cli-tidy-sari-sari-10",
+    "index": 60,
+    "task": "Now you save the .gitignore file. Type the two commands exactly as shown. The first adds the file to what will be saved. The second saves it with a message. After you run it, check the result. The checker will confirm the file is saved and nothing is left to save.\n\nType these commands in your terminal:\n`git add .gitignore`\n`git commit -m \"Ignore log files\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "saved",
+        "label": "The last commit includes .gitignore",
+        "kind": "local-git-head-has-file",
+        "path": ".gitignore"
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "First add the file, then commit it to save the ignore rule."
+      },
+      {
+        "level": 2,
+        "text": "`git add .gitignore` then `git commit -m \"Ignore log files\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add .gitignore\ngit commit -m \"Ignore log files\""
+    },
+    "estimatedMinutes": 5,
+    "projectId": "tidy-sari-sari"
+  }
+] satisfies typeof cliGitCourse.steps));
