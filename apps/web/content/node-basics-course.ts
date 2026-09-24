@@ -3111,3 +3111,251 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "config-sari-sari"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: folders-sari-sari.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-folders-sari-sari-1",
+    "index": 61,
+    "task": "You will add two lines to app.js. The first line builds the path to records/a.txt using path.join. This works on any computer. The second line prints the path with forward slashes, which is how you write paths in code. The code below does this. Run the checker and paste its report.\n\nIn app.js:\n```\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Rice 50\n",
+      "records/b.txt": "Soap 25\n",
+      "records/notes.md": "# Notes\nKeep Sari-Sari Store records here.\n"
+    },
+    "tests": [
+      {
+        "id": "joined",
+        "label": "The script prints records/a.txt",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "records/a.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "path.join uses the right separator for your computer. You don't need to type it."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js. The page will show the code after your text.\n\nIn app.js:\n```\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\n"
+    },
+    "conceptIds": [
+      "node-path-join"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "folders-sari-sari"
+  },
+  {
+    "id": "node-folders-sari-sari-2",
+    "index": 62,
+    "task": "You will add one line to app.js. This line gets the file's extension using path.extname. The extension is the ending part of the file name, like .txt. The code below does this. Run the checker and paste its report.\n\nIn app.js:\n```\nconsole.log(`Extension: ${path.extname(file)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Rice 50\n",
+      "records/b.txt": "Soap 25\n",
+      "records/notes.md": "# Notes\nKeep Sari-Sari Store records here.\n"
+    },
+    "tests": [
+      {
+        "id": "ext",
+        "label": "The script prints Extension: .txt",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Extension: .txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "path.extname gets the ending of the file name. It's like checking the file's type."
+      },
+      {
+        "level": 2,
+        "text": "Add this line at the end of app.js. The page will show the code after your text.\n\nIn app.js:\n```\nconsole.log(`Extension: ${path.extname(file)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\n"
+    },
+    "conceptIds": [
+      "node-extname"
+    ],
+    "estimatedMinutes": 2,
+    "projectId": "folders-sari-sari"
+  },
+  {
+    "id": "node-folders-sari-sari-3",
+    "index": 63,
+    "task": "You will add one line to app.js. This line gets the file name without its extension using path.basename. You tell it to remove .txt. The code below does this. Run the checker and paste its report.\n\nIn app.js:\n```\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Rice 50\n",
+      "records/b.txt": "Soap 25\n",
+      "records/notes.md": "# Notes\nKeep Sari-Sari Store records here.\n"
+    },
+    "tests": [
+      {
+        "id": "base",
+        "label": "The script prints Base: a",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Base: a"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "path.basename removes the extension. You can tell it which extension to remove."
+      },
+      {
+        "level": 2,
+        "text": "Add this line at the end of app.js. The page will show the code after your text.\n\nIn app.js:\n```\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "folders-sari-sari"
+  },
+  {
+    "id": "node-folders-sari-sari-4",
+    "index": 64,
+    "task": "You will add three lines to app.js. The first line imports readdir from node:fs/promises. The next two lines list the files in the records folder and count them. The code below does this. Run the checker and paste its report.\n\nIn app.js:\n```\nimport { readdir } from \"node:fs/promises\";\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Rice 50\n",
+      "records/b.txt": "Soap 25\n",
+      "records/notes.md": "# Notes\nKeep Sari-Sari Store records here.\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The script prints Files: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Files: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "readdir lists all the files inside a folder. It's like checking what's in a drawer."
+      },
+      {
+        "level": 2,
+        "text": "Add the three lines after the import. The page will show the code after your text.\n\nIn app.js:\n```\nimport { readdir } from \"node:fs/promises\";\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\n"
+    },
+    "conceptIds": [
+      "node-readdir"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "folders-sari-sari"
+  },
+  {
+    "id": "node-folders-sari-sari-5",
+    "index": 65,
+    "task": "You will add two lines to app.js. The first line filters the list to keep only .txt files. The second line counts them. The code below does this. Run the checker and paste its report.\n\nIn app.js:\n```\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Rice 50\n",
+      "records/b.txt": "Soap 25\n",
+      "records/notes.md": "# Notes\nKeep Sari-Sari Store records here.\n"
+    },
+    "tests": [
+      {
+        "id": "txt",
+        "label": "The script prints Text files: 2",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Text files: 2"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "filter keeps only the files that match the condition. .txt files are the ones you want."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js. The page will show the code after your text.\n\nIn app.js:\n```\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "folders-sari-sari"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
