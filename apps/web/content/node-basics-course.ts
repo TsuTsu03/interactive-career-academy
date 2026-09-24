@@ -3359,3 +3359,261 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "folders-sari-sari"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: folders-sari-sari.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-folders-sari-sari-6",
+    "index": 66,
+    "task": "You will add a line to make a folder called 'archive'. This folder will be created safely, even if it already exists. The code below does this. Run `node app.js` to test it. After running, check the report to confirm the folder exists.\n\nIn app.js:\n```\nimport { readdir, mkdir } from \"node:fs/promises\";\nawait mkdir(\"archive\", { recursive: true });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Rice 50\n",
+      "records/b.txt": "Soap 25\n",
+      "records/notes.md": "# Notes\nKeep Sari-Sari Store records here.\n"
+    },
+    "tests": [
+      {
+        "id": "archive",
+        "label": "The archive folder exists",
+        "kind": "local-dir-exists",
+        "path": "archive"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of mkdir as a tool that builds a folder, and recursive: true means it won't stop if the folder is already there."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the end of the import section, right after mkdir.\n\nIn app.js:\n```\nimport { readdir, mkdir } from \"node:fs/promises\";\nawait mkdir(\"archive\", { recursive: true });\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\n"
+    },
+    "conceptIds": [
+      "node-mkdir"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "folders-sari-sari"
+  },
+  {
+    "id": "node-folders-sari-sari-7",
+    "index": 67,
+    "task": "You will copy the file 'records/a.txt' into the new 'archive' folder. The code below does this. Run `node app.js` to test it. After running, check the report to confirm the file is copied.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile } from \"node:fs/promises\";\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Rice 50\n",
+      "records/b.txt": "Soap 25\n",
+      "records/notes.md": "# Notes\nKeep Sari-Sari Store records here.\n"
+    },
+    "tests": [
+      {
+        "id": "copied",
+        "label": "archive/a.txt is a copy of records/a.txt",
+        "kind": "local-file-contains",
+        "path": "archive/a.txt",
+        "value": "Rice 50"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "copyFile takes two paths: the original file and where you want to copy it."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the end of the import section, right after copyFile.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile } from \"node:fs/promises\";\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir, copyFile } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\n"
+    },
+    "conceptIds": [
+      "node-copy-file"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "folders-sari-sari"
+  },
+  {
+    "id": "node-folders-sari-sari-8",
+    "index": 68,
+    "task": "You will read the file's size using stat. The code below reads the file and prints its size in bytes. Run the script to test it. After running, check the report to confirm it prints 'Size: 8 bytes'.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile, stat } from \"node:fs/promises\";\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Rice 50\n",
+      "records/b.txt": "Soap 25\n",
+      "records/notes.md": "# Notes\nKeep Sari-Sari Store records here.\n"
+    },
+    "tests": [
+      {
+        "id": "size",
+        "label": "The script prints Size: 8 bytes",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Size: 8 bytes"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "stat reads file details like size without opening the file's content."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of the import section, right after stat.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile, stat } from \"node:fs/promises\";\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir, copyFile, stat } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\n"
+    },
+    "conceptIds": [
+      "node-stat"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "folders-sari-sari"
+  },
+  {
+    "id": "node-folders-sari-sari-9",
+    "index": 69,
+    "task": "You will rename the copied file from 'a.txt' to 'a-old.txt' in the archive folder. The code below does this. Run `node app.js` to test it. After running, check the report to confirm 'archive/a-old.txt' exists and 'archive/a.txt' is gone.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile, stat, rename } from \"node:fs/promises\";\nawait rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Rice 50\n",
+      "records/b.txt": "Soap 25\n",
+      "records/notes.md": "# Notes\nKeep Sari-Sari Store records here.\n"
+    },
+    "tests": [
+      {
+        "id": "renamed",
+        "label": "archive/a-old.txt exists",
+        "kind": "local-file-exists",
+        "path": "archive/a-old.txt"
+      },
+      {
+        "id": "moved",
+        "label": "archive/a.txt is gone",
+        "kind": "local-path-missing",
+        "path": "archive/a.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "rename moves or changes the name of a file in one step."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the end of the import section, right after rename.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile, stat, rename } from \"node:fs/promises\";\nawait rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir, copyFile, stat, rename } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\nawait rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));\n"
+    },
+    "conceptIds": [
+      "node-rename"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "folders-sari-sari"
+  },
+  {
+    "id": "node-folders-sari-sari-10",
+    "index": 70,
+    "task": "You will turn the relative path into an absolute one using path.resolve. The code below prints 'Absolute: true' to confirm it. Run the script to test it. After running, check the report to confirm it prints 'Absolute: true'.\n\nIn app.js:\n```\nconsole.log(`Absolute: ${path.isAbsolute(path.resolve(file))}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Rice 50\n",
+      "records/b.txt": "Soap 25\n",
+      "records/notes.md": "# Notes\nKeep Sari-Sari Store records here.\n"
+    },
+    "tests": [
+      {
+        "id": "absolute",
+        "label": "The script prints Absolute: true",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Absolute: true"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "path.resolve turns a relative path into a full path that starts from the top of the drive."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the end of the script, right after the other lines.\n\nIn app.js:\n```\nconsole.log(`Absolute: ${path.isAbsolute(path.resolve(file))}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir, copyFile, stat, rename } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\nawait rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));\nconsole.log(`Absolute: ${path.isAbsolute(path.resolve(file))}`);\n"
+    },
+    "conceptIds": [
+      "node-absolute-path"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "folders-sari-sari"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
