@@ -1817,3 +1817,246 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "async-sari-sari"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: async-sari-sari.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-async-sari-sari-6",
+    "index": 36,
+    "task": "Add two lines at the end of app.js. The code below waits for both promises. One works, one fails. It prints their statuses. Run the checker to confirm.\n\nIn app.js:\n```\nconst results = await Promise.allSettled([fetchPrice(\"Rice\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "settled",
+        "label": "The script prints Settled: fulfilled rejected",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Settled: fulfilled rejected"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Promise.allSettled waits for all promises, even if one fails. It tells you which succeeded and which didn't."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst results = await Promise.allSettled([fetchPrice(\"Rice\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Rice\")}`);\nconst prices = await Promise.all([\"Rice\", \"Soap\", \"Egg\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\nconst results = await Promise.allSettled([fetchPrice(\"Rice\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\n"
+    },
+    "conceptIds": [
+      "node-all-settled"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "async-sari-sari"
+  },
+  {
+    "id": "node-async-sari-sari-7",
+    "index": 37,
+    "task": "Add a three-line loop at the end of app.js. The code below checks two items one after the other. It prints each price. Run the checker to confirm.\n\nIn app.js:\n```\nfor (const name of [\"Rice\", \"Soap\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "loop",
+        "label": "The script prints Checked Soap: 40",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Checked Soap: 40"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use for...of to repeat the check for each item in the list. The loop runs until all items are checked."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nfor (const name of [\"Rice\", \"Soap\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Rice\")}`);\nconst prices = await Promise.all([\"Rice\", \"Soap\", \"Egg\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\nconst results = await Promise.allSettled([fetchPrice(\"Rice\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\nfor (const name of [\"Rice\", \"Soap\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "async-sari-sari"
+  },
+  {
+    "id": "node-async-sari-sari-8",
+    "index": 38,
+    "task": "Add one line at the end of app.js. The code below runs a cleanup message after the wait, whether it succeeds or fails. Run the checker to confirm.\n\nIn app.js:\n```\ntry { await wait(10); } finally { console.log(\"Cleanup done\"); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "cleanup",
+        "label": "The script prints Cleanup done",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Cleanup done"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "finally runs no matter what. Use it to clean up after any promise, even if it fails."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\ntry { await wait(10); } finally { console.log(\"Cleanup done\"); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Rice\")}`);\nconst prices = await Promise.all([\"Rice\", \"Soap\", \"Egg\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\nconst results = await Promise.allSettled([fetchPrice(\"Rice\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\nfor (const name of [\"Rice\", \"Soap\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\ntry { await wait(10); } finally { console.log(\"Cleanup done\"); }\n"
+    },
+    "conceptIds": [
+      "node-finally"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "async-sari-sari"
+  },
+  {
+    "id": "node-async-sari-sari-9",
+    "index": 39,
+    "task": "Add two lines at the end of app.js. The code below repeats a small task every 10 milliseconds. It stops after three ticks. Run the checker to confirm.\n\nIn app.js:\n```\nlet ticks = 0;\nconst timer = setInterval(() => { ticks += 1; if (ticks === 3) { clearInterval(timer); console.log(\"Ticks: 3\"); } }, 10);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "ticks",
+        "label": "The script prints Ticks: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Ticks: 3"
+      },
+      {
+        "id": "stops",
+        "label": "The script stops on its own",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "setInterval repeats a function every 10 milliseconds. Use clearInterval to stop it after three ticks."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nlet ticks = 0;\nconst timer = setInterval(() => { ticks += 1; if (ticks === 3) { clearInterval(timer); console.log(\"Ticks: 3\"); } }, 10);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Rice\")}`);\nconst prices = await Promise.all([\"Rice\", \"Soap\", \"Egg\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\nconst results = await Promise.allSettled([fetchPrice(\"Rice\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\nfor (const name of [\"Rice\", \"Soap\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\ntry { await wait(10); } finally { console.log(\"Cleanup done\"); }\nlet ticks = 0;\nconst timer = setInterval(() => { ticks += 1; if (ticks === 3) { clearInterval(timer); console.log(\"Ticks: 3\"); } }, 10);\n"
+    },
+    "conceptIds": [
+      "node-interval"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "async-sari-sari"
+  },
+  {
+    "id": "node-async-sari-sari-10",
+    "index": 40,
+    "task": "Add two lines at the end of app.js. The code below runs a timer with zero delay. It prints after the sync code. Run the checker to confirm.\n\nIn app.js:\n```\nsetTimeout(() => console.log(\"Timer done\"), 0);\nconsole.log(\"Sync done\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "order",
+        "label": "Sync done prints before Timer done",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Sync done\nTimer done"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "setTimeout with 0 means the timer runs right after the current code, even if it's not waiting. The event loop handles it."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nsetTimeout(() => console.log(\"Timer done\"), 0);\nconsole.log(\"Sync done\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Rice\")}`);\nconst prices = await Promise.all([\"Rice\", \"Soap\", \"Egg\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\nconst results = await Promise.allSettled([fetchPrice(\"Rice\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\nfor (const name of [\"Rice\", \"Soap\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\ntry { await wait(10); } finally { console.log(\"Cleanup done\"); }\nlet ticks = 0;\nconst timer = setInterval(() => { ticks += 1; if (ticks === 3) { clearInterval(timer); console.log(\"Ticks: 3\"); } }, 10);\nsetTimeout(() => console.log(\"Timer done\"), 0);\nconsole.log(\"Sync done\");\n"
+    },
+    "conceptIds": [
+      "node-event-loop"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "async-sari-sari"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
