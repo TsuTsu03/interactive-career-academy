@@ -11906,3 +11906,234 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "async-school-club"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: async-school-club.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-async-school-club-6",
+    "index": 246,
+    "task": "You add two lines at the end of app.js. The first line waits for both promises to finish, even if one fails. The second line prints the status of each. This helps you know if a task worked or not. The code below does that. Run the checker and paste its report.\n\nIn app.js:\n```\nconst results = await Promise.allSettled([fetchPrice(\"Shirt\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "settled",
+        "label": "The script prints Settled: fulfilled rejected",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Settled: fulfilled rejected"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of Promise.allSettled as a way to check if all tasks are done, even if some fail."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst results = await Promise.allSettled([fetchPrice(\"Shirt\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Shirt\")}`);\nconst prices = await Promise.all([\"Shirt\", \"Pin\", \"Badge\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\nconst results = await Promise.allSettled([fetchPrice(\"Shirt\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "async-school-club"
+  },
+  {
+    "id": "node-async-school-club-7",
+    "index": 247,
+    "task": "You add a for...of loop at the end. It checks the price of each item one after the other. This lets you check many things without repeating code. The code below does that. Run the checker and paste its report.\n\nIn app.js:\n```\nfor (const name of [\"Shirt\", \"Pin\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "loop",
+        "label": "The script prints Checked Pin: 30",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Checked Pin: 30"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use for...of to loop over an array of names. Each time, call fetchPrice with that name."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nfor (const name of [\"Shirt\", \"Pin\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Shirt\")}`);\nconst prices = await Promise.all([\"Shirt\", \"Pin\", \"Badge\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\nconst results = await Promise.allSettled([fetchPrice(\"Shirt\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\nfor (const name of [\"Shirt\", \"Pin\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "async-school-club"
+  },
+  {
+    "id": "node-async-school-club-8",
+    "index": 248,
+    "task": "You add one line at the end. It runs a cleanup message no matter if the wait succeeds or fails. This ensures cleanup happens always. The code below does that. Run the checker and paste its report.\n\nIn app.js:\n```\ntry { await wait(10); } finally { console.log(\"Cleanup done\"); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "cleanup",
+        "label": "The script prints Cleanup done",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Cleanup done"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use finally to run code after a try block, whether it succeeds or fails."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\ntry { await wait(10); } finally { console.log(\"Cleanup done\"); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Shirt\")}`);\nconst prices = await Promise.all([\"Shirt\", \"Pin\", \"Badge\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\nconst results = await Promise.allSettled([fetchPrice(\"Shirt\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\nfor (const name of [\"Shirt\", \"Pin\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\ntry { await wait(10); } finally { console.log(\"Cleanup done\"); }\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "async-school-club"
+  },
+  {
+    "id": "node-async-school-club-9",
+    "index": 249,
+    "task": "You add two lines at the end. One starts a timer that repeats every 10 milliseconds. The other stops it after three ticks. This lets you test how often something runs. The code below does that. Run the checker and paste its report.\n\nIn app.js:\n```\nlet ticks = 0;\nconst timer = setInterval(() => { ticks += 1; if (ticks === 3) { clearInterval(timer); console.log(\"Ticks: 3\"); } }, 10);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "ticks",
+        "label": "The script prints Ticks: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Ticks: 3"
+      },
+      {
+        "id": "stops",
+        "label": "The script stops on its own",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use setInterval to repeat a task. Use clearInterval to stop it after three ticks."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nlet ticks = 0;\nconst timer = setInterval(() => { ticks += 1; if (ticks === 3) { clearInterval(timer); console.log(\"Ticks: 3\"); } }, 10);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Shirt\")}`);\nconst prices = await Promise.all([\"Shirt\", \"Pin\", \"Badge\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\nconst results = await Promise.allSettled([fetchPrice(\"Shirt\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\nfor (const name of [\"Shirt\", \"Pin\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\ntry { await wait(10); } finally { console.log(\"Cleanup done\"); }\nlet ticks = 0;\nconst timer = setInterval(() => { ticks += 1; if (ticks === 3) { clearInterval(timer); console.log(\"Ticks: 3\"); } }, 10);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "async-school-club"
+  },
+  {
+    "id": "node-async-school-club-10",
+    "index": 250,
+    "task": "You add two lines at the end. The first runs a timer with zero delay. The second prints a message right after. This shows that async code runs even after sync code. The code below does that. Run the checker and paste its report.\n\nIn app.js:\n```\nsetTimeout(() => console.log(\"Timer done\"), 0);\nconsole.log(\"Sync done\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "order",
+        "label": "Sync done prints before Timer done",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Sync done\nTimer done"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "setTimeout with 0 means the task runs as soon as possible, even after sync code."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nsetTimeout(() => console.log(\"Timer done\"), 0);\nconsole.log(\"Sync done\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Shirt\")}`);\nconst prices = await Promise.all([\"Shirt\", \"Pin\", \"Badge\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\nconst results = await Promise.allSettled([fetchPrice(\"Shirt\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\nfor (const name of [\"Shirt\", \"Pin\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\ntry { await wait(10); } finally { console.log(\"Cleanup done\"); }\nlet ticks = 0;\nconst timer = setInterval(() => { ticks += 1; if (ticks === 3) { clearInterval(timer); console.log(\"Ticks: 3\"); } }, 10);\nsetTimeout(() => console.log(\"Timer done\"), 0);\nconsole.log(\"Sync done\");\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "async-school-club"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
