@@ -3617,3 +3617,227 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "folders-sari-sari"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: scripts-carinderia.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-scripts-carinderia-1",
+    "index": 71,
+    "task": "Open the file app.js. Replace the only line with the code below. This changes what the script prints. Run node app.js to check. The checker will confirm it prints Carinderia.\n\nIn app.js:\n```\nconsole.log(\"Carinderia\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "node app.js prints Carinderia",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Carinderia"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change the message to match the carinderia's name."
+      },
+      {
+        "level": 2,
+        "text": "Type the code exactly where it says to, at the start of app.js.\n\nIn app.js:\n```\nconsole.log(\"Carinderia\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Carinderia\");\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-carinderia"
+  },
+  {
+    "id": "node-scripts-carinderia-2",
+    "index": 72,
+    "task": "Add two lines at the end of app.js. The first line sets a constant called item to \"Adobo\". The second line prints that value. This shows the product name. Run node app.js to check. The checker will confirm it prints Adobo on its own line.\n\nIn app.js:\n```\nconst item = \"Adobo\";\nconsole.log(item);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "item",
+        "label": "The script prints Adobo on its own line",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Adobo\n"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use const to make item a fixed value that won't change."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js, after the first line.\n\nIn app.js:\n```\nconst item = \"Adobo\";\nconsole.log(item);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Carinderia\");\nconst item = \"Adobo\";\nconsole.log(item);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "scripts-carinderia"
+  },
+  {
+    "id": "node-scripts-carinderia-3",
+    "index": 73,
+    "task": "Add a new constant called price with the value 80. Then change the last console.log to print both item and price together. This shows the product and its cost. Run node app.js to check. The checker will confirm it prints Adobo 80.\n\nIn app.js:\n```\nconst price = 80;\nconsole.log(item, price);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "pair",
+        "label": "The script prints Adobo 80",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Adobo 80"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add price right after item, then update the log to include both."
+      },
+      {
+        "level": 2,
+        "text": "Type the code exactly where it says to, at the end of app.js.\n\nIn app.js:\n```\nconst price = 80;\nconsole.log(item, price);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Carinderia\");\nconst item = \"Adobo\";\nconst price = 80;\nconsole.log(item, price);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "scripts-carinderia"
+  },
+  {
+    "id": "node-scripts-carinderia-4",
+    "index": 74,
+    "task": "Change the last console.log to use a template literal. This lets you mix text and variables. Print the item and price in one sentence. Run node app.js to check. The checker will confirm it prints Adobo costs 80 pesos.\n\nIn app.js:\n```\nconsole.log(`${item} costs ${price} pesos`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "sentence",
+        "label": "The script prints Adobo costs 80 pesos",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Adobo costs 80 pesos"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use backticks and dollar signs to insert variables into text."
+      },
+      {
+        "level": 2,
+        "text": "Replace the last line with the code below, at the end of app.js.\n\nIn app.js:\n```\nconsole.log(`${item} costs ${price} pesos`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Carinderia\");\nconst item = \"Adobo\";\nconst price = 80;\nconsole.log(`${item} costs ${price} pesos`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "scripts-carinderia"
+  },
+  {
+    "id": "node-scripts-carinderia-5",
+    "index": 75,
+    "task": "Add two lines at the end of app.js. The first line creates an array called items with three product names. The second line prints how many items are in the array. Run node app.js to check. The checker will confirm it prints Items: 3.\n\nIn app.js:\n```\nconst items = [\"Adobo\", \"Pancit\", \"Lumpia\"];\nconsole.log(`Items: ${items.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The script prints Items: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Items: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use square brackets to make an array with names inside."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js, after the last line.\n\nIn app.js:\n```\nconst items = [\"Adobo\", \"Pancit\", \"Lumpia\"];\nconsole.log(`Items: ${items.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Carinderia\");\nconst item = \"Adobo\";\nconst price = 80;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Adobo\", \"Pancit\", \"Lumpia\"];\nconsole.log(`Items: ${items.length}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "scripts-carinderia"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
