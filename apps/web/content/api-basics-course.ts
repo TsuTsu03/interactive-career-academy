@@ -3573,3 +3573,273 @@ apiBasicsCourse.steps.push(...([
     "projectId": "middleware-sari-sari"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: sqlite-storage-sari-sari.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-sqlite-storage-sari-sari-1",
+    "index": 61,
+    "task": "You will open a database in memory. This is fast and temporary. You will make a table called items. This holds the store's products. You will answer a request to /items. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items\").all());\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "empty",
+        "label": "GET /items answers an empty list from the database",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "[]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of the database as a notebook you open and close. It holds the store's items."
+      },
+      {
+        "level": 2,
+        "text": "Add the code above createItem and before the 404 line.\n\nIn server.js:\n```\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items\").all());\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items\").all());\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-sqlite"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "sqlite-storage-sari-sari"
+  },
+  {
+    "id": "api-sqlite-storage-sari-sari-2",
+    "index": 62,
+    "task": "You will add three items to the database. Rice, Soap, and Egg. You will use a prepared insert. This is safe and fast. You will run the code below after the CREATE TABLE line. Run the checker to test it.\n\nIn server.js:\n```\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Rice\",50],[\"Soap\",25],[\"Egg\",9]]) insert.run(name, price);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "rows",
+        "label": "GET /items includes Rice from the database",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "bodyContains": "\"name\":\"Rice\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the prepared insert to add items without writing SQL each time."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the CREATE TABLE line.\n\nIn server.js:\n```\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Rice\",50],[\"Soap\",25],[\"Egg\",9]]) insert.run(name, price);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Rice\",50],[\"Soap\",25],[\"Egg\",9]]) insert.run(name, price);\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items\").all());\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-insert-rows"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "sqlite-storage-sari-sari"
+  },
+  {
+    "id": "api-sqlite-storage-sari-sari-3",
+    "index": 63,
+    "task": "You will change the SQL to sort items by price. Cheapest first. You will use ORDER BY. This helps the customer see the cheapest items first. You will change the SQL in the GET /items line. Run the checker to test it.\n\nIn server.js:\n```\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items ORDER BY price\").all());\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "ordered",
+        "label": "GET /items lists the items cheapest first, starting with Egg",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "bodyContains": "[{\"id\":3,\"name\":\"Egg\",\"price\":9},{\"id\":2,\"name\":\"Soap\",\"price\":25},{\"id\":1,\"name\":\"Rice\",\"price\":50}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "ORDER BY tells the database to sort the rows before sending them."
+      },
+      {
+        "level": 2,
+        "text": "Change the SQL in the GET /items line.\n\nIn server.js:\n```\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items ORDER BY price\").all());\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Rice\",50],[\"Soap\",25],[\"Egg\",9]]) insert.run(name, price);\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items ORDER BY price\").all());\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-order-by"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "sqlite-storage-sari-sari"
+  },
+  {
+    "id": "api-sqlite-storage-sari-sari-4",
+    "index": 64,
+    "task": "You will add a route to count the items. You will use COUNT(*). This tells how many rows there are. You will add the code below after the GET /items line. Run the checker to test it.\n\nIn server.js:\n```\n  if (req.url === \"/items/count\") return send(res, 200, db.prepare(\"SELECT COUNT(*) AS count FROM items\").get());\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "GET /items/count answers {\"count\":3}",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/count"
+          }
+        ],
+        "bodyContains": "{\"count\":3}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "COUNT(*) asks the database how many rows there are."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the GET /items line.\n\nIn server.js:\n```\n  if (req.url === \"/items/count\") return send(res, 200, db.prepare(\"SELECT COUNT(*) AS count FROM items\").get());\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Rice\",50],[\"Soap\",25],[\"Egg\",9]]) insert.run(name, price);\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items ORDER BY price\").all());\n  if (req.url === \"/items/count\") return send(res, 200, db.prepare(\"SELECT COUNT(*) AS count FROM items\").get());\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-count"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "sqlite-storage-sari-sari"
+  },
+  {
+    "id": "api-sqlite-storage-sari-sari-5",
+    "index": 65,
+    "task": "You will answer one item by its id. You will use a SQL parameter. This is safe. You will add the code below before the 404 line. Run the checker to test it.\n\nIn server.js:\n```\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match) return send(res, 200, db.prepare(\"SELECT * FROM items WHERE id = ?\").get(Number(match[1])));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "one",
+        "label": "GET /items/2 answers Soap",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/2"
+          }
+        ],
+        "bodyContains": "\"name\":\"Soap\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "A SQL parameter is a ? that you fill with a value separately. This keeps the value as data, not code."
+      },
+      {
+        "level": 2,
+        "text": "Add the code before the 404 line.\n\nIn server.js:\n```\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match) return send(res, 200, db.prepare(\"SELECT * FROM items WHERE id = ?\").get(Number(match[1])));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Rice\",50],[\"Soap\",25],[\"Egg\",9]]) insert.run(name, price);\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items ORDER BY price\").all());\n  if (req.url === \"/items/count\") return send(res, 200, db.prepare(\"SELECT COUNT(*) AS count FROM items\").get());\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match) return send(res, 200, db.prepare(\"SELECT * FROM items WHERE id = ?\").get(Number(match[1])));\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-sql-parameter"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "sqlite-storage-sari-sari"
+  }
+] satisfies typeof apiBasicsCourse.steps));
