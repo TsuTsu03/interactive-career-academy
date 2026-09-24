@@ -5455,3 +5455,207 @@ cliGitCourse.steps.push(...([
     "projectId": "tidy-barangay"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: files-school-club.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-files-school-club-1",
+    "index": 121,
+    "task": "You make a folder named events. This folder will hold all your club's event files. Type the command exactly as shown. Then run the checker to confirm the folder is ready.\n\nType this command in your terminal:\n`mkdir events`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "folder",
+        "label": "The events folder exists",
+        "kind": "local-dir-exists",
+        "path": "events"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of a folder like a box for your event papers. Make it first before adding anything inside."
+      },
+      {
+        "level": 2,
+        "text": "Type: `mkdir events`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "mkdir events"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-school-club"
+  },
+  {
+    "id": "cli-files-school-club-2",
+    "index": 122,
+    "task": "You make an empty file called schedule.txt inside the events folder. This file will hold your club's practice times. Type the command exactly as shown. Then run the checker to confirm the file is ready.\n\nType this command in your terminal:\n`touch events/schedule.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "file",
+        "label": "events/schedule.txt exists",
+        "kind": "local-file-exists",
+        "path": "events/schedule.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You're creating a blank paper for your schedule. Put it in the events box first."
+      },
+      {
+        "level": 2,
+        "text": "Type: `touch events/schedule.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "touch events/schedule.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-school-club"
+  },
+  {
+    "id": "cli-files-school-club-3",
+    "index": 123,
+    "task": "You write the line Monday Practice into the schedule file. This tells your club when the first practice is. Type the command exactly as shown. Then run the checker to confirm the text is there.\n\nType this command in your terminal:\n`echo \"Monday Practice\" > events/schedule.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "line",
+        "label": "schedule.txt says Monday Practice",
+        "kind": "local-file-contains",
+        "path": "events/schedule.txt",
+        "value": "Monday Practice"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You're putting the first line on the paper. Use the > symbol to write over the empty file."
+      },
+      {
+        "level": 2,
+        "text": "Type: `echo \"Monday Practice\" > events/schedule.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Monday Practice\" > events/schedule.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-school-club"
+  },
+  {
+    "id": "cli-files-school-club-4",
+    "index": 124,
+    "task": "You add Wednesday Meeting as the second line to the schedule file. This keeps the first line and adds a new one. Type the command exactly as shown. Then run the checker to confirm both lines are there.\n\nType this command in your terminal:\n`echo \"Wednesday Meeting\" >> events/schedule.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "second",
+        "label": "schedule.txt now also says Wednesday Meeting",
+        "kind": "local-file-contains",
+        "path": "events/schedule.txt",
+        "value": "Wednesday Meeting"
+      },
+      {
+        "id": "first",
+        "label": "Monday Practice is still there",
+        "kind": "local-file-contains",
+        "path": "events/schedule.txt",
+        "value": "Monday Practice"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You're adding a new line without losing the old one. Use >> to add after the first line."
+      },
+      {
+        "level": 2,
+        "text": "Type: `echo \"Wednesday Meeting\" >> events/schedule.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Wednesday Meeting\" >> events/schedule.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-school-club"
+  },
+  {
+    "id": "cli-files-school-club-5",
+    "index": 125,
+    "task": "You copy the schedule file to a new file called backup.txt. This keeps a copy of both lines for safety. Type the command exactly as shown. Then run the checker to confirm the backup file has both lines.\n\nType this command in your terminal:\n`cp events/schedule.txt events/backup.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "copy",
+        "label": "backup.txt holds a copy of both lines",
+        "kind": "local-file-contains",
+        "path": "events/backup.txt",
+        "value": "Wednesday Meeting"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You're making a copy of your schedule. Use cp to copy from one file to another in the same folder."
+      },
+      {
+        "level": 2,
+        "text": "Type: `cp events/schedule.txt events/backup.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "cp events/schedule.txt events/backup.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-school-club"
+  }
+] satisfies typeof cliGitCourse.steps));
