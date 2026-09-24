@@ -5455,3 +5455,250 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "async-carinderia"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: cli-carinderia.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-cli-carinderia-1",
+    "index": 111,
+    "task": "You will add one line to app.js. This line counts how many words you typed after node app.js. The checker runs node app.js Adobo 2 to test it. Run the checker and paste its report.\n\nIn app.js:\n```\nconsole.log(`You typed ${args.length} words`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "words",
+        "label": "node app.js Adobo 2 prints You typed 2 words",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Adobo",
+          "2"
+        ],
+        "value": "You typed 2 words"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Count the words after node app.js. Use args.length to get the number."
+      },
+      {
+        "level": 2,
+        "text": "Add this line at the end of app.js, right after the existing code.\n\nIn app.js:\n```\nconsole.log(`You typed ${args.length} words`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "cli-carinderia"
+  },
+  {
+    "id": "node-cli-carinderia-2",
+    "index": 112,
+    "task": "You will split the first two words into name and quantity. The checker runs node app.js Adobo 2 to test it. Run the checker and paste its report.\n\nIn app.js:\n```\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "item",
+        "label": "node app.js Adobo 2 prints Item: Adobo",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Adobo",
+          "2"
+        ],
+        "value": "Item: Adobo"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use array destructuring to split the first two words into name and quantity."
+      },
+      {
+        "level": 2,
+        "text": "Add these two lines at the end of app.js, right after the previous code.\n\nIn app.js:\n```\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cli-carinderia"
+  },
+  {
+    "id": "node-cli-carinderia-3",
+    "index": 113,
+    "task": "You will turn the quantity text into a number. The checker runs node app.js Adobo 2 to test it. Run the checker and paste its report.\n\nIn app.js:\n```\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "quantity",
+        "label": "node app.js Adobo 2 prints Quantity: 2",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Adobo",
+          "2"
+        ],
+        "value": "Quantity: 2"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use Number() to turn the text into a number."
+      },
+      {
+        "level": 2,
+        "text": "Add these two lines at the end of app.js, right after the previous code.\n\nIn app.js:\n```\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cli-carinderia"
+  },
+  {
+    "id": "node-cli-carinderia-4",
+    "index": 114,
+    "task": "You will look up the item's price and print the total cost. The checker runs node app.js Adobo 2 to test it. Run the checker and paste its report.\n\nIn app.js:\n```\nconst prices = { \"Adobo\": 80, \"Pancit\": 60, \"Lumpia\": 15 };\nconsole.log(`Total: ${prices[name] * count}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "total",
+        "label": "node app.js Adobo 2 prints Total: 160",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Adobo",
+          "2"
+        ],
+        "value": "Total: 160"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Create a prices object with item names and their prices. Multiply the price by the count."
+      },
+      {
+        "level": 2,
+        "text": "Add these two lines at the end of app.js, right after the previous code.\n\nIn app.js:\n```\nconst prices = { \"Adobo\": 80, \"Pancit\": 60, \"Lumpia\": 15 };\nconsole.log(`Total: ${prices[name] * count}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Adobo\": 80, \"Pancit\": 60, \"Lumpia\": 15 };\nconsole.log(`Total: ${prices[name] * count}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "cli-carinderia"
+  },
+  {
+    "id": "node-cli-carinderia-5",
+    "index": 115,
+    "task": "You will add a check to stop the program if no item is typed. The checker runs node app.js with no words to test it. Run the checker and paste its report.\n\nIn app.js:\n```\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "exit",
+        "label": "node app.js with no words ends with exit code 1",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 1
+      },
+      {
+        "id": "usage",
+        "label": "It explains how to use the tool",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "value": "Usage: node app.js <item> <quantity>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if name is empty. If so, print a message and exit with code 1."
+      },
+      {
+        "level": 2,
+        "text": "Add this line right after the line that sets name and quantity.\n\nIn app.js:\n```\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Adobo\": 80, \"Pancit\": 60, \"Lumpia\": 15 };\nconsole.log(`Total: ${prices[name] * count}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cli-carinderia"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
