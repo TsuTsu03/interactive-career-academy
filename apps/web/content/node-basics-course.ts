@@ -13158,3 +13158,242 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "config-school-club"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: folders-school-club.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-folders-school-club-1",
+    "index": 271,
+    "task": "You will add code to app.js. This code builds a path using path.join. It uses forward slashes to show the path. The code prints the path to the screen. You will run the checker after you add the code.\n\nIn app.js:\n```\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Shirt 250\n",
+      "records/b.txt": "Pin 30\n",
+      "records/notes.md": "# Notes\nKeep School Club records here.\n"
+    },
+    "tests": [
+      {
+        "id": "joined",
+        "label": "The script prints records/a.txt",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "records/a.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of path.join as a tool that puts folder names together safely."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "folders-school-club"
+  },
+  {
+    "id": "node-folders-school-club-2",
+    "index": 272,
+    "task": "You will add one line to app.js. This line gets the file's extension using path.extname. It prints the extension with a label. You will run the checker after you add the code.\n\nIn app.js:\n```\nconsole.log(`Extension: ${path.extname(file)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Shirt 250\n",
+      "records/b.txt": "Pin 30\n",
+      "records/notes.md": "# Notes\nKeep School Club records here.\n"
+    },
+    "tests": [
+      {
+        "id": "ext",
+        "label": "The script prints Extension: .txt",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Extension: .txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The extension is the part after the dot, like .txt or .md."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconsole.log(`Extension: ${path.extname(file)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "folders-school-club"
+  },
+  {
+    "id": "node-folders-school-club-3",
+    "index": 273,
+    "task": "You will add one line to app.js. This line gets the file name without the extension using path.basename. It prints the name with a label. You will run the checker after you add the code.\n\nIn app.js:\n```\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Shirt 250\n",
+      "records/b.txt": "Pin 30\n",
+      "records/notes.md": "# Notes\nKeep School Club records here.\n"
+    },
+    "tests": [
+      {
+        "id": "base",
+        "label": "The script prints Base: a",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Base: a"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The basename is the name without the dot and extension, like 'a' instead of 'a.txt'."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "folders-school-club"
+  },
+  {
+    "id": "node-folders-school-club-4",
+    "index": 274,
+    "task": "You will add three lines to app.js. The first line imports readdir from node:fs/promises. The next two lines read the records folder and count how many files are there. You will run the checker after you add the code.\n\nIn app.js:\n```\nimport { readdir } from \"node:fs/promises\";\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Shirt 250\n",
+      "records/b.txt": "Pin 30\n",
+      "records/notes.md": "# Notes\nKeep School Club records here.\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The script prints Files: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Files: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "readdir reads all the files and folders inside a folder. You use await to wait for it to finish."
+      },
+      {
+        "level": 2,
+        "text": "Add the import as the second line, then the two lines after that.\n\nIn app.js:\n```\nimport { readdir } from \"node:fs/promises\";\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "folders-school-club"
+  },
+  {
+    "id": "node-folders-school-club-5",
+    "index": 275,
+    "task": "You will add two lines to app.js. The first line filters the list to keep only .txt files. The second line counts them and prints the number. You will run the checker after you add the code.\n\nIn app.js:\n```\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Shirt 250\n",
+      "records/b.txt": "Pin 30\n",
+      "records/notes.md": "# Notes\nKeep School Club records here.\n"
+    },
+    "tests": [
+      {
+        "id": "txt",
+        "label": "The script prints Text files: 2",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Text files: 2"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use filter to pick only files that end with .txt. The filter checks each file's extension."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "folders-school-club"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
