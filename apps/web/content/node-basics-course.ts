@@ -13864,3 +13864,234 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "scripts-tricycle"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: scripts-tricycle.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-scripts-tricycle-6",
+    "index": 286,
+    "task": "You will print each product name with a dash in front. Add the code below at the end of app.js. This makes the list look neat for the terminal staff. Run the checker to confirm the last item shows as - Clinic.\n\nIn app.js:\n```\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "last",
+        "label": "The list ends with - Clinic",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "- Clinic"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of a loop that goes through each item in the list."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of app.js, right after the items list.\n\nIn app.js:\n```\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Tricycle Terminal\");\nconst item = \"Market\";\nconst price = 20;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Market\", \"School\", \"Clinic\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-tricycle"
+  },
+  {
+    "id": "node-scripts-tricycle-7",
+    "index": 287,
+    "task": "You will add up the three prices and print the total. Add the code below at the end of app.js. This helps the terminal know how much to charge. Run the checker to confirm it prints Total: 75.\n\nIn app.js:\n```\nconst total = 20 + 30 + 25;\nconsole.log(`Total: ${total}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "total",
+        "label": "The script prints Total: 75",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Total: 75"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add two lines: one to calculate the sum, one to print it."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of app.js, after the for loop.\n\nIn app.js:\n```\nconst total = 20 + 30 + 25;\nconsole.log(`Total: ${total}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Tricycle Terminal\");\nconst item = \"Market\";\nconst price = 20;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Market\", \"School\", \"Clinic\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 20 + 30 + 25;\nconsole.log(`Total: ${total}`);\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "scripts-tricycle"
+  },
+  {
+    "id": "node-scripts-tricycle-8",
+    "index": 288,
+    "task": "You will write a function that adds 12% tax to any amount. Add the code below at the end of app.js. This helps the terminal calculate the final price with tax. Run the checker to confirm it prints With tax: 84.\n\nIn app.js:\n```\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "tax",
+        "label": "The script prints With tax: 84",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "With tax: 84"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use an arrow function to take one number and return the total with tax."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of app.js, after the total line.\n\nIn app.js:\n```\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Tricycle Terminal\");\nconst item = \"Market\";\nconst price = 20;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Market\", \"School\", \"Clinic\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 20 + 30 + 25;\nconsole.log(`Total: ${total}`);\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-tricycle"
+  },
+  {
+    "id": "node-scripts-tricycle-9",
+    "index": 289,
+    "task": "You will label the order as big or small based on the total. Add the code below at the end of app.js. This helps the terminal staff know if the order is large or small. Run the checker to confirm it prints Small order.\n\nIn app.js:\n```\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "size",
+        "label": "The script prints Small order",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Small order"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use an if statement to check if total is more than 100."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of app.js, after the tax line.\n\nIn app.js:\n```\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Tricycle Terminal\");\nconst item = \"Market\";\nconst price = 20;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Market\", \"School\", \"Clinic\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 20 + 30 + 25;\nconsole.log(`Total: ${total}`);\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-tricycle"
+  },
+  {
+    "id": "node-scripts-tricycle-10",
+    "index": 290,
+    "task": "You will report a warning using console.error instead of console.log. Add the code below at the end of app.js. This makes the warning show differently in the terminal. Run the checker to confirm it reports Low stock: Clinic as an error message, but the script still finishes normally.\n\nIn app.js:\n```\nconsole.error(\"Low stock: Clinic\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "warning",
+        "label": "The script reports Low stock: Clinic as an error message",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "value": "Low stock: Clinic"
+      },
+      {
+        "id": "still-runs",
+        "label": "The script still finishes normally",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use console.error to send a warning message to the error stream."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of app.js, after the if-else block.\n\nIn app.js:\n```\nconsole.error(\"Low stock: Clinic\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Tricycle Terminal\");\nconst item = \"Market\";\nconst price = 20;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Market\", \"School\", \"Clinic\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 20 + 30 + 25;\nconsole.log(`Total: ${total}`);\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\nconsole.error(\"Low stock: Clinic\");\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "scripts-tricycle"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
