@@ -5702,3 +5702,282 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "cli-carinderia"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: cli-carinderia.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-cli-carinderia-6",
+    "index": 116,
+    "task": "You will add a line to stop the program if the item is not in the price list. This line goes right before the last console.log. The code below checks if the item name is not in the prices object. If it's not, it prints an error and stops with exit code 2. This helps the user know when they typed an item that doesn't exist. Run the checker to confirm it works.\n\nIn app.js:\n```\nif (!(name in prices)) { console.error(`Unknown item: ${name}`); process.exit(2); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "exit",
+        "label": "node app.js Milk 1 ends with exit code 2",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "args": [
+          "Milk",
+          "1"
+        ],
+        "code": 2
+      },
+      {
+        "id": "message",
+        "label": "It reports Unknown item: Milk",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "args": [
+          "Milk",
+          "1"
+        ],
+        "value": "Unknown item: Milk"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of exit code 2 as a signal that something went wrong with the item."
+      },
+      {
+        "level": 2,
+        "text": "Place the code right before the last console.log in app.js.\n\nIn app.js:\n```\nif (!(name in prices)) { console.error(`Unknown item: ${name}`); process.exit(2); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Adobo\": 80, \"Pancit\": 60, \"Lumpia\": 15 };\nif (!(name in prices)) { console.error(`Unknown item: ${name}`); process.exit(2); }\nconsole.log(`Total: ${prices[name] * count}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "cli-carinderia"
+  },
+  {
+    "id": "node-cli-carinderia-7",
+    "index": 117,
+    "task": "You will add a line to stop the program if the quantity is not a whole number. This line goes right after the line that sets count. The code below checks if the quantity is not a whole number or less than 1. If so, it prints an error and stops with exit code 3. This stops bad input from causing problems. Run the checker to confirm it works.\n\nIn app.js:\n```\nif (!Number.isInteger(count) || count < 1) { console.error(\"Quantity must be a whole number\"); process.exit(3); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "exit",
+        "label": "node app.js Adobo abc ends with exit code 3",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "args": [
+          "Adobo",
+          "abc"
+        ],
+        "code": 3
+      },
+      {
+        "id": "fine",
+        "label": "node app.js Adobo 2 still works",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "args": [
+          "Adobo",
+          "2"
+        ],
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the quantity is a whole number using the built-in function."
+      },
+      {
+        "level": 2,
+        "text": "Place the code right after the line that sets count in app.js.\n\nIn app.js:\n```\nif (!Number.isInteger(count) || count < 1) { console.error(\"Quantity must be a whole number\"); process.exit(3); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nif (!Number.isInteger(count) || count < 1) { console.error(\"Quantity must be a whole number\"); process.exit(3); }\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Adobo\": 80, \"Pancit\": 60, \"Lumpia\": 15 };\nif (!(name in prices)) { console.error(`Unknown item: ${name}`); process.exit(2); }\nconsole.log(`Total: ${prices[name] * count}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cli-carinderia"
+  },
+  {
+    "id": "node-cli-carinderia-8",
+    "index": 118,
+    "task": "You will add two lines to print a thank-you message only when --receipt is typed. This goes at the end of the file. The code below creates a variable called receipt that checks if --receipt is in the args. If it is, it prints 'Receipt: thank you!'. This lets the user know they're getting a receipt. Run the checker to confirm it works.\n\nIn app.js:\n```\nconst receipt = args.includes(\"--receipt\");\nif (receipt) console.log(\"Receipt: thank you!\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "flag",
+        "label": "node app.js Adobo 2 --receipt prints the receipt line",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Adobo",
+          "2",
+          "--receipt"
+        ],
+        "value": "Receipt: thank you!"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The receipt message only appears if --receipt is typed in the command."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the very end of app.js, after the total line.\n\nIn app.js:\n```\nconst receipt = args.includes(\"--receipt\");\nif (receipt) console.log(\"Receipt: thank you!\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nif (!Number.isInteger(count) || count < 1) { console.error(\"Quantity must be a whole number\"); process.exit(3); }\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Adobo\": 80, \"Pancit\": 60, \"Lumpia\": 15 };\nif (!(name in prices)) { console.error(`Unknown item: ${name}`); process.exit(2); }\nconsole.log(`Total: ${prices[name] * count}`);\nconst receipt = args.includes(\"--receipt\");\nif (receipt) console.log(\"Receipt: thank you!\");\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "cli-carinderia"
+  },
+  {
+    "id": "node-cli-carinderia-9",
+    "index": 119,
+    "task": "You will add one line to get the currency from an environment variable or use PHP by default. This goes before the total line. The code below sets a variable called currency to the value of CURRENCY from the environment, or PHP if it's not set. Then it changes the total line to use that currency. This lets you change the currency without editing the code. Run the checker to confirm it works.\n\nIn app.js:\n```\nconst currency = process.env.CURRENCY ?? \"PHP\";\nconsole.log(`Total: ${currency} ${prices[name] * count}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "currency",
+        "label": "With CURRENCY=USD it prints Total: USD 160",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Adobo",
+          "2"
+        ],
+        "env": {
+          "CURRENCY": "USD"
+        },
+        "value": "Total: USD 160"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use process.env.CURRENCY to get the currency from the environment, or PHP if it's not set."
+      },
+      {
+        "level": 2,
+        "text": "Place the line before the total line in app.js.\n\nIn app.js:\n```\nconst currency = process.env.CURRENCY ?? \"PHP\";\nconsole.log(`Total: ${currency} ${prices[name] * count}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nif (!Number.isInteger(count) || count < 1) { console.error(\"Quantity must be a whole number\"); process.exit(3); }\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Adobo\": 80, \"Pancit\": 60, \"Lumpia\": 15 };\nif (!(name in prices)) { console.error(`Unknown item: ${name}`); process.exit(2); }\nconst currency = process.env.CURRENCY ?? \"PHP\";\nconsole.log(`Total: ${currency} ${prices[name] * count}`);\nconst receipt = args.includes(\"--receipt\");\nif (receipt) console.log(\"Receipt: thank you!\");\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cli-carinderia"
+  },
+  {
+    "id": "node-cli-carinderia-10",
+    "index": 120,
+    "task": "You will add one line to print usage and stop normally when --help is typed. This goes right after the first line. The code below checks if the first argument is --help. If it is, it prints the usage message and stops with exit code 0. This helps users know how to use the program. Run the checker to confirm it works.\n\nIn app.js:\n```\nif (args[0] === \"--help\") { console.log(\"Usage: node app.js <item> <quantity> [--receipt]\"); process.exit(0); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "help",
+        "label": "node app.js --help prints the usage",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "--help"
+        ],
+        "value": "[--receipt]"
+      },
+      {
+        "id": "exit",
+        "label": "node app.js --help ends with exit code 0",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "args": [
+          "--help"
+        ],
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The usage message tells users how to run the program."
+      },
+      {
+        "level": 2,
+        "text": "Place the code right after the first line in app.js.\n\nIn app.js:\n```\nif (args[0] === \"--help\") { console.log(\"Usage: node app.js <item> <quantity> [--receipt]\"); process.exit(0); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nif (args[0] === \"--help\") { console.log(\"Usage: node app.js <item> <quantity> [--receipt]\"); process.exit(0); }\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nif (!Number.isInteger(count) || count < 1) { console.error(\"Quantity must be a whole number\"); process.exit(3); }\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Adobo\": 80, \"Pancit\": 60, \"Lumpia\": 15 };\nif (!(name in prices)) { console.error(`Unknown item: ${name}`); process.exit(2); }\nconst currency = process.env.CURRENCY ?? \"PHP\";\nconsole.log(`Total: ${currency} ${prices[name] * count}`);\nconst receipt = args.includes(\"--receipt\");\nif (receipt) console.log(\"Receipt: thank you!\");\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "cli-carinderia"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
