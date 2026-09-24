@@ -96,6 +96,13 @@ the second: in the first, the script never runs, so the assertion would
 describe the starting HTML and pass or fail for reasons unrelated to what the
 learner did.
 
+**The `local-*` family never runs in the browser.** It describes the learner's
+own project folder and Git state, and runs only in the downloadable checker
+(`tools/local-checker.mjs`) and the `check:content` gate. The website reads a
+pasted report as data. A local result is learner-reported practice: it must
+never become XP, completion, evidence, or certificate credit (PLAN.md
+decision 43).
+
 ### 1.8 Content must pass the harness
 
 `lib/harness.ts`, driven from `/harness`. A step ships only when:

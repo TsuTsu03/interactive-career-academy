@@ -1,7 +1,8 @@
 <#
   ASCII ONLY. Resumable SQL/NoSQL authoring campaign for Windows PowerShell 5.1.
   Each child pass has exact rollback, static gates, and a human checkpoint.
-  This supervisor never targets the five courses that lack a grading model.
+  It targets SQL, NoSQL, and Command Line and Git (local checker, option B).
+  It never targets the four computer courses that still lack a grading model.
 #>
 param(
   [ValidateRange(0, 190)][int]$MaxAcceptedBatches = 0,
@@ -54,6 +55,7 @@ function Save-State($Progress, [string]$Status, [string]$Detail) {
     acceptedThisRun = $accepted
     sql = $Progress.sql
     nosql = $Progress.nosql
+    cligit = $Progress.cligit
   } | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $stateFile -Encoding utf8
 }
 
@@ -130,8 +132,8 @@ try {
     Save-State $progress "running" "Selecting the next bounded batch."
     if ($progress.complete) {
       if ($sincePush -gt 0) { Push-Checkpoint }
-      Save-State $progress "complete" "SQL 750 and NoSQL 250 reached with green gates."
-      Write-Campaign "Campaign complete: SQL 750 and NoSQL 250."
+      Save-State $progress "complete" "SQL 750, NoSQL 250, and Command Line and Git $($progress.cligit.target) reached with green gates."
+      Write-Campaign "Campaign complete: SQL 750, NoSQL 250, CLI/Git $($progress.cligit.current)/$($progress.cligit.target)."
       break
     }
     if (Test-Path -LiteralPath $stopFile) {
@@ -146,7 +148,7 @@ try {
       break
     }
     $available = @()
-    foreach ($candidate in @($progress.sql, $progress.nosql)) {
+    foreach ($candidate in @($progress.sql, $progress.nosql, $progress.cligit)) {
       if ($candidate -and -not $candidate.complete) { $available += $candidate }
     }
     $job = $null
@@ -185,7 +187,7 @@ try {
     if ($sinceStuckReset -ge $StuckResetEvery) { $stuck = @{}; $sinceStuckReset = 0 }
     $progress = Read-Progress
     Save-State $progress "running" "Accepted $($job.courseId)/$($job.projectId) batch $($job.batch)."
-    Write-Campaign "Accepted batch $accepted this run. SQL $($progress.sql.current)/750; NoSQL $($progress.nosql.current)/250."
+    Write-Campaign "Accepted batch $accepted this run. SQL $($progress.sql.current)/750; NoSQL $($progress.nosql.current)/250; CLI/Git $($progress.cligit.current)/$($progress.cligit.target)."
     if ($sincePush -ge $PushEvery) { Push-Checkpoint }
     if ($PauseSeconds -gt 0) { Start-Sleep -Seconds $PauseSeconds }
   }

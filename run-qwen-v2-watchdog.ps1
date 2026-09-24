@@ -93,6 +93,21 @@ try {
       continue
     }
 
+    # A finished campaign exits on purpose. Restarting it only to hear
+    # "complete" again would fill the log and trip the flapping guard.
+    $stateFile = Join-Path $runtimeDir "state.json"
+    if (Test-Path -LiteralPath $stateFile) {
+      $state = try { Get-Content -LiteralPath $stateFile -Raw | ConvertFrom-Json } catch { $null }
+      if ($state -and $state.status -eq "complete") {
+        if ($lastComplaint -ne "complete") {
+          Write-Watchdog "Campaign reports complete. Not restarting it."
+          $lastComplaint = "complete"
+        }
+        Start-Sleep -Seconds $CheckSeconds
+        continue
+      }
+    }
+
     $cutoff = (Get-Date).AddHours(-1)
     $recent = @($restarts | Where-Object { $_ -gt $cutoff })
     $restarts.Clear()

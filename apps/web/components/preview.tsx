@@ -35,13 +35,16 @@ export function Preview({
   flash,
   sqlSeed,
   nosqlSeed,
+  localStep,
 }: {
   files: Record<string, string>;
   kind: StepKind;
   flash: "none" | "pass" | "fail";
   sqlSeed?: string;
   nosqlSeed?: Record<string, Record<string, unknown>[]>;
+  localStep?: { id: string; projectId: string; firstInProject: boolean };
 }) {
+  if (kind === "local") return <LocalCheckGuide step={localStep} flash={flash} />;
   if (kind === "react") return <ReactPreview files={files} flash={flash} />;
   if (kind === "sql") return <SqlPreview files={files} seed={sqlSeed ?? ""} flash={flash} />;
   if (kind === "nosql") return <NosqlPreview files={files} seed={nosqlSeed} flash={flash} />;
@@ -54,7 +57,7 @@ function DocumentPreview({
   flash,
 }: {
   files: Record<string, string>;
-  kind: Exclude<StepKind, "react" | "sql" | "nosql">;
+  kind: Exclude<StepKind, "react" | "sql" | "nosql" | "local">;
   flash: "none" | "pass" | "fail";
 }) {
   const build = () =>
@@ -230,6 +233,79 @@ function SqlPreview({
             </tbody>
           </table>
         )}
+      </div>
+    </section>
+  );
+}
+
+/**
+ * A local step has nothing to preview in the browser: the work happens in the
+ * learner's own terminal. This pane explains how to produce the report that
+ * goes in the editor, and says plainly that the result is self-reported.
+ */
+function LocalCheckGuide({ step, flash }: {
+  step?: { id: string; projectId: string; firstInProject: boolean };
+  flash: "none" | "pass" | "fail";
+}) {
+  const [copied, setCopied] = useState<string | null>(null);
+  const commands = step
+    ? [
+        ...(step.firstInProject ? [{ label: "In a new, empty folder, create this project's starting files:", text: `node codedaddy-check.mjs start ${step.projectId}` }] : []),
+        { label: "After you finish the step, check your folder:", text: `node codedaddy-check.mjs check ${step.id}` },
+      ]
+    : [];
+  async function copy(text: string) {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(text);
+    } catch {
+      setCopied(null);
+    }
+  }
+  return (
+    <section className="flex min-h-0 flex-1 flex-col bg-surface" aria-label="Check on your computer">
+      <div className="flex h-10 shrink-0 items-center border-b border-outline-variant px-4 text-label-caps text-on-surface-variant">Your computer</div>
+      <div className={`min-h-0 flex-1 space-y-4 overflow-auto p-3 sm:p-5 ${previewRing(flash)}`}>
+        <p className="text-body-sm text-on-surface">
+          This course runs in your own terminal: Git Bash on Windows, or Terminal on Mac and Linux. You need Node.js 18 or newer and Git 2.28 or newer installed.
+        </p>
+        <p className="text-body-sm text-on-surface">
+          <a href="/downloads/codedaddy-check.mjs" download className="font-bold text-primary underline underline-offset-2">
+            Download the checker
+          </a>{" "}
+          once and keep it next to your project folders. Download it again if a check says it is out of date.
+        </p>
+        <ol className="space-y-3">
+          {commands.map((command) => (
+            <li key={command.text}>
+              <p className="text-body-sm text-on-surface-variant">{command.label}</p>
+              <div className="mt-1 flex items-center gap-2">
+                <code className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap rounded border border-outline-variant bg-surface-container px-2 py-1.5 font-mono text-body-sm text-on-surface">
+                  {command.text}
+                </code>
+                <button
+                  type="button"
+                  onClick={() => void copy(command.text)}
+                  className="inline-flex min-h-9 shrink-0 items-center gap-1 rounded border border-outline-variant px-2 font-mono text-[11px] font-bold text-on-surface"
+                >
+                  <Icon name={copied === command.text ? "check" : "description"} size={14} />
+                  {copied === command.text ? "Copied" : "Copy"}
+                </button>
+              </div>
+            </li>
+          ))}
+          <li>
+            <p className="text-body-sm text-on-surface-variant">
+              Copy the report from the START line to the END line, paste it into report.txt, then press Run.
+            </p>
+          </li>
+        </ol>
+        <p className="flex items-start gap-2 rounded border border-outline-variant p-3 text-body-sm text-on-surface-variant">
+          <Icon name="help" size={16} />
+          <span>
+            Results here are reported by you from your own computer. They are practice only: they add no XP and do not count toward a certificate.
+          </span>
+        </p>
       </div>
     </section>
   );

@@ -1,13 +1,18 @@
 import "./content-loader.mjs";
 import { createRequire } from "node:module";
-import { readFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { Worker, isMainThread, parentPort, workerData } from "node:worker_threads";
 import ts from "typescript";
+import { tmpdir } from "node:os";
+import { dirname, join } from "node:path";
 const { curriculum } = await import("../content/curriculum.ts");
 const { checkShape } = await import("../lib/content-shape.ts");
 const { executeNosql } = await import("../lib/nosql-store.ts");
 const { runNosqlTest } = await import("../lib/nosql-assertions.ts");
 const { runSqlTest } = await import("../lib/sql-assertions.ts");
+const localChecker = await import("./local-checker.mjs");
+const { runCommand, tokenize, gateEnv } = await import("./local-commands.mjs");
+const localReport = await import("../lib/local-report.ts");
 
 // Execute only the vendored engine as code. Queries remain SQL data.
 async function sqlEngine() {
@@ -78,6 +83,103 @@ async function behaviour(steps) {
   return errors;
 }
 
+// --- Local-computer steps (V2_RUNNER_DESIGN.md option B) ---
+
+function localShape(step) {
+  const errors = [];
+  const safe = localChecker.safeRelative;
+  if (JSON.stringify(step.files) !== JSON.stringify({ "report.txt": "" }) || step.activeFile !== "report.txt") errors.push("local steps start with an empty report.txt only");
+  const commands = step.solution?.["commands.txt"];
+  if (!step.solution || Object.keys(step.solution).join() !== "commands.txt" || typeof commands !== "string") errors.push("local solution must be { commands.txt }");
+  else {
+    const lines = commands.split("\n").filter(line => line.trim());
+    if (lines.length < 1 || lines.length > 3) errors.push("local solution needs 1-3 commands");
+    for (const line of lines) { try { tokenize(line.trim()); } catch (error) { errors.push(String(error.message)); } }
+  }
+  const seed = step.localSeed;
+  if (!seed || typeof seed !== "object" || Array.isArray(seed)) errors.push("local steps need a localSeed object");
+  else {
+    let bytes = 0;
+    for (const [file, text] of Object.entries(seed)) {
+      if (!safe(file) || file.split("/")[0] === ".git") errors.push(`unsafe localSeed path ${file}`);
+      if (typeof text !== "string") errors.push(`localSeed ${file} must be text`);
+      else bytes += text.length;
+    }
+    if (bytes > 20000) errors.push("localSeed is larger than 20,000 characters");
+  }
+  if (step.sqlSeed !== undefined || step.nosqlSeed !== undefined || step.runtimeFixtures !== undefined) errors.push("local steps carry no browser runtime data");
+  for (const test of step.tests) {
+    if (!test.kind.startsWith("local-")) errors.push(`local steps use local checks only, not ${test.kind}`);
+    if ("path" in test && !safe(test.path)) errors.push(`unsafe check path ${test.path}`);
+    if ("branch" in test && !localChecker.safeBranch(test.branch)) errors.push(`unsafe branch ${test.branch}`);
+    if (test.kind === "local-git-branch" && !localChecker.safeBranch(test.value)) errors.push(`unsafe branch ${test.value}`);
+    if (test.kind === "local-git-config" && !localChecker.safeConfigKey(test.key)) errors.push(`unsafe config key ${test.key}`);
+    if (test.kind === "local-git-commit-count" && (!Number.isInteger(test.count) || test.count < 0)) errors.push("commit count must be a whole number");
+    if (["local-file-contains", "local-file-lacks", "local-git-head-message", "local-git-config"].includes(test.kind) && (typeof test.value !== "string" || !test.value.trim())) errors.push(`${test.kind} needs a value`);
+  }
+  return errors;
+}
+
+/** The checker and the page must agree on the report format, and a malformed or forged report must be refused. */
+function localReportSelfTest(step, courseId) {
+  const errors = [];
+  if (localChecker.CHECKER_VERSION !== localReport.LOCAL_CHECKER_VERSION || localChecker.REPORT_START !== localReport.LOCAL_REPORT_START || localChecker.REPORT_END !== localReport.LOCAL_REPORT_END) errors.push("tools/local-checker.mjs and lib/local-report.ts disagree on the report format");
+  const all = step.tests.map(test => ({ id: test.id, pass: true }));
+  const good = localChecker.formatReport(courseId, step.id, all);
+  if (!localReport.parseLocalReport(`noise\n${good}\nmore`, courseId, step).ok) errors.push("a well-formed checker report did not parse");
+  const forged = [
+    good.replace(`"step":"${step.id}"`, '"step":"some-other-step"'),
+    good.replace(`"course":"${courseId}"`, '"course":"sql-basics"'),
+    good.replace('"checks":', '"xp":50,"checks":'),
+    good.replace('"v":1', '"v":2'),
+    localChecker.formatReport(courseId, step.id, [...all, all[0]]),
+    `${good}\n${good}`,
+  ];
+  for (const text of forged) if (localReport.parseLocalReport(text, courseId, step).ok) errors.push(`a malformed report was accepted: ${text.slice(0, 120)}`);
+  return errors;
+}
+
+async function localBehaviour(steps) {
+  const errors = [];
+  const projects = new Map();
+  for (const step of steps) projects.set(step.projectId, [...(projects.get(step.projectId) ?? []), step]);
+  async function proveProject(projectSteps) {
+    const scratch = mkdtempSync(join(tmpdir(), "codedaddy-local-gate-"));
+    try {
+      const home = join(scratch, "home");
+      const root = join(scratch, "project");
+      mkdirSync(home);
+      mkdirSync(root);
+      writeFileSync(join(home, "empty-gitconfig"), "");
+      const env = gateEnv(home);
+      const seed = projectSteps[0].localSeed ?? {};
+      for (const [file, text] of Object.entries(seed)) {
+        const full = join(root, ...file.split("/"));
+        mkdirSync(dirname(full), { recursive: true });
+        writeFileSync(full, text);
+      }
+      for (const step of projectSteps) {
+        if (JSON.stringify(step.localSeed) !== JSON.stringify(seed)) { errors.push(`${step.id}: localSeed differs within project ${step.projectId}`); return; }
+        const before = await localChecker.runChecks(root, step.tests, { env });
+        if (before.every(result => result.pass)) errors.push(`${step.id}: teaches-nothing: every local check passes before the solution`);
+        for (const line of step.solution["commands.txt"].split("\n").filter(item => item.trim())) {
+          try { await runCommand(root, line, env); } catch (error) { errors.push(`${step.id}: solution-command: ${error.message}`); return; }
+        }
+        const after = await localChecker.runChecks(root, step.tests, { env });
+        const failed = after.filter(result => !result.pass);
+        if (failed.length) { errors.push(`${step.id}: solution-fails: ${failed.map(result => `${result.id} (${result.reason})`).join(", ")}`); return; }
+      }
+    } finally {
+      rmSync(scratch, { recursive: true, force: true });
+    }
+  }
+  const queue = [...projects.values()];
+  await Promise.all(Array.from({ length: Math.min(4, queue.length) }, async () => {
+    while (queue.length) await proveProject(queue.shift());
+  }));
+  return errors;
+}
+
 if (!isMainThread) {
   parentPort.postMessage({ errors: await behaviour(workerData) });
 } else {
@@ -86,6 +188,7 @@ if (!isMainThread) {
   let warnings = 0;
   let count = 0;
   const databaseSteps = [];
+  const localSteps = [];
   let executed = 0;
   const selected = process.argv.find(arg => arg.startsWith("--course="))?.slice(9);
   const courses = curriculum.courses.filter(course => !selected || course.id === selected);
@@ -94,6 +197,8 @@ if (!isMainThread) {
     for (const step of course.steps) {
       count++;
       const database = ["sql", "nosql"].includes(course.kind);
+      if ((course.kind === "local") !== (step.kind === "local")) errors.push(`${step.id}: local step kind must match its course`);
+      if (step.kind === "local") for (const message of localShape(step)) errors.push(`${course.id}/${step.id}: local: ${message}`);
       if (database && step.kind !== course.kind) errors.push(`${step.id}: database step kind must match its course`);
       if (database && !step.tests.some(test => test.kind.startsWith(`${course.kind}-`))) errors.push(`${step.id}: database steps need a result assertion, not source checks alone`);
       for (const finding of checkShape(step)) {
@@ -111,6 +216,7 @@ if (!isMainThread) {
         }
       }
       if (step.kind === "sql" || step.kind === "nosql") databaseSteps.push(step);
+      if (step.kind === "local") localSteps.push({ step, courseId: course.id });
     }
   }
   if (!errors.length && databaseSteps.length) {
@@ -126,7 +232,13 @@ if (!isMainThread) {
       worker.on("exit", code => { clearTimeout(timer); if (code !== 0) resolve([`Database worker exited ${code}`]); });
     }));
   }
+  let localExecuted = 0;
+  if (!errors.length && localSteps.length) {
+    localExecuted = localSteps.length;
+    errors.push(...localReportSelfTest(localSteps[0].step, localSteps[0].courseId));
+    errors.push(...await localBehaviour(localSteps.map(entry => entry.step)));
+  }
   for (const error of errors) console.error(`ERROR ${error}`);
-  console.log(`Content gate: ${count} steps, ${executed} database steps executed, ${errors.length} errors, ${warnings} structural warnings. Non-database behaviour still requires /harness.`);
+  console.log(`Content gate: ${count} steps, ${executed} database steps executed, ${localExecuted} local steps replayed, ${errors.length} errors, ${warnings} structural warnings. Browser behaviour still requires /harness.`);
   process.exitCode = errors.length ? 1 : 0;
 }

@@ -113,8 +113,12 @@ export interface RuntimeFixtures {
  * and checks the DOM snapshot inside that frame through typed messages.
  * `sql` runs the learner's query against an in-memory SQLite database, built
  * fresh from the step's `sqlSeed`, and asserts against the rows it returned.
+ * `local` runs on the learner's own computer. The learner types real commands
+ * in their terminal, runs the downloadable checker, and pastes its report into
+ * `report.txt`. The report is learner-reported practice evidence only: it
+ * never awards XP, completion, evidence, or certificate credit.
  */
-export type StepKind = "web" | "js" | "react" | "sql" | "nosql";
+export type StepKind = "web" | "js" | "react" | "sql" | "nosql" | "local";
 
 /**
  * Deterministic assertions. Each kind is a closed variant so a lesson can
@@ -341,6 +345,33 @@ export type TestSpec =
   | { id: string; label: Copy; kind: "nosql-field-equals"; document: number; field: string; value: unknown }
   | { id: string; label: Copy; kind: "nosql-collection-exists"; collection: string }
 
+  // --- Local-computer assertions (V2_RUNNER_DESIGN.md option B). ---
+  /*
+   * These describe the learner's own project folder. They run only inside the
+   * downloadable checker (`tools/local-checker.mjs`) on the learner's machine,
+   * and inside the Node authoring gate. The website never executes them: it
+   * reads a pasted report, which is a result the learner reports, not one the
+   * platform verified. Paths are relative to the project folder.
+   */
+  | { id: string; label: Copy; kind: "local-dir-exists"; path: string }
+  | { id: string; label: Copy; kind: "local-file-exists"; path: string }
+  | { id: string; label: Copy; kind: "local-path-missing"; path: string }
+  | { id: string; label: Copy; kind: "local-file-contains"; path: string; value: string }
+  | { id: string; label: Copy; kind: "local-file-lacks"; path: string; value: string }
+  | { id: string; label: Copy; kind: "local-git-repo" }
+  | { id: string; label: Copy; kind: "local-git-config"; key: string; value: string }
+  | { id: string; label: Copy; kind: "local-git-staged"; path: string }
+  | { id: string; label: Copy; kind: "local-git-unstaged"; path: string }
+  | { id: string; label: Copy; kind: "local-git-untracked"; path: string }
+  | { id: string; label: Copy; kind: "local-git-clean" }
+  | { id: string; label: Copy; kind: "local-git-commit-count"; count: number }
+  | { id: string; label: Copy; kind: "local-git-head-message"; value: string }
+  | { id: string; label: Copy; kind: "local-git-head-has-file"; path: string }
+  | { id: string; label: Copy; kind: "local-git-branch"; value: string }
+  | { id: string; label: Copy; kind: "local-git-branch-exists"; branch: string }
+  | { id: string; label: Copy; kind: "local-git-branch-missing"; branch: string }
+  | { id: string; label: Copy; kind: "local-git-merged"; branch: string }
+
   // --- Source assertions (any kind) ---
   /**
    * The source matches this pattern. Used for teaching syntax the result
@@ -386,6 +417,14 @@ export interface Step {
   sqlSeed?: string;
   /** Fresh collections for a JSON document-store command. Never persisted. */
   nosqlSeed?: Record<string, Record<string, unknown>[]>;
+  /**
+   * `local` steps only. Plain-text files, keyed by relative path, that the
+   * checker's `start` command writes into an empty project folder. Identical
+   * on every step of one project. A local step's `solution` is
+   * `{ "commands.txt": "..." }`: one terminal command per line, replayed only
+   * by the authoring gate, never by the website or the learner's checker.
+   */
+  localSeed?: Record<string, string>;
   /** tap-to-build only: the tray contents and which one is correct. */
   blocks?: string[];
   correctBlock?: string;

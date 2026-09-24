@@ -10,6 +10,7 @@ import {
 import { runLearnerPage, type PageRunResult, type PageTestSpec } from "./page-runner";
 import { runLearnerSql, type SqlRunResult } from "./sql-runner";
 import { SQL_KINDS, runSqlTest, type SqlTestSpec } from "./sql-assertions";
+import { gradeLocalReport } from "./local-report";
 
 export type TestStatus = "waiting" | "passed" | "failed";
 
@@ -640,7 +641,13 @@ function runReactTest(spec: ReactTestSpec, run: ReactRunResult): TestResult {
 export async function gradeStep(
   step: Step,
   files: Record<string, string>,
+  context?: { courseId: string },
 ): Promise<TestResult[]> {
+  // A local step runs on the learner's computer. Nothing executes here: the
+  // pasted checker report is read as data and reported back as the learner's
+  // own result.
+  if (step.kind === "local") return gradeLocalReport(step, context?.courseId ?? "", files["report.txt"] ?? "");
+
   const needsJs = step.tests.some((t) => JS_KINDS.has(t.kind));
   const reactTests = step.tests.filter((test): test is ReactTestSpec =>
     REACT_KINDS.has(test.kind),

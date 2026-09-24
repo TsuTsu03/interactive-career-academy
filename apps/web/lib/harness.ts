@@ -70,6 +70,12 @@ export function checkPracticeReference(activity: PracticeActivity): Finding[] {
 async function checkBehaviour(step: Step): Promise<Finding[]> {
   const out: Finding[] = [];
 
+  // A local step's checks read a real folder and real Git state, which a
+  // browser cannot create. `npm run check:content` proves them in Node instead,
+  // by replaying the solution commands in a throwaway folder with the same
+  // checker the learner downloads.
+  if (step.kind === "local") return out;
+
   try {
     const before = await gradeStep(step, step.files);
     if (before.every((r) => r.status === "passed")) {

@@ -329,7 +329,7 @@ export function Workspace({ course }: { course: Course }) {
 
     let graded: TestResult[];
     try {
-      graded = await gradeStep(step, files);
+      graded = await gradeStep(step, files, { courseId: course.id });
     } catch {
       // Grading must never strand the learner in a running state with no way
       // back. Fail visibly and leave Run pressable.
@@ -354,6 +354,22 @@ export function Workspace({ course }: { course: Course }) {
     }
 
     const allPassed = graded.every((g) => g.status === "passed");
+
+    if (step.kind === "local") {
+      // A pasted checker report is a result the learner reports from their own
+      // computer, not one this page verified. It shows pass or fail as practice
+      // feedback and never becomes XP, completion, review, a recorded mistake,
+      // evidence, or certificate credit. V2_RUNNER_DESIGN.md, contract item 6.
+      setGain({ fire: 0, amount: 0 });
+      setPhase(allPassed ? "passed" : "failed");
+      const firstFail = graded.find((g) => g.status === "failed");
+      announce(
+        allPassed
+          ? "Your checker reported every check as passed. Local results are practice only: they add no XP and do not count toward a certificate."
+          : firstFail?.message ?? "Some checks did not pass.",
+      );
+      return;
+    }
 
     if (allPassed) {
       const firstClear = !session.completedSteps.includes(step.id);
@@ -911,8 +927,13 @@ export function Workspace({ course }: { course: Course }) {
           {phase === "passed" ? (
             <div className="mb-4">
               <div className="font-display text-[26px] font-bold tracking-tight text-acid">
-                STEP CLEAR
+                {step.kind === "local" ? "REPORTED CLEAR" : "STEP CLEAR"}
               </div>
+              {step.kind === "local" ? (
+                <p className="mt-1 text-[15px] text-ash">
+                  Your own checker reported every check as passed. This is practice: it adds no XP and does not count toward a certificate.
+                </p>
+              ) : null}
               <p className="mt-1 text-[15px] text-ash">
                 {isLast
                   ? "Course complete. You built the whole thing."
@@ -1057,6 +1078,7 @@ export function Workspace({ course }: { course: Course }) {
               <Preview
                 files={files}
                 kind={step.kind}
+                localStep={step.kind === "local" ? { id: step.id, projectId: step.projectId, firstInProject: course.steps[stepIdx - 1]?.projectId !== step.projectId } : undefined}
                 sqlSeed={step.sqlSeed}
                 nosqlSeed={step.nosqlSeed}
                 flash={phase === "passed" ? "pass" : phase === "failed" ? "fail" : "none"}
@@ -1122,7 +1144,7 @@ export function Workspace({ course }: { course: Course }) {
             </div>
             {phase === "passed" ? (
               <span className="hidden shrink-0 rounded border border-acid/40 bg-acid/10 px-2 py-1 font-mono text-[11px] font-bold text-acid md:inline-flex">
-                {gain.amount > 0 ? `+${gain.amount} XP` : "Reward already earned"}
+                {step.kind === "local" ? "Practice only" : gain.amount > 0 ? `+${gain.amount} XP` : "Reward already earned"}
               </span>
             ) : null}
             <div className="relative shrink-0">

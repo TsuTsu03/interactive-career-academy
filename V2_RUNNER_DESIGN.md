@@ -1,6 +1,6 @@
 # Computer-course runner decision
 
-Date: 2026-09-08. Status: proposed; owner decision required before implementation.
+Date: 2026-09-08. Status: option B approved by the owner on 2026-09-24 for a Command Line and Git pilot (PLAN.md decision 43). Implemented in `apps/web/tools/local-checker.mjs`, `apps/web/lib/local-report.ts`, and the `check:content` local gate. The other four computer courses remain ungraded.
 
 Recommend a learner-run local checker for the five computer courses. It can inspect real files, Git history, Node processes, and local HTTP responses. Its pasted report must remain **learner-reported local results**, not independently verified competence. Keep these courses without graded steps until the checker and its authoring gate are approved and proven.
 

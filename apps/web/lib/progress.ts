@@ -44,11 +44,17 @@ export function normalizeCompletedStepIds(
   stepIndex: number,
   value: unknown,
 ): string[] {
-  const completed = new Set(course.steps.slice(0, stepIndex).map((step) => step.id));
+  // Local steps are learner-reported practice (V2_RUNNER_DESIGN.md option B).
+  // Moving past one proves nothing, and no stored id can make one complete, so
+  // they never reach progress, gating, evidence, or certificates.
+  const countable = course.steps.filter((step) => step.kind !== "local");
+  const completed = new Set(
+    course.steps.slice(0, stepIndex).filter((step) => step.kind !== "local").map((step) => step.id),
+  );
 
   if (Array.isArray(value)) {
     for (const id of value) {
-      if (typeof id === "string" && course.steps.some((step) => step.id === id)) {
+      if (typeof id === "string" && countable.some((step) => step.id === id)) {
         completed.add(id);
       }
     }
