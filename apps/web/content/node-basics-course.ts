@@ -14320,3 +14320,227 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "modules-tricycle"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: modules-tricycle.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-modules-tricycle-6",
+    "index": 296,
+    "task": "You will add a default export to prices.js. This lets other files use it easily. The code below will format an amount as pesos. Add it at the end of prices.js. Then run the checker to confirm it works.\n\nIn prices.js:\n```\nexport default function formatPeso(amount) {\n  return `PHP ${amount.toFixed(2)}`;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "default",
+        "label": "prices.js has a default export",
+        "kind": "local-file-contains",
+        "path": "prices.js",
+        "value": "export default function formatPeso"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of default export as a single thing you give to others."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of prices.js.\n\nIn prices.js:\n```\nexport default function formatPeso(amount) {\n  return `PHP ${amount.toFixed(2)}`;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"Tricycle Terminal\";\nexport const prices = { \"Market\": 20, \"School\": 30, \"Clinic\": 25 };\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\nexport default function formatPeso(amount) {\n  return `PHP ${amount.toFixed(2)}`;\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "modules-tricycle"
+  },
+  {
+    "id": "node-modules-tricycle-7",
+    "index": 297,
+    "task": "You will import the default export in app.js. This lets you use the function to print prices. Add the code below at the top of app.js and at the end. Then run the checker to confirm it prints PHP 20.00.\n\nIn app.js:\n```\nimport formatPeso from \"./prices.js\";\nconsole.log(formatPeso(20));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "peso",
+        "label": "The script prints PHP 20.00",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "PHP 20.00"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You import a default export without braces, like importing a single tool."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the top of app.js and then at the end.\n\nIn app.js:\n```\nimport formatPeso from \"./prices.js\";\nconsole.log(formatPeso(20));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import formatPeso from \"./prices.js\";\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Market\"]);\nconsole.log(`School: ${priceOf(\"School\")}`);\nconsole.log(formatPeso(20));\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "modules-tricycle"
+  },
+  {
+    "id": "node-modules-tricycle-8",
+    "index": 298,
+    "task": "You will import from Node's built-in os module. This gives you info about your computer. Add the code below at the top of app.js and at the end. Then run the checker to confirm it prints your system name.\n\nIn app.js:\n```\nimport { platform } from \"node:os\";\nconsole.log(`Running on ${platform()}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "os",
+        "label": "The script prints Running on and your system name",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Running on "
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The os module tells you what operating system you're using."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the top of app.js and then at the end.\n\nIn app.js:\n```\nimport { platform } from \"node:os\";\nconsole.log(`Running on ${platform()}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { platform } from \"node:os\";\nimport formatPeso from \"./prices.js\";\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Market\"]);\nconsole.log(`School: ${priceOf(\"School\")}`);\nconsole.log(formatPeso(20));\nconsole.log(`Running on ${platform()}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "modules-tricycle"
+  },
+  {
+    "id": "node-modules-tricycle-9",
+    "index": 299,
+    "task": "You will add a start script to package.json. This lets you run the app with npm run start. Change package.json to add the scripts entry. Then run the checker to confirm it has the start script.\n\nIn package.json:\n```\n  \"type\": \"module\",\n  \"scripts\": { \"start\": \"node app.js\" }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "script",
+        "label": "package.json has a start script",
+        "kind": "local-file-contains",
+        "path": "package.json",
+        "value": "\"start\": \"node app.js\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The start script tells npm how to run your app."
+      },
+      {
+        "level": 2,
+        "text": "Add the scripts entry inside package.json.\n\nIn package.json:\n```\n  \"type\": \"module\",\n  \"scripts\": { \"start\": \"node app.js\" }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "package.json": "{\n  \"type\": \"module\",\n  \"scripts\": { \"start\": \"node app.js\" }\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "modules-tricycle"
+  },
+  {
+    "id": "node-modules-tricycle-10",
+    "index": 300,
+    "task": "You will import priceOf under a new name, lookup, and use it. Add the code below at the top of app.js and at the end. Then run the checker to confirm it prints Last item: 25.\n\nIn app.js:\n```\nimport { priceOf as lookup } from \"./prices.js\";\nconsole.log(`Last item: ${lookup(\"Clinic\")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "alias",
+        "label": "The script prints Last item: 25",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Last item: 25"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You can rename an import with 'as' to make it easier to use."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the top of app.js and then at the end.\n\nIn app.js:\n```\nimport { priceOf as lookup } from \"./prices.js\";\nconsole.log(`Last item: ${lookup(\"Clinic\")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { priceOf as lookup } from \"./prices.js\";\nimport { platform } from \"node:os\";\nimport formatPeso from \"./prices.js\";\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Market\"]);\nconsole.log(`School: ${priceOf(\"School\")}`);\nconsole.log(formatPeso(20));\nconsole.log(`Running on ${platform()}`);\nconsole.log(`Last item: ${lookup(\"Clinic\")}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "modules-tricycle"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
