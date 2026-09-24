@@ -6085,3 +6085,213 @@ cliGitCourse.steps.push(...([
     "projectId": "first-commit-school-club"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: first-commit-school-club.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-first-commit-school-club-6",
+    "index": 136,
+    "task": "You save your work as the first commit. This marks the start of your project. Git remembers this moment. Run the checker to confirm your work is saved. Paste its report.\n\nType this command in your terminal:\n`git commit -m \"Start school club list\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has one commit",
+        "kind": "local-git-commit-count",
+        "count": 1
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of this like saving a photo of your work for the first time."
+      },
+      {
+        "level": 2,
+        "text": "Run `git commit -m \"Start school club list\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Start school club list\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-commit-school-club"
+  },
+  {
+    "id": "cli-first-commit-school-club-7",
+    "index": 137,
+    "task": "You add a new line to schedule.txt. Git notices this change. It is not saved yet. Run the checker to confirm Git sees the change. Paste its report.\n\nType this command in your terminal:\n`echo \"Wednesday Meeting\" >> schedule.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "changed",
+        "label": "schedule.txt has an unstaged change",
+        "kind": "local-git-unstaged",
+        "path": "schedule.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are adding text to the file. Git watches for new changes."
+      },
+      {
+        "level": 2,
+        "text": "Run `echo \"Wednesday Meeting\" >> schedule.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Wednesday Meeting\" >> schedule.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-school-club"
+  },
+  {
+    "id": "cli-first-commit-school-club-8",
+    "index": 138,
+    "task": "You tell Git to save the change in schedule.txt. This prepares it for the next commit. Run the checker to confirm the change is ready. Paste its report.\n\nType this command in your terminal:\n`git add schedule.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "staged",
+        "label": "The change to schedule.txt is staged",
+        "kind": "local-git-staged",
+        "path": "schedule.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are telling Git to hold the new text until you save it."
+      },
+      {
+        "level": 2,
+        "text": "Run `git add schedule.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add schedule.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-school-club"
+  },
+  {
+    "id": "cli-first-commit-school-club-9",
+    "index": 139,
+    "task": "You save the change with a message. The message has a mistake. Git saves it anyway. Run the checker to confirm two commits exist. Paste its report.\n\nType this command in your terminal:\n`git commit -m \"Add wednesday lne\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has two commits",
+        "kind": "local-git-commit-count",
+        "count": 2
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are saving the file with a message that is not perfect yet."
+      },
+      {
+        "level": 2,
+        "text": "Run `git commit -m \"Add wednesday lne\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Add wednesday lne\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-commit-school-club"
+  },
+  {
+    "id": "cli-first-commit-school-club-10",
+    "index": 140,
+    "task": "You fix the message in the last commit. You use --amend to change it. Git updates the message but keeps the same commit. Run the checker to confirm the message is fixed. Paste its report.\n\nType this command in your terminal:\n`git commit --amend -m \"Add wednesday line\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "message",
+        "label": "The last commit message is spelled correctly",
+        "kind": "local-git-head-message",
+        "value": "Add wednesday line"
+      },
+      {
+        "id": "still-two",
+        "label": "There are still two commits, not three",
+        "kind": "local-git-commit-count",
+        "count": 2
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are correcting the message without making a new commit."
+      },
+      {
+        "level": 2,
+        "text": "Run `git commit --amend -m \"Add wednesday line\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit --amend -m \"Add wednesday line\""
+    },
+    "estimatedMinutes": 4,
+    "projectId": "first-commit-school-club"
+  }
+] satisfies typeof cliGitCourse.steps));
