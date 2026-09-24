@@ -381,6 +381,22 @@ export type TestSpec =
   | { id: string; label: Copy; kind: "local-node-prints"; file: string; value: string; args?: string[]; env?: Record<string, string>; stdin?: string }
   | { id: string; label: Copy; kind: "local-node-stderr"; file: string; value: string; args?: string[]; env?: Record<string, string>; stdin?: string }
   | { id: string; label: Copy; kind: "local-node-exit-code"; file: string; code: number; args?: string[]; env?: Record<string, string>; stdin?: string }
+  /*
+   * Start `node <file>` with PORT set to a free port, send `requests` in order
+   * to 127.0.0.1 only, then compare the last answer's status, body text, or
+   * one header. The server is stopped after every check.
+   */
+  | {
+      id: string;
+      label: Copy;
+      kind: "local-http";
+      file: string;
+      requests: { method: string; path: string; body?: string; headers?: Record<string, string> }[];
+      env?: Record<string, string>;
+      status?: number;
+      bodyContains?: string;
+      header?: { name: string; value: string };
+    }
 
   // --- Source assertions (any kind) ---
   /**

@@ -14,12 +14,14 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { cliGitProjects } from "./cli-git-plan.mjs";
 import { nodeBasicsProjects } from "./node-basics-plan.mjs";
+import { apiBasicsProjects } from "./api-basics-plan.mjs";
 
 const BATCH = 5;
 
 export const LOCAL_COURSES = {
   "cli-git": { projects: cliGitProjects, symbol: "cliGitCourse", title: "Command Line and Git" },
   "node-basics": { projects: nodeBasicsProjects, symbol: "nodeBasicsCourse", title: "Node.js Fundamentals" },
+  "api-basics": { projects: apiBasicsProjects, symbol: "apiBasicsCourse", title: "Building APIs" },
 };
 
 /** The lines of `next` that are new or changed compared with `previous`. */

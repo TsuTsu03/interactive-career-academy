@@ -17,6 +17,7 @@
 
 import { execFile, spawn } from "node:child_process";
 import fs from "node:fs";
+import net from "node:net";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -175,6 +176,75 @@ function runNode(root, full, test) {
   });
 }
 
+/** A free port on this computer, so the learner's server never clashes with another program. */
+function freePort() {
+  return new Promise((resolve, reject) => {
+    const probe = net.createServer();
+    probe.once("error", reject);
+    probe.listen(0, "127.0.0.1", () => {
+      const { port } = probe.address();
+      probe.close(() => resolve(port));
+    });
+  });
+}
+
+function portOpen(port) {
+  return new Promise((resolve) => {
+    const socket = net.connect(port, "127.0.0.1");
+    socket.once("connect", () => { socket.destroy(); resolve(true); });
+    socket.once("error", () => resolve(false));
+  });
+}
+
+/**
+ * Starts the learner's own server with PORT set, waits until it accepts
+ * connections, sends the requests in order to 127.0.0.1 only, and returns the
+ * last response. The server is always stopped afterwards. Each check gets a
+ * fresh server, so one check can never depend on another.
+ */
+async function runHttp(root, full, test) {
+  const port = await freePort();
+  const env = { PATH: process.env.PATH ?? "", NODE_NO_WARNINGS: "1", PORT: String(port) };
+  for (const key of ["SystemRoot", "SYSTEMROOT", "TEMP", "TMP", "HOME", "USERPROFILE"]) if (process.env[key]) env[key] = process.env[key];
+  Object.assign(env, test.env ?? {});
+  const child = spawn(process.execPath, [full], { cwd: root, env, windowsHide: true });
+  let stderr = "";
+  let exited = false;
+  child.stderr.on("data", (chunk) => { if (stderr.length < MAX_OUTPUT_CHARS) stderr += chunk; });
+  child.stdout.on("data", () => {});
+  child.on("exit", () => { exited = true; });
+  child.on("error", () => { exited = true; });
+  try {
+    const started = Date.now();
+    while (!(await portOpen(port))) {
+      if (exited) return { error: "The server stopped before it started listening." + (stderr.trim() ? " Run it yourself to read the error." : "") };
+      if (Date.now() - started > NODE_TIMEOUT_MS) return { error: "The server did not start listening on process.env.PORT within 5 seconds." };
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    }
+    let last = null;
+    for (const request of test.requests) {
+      const response = await fetch(`http://127.0.0.1:${port}${request.path}`, {
+        method: request.method,
+        headers: request.headers,
+        body: request.body,
+        signal: AbortSignal.timeout(NODE_TIMEOUT_MS),
+      });
+      last = { status: response.status, headers: response.headers, body: (await response.text()).slice(0, MAX_OUTPUT_CHARS) };
+    }
+    return last;
+  } catch (error) {
+    return { error: error?.name === "TimeoutError" ? "The server did not answer within 5 seconds." : "The server closed the connection without an answer." };
+  } finally {
+    // Wait for the process to end: on Windows a running server keeps its
+    // folder locked, and the next check must start from a stopped server.
+    if (!exited) {
+      const ended = new Promise((resolve) => child.once("exit", resolve));
+      child.kill();
+      await Promise.race([ended, new Promise((resolve) => setTimeout(resolve, 2000))]);
+    }
+  }
+}
+
 const pass = { pass: true, reason: "" };
 const fail = (reason) => ({ pass: false, reason });
 
@@ -186,6 +256,21 @@ async function runCheck(root, test, state) {
   }
   const target = "path" in test ? inside(root, test.path) : null;
   if ("path" in test && !target) return fail("The check names a path this checker will not read.");
+
+  if (test.kind === "local-http") {
+    const script = inside(root, test.file);
+    if (!script) return fail("The check names a file this checker will not run.");
+    if (kindOf(script) !== "file") return fail(`There is no file named ${test.file}.`);
+    const last = await runHttp(root, script, test);
+    const request = test.requests.at(-1);
+    const what = `${request.method} ${request.path}`;
+    if (!last) return fail("The check sent no request.");
+    if (last.error) return fail(last.error);
+    if (test.status !== undefined && last.status !== test.status) return fail(`${what} answered with status ${last.status}; the step expects ${test.status}.`);
+    if (test.bodyContains !== undefined && !last.body.includes(test.bodyContains)) return fail(`${what} answered, but the body does not contain the expected text.`);
+    if (test.header !== undefined && !(last.headers.get(test.header.name) ?? "").includes(test.header.value)) return fail(`${what} answered without the expected ${test.header.name} header.`);
+    return pass;
+  }
 
   if (test.kind.startsWith("local-node-")) {
     const script = inside(root, test.file);

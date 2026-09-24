@@ -3,6 +3,7 @@ const { curriculum } = await import("../content/curriculum.ts");
 const { concepts } = await import("../content/concepts.ts");
 const { cliGitProjects } = await import("./cli-git-plan.mjs");
 const { nodeBasicsProjects } = await import("./node-basics-plan.mjs");
+const { apiBasicsProjects } = await import("./api-basics-plan.mjs");
 
 const sqlSectors = [
   ["sari-sari", "Sari-Sari Store", ["Rice", "Soap", "Cooking Oil", "Egg"]],
@@ -437,5 +438,7 @@ const sql = progress("sql-basics");
 const nosql = progress("nosql-basics");
 const cligit = localProgress("cli-git", cliGitProjects);
 const nodebasics = localProgress("node-basics", nodeBasicsProjects);
-const next = [sql, nosql, cligit, nodebasics].find((item) => !item.complete) ?? nodebasics;
-console.log(JSON.stringify({ complete: [sql, nosql, cligit, nodebasics].every((item) => item.complete), sql, nosql, cligit, nodebasics, next }));
+const apibasics = localProgress("api-basics", apiBasicsProjects);
+const all = [sql, nosql, cligit, nodebasics, apibasics];
+const next = all.find((item) => !item.complete) ?? apibasics;
+console.log(JSON.stringify({ complete: all.every((item) => item.complete), sql, nosql, cligit, nodebasics, apibasics, next }));

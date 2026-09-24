@@ -267,7 +267,7 @@ function LocalCheckGuide({ step, flash }: {
       <div className="flex h-10 shrink-0 items-center border-b border-outline-variant px-4 text-label-caps text-on-surface-variant">Your computer</div>
       <div className={`min-h-0 flex-1 space-y-4 overflow-auto p-3 sm:p-5 ${previewRing(flash)}`}>
         <p className="text-body-sm text-on-surface">
-          This course runs in your own terminal: Git Bash on Windows, or Terminal on Mac and Linux. You need Node.js 18 or newer installed, and Git 2.28 or newer for the Git course.
+          This course runs in your own terminal: Git Bash on Windows, or Terminal on Mac and Linux. You need Node.js 22.13 or newer installed, and Git 2.28 or newer for the Git course.
         </p>
         <p className="text-body-sm text-on-surface">
           <a href="/downloads/codedaddy-check.mjs" download className="font-bold text-primary underline underline-offset-2">

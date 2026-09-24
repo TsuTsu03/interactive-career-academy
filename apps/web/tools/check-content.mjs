@@ -125,6 +125,20 @@ function localShape(step) {
     if (test.kind === "local-git-config" && !localChecker.safeConfigKey(test.key)) errors.push(`unsafe config key ${test.key}`);
     if (test.kind === "local-git-commit-count" && (!Number.isInteger(test.count) || test.count < 0)) errors.push("commit count must be a whole number");
     if (["local-file-contains", "local-file-lacks", "local-git-head-message", "local-git-config", "local-node-prints", "local-node-stderr"].includes(test.kind) && (typeof test.value !== "string" || !test.value.trim())) errors.push(`${test.kind} needs a value`);
+    if (test.kind === "local-http") {
+      if (!safe(test.file) || !/\.m?js$/.test(test.file)) errors.push(`http checks start a .js or .mjs file inside the project, not ${test.file}`);
+      if (!Array.isArray(test.requests) || test.requests.length < 1 || test.requests.length > 10) errors.push("http checks send 1 to 10 requests");
+      else for (const request of test.requests) {
+        if (!["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"].includes(request.method)) errors.push(`unsupported http method ${request.method}`);
+        if (typeof request.path !== "string" || !request.path.startsWith("/") || request.path.startsWith("//") || request.path.length > 300) errors.push(`http path must start with one / : ${request.path}`);
+        if (request.body !== undefined && (typeof request.body !== "string" || request.body.length > 5000)) errors.push("http body must be a string under 5,000 characters");
+        if (request.headers !== undefined && (typeof request.headers !== "object" || Object.entries(request.headers).some(([name, value]) => !/^[A-Za-z0-9-]{1,40}$/.test(name) || typeof value !== "string" || value.length > 200))) errors.push("http headers must be short name/value strings");
+      }
+      if (test.status === undefined && test.bodyContains === undefined && test.header === undefined) errors.push("http checks need a status, bodyContains, or header expectation");
+      if (test.status !== undefined && (!Number.isInteger(test.status) || test.status < 100 || test.status > 599)) errors.push("http status must be 100-599");
+      if (test.header !== undefined && (typeof test.header?.name !== "string" || typeof test.header?.value !== "string")) errors.push("http header expectation needs a name and value");
+      if (test.env !== undefined && (typeof test.env !== "object" || Object.entries(test.env).some(([key, value]) => !localChecker.safeEnvName(key) || key === "PORT" || typeof value !== "string"))) errors.push("http check env must map UPPER_CASE names other than PORT to strings");
+    }
     if (test.kind.startsWith("local-node-")) {
       if (!safe(test.file) || !/\.(m?js)$/.test(test.file)) errors.push(`node checks run a .js or .mjs file inside the project, not ${test.file}`);
       if (test.args !== undefined && (!Array.isArray(test.args) || test.args.length > 10 || test.args.some(arg => typeof arg !== "string" || arg.length > 200))) errors.push("node check args must be up to 10 short strings");
@@ -196,7 +210,7 @@ async function localBehaviour(steps) {
         if (failed.length) { errors.push(`${step.id}: solution-fails: ${failed.map(result => `${result.id} (${result.reason})`).join(", ")}`); return; }
       }
     } finally {
-      rmSync(scratch, { recursive: true, force: true });
+      rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 });
     }
   }
   const queue = [...projects.values()];

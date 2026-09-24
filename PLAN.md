@@ -217,7 +217,7 @@ coverage like decision 38's, and an estimate until a batch is timed.
 | Databases: NoSQL | ~250 | Browser | Documents, embedding versus referencing, and — explicitly — when a relational database is the right answer instead |
 | Command Line and Git | ~180 | Own computer | Paths, files, processes, `git` day-to-day, branches, GitHub. Named unsolved in decision 39; decision 43 checks it with a local checker, as learner-reported practice |
 | Node.js Fundamentals | ~350 | Own computer | JavaScript outside the browser, modules, npm scripts, the file system, async I/O, environment variables. Checked by the local checker (decision 45) |
-| **Building APIs** | **~650** | Own computer | Routing, middleware, request validation, the database layer, error shapes, and REST as it is actually practised |
+| **Building APIs** | **500** | Own computer | Routing, middleware, request validation, the database layer, error shapes, and REST as it is actually practised. Built on `node:http` and `node:sqlite` and checked by the local checker (decision 45); 50 projects of 10 steps cover the list above, so the ~650 estimate was not padded |
 | Auth and Security | ~300 | Own computer | Password hashing, sessions and tokens, and the OWASP failures a beginner ships by default |
 | Full-Stack Integration | ~400 | Own computer | Connecting a React front end to the learner's own API, deployment, and the full-stack capstones |
 
