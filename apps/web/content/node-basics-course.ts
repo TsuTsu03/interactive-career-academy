@@ -6958,3 +6958,227 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "folders-carinderia"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: scripts-barangay.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-scripts-barangay-1",
+    "index": 141,
+    "task": "Open the file app.js. It has one line. Change that line to print Barangay Office. This is the name of the store. Run the script with node app.js. The checker will confirm it prints Barangay Office.\n\nIn app.js:\n```\nconsole.log(\"Barangay Office\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "node app.js prints Barangay Office",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Barangay Office"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change the text inside the console.log to Barangay Office."
+      },
+      {
+        "level": 2,
+        "text": "Type the code below at the end of app.js.\n\nIn app.js:\n```\nconsole.log(\"Barangay Office\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Barangay Office\");\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-barangay"
+  },
+  {
+    "id": "node-scripts-barangay-2",
+    "index": 142,
+    "task": "Open app.js. Add two lines at the end. The first line sets a constant called item to \"Clearance\". The second line prints that value. This shows the product name. Run the script. The checker will confirm it prints Clearance on its own line.\n\nIn app.js:\n```\nconst item = \"Clearance\";\nconsole.log(item);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "item",
+        "label": "The script prints Clearance on its own line",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Clearance\n"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use const to make item a constant. Set it to \"Clearance\"."
+      },
+      {
+        "level": 2,
+        "text": "Type the code below at the end of app.js.\n\nIn app.js:\n```\nconst item = \"Clearance\";\nconsole.log(item);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Barangay Office\");\nconst item = \"Clearance\";\nconsole.log(item);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "scripts-barangay"
+  },
+  {
+    "id": "node-scripts-barangay-3",
+    "index": 143,
+    "task": "Open app.js. Add a new constant called price and set it to 50. Then change the last console.log to print both item and price together. This shows the product and its cost. Run the script. The checker will confirm it prints Clearance 50.\n\nIn app.js:\n```\nconst price = 50;\nconsole.log(item, price);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "pair",
+        "label": "The script prints Clearance 50",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Clearance 50"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add price = 50 after item. Then update the console.log to show both."
+      },
+      {
+        "level": 2,
+        "text": "Type the code below at the end of app.js.\n\nIn app.js:\n```\nconst price = 50;\nconsole.log(item, price);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Barangay Office\");\nconst item = \"Clearance\";\nconst price = 50;\nconsole.log(item, price);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "scripts-barangay"
+  },
+  {
+    "id": "node-scripts-barangay-4",
+    "index": 144,
+    "task": "Open app.js. Change the last console.log to use a template literal. It should print \"Clearance costs 50 pesos\". This uses backticks and dollar signs to insert values. Run the script. The checker will confirm it prints Clearance costs 50 pesos.\n\nIn app.js:\n```\nconsole.log(`${item} costs ${price} pesos`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "sentence",
+        "label": "The script prints Clearance costs 50 pesos",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Clearance costs 50 pesos"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use backticks to wrap the sentence. Use ${item} and ${price} inside."
+      },
+      {
+        "level": 2,
+        "text": "Type the code below at the end of app.js.\n\nIn app.js:\n```\nconsole.log(`${item} costs ${price} pesos`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Barangay Office\");\nconst item = \"Clearance\";\nconst price = 50;\nconsole.log(`${item} costs ${price} pesos`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "scripts-barangay"
+  },
+  {
+    "id": "node-scripts-barangay-5",
+    "index": 145,
+    "task": "Open app.js. Add two lines at the end. The first line makes an array called items with three strings: \"Clearance\", \"Permit\", \"ID\". The second line prints how many items are in the array. This shows the count. Run the script. The checker will confirm it prints Items: 3.\n\nIn app.js:\n```\nconst items = [\"Clearance\", \"Permit\", \"ID\"];\nconsole.log(`Items: ${items.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The script prints Items: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Items: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use [\"Clearance\", \"Permit\", \"ID\"] to make the array."
+      },
+      {
+        "level": 2,
+        "text": "Type the code below at the end of app.js.\n\nIn app.js:\n```\nconst items = [\"Clearance\", \"Permit\", \"ID\"];\nconsole.log(`Items: ${items.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Barangay Office\");\nconst item = \"Clearance\";\nconst price = 50;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Clearance\", \"Permit\", \"ID\"];\nconsole.log(`Items: ${items.length}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "scripts-barangay"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
