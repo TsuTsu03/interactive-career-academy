@@ -7413,3 +7413,228 @@ cliGitCourse.steps.push(...([
     "projectId": "merging-school-club"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: merging-school-club.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-merging-school-club-6",
+    "index": 166,
+    "task": "You add the text 'Wednesday Meeting' to the schedule file. This change is not saved yet. You must save it before it becomes part of the project. Run the checker to confirm the change is ready to be saved.\n\nType this command in your terminal:\n`echo \"Wednesday Meeting\" >> schedule.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "unstaged",
+        "label": "schedule.txt has an unstaged change",
+        "kind": "local-git-unstaged",
+        "path": "schedule.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are adding a line to the schedule file. Think of it like writing on a paper that hasn't been taped down yet."
+      },
+      {
+        "level": 2,
+        "text": "Run `echo \"Wednesday Meeting\" >> schedule.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Wednesday Meeting\" >> schedule.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "merging-school-club"
+  },
+  {
+    "id": "cli-merging-school-club-7",
+    "index": 167,
+    "task": "You save the change with a message. This tells your team what you did. After saving, nothing is left unsaved. Run the checker to confirm your work is saved.\n\nType this command in your terminal:\n`git commit -am \"Add Wednesday Meeting\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The branch has two commits",
+        "kind": "local-git-commit-count",
+        "count": 2
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are saving your change with a note. Think of it like putting a stamp on a letter before sending it."
+      },
+      {
+        "level": 2,
+        "text": "Run `git commit -am \"Add Wednesday Meeting\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -am \"Add Wednesday Meeting\""
+    },
+    "estimatedMinutes": 4,
+    "projectId": "merging-school-club"
+  },
+  {
+    "id": "cli-merging-school-club-8",
+    "index": 168,
+    "task": "You switch to the main branch. This branch does not have your new meeting yet. You are preparing to bring your work into main. Run the checker to confirm you are on main and your change is not there.\n\nType this command in your terminal:\n`git switch main`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "main",
+        "label": "You are on main",
+        "kind": "local-git-branch",
+        "value": "main"
+      },
+      {
+        "id": "not-yet",
+        "label": "main does not have Wednesday Meeting yet",
+        "kind": "local-file-lacks",
+        "path": "schedule.txt",
+        "value": "Wednesday Meeting"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are moving to the main branch. Think of it like switching to a different room in a house."
+      },
+      {
+        "level": 2,
+        "text": "Run `git switch main`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git switch main"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "merging-school-club"
+  },
+  {
+    "id": "cli-merging-school-club-9",
+    "index": 169,
+    "task": "You bring the work from the friday-plan branch into main. This adds your meeting to main. Now main has the Wednesday Meeting. Run the checker to confirm the merge is done.\n\nType this command in your terminal:\n`git merge friday-plan`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "merged",
+        "label": "friday-plan is merged into main",
+        "kind": "local-git-merged",
+        "branch": "friday-plan"
+      },
+      {
+        "id": "arrived",
+        "label": "main now has Wednesday Meeting",
+        "kind": "local-file-contains",
+        "path": "schedule.txt",
+        "value": "Wednesday Meeting"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are combining your work with the main branch. Think of it like putting two puzzle pieces together."
+      },
+      {
+        "level": 2,
+        "text": "Run `git merge friday-plan`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git merge friday-plan"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "merging-school-club"
+  },
+  {
+    "id": "cli-merging-school-club-10",
+    "index": 170,
+    "task": "You delete the friday-plan branch. Its commits are already in main, so they are safe. The branch is gone, but your work stays. Run the checker to confirm the branch is deleted.\n\nType this command in your terminal:\n`git branch -d friday-plan`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "deleted",
+        "label": "The friday-plan branch is deleted",
+        "kind": "local-git-branch-missing",
+        "branch": "friday-plan"
+      },
+      {
+        "id": "kept",
+        "label": "Wednesday Meeting is still in main",
+        "kind": "local-file-contains",
+        "path": "schedule.txt",
+        "value": "Wednesday Meeting"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are removing the branch. Think of it like closing a file after you've saved it."
+      },
+      {
+        "level": 2,
+        "text": "Run `git branch -d friday-plan`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git branch -d friday-plan"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "merging-school-club"
+  }
+] satisfies typeof cliGitCourse.steps));
