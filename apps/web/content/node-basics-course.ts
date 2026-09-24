@@ -6715,3 +6715,246 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "folders-carinderia"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: folders-carinderia.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-folders-carinderia-6",
+    "index": 136,
+    "task": "You add mkdir to the import list. This lets you make folders. You add one line at the end to make the archive folder. This folder will hold your copied files. Run `node app.js` to test it. The checker will confirm the folder exists.\n\nIn app.js:\n```\nimport { readdir, mkdir } from \"node:fs/promises\";\nawait mkdir(\"archive\", { recursive: true });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Adobo 80\n",
+      "records/b.txt": "Pancit 60\n",
+      "records/notes.md": "# Notes\nKeep Carinderia records here.\n"
+    },
+    "tests": [
+      {
+        "id": "archive",
+        "label": "The archive folder exists",
+        "kind": "local-dir-exists",
+        "path": "archive"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of mkdir like a tool to build a new folder. You need it to make the archive folder."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the end of the file, right after the import list.\n\nIn app.js:\n```\nimport { readdir, mkdir } from \"node:fs/promises\";\nawait mkdir(\"archive\", { recursive: true });\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "folders-carinderia"
+  },
+  {
+    "id": "node-folders-carinderia-7",
+    "index": 137,
+    "task": "You add copyFile to the import list. This lets you copy files. You add one line at the end to copy records/a.txt into the archive folder. Run `node app.js` to test it. The checker will confirm the file was copied to archive/a.txt.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile } from \"node:fs/promises\";\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Adobo 80\n",
+      "records/b.txt": "Pancit 60\n",
+      "records/notes.md": "# Notes\nKeep Carinderia records here.\n"
+    },
+    "tests": [
+      {
+        "id": "copied",
+        "label": "archive/a.txt is a copy of records/a.txt",
+        "kind": "local-file-contains",
+        "path": "archive/a.txt",
+        "value": "Adobo 80"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of copyFile like a tool to copy a file from one place to another."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the end of the file, right after the import list.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile } from \"node:fs/promises\";\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir, copyFile } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "folders-carinderia"
+  },
+  {
+    "id": "node-folders-carinderia-8",
+    "index": 138,
+    "task": "You add stat to the import list. This lets you check a file's details. You add two lines at the end to get the file's size and print it. The script will print the size in bytes. The checker will confirm the size is 9 bytes.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile, stat } from \"node:fs/promises\";\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Adobo 80\n",
+      "records/b.txt": "Pancit 60\n",
+      "records/notes.md": "# Notes\nKeep Carinderia records here.\n"
+    },
+    "tests": [
+      {
+        "id": "size",
+        "label": "The script prints Size: 9 bytes",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Size: 9 bytes"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of stat like a tool to check what a file is and how big it is."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of the file, after the import list.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile, stat } from \"node:fs/promises\";\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir, copyFile, stat } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "folders-carinderia"
+  },
+  {
+    "id": "node-folders-carinderia-9",
+    "index": 139,
+    "task": "You add rename to the import list. This lets you rename files. You add one line at the end to rename archive/a.txt to archive/a-old.txt. Run `node app.js` to test it. The checker will confirm the old file exists and the new one is gone.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile, stat, rename } from \"node:fs/promises\";\nawait rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Adobo 80\n",
+      "records/b.txt": "Pancit 60\n",
+      "records/notes.md": "# Notes\nKeep Carinderia records here.\n"
+    },
+    "tests": [
+      {
+        "id": "renamed",
+        "label": "archive/a-old.txt exists",
+        "kind": "local-file-exists",
+        "path": "archive/a-old.txt"
+      },
+      {
+        "id": "moved",
+        "label": "archive/a.txt is gone",
+        "kind": "local-path-missing",
+        "path": "archive/a.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of rename like a tool to change a file's name. You are moving it to a new name."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the end of the file, right after the import list.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile, stat, rename } from \"node:fs/promises\";\nawait rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir, copyFile, stat, rename } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\nawait rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "folders-carinderia"
+  },
+  {
+    "id": "node-folders-carinderia-10",
+    "index": 140,
+    "task": "You add one line at the end to use path.resolve. This turns the file path into a full path. You use path.isAbsolute to check if it's absolute. The script will print Absolute: true. The checker will confirm it is true.\n\nIn app.js:\n```\nconsole.log(`Absolute: ${path.isAbsolute(path.resolve(file))}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Adobo 80\n",
+      "records/b.txt": "Pancit 60\n",
+      "records/notes.md": "# Notes\nKeep Carinderia records here.\n"
+    },
+    "tests": [
+      {
+        "id": "absolute",
+        "label": "The script prints Absolute: true",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Absolute: true"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of path.resolve like a tool to fix a path so it works everywhere. It makes it full and clear."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the end of the file, right after the import list.\n\nIn app.js:\n```\nconsole.log(`Absolute: ${path.isAbsolute(path.resolve(file))}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir, copyFile, stat, rename } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\nawait rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));\nconsole.log(`Absolute: ${path.isAbsolute(path.resolve(file))}`);\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "folders-carinderia"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
