@@ -4764,3 +4764,228 @@ cliGitCourse.steps.push(...([
     "projectId": "merging-barangay"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: merging-barangay.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-merging-barangay-6",
+    "index": 106,
+    "task": "You are on the new-fees branch. Add the text 'Permit 300' to the fees.txt file. This makes the change ready to save. Run the command exactly as shown. Then check if the file has an unstaged change. That means the change is made but not yet saved.\n\nType this command in your terminal:\n`echo \"Permit 300\" >> fees.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "unstaged",
+        "label": "fees.txt has an unstaged change",
+        "kind": "local-git-unstaged",
+        "path": "fees.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the text to the file using the command given. Then check if the file has an unstaged change."
+      },
+      {
+        "level": 2,
+        "text": "Run `echo \"Permit 300\" >> fees.txt` to add the text."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Permit 300\" >> fees.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "merging-barangay"
+  },
+  {
+    "id": "cli-merging-barangay-7",
+    "index": 107,
+    "task": "Save the change you made to fees.txt. This saves the new permit fee in your branch. Run the command exactly as shown. Then check if your branch has two commits and nothing is left uncommitted.\n\nType this command in your terminal:\n`git commit -am \"Add Permit 300\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The branch has two commits",
+        "kind": "local-git-commit-count",
+        "count": 2
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Save the change by running the command. Then check if your branch has two commits and nothing is left uncommitted."
+      },
+      {
+        "level": 2,
+        "text": "Run `git commit -am \"Add Permit 300\"` to save the change."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -am \"Add Permit 300\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "merging-barangay"
+  },
+  {
+    "id": "cli-merging-barangay-8",
+    "index": 108,
+    "task": "Switch to the main branch. This branch does not yet have the new permit fee. Run the command exactly as shown. Then check if you are on main and if main still does not have Permit 300.\n\nType this command in your terminal:\n`git switch main`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "main",
+        "label": "You are on main",
+        "kind": "local-git-branch",
+        "value": "main"
+      },
+      {
+        "id": "not-yet",
+        "label": "main does not have Permit 300 yet",
+        "kind": "local-file-lacks",
+        "path": "fees.txt",
+        "value": "Permit 300"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Switch to main by running the command. Then check if you are on main and if main still does not have Permit 300."
+      },
+      {
+        "level": 2,
+        "text": "Run `git switch main` to switch branches."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git switch main"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "merging-barangay"
+  },
+  {
+    "id": "cli-merging-barangay-9",
+    "index": 109,
+    "task": "Bring the new-fees branch into main. This adds the permit fee to main. Run the command exactly as shown. Then check if new-fees is merged into main and if main now has Permit 300.\n\nType this command in your terminal:\n`git merge new-fees`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "merged",
+        "label": "new-fees is merged into main",
+        "kind": "local-git-merged",
+        "branch": "new-fees"
+      },
+      {
+        "id": "arrived",
+        "label": "main now has Permit 300",
+        "kind": "local-file-contains",
+        "path": "fees.txt",
+        "value": "Permit 300"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Merge the branch by running the command. Then check if new-fees is merged into main and if main now has Permit 300."
+      },
+      {
+        "level": 2,
+        "text": "Run `git merge new-fees` to bring the changes into main."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git merge new-fees"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "merging-barangay"
+  },
+  {
+    "id": "cli-merging-barangay-10",
+    "index": 110,
+    "task": "Delete the new-fees branch. Its commits are already saved in main. Run the command exactly as shown. Then check if the branch is deleted and if Permit 300 is still in main.\n\nType this command in your terminal:\n`git branch -d new-fees`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "deleted",
+        "label": "The new-fees branch is deleted",
+        "kind": "local-git-branch-missing",
+        "branch": "new-fees"
+      },
+      {
+        "id": "kept",
+        "label": "Permit 300 is still in main",
+        "kind": "local-file-contains",
+        "path": "fees.txt",
+        "value": "Permit 300"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Delete the branch by running the command. Then check if the branch is deleted and if Permit 300 is still in main."
+      },
+      {
+        "level": 2,
+        "text": "Run `git branch -d new-fees` to delete the branch."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git branch -d new-fees"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "merging-barangay"
+  }
+] satisfies typeof cliGitCourse.steps));
