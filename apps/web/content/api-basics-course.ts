@@ -6630,3 +6630,259 @@ apiBasicsCourse.steps.push(...([
     "projectId": "json-routes-carinderia"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: json-routes-carinderia.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-json-routes-carinderia-6",
+    "index": 116,
+    "task": "Your server must say 404 when someone asks for a path that does not exist. Change the last line of the handler to send a JSON error. This helps users know when a request fails. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  send(res, 404, { error: \"Not found\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Adobo\", price: 80 }, { id: 2, name: \"Pancit\", price: 60 }, { id: 3, name: \"Lumpia\", price: 15 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "missing",
+        "label": "GET /nope answers 404 with a JSON error",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/nope"
+          }
+        ],
+        "status": 404,
+        "bodyContains": "{\"error\":\"Not found\"}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If the path is not known, send a 404 status and a JSON message."
+      },
+      {
+        "level": 2,
+        "text": "Put the new line at the end of the handler, right before the 404 line.\n\nIn server.js:\n```\n  send(res, 404, { error: \"Not found\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Adobo\", price: 80 }, { id: 2, name: \"Pancit\", price: 60 }, { id: 3, name: \"Lumpia\", price: 15 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "json-routes-carinderia"
+  },
+  {
+    "id": "api-json-routes-carinderia-7",
+    "index": 117,
+    "task": "When someone asks for the root path, your server must reply with the API's name and its routes. Add a line at the top of the handler to handle this case. This helps users discover what your API offers. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (req.url === \"/\") return send(res, 200, { name: \"Carinderia\", routes: [\"/items\"] });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Adobo\", price: 80 }, { id: 2, name: \"Pancit\", price: 60 }, { id: 3, name: \"Lumpia\", price: 15 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "root",
+        "label": "GET / lists the routes",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "\"routes\":[\"/items\"]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the URL is exactly \"/\", then send a JSON object with the name and routes."
+      },
+      {
+        "level": 2,
+        "text": "Put this line at the top of the handler, right after the `if (req.method === 'GET')` line.\n\nIn server.js:\n```\n  if (req.url === \"/\") return send(res, 200, { name: \"Carinderia\", routes: [\"/items\"] });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Adobo\", price: 80 }, { id: 2, name: \"Pancit\", price: 60 }, { id: 3, name: \"Lumpia\", price: 15 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") return send(res, 200, { name: \"Carinderia\", routes: [\"/items\"] });\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "json-routes-carinderia"
+  },
+  {
+    "id": "api-json-routes-carinderia-8",
+    "index": 118,
+    "task": "When someone asks for /items/cheapest, your server must reply with the item that costs the least. Add a line before the 404 line to handle this. This helps users find the cheapest dish. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Adobo\", price: 80 }, { id: 2, name: \"Pancit\", price: 60 }, { id: 3, name: \"Lumpia\", price: 15 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "cheapest",
+        "label": "GET /items/cheapest answers Lumpia",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/cheapest"
+          }
+        ],
+        "bodyContains": "\"name\":\"Lumpia\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Sort the items by price and pick the first one. Use the `sort` and `filter` methods."
+      },
+      {
+        "level": 2,
+        "text": "Put this line before the 404 line, after the `if (req.url === \"/\")` line.\n\nIn server.js:\n```\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Adobo\", price: 80 }, { id: 2, name: \"Pancit\", price: 60 }, { id: 3, name: \"Lumpia\", price: 15 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") return send(res, 200, { name: \"Carinderia\", routes: [\"/items\"] });\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "json-routes-carinderia"
+  },
+  {
+    "id": "api-json-routes-carinderia-9",
+    "index": 119,
+    "task": "When someone asks for /items/pretty, your server must reply with indented JSON. Add a line before the 404 line to handle this. This helps people read the data more easily. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (req.url === \"/items/pretty\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify(items, null, 2)); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Adobo\", price: 80 }, { id: 2, name: \"Pancit\", price: 60 }, { id: 3, name: \"Lumpia\", price: 15 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "pretty",
+        "label": "GET /items/pretty answers indented JSON",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/pretty"
+          }
+        ],
+        "bodyContains": "[\n  {\n    \"id\": 1"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Set the Content-Type header to application/json, then use JSON.stringify with 2 spaces for indentation."
+      },
+      {
+        "level": 2,
+        "text": "Put this line before the 404 line, after the /items/cheapest line.\n\nIn server.js:\n```\n  if (req.url === \"/items/pretty\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify(items, null, 2)); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Adobo\", price: 80 }, { id: 2, name: \"Pancit\", price: 60 }, { id: 3, name: \"Lumpia\", price: 15 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") return send(res, 200, { name: \"Carinderia\", routes: [\"/items\"] });\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n  if (req.url === \"/items/pretty\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify(items, null, 2)); return; }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "json-routes-carinderia"
+  },
+  {
+    "id": "api-json-routes-carinderia-10",
+    "index": 120,
+    "task": "When someone asks for /items/expensive, your server must reply with items priced over 40. Add a line before the 404 line to handle this. This helps users find expensive dishes. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (req.url === \"/items/expensive\") return send(res, 200, items.filter((item) => item.price > 40));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Adobo\", price: 80 }, { id: 2, name: \"Pancit\", price: 60 }, { id: 3, name: \"Lumpia\", price: 15 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "expensive",
+        "label": "GET /items/expensive answers Adobo and Pancit",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/expensive"
+          }
+        ],
+        "bodyContains": "\"name\":\"Adobo\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the `filter` method to keep only items with price greater than 40."
+      },
+      {
+        "level": 2,
+        "text": "Put this line before the 404 line, after the /items/pretty line.\n\nIn server.js:\n```\n  if (req.url === \"/items/expensive\") return send(res, 200, items.filter((item) => item.price > 40));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Adobo\", price: 80 }, { id: 2, name: \"Pancit\", price: 60 }, { id: 3, name: \"Lumpia\", price: 15 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") return send(res, 200, { name: \"Carinderia\", routes: [\"/items\"] });\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n  if (req.url === \"/items/pretty\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify(items, null, 2)); return; }\n  if (req.url === \"/items/expensive\") return send(res, 200, items.filter((item) => item.price > 40));\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "json-routes-carinderia"
+  }
+] satisfies typeof apiBasicsCourse.steps));
