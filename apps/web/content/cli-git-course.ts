@@ -970,3 +970,233 @@ cliGitCourse.steps.push(...([
     "projectId": "first-commit-sari-sari"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: undo-sari-sari.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-undo-sari-sari-1",
+    "index": 21,
+    "task": "You turn this folder into a Git repository. This lets you save your work safely. You use the command `git init -b main` to start. After you run it, the checker will say the folder is now a Git repo. It will also say prices.txt is not tracked yet. That's okay for now.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\nSoap 25\n"
+    },
+    "tests": [
+      {
+        "id": "repo",
+        "label": "The folder is a Git repository",
+        "kind": "local-git-repo"
+      },
+      {
+        "id": "untracked",
+        "label": "prices.txt is not tracked yet",
+        "kind": "local-git-untracked",
+        "path": "prices.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are starting a new project folder. Git will remember your changes from here."
+      },
+      {
+        "level": 2,
+        "text": "Run `git init -b main` to start the repository."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git init -b main"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "undo-sari-sari"
+  },
+  {
+    "id": "cli-undo-sari-sari-2",
+    "index": 22,
+    "task": "You tell Git who you are. This helps identify your work later. You run `git config user.name \"Maria Santos\"` to set your name. Then you run `git config user.email \"maria@example.com\"` to set your email. After that, the checker will confirm your name and email are set.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\nSoap 25\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "Commits will be signed by Maria Santos",
+        "kind": "local-git-config",
+        "key": "user.name",
+        "value": "Maria Santos"
+      },
+      {
+        "id": "email",
+        "label": "The commit email is maria@example.com",
+        "kind": "local-git-config",
+        "key": "user.email",
+        "value": "maria@example.com"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Git needs to know who made the changes. You give it your name and email."
+      },
+      {
+        "level": 2,
+        "text": "Run `git config user.name \"Maria Santos\"` and `git config user.email \"maria@example.com\"`."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.name \"Maria Santos\"\ngit config user.email \"maria@example.com\""
+    },
+    "estimatedMinutes": 4,
+    "projectId": "undo-sari-sari"
+  },
+  {
+    "id": "cli-undo-sari-sari-3",
+    "index": 23,
+    "task": "You prepare all files to be saved. You use `git add .` to stage every file. This means Git will save them together. After you run it, the checker will say both files are now staged. That means they are ready to be saved.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\nSoap 25\n"
+    },
+    "tests": [
+      {
+        "id": "file",
+        "label": "prices.txt is staged",
+        "kind": "local-git-staged",
+        "path": "prices.txt"
+      },
+      {
+        "id": "readme",
+        "label": "README.txt is staged",
+        "kind": "local-git-staged",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are telling Git to save all files at once. Use the dot to mean all files."
+      },
+      {
+        "level": 2,
+        "text": "Run `git add .` to stage all files."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add ."
+    },
+    "estimatedMinutes": 2,
+    "projectId": "undo-sari-sari"
+  },
+  {
+    "id": "cli-undo-sari-sari-4",
+    "index": 24,
+    "task": "You save your work as the first commit. You use `git commit -m \"Start sari-sari store list\"` to do this. The message tells what you did. After you run it, the checker will say the repo has one commit and nothing is left uncommitted. That means your work is saved.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\nSoap 25\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has one commit",
+        "kind": "local-git-commit-count",
+        "count": 1
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are saving your files for the first time. Give a short message to explain what you did."
+      },
+      {
+        "level": 2,
+        "text": "Run `git commit -m \"Start sari-sari store list\"` to save your work."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Start sari-sari store list\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "undo-sari-sari"
+  },
+  {
+    "id": "cli-undo-sari-sari-5",
+    "index": 25,
+    "task": "You add a mistake to prices.txt. You use `echo \"Wrong line\" >> prices.txt` to add it. This is a test for undoing changes. After you run it, the checker will say prices.txt now has the wrong line and Git sees an unstaged change. That's what you want for now.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\nSoap 25\n"
+    },
+    "tests": [
+      {
+        "id": "mistake",
+        "label": "prices.txt has the mistaken line",
+        "kind": "local-file-contains",
+        "path": "prices.txt",
+        "value": "Wrong line"
+      },
+      {
+        "id": "unstaged",
+        "label": "Git sees an unstaged change",
+        "kind": "local-git-unstaged",
+        "path": "prices.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are adding a mistake to test undoing changes. Use the `>>` to add to the end of the file."
+      },
+      {
+        "level": 2,
+        "text": "Run `echo \"Wrong line\" >> prices.txt` to add the mistake."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Wrong line\" >> prices.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "undo-sari-sari"
+  }
+] satisfies typeof cliGitCourse.steps));
