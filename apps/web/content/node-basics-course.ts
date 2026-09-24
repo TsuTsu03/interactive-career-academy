@@ -386,3 +386,237 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "scripts-sari-sari"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: scripts-sari-sari.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-scripts-sari-sari-6",
+    "index": 6,
+    "task": "You will print each product name with a dash before it. Add the code below at the end of app.js. This makes the list look neat for the store owner. Run the checker to confirm the last line is - Egg.\n\nIn app.js:\n```\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "last",
+        "label": "The list ends with - Egg",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "- Egg"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of each product as one item in a list. You need to show each one with a dash."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the items list.\n\nIn app.js:\n```\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Sari-Sari Store\");\nconst item = \"Rice\";\nconst price = 50;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Rice\", \"Soap\", \"Egg\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-sari-sari"
+  },
+  {
+    "id": "node-scripts-sari-sari-7",
+    "index": 7,
+    "task": "You will add up the three prices and print the total. Add the code below at the end of app.js. This helps the store owner know how much to charge. Run the checker to confirm it prints Total: 84.\n\nIn app.js:\n```\nconst total = 50 + 25 + 9;\nconsole.log(`Total: ${total}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "total",
+        "label": "The script prints Total: 84",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Total: 84"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the prices together: 50 + 25 + 9. Then print the result."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the for loop.\n\nIn app.js:\n```\nconst total = 50 + 25 + 9;\nconsole.log(`Total: ${total}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Sari-Sari Store\");\nconst item = \"Rice\";\nconst price = 50;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Rice\", \"Soap\", \"Egg\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 50 + 25 + 9;\nconsole.log(`Total: ${total}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-sari-sari"
+  },
+  {
+    "id": "node-scripts-sari-sari-8",
+    "index": 8,
+    "task": "You will write a function that adds 12% tax to the total. Add the code below at the end of app.js. This helps the store owner know the final price with tax. Run the checker to confirm it prints With tax: 94.\n\nIn app.js:\n```\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "tax",
+        "label": "The script prints With tax: 94",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "With tax: 94"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use an arrow function to take the total and multiply it by 1.12. Round it to a whole number."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the total line.\n\nIn app.js:\n```\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Sari-Sari Store\");\nconst item = \"Rice\";\nconst price = 50;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Rice\", \"Soap\", \"Egg\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 50 + 25 + 9;\nconsole.log(`Total: ${total}`);\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "scripts-sari-sari"
+  },
+  {
+    "id": "node-scripts-sari-sari-9",
+    "index": 9,
+    "task": "You will label the order as big or small based on the total. Add the code below at the end of app.js. This helps the store owner know if the order is large or small. Run the checker to confirm it prints Small order.\n\nIn app.js:\n```\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "size",
+        "label": "The script prints Small order",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Small order"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If the total is more than 100, print 'Big order'. Otherwise, print 'Small order'."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the tax line.\n\nIn app.js:\n```\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Sari-Sari Store\");\nconst item = \"Rice\";\nconst price = 50;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Rice\", \"Soap\", \"Egg\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 50 + 25 + 9;\nconsole.log(`Total: ${total}`);\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "scripts-sari-sari"
+  },
+  {
+    "id": "node-scripts-sari-sari-10",
+    "index": 10,
+    "task": "You will report a warning using the error stream. Add the code below at the end of app.js. This helps the store owner see warnings separately from normal messages. Run the checker to confirm it reports Low stock: Egg as an error message and still finishes normally.\n\nIn app.js:\n```\nconsole.error(\"Low stock: Egg\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "warning",
+        "label": "The script reports Low stock: Egg as an error message",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "value": "Low stock: Egg"
+      },
+      {
+        "id": "still-runs",
+        "label": "The script still finishes normally",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use console.error to write a warning. This keeps it apart from normal output."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the if-else block.\n\nIn app.js:\n```\nconsole.error(\"Low stock: Egg\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Sari-Sari Store\");\nconst item = \"Rice\";\nconst price = 50;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Rice\", \"Soap\", \"Egg\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 50 + 25 + 9;\nconsole.log(`Total: ${total}`);\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\nconsole.error(\"Low stock: Egg\");\n"
+    },
+    "conceptIds": [
+      "node-stderr"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "scripts-sari-sari"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
