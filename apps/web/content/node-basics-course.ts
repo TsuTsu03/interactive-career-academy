@@ -1577,3 +1577,243 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "files-sari-sari"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: async-sari-sari.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-async-sari-sari-1",
+    "index": 31,
+    "task": "You will add two lines to app.js. The first line pauses the script for 100 milliseconds. The second line prints 'After wait'. This lets you see that the script waits before printing the next message. The code below does this. Run the checker to confirm.\n\nIn app.js:\n```\nawait wait(100);\nconsole.log(\"After wait\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "after",
+        "label": "The script prints Start and then After wait",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Start\nAfter wait"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of await as a pause button that stops the script until something finishes."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nawait wait(100);\nconsole.log(\"After wait\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\n"
+    },
+    "conceptIds": [
+      "node-top-level-await"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "async-sari-sari"
+  },
+  {
+    "id": "node-async-sari-sari-2",
+    "index": 32,
+    "task": "You will add two lines to app.js. The first line defines a function called fetchPrice that takes a name and returns a price after waiting 20 milliseconds. The second line calls this function with 'Rice' and prints the result. The code below does this. Run the checker to confirm.\n\nIn app.js:\n```\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Rice\")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "price",
+        "label": "The script prints Price: 40",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Price: 40"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The function fetchPrice uses await to wait before returning a price."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Rice\")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Rice\")}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "async-sari-sari"
+  },
+  {
+    "id": "node-async-sari-sari-3",
+    "index": 33,
+    "task": "You will add two lines to app.js. The first line uses Promise.all to start three lookups at once for 'Rice', 'Soap', and 'Egg'. The second line prints all the results joined by commas. The code below does this. Run the checker to confirm.\n\nIn app.js:\n```\nconst prices = await Promise.all([\"Rice\", \"Soap\", \"Egg\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "all",
+        "label": "The script prints All: 40, 40, 30",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "All: 40, 40, 30"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Promise.all starts all the promises at once and waits for all of them to finish."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst prices = await Promise.all([\"Rice\", \"Soap\", \"Egg\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Rice\")}`);\nconst prices = await Promise.all([\"Rice\", \"Soap\", \"Egg\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "async-sari-sari"
+  },
+  {
+    "id": "node-async-sari-sari-4",
+    "index": 34,
+    "task": "You will add three lines to app.js. The first line creates a slow promise that waits 200 milliseconds. The second line creates a fast promise that waits 20 milliseconds. The third line uses Promise.race to print which one finished first. The code below does this. Run the checker to confirm.\n\nIn app.js:\n```\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "race",
+        "label": "The script prints First: fast",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "First: fast"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Promise.race checks which promise finishes first and returns its result."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Rice\")}`);\nconst prices = await Promise.all([\"Rice\", \"Soap\", \"Egg\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\n"
+    },
+    "conceptIds": [
+      "node-promise-race"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "async-sari-sari"
+  },
+  {
+    "id": "node-async-sari-sari-5",
+    "index": 35,
+    "task": "You will add two lines to app.js. The first line defines a function called failing that throws an error. The second line uses try and catch to catch the error and print its message. The code below does this. Run the checker to confirm.\n\nIn app.js:\n```\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "caught",
+        "label": "The script reports Supplier offline",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "value": "Supplier offline"
+      },
+      {
+        "id": "finishes",
+        "label": "The script still finishes normally",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use try and catch to handle errors from rejected promises."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Rice\")}`);\nconst prices = await Promise.all([\"Rice\", \"Soap\", \"Egg\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\n"
+    },
+    "conceptIds": [
+      "node-rejected-promise"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "async-sari-sari"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
