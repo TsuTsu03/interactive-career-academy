@@ -3436,3 +3436,213 @@ cliGitCourse.steps.push(...([
     "projectId": "first-commit-barangay"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: first-commit-barangay.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-first-commit-barangay-6",
+    "index": 76,
+    "task": "You save both files as the first commit. This is the first time you save changes in this project. It marks the start of your work. Run the checker to see if your save was successful. Paste its report.\n\nType this command in your terminal:\n`git commit -m \"Start barangay office list\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has one commit",
+        "kind": "local-git-commit-count",
+        "count": 1
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are saving your first work. Think of it like signing a document."
+      },
+      {
+        "level": 2,
+        "text": "git commit -m \"Start barangay office list\""
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Start barangay office list\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-commit-barangay"
+  },
+  {
+    "id": "cli-first-commit-barangay-7",
+    "index": 77,
+    "task": "You add the text 'Permit 300' to fees.txt. This is a new line. Git notices this change. It is not saved yet. Run the checker to confirm Git sees this new change. Paste its report.\n\nType this command in your terminal:\n`echo \"Permit 300\" >> fees.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "changed",
+        "label": "fees.txt has an unstaged change",
+        "kind": "local-git-unstaged",
+        "path": "fees.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are adding a new line to the file. Git will notice it if you don't save it."
+      },
+      {
+        "level": 2,
+        "text": "echo \"Permit 300\" >> fees.txt"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Permit 300\" >> fees.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-barangay"
+  },
+  {
+    "id": "cli-first-commit-barangay-8",
+    "index": 78,
+    "task": "You prepare the change in fees.txt to be saved. This is called staging. Git will save it next. Run the checker to confirm the change is ready to be saved. Paste its report.\n\nType this command in your terminal:\n`git add fees.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "staged",
+        "label": "The change to fees.txt is staged",
+        "kind": "local-git-staged",
+        "path": "fees.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are telling Git to save this new line. It is now ready to be saved."
+      },
+      {
+        "level": 2,
+        "text": "git add fees.txt"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add fees.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-barangay"
+  },
+  {
+    "id": "cli-first-commit-barangay-9",
+    "index": 79,
+    "task": "You save the change in fees.txt with a message. The message says 'Add permit lne'. This is a mistake on purpose. Run the checker to confirm you have two commits now. Paste its report.\n\nType this command in your terminal:\n`git commit -m \"Add permit lne\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has two commits",
+        "kind": "local-git-commit-count",
+        "count": 2
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are saving the new line with a message. The message has a typo."
+      },
+      {
+        "level": 2,
+        "text": "git commit -m \"Add permit lne\""
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Add permit lne\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-commit-barangay"
+  },
+  {
+    "id": "cli-first-commit-barangay-10",
+    "index": 80,
+    "task": "You fix the mistake in the last message. You use --amend to change it. The new message says 'Add permit line'. Run the checker to confirm the message is correct and you still have two commits. Paste its report.\n\nType this command in your terminal:\n`git commit --amend -m \"Add permit line\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "message",
+        "label": "The last commit message is spelled correctly",
+        "kind": "local-git-head-message",
+        "value": "Add permit line"
+      },
+      {
+        "id": "still-two",
+        "label": "There are still two commits, not three",
+        "kind": "local-git-commit-count",
+        "count": 2
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are correcting the last message. Git will update it without adding a new commit."
+      },
+      {
+        "level": 2,
+        "text": "git commit --amend -m \"Add permit line\""
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit --amend -m \"Add permit line\""
+    },
+    "estimatedMinutes": 4,
+    "projectId": "first-commit-barangay"
+  }
+] satisfies typeof cliGitCourse.steps));
