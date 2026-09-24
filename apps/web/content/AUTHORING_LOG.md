@@ -3863,3 +3863,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-24: Local Qwen wrote the lesson text for node-basics/config-tricycle, steps 331-335; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
 
 - 2026-09-24: Local Qwen wrote the lesson text for node-basics/config-tricycle, steps 336-340; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/folders-tricycle, steps 341-345; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
