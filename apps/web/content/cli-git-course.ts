@@ -2806,3 +2806,207 @@ cliGitCourse.steps.push(...([
     "projectId": "tidy-sari-sari"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: files-barangay.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-files-barangay-1",
+    "index": 61,
+    "task": "You make a folder named requests. This folder will hold all the files for requests. You type the command exactly as shown. Then you run the checker to confirm the folder exists.\n\nType this command in your terminal:\n`mkdir requests`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "folder",
+        "label": "The requests folder exists",
+        "kind": "local-dir-exists",
+        "path": "requests"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of a folder as a box to hold your files. You name it requests to match the project."
+      },
+      {
+        "level": 2,
+        "text": "Type `mkdir requests` exactly as written."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "mkdir requests"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-barangay"
+  },
+  {
+    "id": "cli-files-barangay-2",
+    "index": 62,
+    "task": "You make a file named fees.txt inside the requests folder. This file will hold fee information. You type the command exactly as shown. Then you run the checker to confirm the file exists.\n\nType this command in your terminal:\n`touch requests/fees.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "file",
+        "label": "requests/fees.txt exists",
+        "kind": "local-file-exists",
+        "path": "requests/fees.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You create a file like writing a note on paper. The path requests/fees.txt means the file is inside the requests folder."
+      },
+      {
+        "level": 2,
+        "text": "Type `touch requests/fees.txt` exactly as written."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "touch requests/fees.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-barangay"
+  },
+  {
+    "id": "cli-files-barangay-3",
+    "index": 63,
+    "task": "You write the line Clearance 50 into the fees.txt file. This line is the first fee entry. You type the command exactly as shown. Then you run the checker to confirm the line appears.\n\nType this command in your terminal:\n`echo \"Clearance 50\" > requests/fees.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "line",
+        "label": "fees.txt says Clearance 50",
+        "kind": "local-file-contains",
+        "path": "requests/fees.txt",
+        "value": "Clearance 50"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You use echo to write text. The > symbol means 'write this line and start fresh.'"
+      },
+      {
+        "level": 2,
+        "text": "Type `echo \"Clearance 50\" > requests/fees.txt` exactly as written."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Clearance 50\" > requests/fees.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-barangay"
+  },
+  {
+    "id": "cli-files-barangay-4",
+    "index": 64,
+    "task": "You add the line Permit 300 to fees.txt. This line is the second fee entry. You type the command exactly as shown. Then you run the checker to confirm both lines are there.\n\nType this command in your terminal:\n`echo \"Permit 300\" >> requests/fees.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "second",
+        "label": "fees.txt now also says Permit 300",
+        "kind": "local-file-contains",
+        "path": "requests/fees.txt",
+        "value": "Permit 300"
+      },
+      {
+        "id": "first",
+        "label": "Clearance 50 is still there",
+        "kind": "local-file-contains",
+        "path": "requests/fees.txt",
+        "value": "Clearance 50"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The >> symbol means 'add this line after the first line, without deleting it.'"
+      },
+      {
+        "level": 2,
+        "text": "Type `echo \"Permit 300\" >> requests/fees.txt` exactly as written."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Permit 300\" >> requests/fees.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-barangay"
+  },
+  {
+    "id": "cli-files-barangay-5",
+    "index": 65,
+    "task": "You copy fees.txt to a new file named backup.txt. This copy holds both lines for safety. You type the command exactly as shown. Then you run the checker to confirm the copy exists.\n\nType this command in your terminal:\n`cp requests/fees.txt requests/backup.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "copy",
+        "label": "backup.txt holds a copy of both lines",
+        "kind": "local-file-contains",
+        "path": "requests/backup.txt",
+        "value": "Permit 300"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You copy a file like making a photocopy. The cp command copies from one file to another."
+      },
+      {
+        "level": 2,
+        "text": "Type `cp requests/fees.txt requests/backup.txt` exactly as written."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "cp requests/fees.txt requests/backup.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-barangay"
+  }
+] satisfies typeof cliGitCourse.steps));
