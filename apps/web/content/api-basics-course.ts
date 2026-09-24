@@ -6086,3 +6086,289 @@ apiBasicsCourse.steps.push(...([
     "projectId": "first-server-carinderia"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: first-server-carinderia.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-first-server-carinderia-6",
+    "index": 106,
+    "task": "You must stop any request that is not GET. Add this line at the very top of the handler. This line stops bad requests and sends a 405 error. The checker will test this.\n\nIn server.js:\n```\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "post",
+        "label": "POST / answers 405",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/",
+            "body": "{}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 405
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of 405 as 'not allowed'. You must check the method before doing anything else."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the very top of the handler, right after the imports.\n\nIn server.js:\n```\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"carinderia\");\n  res.end(\"Carinderia API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-server-carinderia"
+  },
+  {
+    "id": "api-first-server-carinderia-7",
+    "index": 107,
+    "task": "You must answer /info with a JSON object. Add this line right after the /health line. This tells the browser the name of the carinderia. The checker will test this.\n\nIn server.js:\n```\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"Carinderia\" })); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "info",
+        "label": "GET /info answers JSON with the name",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/info"
+          }
+        ],
+        "bodyContains": "\"name\":\"Carinderia\"",
+        "header": {
+          "name": "content-type",
+          "value": "application/json"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You must send a JSON object with the name. Use the code below to make it."
+      },
+      {
+        "level": 2,
+        "text": "Add the line right after the /health line, before the 404 line.\n\nIn server.js:\n```\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"Carinderia\" })); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"Carinderia\" })); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"carinderia\");\n  res.end(\"Carinderia API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "first-server-carinderia"
+  },
+  {
+    "id": "api-first-server-carinderia-8",
+    "index": 108,
+    "task": "You must count how many requests come in. Add a counter above the server. Then, add a /visits route before the 404 line. This route will show the count. The checker will test this.\n\nIn server.js:\n```\nlet visits = 0;\n  visits += 1;\n  if (req.url === \"/visits\") { res.end(String(visits)); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "visits",
+        "label": "After two requests, GET /visits answers 3",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          },
+          {
+            "method": "GET",
+            "path": "/"
+          },
+          {
+            "method": "GET",
+            "path": "/visits"
+          }
+        ],
+        "bodyContains": "3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Start with a counter set to zero. Add one to it every time a request comes."
+      },
+      {
+        "level": 2,
+        "text": "Add the counter above the server, then add the /visits route before the 404 line.\n\nIn server.js:\n```\nlet visits = 0;\n  visits += 1;\n  if (req.url === \"/visits\") { res.end(String(visits)); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nlet visits = 0;\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n  visits += 1;\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"Carinderia\" })); return; }\n  if (req.url === \"/visits\") { res.end(String(visits)); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"carinderia\");\n  res.end(\"Carinderia API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "first-server-carinderia"
+  },
+  {
+    "id": "api-first-server-carinderia-9",
+    "index": 109,
+    "task": "You must tell browsers not to store any answer. Add this line at the very top of the handler. This line stops browsers from caching your answers. The checker will test this.\n\nIn server.js:\n```\n  res.setHeader(\"Cache-Control\", \"no-store\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "cache",
+        "label": "GET / sends Cache-Control: no-store",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "header": {
+          "name": "cache-control",
+          "value": "no-store"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Cache-Control is a header that tells browsers not to save the answer."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the very top of the handler, right after the imports.\n\nIn server.js:\n```\n  res.setHeader(\"Cache-Control\", \"no-store\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nlet visits = 0;\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"Cache-Control\", \"no-store\");\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n  visits += 1;\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"Carinderia\" })); return; }\n  if (req.url === \"/visits\") { res.end(String(visits)); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"carinderia\");\n  res.end(\"Carinderia API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-server-carinderia"
+  },
+  {
+    "id": "api-first-server-carinderia-10",
+    "index": 110,
+    "task": "You must read a name from the query string at /hello. Use 'friend' as the default. Add these two lines right before the 404 line. This tells the browser to greet the person. The checker will test this.\n\nIn server.js:\n```\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/hello\") { res.end(`Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}`); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "hello",
+        "label": "GET /hello?name=Ana answers Hello, Ana",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/hello?name=Ana"
+          }
+        ],
+        "bodyContains": "Hello, Ana"
+      },
+      {
+        "id": "default",
+        "label": "GET /hello answers Hello, friend",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/hello"
+          }
+        ],
+        "bodyContains": "Hello, friend"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the URL class to get the query string. Then, get the name or use 'friend' if none is given."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines right before the 404 line, after the /visits route.\n\nIn server.js:\n```\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/hello\") { res.end(`Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}`); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nlet visits = 0;\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"Cache-Control\", \"no-store\");\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n  visits += 1;\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"Carinderia\" })); return; }\n  if (req.url === \"/visits\") { res.end(String(visits)); return; }\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/hello\") { res.end(`Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}`); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"carinderia\");\n  res.end(\"Carinderia API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 6,
+    "projectId": "first-server-carinderia"
+  }
+] satisfies typeof apiBasicsCourse.steps));
