@@ -7413,3 +7413,228 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "scripts-barangay"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: modules-barangay.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-modules-barangay-1",
+    "index": 151,
+    "task": "Create a new file called prices.js. Put this code inside it. This file will hold the store's name. You will use this name later in your main program.\n\nIn prices.js:\n```\nexport const storeName = \"Barangay Office\";\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "export",
+        "label": "prices.js exports storeName",
+        "kind": "local-file-contains",
+        "path": "prices.js",
+        "value": "export const storeName"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of prices.js as a small notebook that holds store info."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in a file named prices.js in your project folder.\n\nIn prices.js:\n```\nexport const storeName = \"Barangay Office\";\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"Barangay Office\";\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "modules-barangay"
+  },
+  {
+    "id": "node-modules-barangay-2",
+    "index": 152,
+    "task": "Open app.js. Add this import at the top. Then add this line at the end. This tells app.js to use the store name from prices.js and print it.\n\nIn app.js:\n```\nimport { storeName } from \"./prices.js\";\nconsole.log(storeName);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "imported",
+        "label": "node app.js prints Barangay Office from prices.js",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Barangay Office"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are borrowing the store name from prices.js like sharing a book."
+      },
+      {
+        "level": 2,
+        "text": "Put the import and console.log lines in app.js, right after the import section.\n\nIn app.js:\n```\nimport { storeName } from \"./prices.js\";\nconsole.log(storeName);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { storeName } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-barangay"
+  },
+  {
+    "id": "node-modules-barangay-3",
+    "index": 153,
+    "task": "In prices.js, add this code to define the prices. In app.js, add this import and this line to print the price of Clearance. This lets you show the price of items later.\n\nIn prices.js:\n```\nexport const prices = { \"Clearance\": 50, \"Permit\": 300, \"ID\": 20 };\n```\n\nIn app.js:\n```\nimport { storeName, prices } from \"./prices.js\";\nconsole.log(prices[\"Clearance\"]);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "price",
+        "label": "The script prints 50 on its own line",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "50\n"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the prices object to prices.js so it can be used by other files."
+      },
+      {
+        "level": 2,
+        "text": "In app.js, add the import for prices and print the price using the key 'Clearance'.\n\nIn prices.js:\n```\nexport const prices = { \"Clearance\": 50, \"Permit\": 300, \"ID\": 20 };\n```\n\nIn app.js:\n```\nimport { storeName, prices } from \"./prices.js\";\nconsole.log(prices[\"Clearance\"]);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"Barangay Office\";\nexport const prices = { \"Clearance\": 50, \"Permit\": 300, \"ID\": 20 };\n",
+      "app.js": "import { storeName, prices } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Clearance\"]);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "modules-barangay"
+  },
+  {
+    "id": "node-modules-barangay-4",
+    "index": 154,
+    "task": "In prices.js, add a function called priceOf. This function will look up a price by name. If the item is not found, it will return 0. This helps you find prices without typing them every time.\n\nIn prices.js:\n```\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "function",
+        "label": "prices.js exports priceOf",
+        "kind": "local-file-contains",
+        "path": "prices.js",
+        "value": "export function priceOf(name)"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The function priceOf takes a name and returns a price or 0 if not found."
+      },
+      {
+        "level": 2,
+        "text": "Add the function at the end of prices.js, after the prices object.\n\nIn prices.js:\n```\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"Barangay Office\";\nexport const prices = { \"Clearance\": 50, \"Permit\": 300, \"ID\": 20 };\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-barangay"
+  },
+  {
+    "id": "node-modules-barangay-5",
+    "index": 155,
+    "task": "In app.js, add this import for the new function. Then add this line to print the price of Permit. This shows how to use the function to get prices.\n\nIn app.js:\n```\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(`Permit: ${priceOf(\"Permit\")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "lookup",
+        "label": "The script prints Permit: 300",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Permit: 300"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are now using the priceOf function to get the price of Permit."
+      },
+      {
+        "level": 2,
+        "text": "Add the import for priceOf and the console.log line at the end of app.js.\n\nIn app.js:\n```\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(`Permit: ${priceOf(\"Permit\")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Clearance\"]);\nconsole.log(`Permit: ${priceOf(\"Permit\")}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-barangay"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
