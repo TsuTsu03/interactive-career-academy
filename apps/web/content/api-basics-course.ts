@@ -798,3 +798,264 @@ apiBasicsCourse.steps.push(...([
     "projectId": "first-server-sari-sari"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: json-routes-sari-sari.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-json-routes-sari-sari-1",
+    "index": 11,
+    "task": "You will send the whole list as JSON when someone asks for /items. The code below does that. Add it at the top of the handler. This helps the store show all products in one request. JSON is a text format for sending structured values such as objects and arrays.\n\nIn server.js:\n```\n  if (req.url === \"/items\") return send(res, 200, items);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "list",
+        "label": "GET /items answers the list as JSON",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "bodyContains": "\"name\":\"Rice\"",
+        "header": {
+          "name": "content-type",
+          "value": "application/json"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The send helper sends the list as JSON, so you don't need to format it yourself."
+      },
+      {
+        "level": 2,
+        "text": "Add this line right after the first if statement in server.js.\n\nIn server.js:\n```\n  if (req.url === \"/items\") return send(res, 200, items);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "real-json"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "json-routes-sari-sari"
+  },
+  {
+    "id": "api-json-routes-sari-sari-2",
+    "index": 12,
+    "task": "You will send the count of items when someone asks for /items/count. The code below does that. Add it after the /items line. This helps the store know how many products are available without listing them all.\n\nIn server.js:\n```\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "GET /items/count answers {\"count\":3}",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/count"
+          }
+        ],
+        "bodyContains": "{\"count\":3}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The code uses items.length to count how many items are in the list."
+      },
+      {
+        "level": 2,
+        "text": "Add this line right after the /items line in server.js.\n\nIn server.js:\n```\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "json-routes-sari-sari"
+  },
+  {
+    "id": "api-json-routes-sari-sari-3",
+    "index": 13,
+    "task": "You will send only the first item when someone asks for /items/first. The code below does that. Add it after the /items/count line. This helps the store show the cheapest or most popular item quickly.\n\nIn server.js:\n```\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "first",
+        "label": "GET /items/first answers Rice",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/first"
+          }
+        ],
+        "bodyContains": "{\"id\":1,\"name\":\"Rice\",\"price\":50}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The code uses items[0] to get the first item in the list."
+      },
+      {
+        "level": 2,
+        "text": "Add this line right after the /items/count line in server.js.\n\nIn server.js:\n```\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "json-routes-sari-sari"
+  },
+  {
+    "id": "api-json-routes-sari-sari-4",
+    "index": 14,
+    "task": "You will send only the names of items when someone asks for /items/names. The code below does that. Add it after the /items/first line. This helps the store show only the product names, not the prices or other details.\n\nIn server.js:\n```\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "names",
+        "label": "GET /items/names answers the three names",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/names"
+          }
+        ],
+        "bodyContains": "[\"Rice\",\"Soap\",\"Egg\"]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The code uses map to get each item's name from the list."
+      },
+      {
+        "level": 2,
+        "text": "Add this line right after the /items/first line in server.js.\n\nIn server.js:\n```\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "json-routes-sari-sari"
+  },
+  {
+    "id": "api-json-routes-sari-sari-5",
+    "index": 15,
+    "task": "You will send the total price of all items when someone asks for /items/total. The code below does that. Add it after the /items/names line. This helps the store calculate the total cost of all products quickly.\n\nIn server.js:\n```\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "total",
+        "label": "GET /items/total answers 84",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/total"
+          }
+        ],
+        "bodyContains": "{\"total\":84}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The code uses reduce to add up all the prices in the list."
+      },
+      {
+        "level": 2,
+        "text": "Add this line right after the /items/names line in server.js.\n\nIn server.js:\n```\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "json-routes-sari-sari"
+  }
+] satisfies typeof apiBasicsCourse.steps));

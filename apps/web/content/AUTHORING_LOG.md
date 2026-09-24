@@ -3871,3 +3871,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-24: Local Qwen wrote the lesson text for api-basics/first-server-sari-sari, steps 1-5; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
 
 - 2026-09-24: Local Qwen wrote the lesson text for api-basics/first-server-sari-sari, steps 6-10; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/json-routes-sari-sari, steps 11-15; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
