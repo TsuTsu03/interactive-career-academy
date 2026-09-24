@@ -5223,3 +5223,235 @@ cliGitCourse.steps.push(...([
     "projectId": "tidy-barangay"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: tidy-barangay.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-tidy-barangay-6",
+    "index": 116,
+    "task": "You rename a file. This change is important because the barangay office now uses a new name for the fee list. Run this command to save the change to the project history: `git commit -m \"Rename fees.txt\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "in-commit",
+        "label": "The last commit includes fee-list.txt",
+        "kind": "local-git-head-has-file",
+        "path": "fee-list.txt"
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You save the rename so others see the new file name in the project."
+      },
+      {
+        "level": 2,
+        "text": "`git commit -m \"Rename fees.txt\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Rename fees.txt\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-barangay"
+  },
+  {
+    "id": "cli-tidy-barangay-7",
+    "index": 117,
+    "task": "You delete a file called draft.txt. This removes old work from the project. Run this command to delete the file and prepare it for saving: `git rm draft.txt`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "gone",
+        "label": "draft.txt is deleted",
+        "kind": "local-path-missing",
+        "path": "draft.txt"
+      },
+      {
+        "id": "staged",
+        "label": "The deletion is staged",
+        "kind": "local-git-staged",
+        "path": "draft.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You remove the file so it doesn't appear in the project anymore."
+      },
+      {
+        "level": 2,
+        "text": "`git rm draft.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git rm draft.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-barangay"
+  },
+  {
+    "id": "cli-tidy-barangay-8",
+    "index": 118,
+    "task": "You save the deletion so it becomes part of the project's history. Run this command to save the change: `git commit -m \"Remove old draft\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has three commits",
+        "kind": "local-git-commit-count",
+        "count": 3
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You save the deletion so the project remembers it was removed."
+      },
+      {
+        "level": 2,
+        "text": "`git commit -m \"Remove old draft\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Remove old draft\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-barangay"
+  },
+  {
+    "id": "cli-tidy-barangay-9",
+    "index": 119,
+    "task": "You make a new file called .gitignore. This file tells Git to ignore files ending in .log. Run this command to create it: `echo \"*.log\" > .gitignore`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "rule",
+        "label": ".gitignore lists *.log",
+        "kind": "local-file-contains",
+        "path": ".gitignore",
+        "value": "*.log"
+      },
+      {
+        "id": "new",
+        "label": ".gitignore is a new, untracked file",
+        "kind": "local-git-untracked",
+        "path": ".gitignore"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You create a rule so Git will not track any file with .log at the end."
+      },
+      {
+        "level": 2,
+        "text": "`echo \"*.log\" > .gitignore`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"*.log\" > .gitignore"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "tidy-barangay"
+  },
+  {
+    "id": "cli-tidy-barangay-10",
+    "index": 120,
+    "task": "You save the .gitignore file so the rule becomes part of the project. Run these two commands: `git add .gitignore` and `git commit -m \"Ignore log files\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "saved",
+        "label": "The last commit includes .gitignore",
+        "kind": "local-git-head-has-file",
+        "path": ".gitignore"
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You save the rule so Git will ignore .log files in future changes."
+      },
+      {
+        "level": 2,
+        "text": "`git add .gitignore` and `git commit -m \"Ignore log files\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add .gitignore\ngit commit -m \"Ignore log files\""
+    },
+    "estimatedMinutes": 5,
+    "projectId": "tidy-barangay"
+  }
+] satisfies typeof cliGitCourse.steps));
