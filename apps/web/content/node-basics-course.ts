@@ -11432,3 +11432,246 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "files-school-club"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: files-school-club.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-files-school-club-6",
+    "index": 236,
+    "task": "You will save the item objects to a file called stock.json. This file will store the club's inventory in a format that can be read later. The code below writes the items as JSON. Run node app.js to save the file. Then check if stock.json holds Shirt as JSON.\n\nIn app.js:\n```\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Shirt,250\nPin,30\nBadge,45\n"
+    },
+    "tests": [
+      {
+        "id": "json",
+        "label": "stock.json holds Shirt as JSON",
+        "kind": "local-file-contains",
+        "path": "stock.json",
+        "value": "\"name\": \"Shirt\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The JSON string must be written to the file using writeFile."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-school-club"
+  },
+  {
+    "id": "node-files-school-club-7",
+    "index": 237,
+    "task": "You will read the stock.json file back into objects and count how many items are saved. The code below reads the file and prints the count. Add these lines at the end of app.js. Then run the script to see the count printed.\n\nIn app.js:\n```\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Shirt,250\nPin,30\nBadge,45\n"
+    },
+    "tests": [
+      {
+        "id": "saved",
+        "label": "The script prints Saved: 3 items",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Saved: 3 items"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use JSON.parse to turn the file's text into objects."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines after the writeFile line in app.js.\n\nIn app.js:\n```\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-school-club"
+  },
+  {
+    "id": "node-files-school-club-8",
+    "index": 238,
+    "task": "You will add a line to report.txt without deleting what's already there. The code below uses appendFile to add a new line. Add the import for appendFile and the code at the end of app.js. Then run node app.js to check if report.txt ends with Checked today, but still says Items: 3.\n\nIn app.js:\n```\nimport { readFile, writeFile, appendFile } from \"node:fs/promises\";\nawait appendFile(\"report.txt\", \"Checked today\\n\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Shirt,250\nPin,30\nBadge,45\n"
+    },
+    "tests": [
+      {
+        "id": "appended",
+        "label": "report.txt ends with Checked today",
+        "kind": "local-file-contains",
+        "path": "report.txt",
+        "value": "Checked today"
+      },
+      {
+        "id": "kept",
+        "label": "report.txt still says Items: 3",
+        "kind": "local-file-contains",
+        "path": "report.txt",
+        "value": "Items: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "appendFile adds to the end of a file without replacing it."
+      },
+      {
+        "level": 2,
+        "text": "Add the import and code at the end of app.js, after the last line.\n\nIn app.js:\n```\nimport { readFile, writeFile, appendFile } from \"node:fs/promises\";\nawait appendFile(\"report.txt\", \"Checked today\\n\");\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile, appendFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\nawait appendFile(\"report.txt\", \"Checked today\\n\");\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-school-club"
+  },
+  {
+    "id": "node-files-school-club-9",
+    "index": 239,
+    "task": "You will raise the price of the first item in stock.json by 7 and save the change. The code below changes the price and writes the file again. Add these lines at the end of app.js. Then run node app.js to check if stock.json now shows Shirt at 257.\n\nIn app.js:\n```\nsaved[0].price += 7;\nawait writeFile(\"stock.json\", JSON.stringify(saved, null, 2));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Shirt,250\nPin,30\nBadge,45\n"
+    },
+    "tests": [
+      {
+        "id": "raised",
+        "label": "stock.json now has Shirt at 257",
+        "kind": "local-file-contains",
+        "path": "stock.json",
+        "value": "\"price\": 257"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use saved[0] to get the first item in the array."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines after the read code in app.js.\n\nIn app.js:\n```\nsaved[0].price += 7;\nawait writeFile(\"stock.json\", JSON.stringify(saved, null, 2));\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile, appendFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\nawait appendFile(\"report.txt\", \"Checked today\\n\");\nsaved[0].price += 7;\nawait writeFile(\"stock.json\", JSON.stringify(saved, null, 2));\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-school-club"
+  },
+  {
+    "id": "node-files-school-club-10",
+    "index": 240,
+    "task": "You will read a file that does not exist and handle the error without crashing. The code below uses try and catch to report the error code. Add these lines at the end of app.js. Then run the script to check if it reports Could not read: ENOENT and still finishes normally.\n\nIn app.js:\n```\ntry { await readFile(\"missing.txt\", \"utf8\"); }\ncatch (error) { console.error(`Could not read: ${error.code}`); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Shirt,250\nPin,30\nBadge,45\n"
+    },
+    "tests": [
+      {
+        "id": "code",
+        "label": "The script reports Could not read: ENOENT",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "value": "Could not read: ENOENT"
+      },
+      {
+        "id": "finishes",
+        "label": "The script still finishes normally",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use try and catch to handle errors safely."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines at the end of app.js, after the last line.\n\nIn app.js:\n```\ntry { await readFile(\"missing.txt\", \"utf8\"); }\ncatch (error) { console.error(`Could not read: ${error.code}`); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile, appendFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\nawait appendFile(\"report.txt\", \"Checked today\\n\");\nsaved[0].price += 7;\nawait writeFile(\"stock.json\", JSON.stringify(saved, null, 2));\ntry { await readFile(\"missing.txt\", \"utf8\"); }\ncatch (error) { console.error(`Could not read: ${error.code}`); }\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "files-school-club"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
