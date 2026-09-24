@@ -274,6 +274,80 @@ async function runHttp(root, full, test) {
   }
 }
 
+const NPM_TIMEOUT_MS = 180000;
+
+// One npm command at a time per process. Vite keeps a scratch folder inside
+// node_modules, and the content gate links many projects to one shared
+// node_modules, so parallel builds there would delete each other's files.
+let npmQueue = Promise.resolve();
+
+/** Runs `npm run <script>` in the project; Windows needs cmd.exe to start npm. */
+export function runNpm(root, args, env, timeoutMs = NPM_TIMEOUT_MS) {
+  const run = npmQueue.then(() => startNpm(root, args, env, timeoutMs));
+  npmQueue = run.catch(() => {});
+  return run;
+}
+
+function startNpm(root, args, env, timeoutMs) {
+  return new Promise((resolve) => {
+    const command = process.platform === "win32" ? "cmd.exe" : "npm";
+    const commandArgs = process.platform === "win32" ? ["/d", "/s", "/c", "npm", ...args] : args;
+    const child = spawn(command, commandArgs, { cwd: root, env: { ...(env ?? process.env) }, windowsHide: true });
+    let output = "";
+    const collect = (chunk) => { if (output.length < MAX_OUTPUT_CHARS) output += chunk; };
+    child.stdout.on("data", collect);
+    child.stderr.on("data", collect);
+    const timer = setTimeout(() => { child.kill(); resolve({ code: null, timedOut: true, output }); }, timeoutMs);
+    child.on("error", () => { clearTimeout(timer); resolve({ code: null, failedToStart: true, output }); });
+    child.on("close", (code) => { clearTimeout(timer); resolve({ code, output }); });
+  });
+}
+
+// Compiles one component with the learner's own Vite for Node, renders it to
+// HTML with the learner's own react-dom/server, and prints the HTML. Runs in a
+// child process so a broken component can never hang or crash the checker.
+const RENDER_SCRIPT = `
+import { createRequire } from "node:module";
+import { mkdtempSync, rmSync } from "node:fs";
+import { join, basename } from "node:path";
+import { pathToFileURL } from "node:url";
+const [root, file, exportName, propsJson] = process.argv.slice(1);
+const require = createRequire(join(root, "package.json"));
+const out = mkdtempSync(join(root, ".codedaddy-render-"));
+try {
+  const vite = await import(pathToFileURL(require.resolve("vite")).href);
+  await vite.build({ root, logLevel: "silent", configFile: false, build: { ssr: file, outDir: out, emptyOutDir: true, write: true } });
+  const mod = await import(pathToFileURL(join(out, basename(file).replace(/\.[jt]sx?$/, ".js"))).href);
+  const component = mod[exportName];
+  if (typeof component !== "function") throw new Error("NO_COMPONENT");
+  const { renderToStaticMarkup } = await import(pathToFileURL(require.resolve("react-dom/server")).href);
+  const { createElement } = await import(pathToFileURL(require.resolve("react")).href);
+  process.stdout.write("@@CODEDADDY_HTML@@" + renderToStaticMarkup(createElement(component, JSON.parse(propsJson))));
+} catch (error) {
+  process.stdout.write("@@CODEDADDY_ERROR@@" + (error && error.message === "NO_COMPONENT" ? "NO_COMPONENT" : String(error && error.message || error).slice(0, 300)));
+} finally {
+  rmSync(out, { recursive: true, force: true });
+}
+`;
+
+function renderReact(root, test) {
+  return new Promise((resolve) => {
+    const child = spawn(process.execPath, ["--input-type=module", "-e", RENDER_SCRIPT, root, test.file, test.exportName ?? "default", JSON.stringify(test.props ?? {})], { cwd: root, env: { ...process.env, NODE_NO_WARNINGS: "1" }, windowsHide: true });
+    let stdout = "";
+    child.stdout.on("data", (chunk) => { if (stdout.length < MAX_OUTPUT_CHARS * 4) stdout += chunk; });
+    child.stderr.on("data", () => {});
+    const timer = setTimeout(() => { child.kill(); resolve({ error: "Rendering took longer than 60 seconds." }); }, 60000);
+    child.on("close", () => {
+      clearTimeout(timer);
+      const html = stdout.split("@@CODEDADDY_HTML@@")[1];
+      const error = stdout.split("@@CODEDADDY_ERROR@@")[1];
+      if (html !== undefined) resolve({ html });
+      else if (error === "NO_COMPONENT") resolve({ error: "The file does not export that component." });
+      else resolve({ error: error ? "The component could not be built or rendered. Run npm run build to read the error." : "Rendering failed. Check that you ran npm install in this folder." });
+    });
+  });
+}
+
 const pass = { pass: true, reason: "" };
 const fail = (reason) => ({ pass: false, reason });
 
@@ -285,6 +359,28 @@ async function runCheck(root, test, state) {
   }
   const target = "path" in test ? inside(root, test.path) : null;
   if ("path" in test && !target) return fail("The check names a path this checker will not read.");
+
+  if (test.kind === "local-npm-script") {
+    if (!/^[a-z][a-z0-9:-]{0,30}$/.test(test.script)) return fail("The check names a script this checker will not run.");
+    if (!fs.existsSync(path.join(root, "node_modules"))) return fail("Run npm install in this folder first.");
+    const env = { ...process.env, ...(test.env ?? {}) };
+    const run = await runNpm(root, ["run", test.script], env);
+    if (run.failedToStart) return fail("npm could not start. Check that Node.js is installed.");
+    if (run.timedOut) return fail(`npm run ${test.script} did not finish within 3 minutes.`);
+    return run.code === 0 ? pass : fail(`npm run ${test.script} failed. Run it yourself to read the error.`);
+  }
+
+  if (test.kind === "local-react-render") {
+    const component = inside(root, test.file);
+    if (!component) return fail("The check names a file this checker will not read.");
+    if (kindOf(component) !== "file") return fail(`There is no file named ${test.file}.`);
+    if (!fs.existsSync(path.join(root, "node_modules", "vite"))) return fail("Run npm install in this folder first.");
+    const rendered = await state.render(test);
+    if (rendered.error) return fail(rendered.error);
+    if (test.contains !== undefined && !rendered.html.includes(test.contains)) return fail(`${test.file} does not show the expected content yet.`);
+    if (test.lacks !== undefined && rendered.html.includes(test.lacks)) return fail(`${test.file} still shows something it should not.`);
+    return pass;
+  }
 
   if (test.kind === "local-http") {
     const script = inside(root, test.file);
@@ -397,8 +493,14 @@ export async function runChecks(root, tests, options = {}) {
   const version = await git(root, ["--version"], env);
   let statusCache = null;
   const nodeRuns = new Map();
+  const renders = new Map();
   const state = {
     env,
+    render(test) {
+      const key = JSON.stringify([test.file, test.exportName ?? "default", test.props ?? {}]);
+      if (!renders.has(key)) renders.set(key, renderReact(root, test));
+      return renders.get(key);
+    },
     node(script, test) {
       const key = JSON.stringify([script, test.args ?? [], test.env ?? {}, test.stdin ?? ""]);
       if (!nodeRuns.has(key)) nodeRuns.set(key, runNode(root, script, test));

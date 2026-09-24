@@ -125,6 +125,16 @@ function localShape(step) {
     if (test.kind === "local-git-config" && !localChecker.safeConfigKey(test.key)) errors.push(`unsafe config key ${test.key}`);
     if (test.kind === "local-git-commit-count" && (!Number.isInteger(test.count) || test.count < 0)) errors.push("commit count must be a whole number");
     if (["local-file-contains", "local-file-lacks", "local-git-head-message", "local-git-config", "local-node-prints", "local-node-stderr"].includes(test.kind) && (typeof test.value !== "string" || !test.value.trim())) errors.push(`${test.kind} needs a value`);
+    if (test.kind === "local-npm-script") {
+      if (typeof test.script !== "string" || !/^[a-z][a-z0-9:-]{0,30}$/.test(test.script)) errors.push("npm checks run one named script");
+      if (test.env !== undefined && (typeof test.env !== "object" || Object.entries(test.env).some(([key, value]) => !localChecker.safeEnvName(key) || typeof value !== "string"))) errors.push("npm check env must map UPPER_CASE names to strings");
+    }
+    if (test.kind === "local-react-render") {
+      if (!safe(test.file) || !/\.(jsx|tsx|js)$/.test(test.file)) errors.push(`render checks read a .jsx, .tsx, or .js file inside the project, not ${test.file}`);
+      if (test.contains === undefined && test.lacks === undefined) errors.push("render checks need contains or lacks");
+      try { JSON.stringify(test.props ?? {}); } catch { errors.push("render props must be plain data"); }
+      if (test.exportName !== undefined && !/^[A-Za-z_][A-Za-z0-9_]{0,40}$/.test(test.exportName)) errors.push("exportName must be a plain name");
+    }
     if (test.kind === "local-http") {
       if (!safe(test.file) || !/\.m?js$/.test(test.file)) errors.push(`http checks start a .js or .mjs file inside the project, not ${test.file}`);
       if (!Array.isArray(test.requests) || test.requests.length < 1 || test.requests.length > 10) errors.push("http checks send 1 to 10 requests");
@@ -218,7 +228,10 @@ async function localBehaviour(entries) {
         if (failed.length) { errors.push(`${step.id}: solution-fails: ${failed.map(result => `${result.id} (${result.reason})`).join(", ")}`); return; }
       }
     } finally {
-      rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 });
+      // Windows can hold a just-used folder open for a moment (a server that is
+      // still exiting, or a virus scan). Leaving one temp folder behind must
+      // never fail the gate.
+      try { rmSync(scratch, { recursive: true, force: true, maxRetries: 25, retryDelay: 200 }); } catch { /* left in the temp folder */ }
     }
   }
   const queue = [...projects.values()];

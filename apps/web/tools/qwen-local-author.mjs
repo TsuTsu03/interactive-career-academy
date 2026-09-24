@@ -16,6 +16,7 @@ import { cliGitProjects } from "./cli-git-plan.mjs";
 import { nodeBasicsProjects } from "./node-basics-plan.mjs";
 import { apiBasicsProjects } from "./api-basics-plan.mjs";
 import { authSecurityProjects } from "./auth-security-plan.mjs";
+import { fullstackProjects } from "./fullstack-plan.mjs";
 
 const BATCH = 5;
 
@@ -24,6 +25,7 @@ export const LOCAL_COURSES = {
   "node-basics": { projects: nodeBasicsProjects, symbol: "nodeBasicsCourse", title: "Node.js Fundamentals" },
   "api-basics": { projects: apiBasicsProjects, symbol: "apiBasicsCourse", title: "Building APIs" },
   "auth-security": { projects: authSecurityProjects, symbol: "authSecurityCourse", title: "Auth and Security" },
+  "fullstack-integration": { projects: fullstackProjects, symbol: "fullstackIntegrationCourse", title: "Full-Stack Integration" },
 };
 
 /** The lines of `next` that are new or changed compared with `previous`. */

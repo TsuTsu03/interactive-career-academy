@@ -408,6 +408,27 @@ export type TestSpec =
       bodyLacks?: string;
       header?: { name: string; value: string };
     }
+  /*
+   * Run `npm run <script>` in the project (pinned packages from the step's
+   * package.json) and pass when it succeeds. Used to prove a React app builds.
+   */
+  | { id: string; label: Copy; kind: "local-npm-script"; script: string; env?: Record<string, string> }
+  /*
+   * Build one component with the learner's own Vite for Node, render it with
+   * the learner's own react-dom/server using plain-data `props`, and look for
+   * `contains` or `lacks` in the HTML. No browser runs, so clicks are not
+   * checked; only what a component shows for the given props.
+   */
+  | {
+      id: string;
+      label: Copy;
+      kind: "local-react-render";
+      file: string;
+      exportName?: string;
+      props?: Record<string, unknown>;
+      contains?: string;
+      lacks?: string;
+    }
 
   // --- Source assertions (any kind) ---
   /**

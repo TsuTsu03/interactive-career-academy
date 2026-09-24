@@ -60,6 +60,7 @@ function Save-State($Progress, [string]$Status, [string]$Detail) {
     nodebasics = $Progress.nodebasics
     apibasics = $Progress.apibasics
     authsecurity = $Progress.authsecurity
+    fullstack = $Progress.fullstack
   } | ConvertTo-Json -Depth 8 | ForEach-Object { Write-QwenFile $stateFile $_ }
 }
 
@@ -137,7 +138,7 @@ try {
     if ($progress.complete) {
       if ($sincePush -gt 0) { Push-Checkpoint }
       Save-State $progress "complete" "SQL, NoSQL, Command Line and Git, and Node.js Fundamentals reached their targets with green gates."
-      Write-Campaign "Campaign complete: CLI/Git $($progress.cligit.current)/$($progress.cligit.target); Node $($progress.nodebasics.current)/$($progress.nodebasics.target); APIs $($progress.apibasics.current)/$($progress.apibasics.target); Auth $($progress.authsecurity.current)/$($progress.authsecurity.target)."
+      Write-Campaign "Campaign complete: CLI/Git $($progress.cligit.current)/$($progress.cligit.target); Node $($progress.nodebasics.current)/$($progress.nodebasics.target); APIs $($progress.apibasics.current)/$($progress.apibasics.target); Auth $($progress.authsecurity.current)/$($progress.authsecurity.target); Full-Stack $($progress.fullstack.current)/$($progress.fullstack.target)."
       break
     }
     if (Test-Path -LiteralPath $stopFile) {
@@ -152,7 +153,7 @@ try {
       break
     }
     $available = @()
-    foreach ($candidate in @($progress.sql, $progress.nosql, $progress.cligit, $progress.nodebasics, $progress.apibasics, $progress.authsecurity)) {
+    foreach ($candidate in @($progress.sql, $progress.nosql, $progress.cligit, $progress.nodebasics, $progress.apibasics, $progress.authsecurity, $progress.fullstack)) {
       if ($candidate -and -not $candidate.complete) { $available += $candidate }
     }
     $job = $null

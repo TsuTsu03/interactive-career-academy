@@ -13,7 +13,43 @@
 import { execFile } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { safeRelative } from "./local-checker.mjs";
+import { createHash } from "node:crypto";
+import { tmpdir } from "node:os";
+import { runNpm, safeRelative } from "./local-checker.mjs";
+
+/**
+ * Installs a project's pinned packages once per exact package.json, in a
+ * shared cache folder, and links the project to it. The gate replays every
+ * React step on every batch; downloading the same packages each time would
+ * take minutes and depend on the network every run. Only the first run for a
+ * given package.json touches the registry.
+ */
+const installs = new Map();
+
+async function installOnce(root) {
+  const manifest = fs.readFileSync(path.join(root, "package.json"), "utf8");
+  const key = createHash("sha256").update(manifest).digest("hex").slice(0, 16);
+  const cache = path.join(tmpdir(), "codedaddy-npm-cache", key);
+  // Projects are replayed in parallel and many share one package.json; only
+  // one of them may fill a cache folder, and the rest wait for it.
+  if (!installs.has(key)) installs.set(key, fillCache(cache, manifest));
+  await installs.get(key);
+  fs.symlinkSync(path.join(cache, "node_modules"), path.join(root, "node_modules"), "junction");
+  fs.copyFileSync(path.join(cache, "package-lock.json"), path.join(root, "package-lock.json"));
+}
+
+async function fillCache(cache, manifest) {
+  if (!fs.existsSync(path.join(cache, "node_modules", ".package-lock.json"))) {
+    fs.mkdirSync(cache, { recursive: true });
+    fs.writeFileSync(path.join(cache, "package.json"), manifest);
+    const run = await runNpm(cache, ["install", "--no-audit", "--no-fund"], process.env, 600000);
+    if (run.code !== 0) throw Error(`npm install failed in the gate cache: ${run.output.slice(-300)}`);
+  }
+  // Vite creates node_modules/.vite-temp while loading its config, and on
+  // Windows that mkdir fails when node_modules is a junction. Made here, in the
+  // real folder, it already exists when any linked project builds.
+  fs.mkdirSync(path.join(cache, "node_modules", ".vite-temp"), { recursive: true });
+}
 
 const GIT_SUBCOMMANDS = new Set(["init", "config", "add", "commit", "restore", "rm", "mv", "branch", "switch", "checkout", "merge", "status", "log", "diff"]);
 // Global options such as -C and -c can only precede the subcommand, and the
@@ -146,6 +182,18 @@ export async function runCommand(root, line, env) {
         });
       });
       return;
+    }
+    case "npm": {
+      if (args.length === 1 && args[0] === "install") {
+        if (!fs.existsSync(path.join(root, "node_modules"))) await installOnce(root);
+        return;
+      }
+      if (args.length === 2 && args[0] === "run" && /^[a-z][a-z0-9:-]{0,30}$/.test(args[1])) {
+        const run = await runNpm(root, args, { ...process.env, ...env, HOME: process.env.HOME ?? env.HOME, USERPROFILE: process.env.USERPROFILE ?? env.USERPROFILE });
+        if (run.code !== 0) throw Error(`${line} failed: ${run.output.slice(-300)}`);
+        return;
+      }
+      throw Error(`Only npm install and npm run <script> are allowed in a solution: ${line}`);
     }
     default:
       throw Error(`Command ${program} is not allowed in a solution.`);

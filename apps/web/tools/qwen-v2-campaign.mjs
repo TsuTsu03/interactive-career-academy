@@ -5,6 +5,7 @@ const { cliGitProjects } = await import("./cli-git-plan.mjs");
 const { nodeBasicsProjects } = await import("./node-basics-plan.mjs");
 const { apiBasicsProjects } = await import("./api-basics-plan.mjs");
 const { authSecurityProjects } = await import("./auth-security-plan.mjs");
+const { fullstackProjects } = await import("./fullstack-plan.mjs");
 
 const sqlSectors = [
   ["sari-sari", "Sari-Sari Store", ["Rice", "Soap", "Cooking Oil", "Egg"]],
@@ -441,6 +442,7 @@ const cligit = localProgress("cli-git", cliGitProjects);
 const nodebasics = localProgress("node-basics", nodeBasicsProjects);
 const apibasics = localProgress("api-basics", apiBasicsProjects);
 const authsecurity = localProgress("auth-security", authSecurityProjects);
-const all = [sql, nosql, cligit, nodebasics, apibasics, authsecurity];
-const next = all.find((item) => !item.complete) ?? authsecurity;
-console.log(JSON.stringify({ complete: all.every((item) => item.complete), sql, nosql, cligit, nodebasics, apibasics, authsecurity, next }));
+const fullstack = localProgress("fullstack-integration", fullstackProjects);
+const all = [sql, nosql, cligit, nodebasics, apibasics, authsecurity, fullstack];
+const next = all.find((item) => !item.complete) ?? fullstack;
+console.log(JSON.stringify({ complete: all.every((item) => item.complete), sql, nosql, cligit, nodebasics, apibasics, authsecurity, fullstack, next }));
