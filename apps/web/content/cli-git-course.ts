@@ -1656,3 +1656,224 @@ cliGitCourse.steps.push(...([
     "projectId": "branches-sari-sari"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: branches-sari-sari.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-branches-sari-sari-6",
+    "index": 36,
+    "task": "You are now on the update-prices branch. This branch is for changing prices. You must move here to add new prices. Use this command to move there. Run the checker to confirm you are on the right branch.\n\nType this command in your terminal:\n`git switch update-prices`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "on-branch",
+        "label": "You are on update-prices",
+        "kind": "local-git-branch",
+        "value": "update-prices"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You change branches by telling Git which one you want to use. Think of it like switching to a different part of your store's records."
+      },
+      {
+        "level": 2,
+        "text": "Run `git switch update-prices` to move there."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git switch update-prices"
+    },
+    "conceptIds": [
+      "git-switch"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "branches-sari-sari"
+  },
+  {
+    "id": "cli-branches-sari-sari-7",
+    "index": 37,
+    "task": "You are on the update-prices branch. Add the new price for Soap 25 to the prices file. This is like writing a new price tag on a shelf. Use this command to write it. Then run the checker to see if Git noticed the change.\n\nType this command in your terminal:\n`echo \"Soap 25\" >> prices.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "unstaged",
+        "label": "prices.txt has an unstaged change",
+        "kind": "local-git-unstaged",
+        "path": "prices.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You add new prices by writing them into the prices file. Git will notice it's new and ready to save."
+      },
+      {
+        "level": 2,
+        "text": "Run `echo \"Soap 25\" >> prices.txt` to add it."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Soap 25\" >> prices.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "branches-sari-sari"
+  },
+  {
+    "id": "cli-branches-sari-sari-8",
+    "index": 38,
+    "task": "You are on the update-prices branch. Git has noticed the new price. You must save it. Use this command to save it with a message. Then run the checker to see if Git saved it correctly.\n\nType this command in your terminal:\n`git commit -am \"Add Soap 25\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "This branch has two commits",
+        "kind": "local-git-commit-count",
+        "count": 2
+      },
+      {
+        "id": "message",
+        "label": "The last commit says Add Soap 25",
+        "kind": "local-git-head-message",
+        "value": "Add Soap 25"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You save changes by telling Git to commit them. The -am flag saves and adds the message at once."
+      },
+      {
+        "level": 2,
+        "text": "Run `git commit -am \"Add Soap 25\"` to save it."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -am \"Add Soap 25\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "branches-sari-sari"
+  },
+  {
+    "id": "cli-branches-sari-sari-9",
+    "index": 39,
+    "task": "You are still on the update-prices branch. You must go back to the main branch to check if the new price is there. Use this command to move back. Then run the checker to confirm you are on main and that the price is not there.\n\nType this command in your terminal:\n`git switch main`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "main",
+        "label": "You are back on main",
+        "kind": "local-git-branch",
+        "value": "main"
+      },
+      {
+        "id": "not-here",
+        "label": "main does not have Soap 25",
+        "kind": "local-file-lacks",
+        "path": "prices.txt",
+        "value": "Soap 25"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You move back to main to check if the new price is saved there. Main is the main record of the store."
+      },
+      {
+        "level": 2,
+        "text": "Run `git switch main` to go back."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git switch main"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "branches-sari-sari"
+  },
+  {
+    "id": "cli-branches-sari-sari-10",
+    "index": 40,
+    "task": "You are on the main branch. You must create a new branch named weekend-sale and move onto it. This is like opening a new notebook for weekend sales. Use this command to do both at once. Then run the checker to confirm the branch exists and you are on it.\n\nType this command in your terminal:\n`git switch -c weekend-sale`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "created",
+        "label": "The weekend-sale branch exists",
+        "kind": "local-git-branch-exists",
+        "branch": "weekend-sale"
+      },
+      {
+        "id": "on-it",
+        "label": "You are on weekend-sale",
+        "kind": "local-git-branch",
+        "value": "weekend-sale"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You create and move to a new branch with one command. The -c flag creates the branch and switches you to it."
+      },
+      {
+        "level": 2,
+        "text": "Run `git switch -c weekend-sale` to do both."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git switch -c weekend-sale"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "branches-sari-sari"
+  }
+] satisfies typeof cliGitCourse.steps));
