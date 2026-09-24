@@ -3897,3 +3897,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-24: Local Qwen wrote the lesson text for api-basics/sqlite-storage-sari-sari, steps 66-70; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
 
 - 2026-09-24: Local Qwen wrote the lesson text for api-basics/sqlite-changes-sari-sari, steps 71-75; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/sqlite-changes-sari-sari, steps 76-80; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
