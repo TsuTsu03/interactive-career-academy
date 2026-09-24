@@ -4995,3 +4995,276 @@ apiBasicsCourse.steps.push(...([
     "projectId": "errors-sari-sari"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: errors-sari-sari.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-errors-sari-sari-6",
+    "index": 86,
+    "task": "You will change the readBody helper. This helper reads the body of a request. It stops if the body is too big. You will make it stop at 1,000 characters. This protects the server from huge uploads. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new HttpError(413, \"Body too large\"); } return text; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  const item = JSON.parse(await readBody(req));\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nasync function handle(req, res) {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n}\nconst server = http.createServer((req, res) => {\n  handle(req, res);\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "413",
+        "label": "A 2,000-character body answers 413",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/items",
+            "body": "{\"name\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\"price\":1}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 413
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of a body as a message. If it's too long, the server can't handle it."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in the readBody function in server.js.\n\nIn server.js:\n```\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new HttpError(413, \"Body too large\"); } return text; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet errorCount = 0;\nclass HttpError extends Error { constructor(status, message) { super(message); this.status = status; } }\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new HttpError(413, \"Body too large\"); } return text; }\nasync function readJson(req) { const text = await readBody(req); try { return JSON.parse(text); } catch { throw new HttpError(400, \"Body must be JSON\"); } }\nasync function createItem(req, res) {\n  const item = await readJson(req);\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nasync function handle(req, res) {\n  if (req.url === \"/boom\") throw new Error(\"Database is down\");\n  if (req.url === \"/teapot\") throw new HttpError(418, \"I am a teapot\");\n  if (req.url === \"/items\" && ![\"GET\", \"POST\"].includes(req.method)) { res.setHeader(\"Allow\", \"GET, POST\"); throw new HttpError(405, \"Method not allowed\"); }\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n}\nconst server = http.createServer((req, res) => {\n  handle(req, res).catch((error) => send(res, error.status ?? 500, { error: error.status ? error.message : \"Something went wrong\", id: ++errorCount }));\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-payload-limit"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "errors-sari-sari"
+  },
+  {
+    "id": "api-errors-sari-sari-7",
+    "index": 87,
+    "task": "You will change the readJson helper. This helper checks if the body is marked as JSON. If not, it throws 415. This tells the client to send JSON. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\nasync function readJson(req) { if (!req.headers[\"content-type\"]?.includes(\"application/json\")) throw new HttpError(415, \"Send JSON\"); const text = await readBody(req); try { return JSON.parse(text); } catch { throw new HttpError(400, \"Body must be JSON\"); } }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  const item = JSON.parse(await readBody(req));\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nasync function handle(req, res) {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n}\nconst server = http.createServer((req, res) => {\n  handle(req, res);\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "415",
+        "label": "POST /items with text/plain answers 415",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/items",
+            "body": "name=Tea",
+            "headers": {
+              "Content-Type": "text/plain"
+            }
+          }
+        ],
+        "status": 415
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The server needs to know the body is JSON before it can read it."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in the readJson function in server.js.\n\nIn server.js:\n```\nasync function readJson(req) { if (!req.headers[\"content-type\"]?.includes(\"application/json\")) throw new HttpError(415, \"Send JSON\"); const text = await readBody(req); try { return JSON.parse(text); } catch { throw new HttpError(400, \"Body must be JSON\"); } }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet errorCount = 0;\nclass HttpError extends Error { constructor(status, message) { super(message); this.status = status; } }\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new HttpError(413, \"Body too large\"); } return text; }\nasync function readJson(req) { if (!req.headers[\"content-type\"]?.includes(\"application/json\")) throw new HttpError(415, \"Send JSON\"); const text = await readBody(req); try { return JSON.parse(text); } catch { throw new HttpError(400, \"Body must be JSON\"); } }\nasync function createItem(req, res) {\n  const item = await readJson(req);\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nasync function handle(req, res) {\n  if (req.url === \"/boom\") throw new Error(\"Database is down\");\n  if (req.url === \"/teapot\") throw new HttpError(418, \"I am a teapot\");\n  if (req.url === \"/items\" && ![\"GET\", \"POST\"].includes(req.method)) { res.setHeader(\"Allow\", \"GET, POST\"); throw new HttpError(405, \"Method not allowed\"); }\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n}\nconst server = http.createServer((req, res) => {\n  handle(req, res).catch((error) => send(res, error.status ?? 500, { error: error.status ? error.message : \"Something went wrong\", id: ++errorCount }));\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "errors-sari-sari"
+  },
+  {
+    "id": "api-errors-sari-sari-8",
+    "index": 88,
+    "task": "You will add one line in createItem. This line checks if an item with that name already exists. If it does, it throws 409. This stops duplicates. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  if (items.some((existing) => existing.name === item.name)) throw new HttpError(409, \"Name already exists\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  const item = JSON.parse(await readBody(req));\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nasync function handle(req, res) {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n}\nconst server = http.createServer((req, res) => {\n  handle(req, res);\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "409",
+        "label": "POST /items with Rice again answers 409",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/items",
+            "body": "{\"name\":\"Rice\",\"price\":1}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 409
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check the list of items before adding a new one. If it's there, don't add it."
+      },
+      {
+        "level": 2,
+        "text": "Put the code right after you read the item in createItem.\n\nIn server.js:\n```\n  if (items.some((existing) => existing.name === item.name)) throw new HttpError(409, \"Name already exists\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet errorCount = 0;\nclass HttpError extends Error { constructor(status, message) { super(message); this.status = status; } }\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new HttpError(413, \"Body too large\"); } return text; }\nasync function readJson(req) { if (!req.headers[\"content-type\"]?.includes(\"application/json\")) throw new HttpError(415, \"Send JSON\"); const text = await readBody(req); try { return JSON.parse(text); } catch { throw new HttpError(400, \"Body must be JSON\"); } }\nasync function createItem(req, res) {\n  const item = await readJson(req);\n  if (items.some((existing) => existing.name === item.name)) throw new HttpError(409, \"Name already exists\");\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nasync function handle(req, res) {\n  if (req.url === \"/boom\") throw new Error(\"Database is down\");\n  if (req.url === \"/teapot\") throw new HttpError(418, \"I am a teapot\");\n  if (req.url === \"/items\" && ![\"GET\", \"POST\"].includes(req.method)) { res.setHeader(\"Allow\", \"GET, POST\"); throw new HttpError(405, \"Method not allowed\"); }\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n}\nconst server = http.createServer((req, res) => {\n  handle(req, res).catch((error) => send(res, error.status ?? 500, { error: error.status ? error.message : \"Something went wrong\", id: ++errorCount }));\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-conflict"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "errors-sari-sari"
+  },
+  {
+    "id": "api-errors-sari-sari-9",
+    "index": 89,
+    "task": "You will change the catch at the bottom. This part handles errors. You will make it send the status code inside the error body. This helps the client know what went wrong. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  handle(req, res).catch((error) => send(res, error.status ?? 500, { error: error.status ? error.message : \"Something went wrong\", status: error.status ?? 500, id: ++errorCount }));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  const item = JSON.parse(await readBody(req));\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nasync function handle(req, res) {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n}\nconst server = http.createServer((req, res) => {\n  handle(req, res);\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "status",
+        "label": "The /teapot error body includes status 418",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/teapot"
+          }
+        ],
+        "bodyContains": "\"status\":418"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The error body should include the status code so the client knows what to do next."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in the catch block at the bottom of server.js.\n\nIn server.js:\n```\n  handle(req, res).catch((error) => send(res, error.status ?? 500, { error: error.status ? error.message : \"Something went wrong\", status: error.status ?? 500, id: ++errorCount }));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet errorCount = 0;\nclass HttpError extends Error { constructor(status, message) { super(message); this.status = status; } }\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new HttpError(413, \"Body too large\"); } return text; }\nasync function readJson(req) { if (!req.headers[\"content-type\"]?.includes(\"application/json\")) throw new HttpError(415, \"Send JSON\"); const text = await readBody(req); try { return JSON.parse(text); } catch { throw new HttpError(400, \"Body must be JSON\"); } }\nasync function createItem(req, res) {\n  const item = await readJson(req);\n  if (items.some((existing) => existing.name === item.name)) throw new HttpError(409, \"Name already exists\");\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nasync function handle(req, res) {\n  if (req.url === \"/boom\") throw new Error(\"Database is down\");\n  if (req.url === \"/teapot\") throw new HttpError(418, \"I am a teapot\");\n  if (req.url === \"/items\" && ![\"GET\", \"POST\"].includes(req.method)) { res.setHeader(\"Allow\", \"GET, POST\"); throw new HttpError(405, \"Method not allowed\"); }\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n}\nconst server = http.createServer((req, res) => {\n  handle(req, res).catch((error) => send(res, error.status ?? 500, { error: error.status ? error.message : \"Something went wrong\", status: error.status ?? 500, id: ++errorCount }));\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "errors-sari-sari"
+  },
+  {
+    "id": "api-errors-sari-sari-10",
+    "index": 90,
+    "task": "You will replace the last line of handle. This line throws a 404 error. It will include the method and path. This tells the client the route doesn't exist. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  throw new HttpError(404, `No route for ${req.method} ${req.url}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  const item = JSON.parse(await readBody(req));\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nasync function handle(req, res) {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n}\nconst server = http.createServer((req, res) => {\n  handle(req, res);\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "route",
+        "label": "GET /nope answers No route for GET /nope",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/nope"
+          }
+        ],
+        "status": 404,
+        "bodyContains": "No route for GET /nope"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The error message should say what method and path were used. This helps the client fix the request."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in the handle function, replacing the last line.\n\nIn server.js:\n```\n  throw new HttpError(404, `No route for ${req.method} ${req.url}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet errorCount = 0;\nclass HttpError extends Error { constructor(status, message) { super(message); this.status = status; } }\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new HttpError(413, \"Body too large\"); } return text; }\nasync function readJson(req) { if (!req.headers[\"content-type\"]?.includes(\"application/json\")) throw new HttpError(415, \"Send JSON\"); const text = await readBody(req); try { return JSON.parse(text); } catch { throw new HttpError(400, \"Body must be JSON\"); } }\nasync function createItem(req, res) {\n  const item = await readJson(req);\n  if (items.some((existing) => existing.name === item.name)) throw new HttpError(409, \"Name already exists\");\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nasync function handle(req, res) {\n  if (req.url === \"/boom\") throw new Error(\"Database is down\");\n  if (req.url === \"/teapot\") throw new HttpError(418, \"I am a teapot\");\n  if (req.url === \"/items\" && ![\"GET\", \"POST\"].includes(req.method)) { res.setHeader(\"Allow\", \"GET, POST\"); throw new HttpError(405, \"Method not allowed\"); }\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  throw new HttpError(404, `No route for ${req.method} ${req.url}`);\n}\nconst server = http.createServer((req, res) => {\n  handle(req, res).catch((error) => send(res, error.status ?? 500, { error: error.status ? error.message : \"Something went wrong\", status: error.status ?? 500, id: ++errorCount }));\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "errors-sari-sari"
+  }
+] satisfies typeof apiBasicsCourse.steps));
