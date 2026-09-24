@@ -4072,3 +4072,228 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "scripts-carinderia"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: modules-carinderia.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-modules-carinderia-1",
+    "index": 81,
+    "task": "Create a new file named prices.js. Put this code inside it: export const storeName = \"Carinderia\";. This tells the computer to save the store name for later use. The checker will test if this code works.\n\nIn prices.js:\n```\nexport const storeName = \"Carinderia\";\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "export",
+        "label": "prices.js exports storeName",
+        "kind": "local-file-contains",
+        "path": "prices.js",
+        "value": "export const storeName"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of prices.js as a small notebook that holds the store's name. You write it once, and other files can read it."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in a file named prices.js inside your project folder.\n\nIn prices.js:\n```\nexport const storeName = \"Carinderia\";\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"Carinderia\";\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "modules-carinderia"
+  },
+  {
+    "id": "node-modules-carinderia-2",
+    "index": 82,
+    "task": "Open app.js. Add this code at the top: import { storeName } from \"./prices.js\";. Then add this at the end: console.log(storeName);. This lets app.js read the store name from prices.js and show it on screen. Run the checker to test.\n\nIn app.js:\n```\nimport { storeName } from \"./prices.js\";\nconsole.log(storeName);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "imported",
+        "label": "node app.js prints Carinderia from prices.js",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Carinderia"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are borrowing the store name from prices.js. The import line tells app.js where to find it."
+      },
+      {
+        "level": 2,
+        "text": "Put the import line at the top of app.js, and the console.log line at the very end.\n\nIn app.js:\n```\nimport { storeName } from \"./prices.js\";\nconsole.log(storeName);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { storeName } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-carinderia"
+  },
+  {
+    "id": "node-modules-carinderia-3",
+    "index": 83,
+    "task": "In prices.js, add this code: export const prices = { \"Adobo\": 80, \"Pancit\": 60, \"Lumpia\": 15 };. In app.js, change the import to: import { storeName, prices } from \"./prices.js\";. Then add this at the end: console.log(prices[\"Adobo\"]);. This prints the price of Adobo. Run the checker.\n\nIn prices.js:\n```\nexport const prices = { \"Adobo\": 80, \"Pancit\": 60, \"Lumpia\": 15 };\n```\n\nIn app.js:\n```\nimport { storeName, prices } from \"./prices.js\";\nconsole.log(prices[\"Adobo\"]);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "price",
+        "label": "The script prints 80 on its own line",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "80\n"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The prices object holds the food names and their prices. Use it to get the price for Adobo."
+      },
+      {
+        "level": 2,
+        "text": "Add the new import line to app.js, then add the console.log line at the end.\n\nIn prices.js:\n```\nexport const prices = { \"Adobo\": 80, \"Pancit\": 60, \"Lumpia\": 15 };\n```\n\nIn app.js:\n```\nimport { storeName, prices } from \"./prices.js\";\nconsole.log(prices[\"Adobo\"]);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"Carinderia\";\nexport const prices = { \"Adobo\": 80, \"Pancit\": 60, \"Lumpia\": 15 };\n",
+      "app.js": "import { storeName, prices } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Adobo\"]);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "modules-carinderia"
+  },
+  {
+    "id": "node-modules-carinderia-4",
+    "index": 84,
+    "task": "In prices.js, add this function at the end: export function priceOf(name) { return prices[name] ?? 0; }. This function looks up a food's price and returns 0 if it doesn't exist. The checker will test if this function is exported correctly.\n\nIn prices.js:\n```\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "function",
+        "label": "prices.js exports priceOf",
+        "kind": "local-file-contains",
+        "path": "prices.js",
+        "value": "export function priceOf(name)"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The function priceOf takes a food name and returns its price. If the food is not in the list, it returns 0."
+      },
+      {
+        "level": 2,
+        "text": "Add this code after the prices object in prices.js.\n\nIn prices.js:\n```\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"Carinderia\";\nexport const prices = { \"Adobo\": 80, \"Pancit\": 60, \"Lumpia\": 15 };\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-carinderia"
+  },
+  {
+    "id": "node-modules-carinderia-5",
+    "index": 85,
+    "task": "In app.js, add this to the import: import { storeName, prices, priceOf } from \"./prices.js\";. Then add this at the end: console.log(`Pancit: ${priceOf(\"Pancit\")}`);. This prints the price of Pancit. Run the checker to test.\n\nIn app.js:\n```\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(`Pancit: ${priceOf(\"Pancit\")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "lookup",
+        "label": "The script prints Pancit: 60",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Pancit: 60"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are now using the priceOf function to get the price of Pancit. The function will return 60."
+      },
+      {
+        "level": 2,
+        "text": "Add the new import line to app.js, then add the console.log line at the end.\n\nIn app.js:\n```\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(`Pancit: ${priceOf(\"Pancit\")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Adobo\"]);\nconsole.log(`Pancit: ${priceOf(\"Pancit\")}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-carinderia"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
