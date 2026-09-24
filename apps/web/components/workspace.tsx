@@ -14,6 +14,7 @@ import { RankUp } from "./rank-up";
 import { curriculum } from "@/content/curriculum";
 import { resolveConcepts } from "@/content/concepts";
 import { gradeStep, type TestResult } from "@/lib/grading";
+import { localProjectKey } from "@/lib/local-manifest";
 import { type Course, type Step } from "@/lib/lesson-ir";
 import { characterIssues, type CharacterIssue } from "@/lib/character-guard";
 import { conceptConnections } from "@/lib/concept-connections";
@@ -1123,7 +1124,7 @@ export function Workspace({ course }: { course: Course }) {
               <Preview
                 files={files}
                 kind={step.kind}
-                localStep={step.kind === "local" ? { id: step.id, projectId: step.projectId, firstInProject: course.steps[stepIdx - 1]?.projectId !== step.projectId } : undefined}
+                localStep={step.kind === "local" ? { id: step.id, projectId: localProjectKey(course.id, step.projectId), firstInProject: course.steps[stepIdx - 1]?.projectId !== step.projectId } : undefined}
                 sqlSeed={step.sqlSeed}
                 nosqlSeed={step.nosqlSeed}
                 flash={phase === "passed" ? "pass" : phase === "failed" ? "fail" : "none"}

@@ -4,6 +4,7 @@ const { concepts } = await import("../content/concepts.ts");
 const { cliGitProjects } = await import("./cli-git-plan.mjs");
 const { nodeBasicsProjects } = await import("./node-basics-plan.mjs");
 const { apiBasicsProjects } = await import("./api-basics-plan.mjs");
+const { authSecurityProjects } = await import("./auth-security-plan.mjs");
 
 const sqlSectors = [
   ["sari-sari", "Sari-Sari Store", ["Rice", "Soap", "Cooking Oil", "Egg"]],
@@ -439,6 +440,7 @@ const nosql = progress("nosql-basics");
 const cligit = localProgress("cli-git", cliGitProjects);
 const nodebasics = localProgress("node-basics", nodeBasicsProjects);
 const apibasics = localProgress("api-basics", apiBasicsProjects);
-const all = [sql, nosql, cligit, nodebasics, apibasics];
-const next = all.find((item) => !item.complete) ?? apibasics;
-console.log(JSON.stringify({ complete: all.every((item) => item.complete), sql, nosql, cligit, nodebasics, apibasics, next }));
+const authsecurity = localProgress("auth-security", authSecurityProjects);
+const all = [sql, nosql, cligit, nodebasics, apibasics, authsecurity];
+const next = all.find((item) => !item.complete) ?? authsecurity;
+console.log(JSON.stringify({ complete: all.every((item) => item.complete), sql, nosql, cligit, nodebasics, apibasics, authsecurity, next }));

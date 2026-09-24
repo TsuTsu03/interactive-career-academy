@@ -133,8 +133,11 @@ function localShape(step) {
         if (typeof request.path !== "string" || !request.path.startsWith("/") || request.path.startsWith("//") || request.path.length > 300) errors.push(`http path must start with one / : ${request.path}`);
         if (request.body !== undefined && (typeof request.body !== "string" || request.body.length > 5000)) errors.push("http body must be a string under 5,000 characters");
         if (request.headers !== undefined && (typeof request.headers !== "object" || Object.entries(request.headers).some(([name, value]) => !/^[A-Za-z0-9-]{1,40}$/.test(name) || typeof value !== "string" || value.length > 200))) errors.push("http headers must be short name/value strings");
+        if (request.fromPrevious !== undefined && (!/^[A-Za-z0-9-]{1,40}$/.test(request.fromPrevious.header ?? "") || !/^[A-Za-z0-9_]{1,40}$/.test(request.fromPrevious.field ?? "") || (request.fromPrevious.prefix !== undefined && (typeof request.fromPrevious.prefix !== "string" || request.fromPrevious.prefix.length > 20)))) errors.push("fromPrevious needs a header name, a field name, and an optional short prefix");
       }
-      if (test.status === undefined && test.bodyContains === undefined && test.header === undefined) errors.push("http checks need a status, bodyContains, or header expectation");
+      if (test.status === undefined && test.bodyContains === undefined && test.bodyLacks === undefined && test.header === undefined) errors.push("http checks need a status, bodyContains, bodyLacks, or header expectation");
+      if (test.cookies !== undefined && typeof test.cookies !== "boolean") errors.push("http cookies must be true or false");
+      if (test.bodyLacks !== undefined && (typeof test.bodyLacks !== "string" || !test.bodyLacks)) errors.push("bodyLacks must be non-empty text");
       if (test.status !== undefined && (!Number.isInteger(test.status) || test.status < 100 || test.status > 599)) errors.push("http status must be 100-599");
       if (test.header !== undefined && (typeof test.header?.name !== "string" || typeof test.header?.value !== "string")) errors.push("http header expectation needs a name and value");
       if (test.env !== undefined && (typeof test.env !== "object" || Object.entries(test.env).some(([key, value]) => !localChecker.safeEnvName(key) || key === "PORT" || typeof value !== "string"))) errors.push("http check env must map UPPER_CASE names other than PORT to strings");
@@ -169,10 +172,15 @@ function localReportSelfTest(step, courseId) {
   return errors;
 }
 
-async function localBehaviour(steps) {
+async function localBehaviour(entries) {
   const errors = [];
+  // Two courses may reuse a project id (files-sari-sari), so a project is
+  // always identified by its course as well.
   const projects = new Map();
-  for (const step of steps) projects.set(step.projectId, [...(projects.get(step.projectId) ?? []), step]);
+  for (const { step, courseId } of entries) {
+    const key = `${courseId}/${step.projectId}`;
+    projects.set(key, [...(projects.get(key) ?? []), step]);
+  }
   async function proveProject(projectSteps) {
     const scratch = mkdtempSync(join(tmpdir(), "codedaddy-local-gate-"));
     try {
@@ -276,7 +284,7 @@ if (!isMainThread) {
   if (!errors.length && localSteps.length) {
     localExecuted = localSteps.length;
     errors.push(...localReportSelfTest(localSteps[0].step, localSteps[0].courseId));
-    errors.push(...await localBehaviour(localSteps.map(entry => entry.step)));
+    errors.push(...await localBehaviour(localSteps));
   }
   for (const error of errors) console.error(`ERROR ${error}`);
   console.log(`Content gate: ${count} steps, ${executed} database steps executed, ${localExecuted} local steps replayed, ${errors.length} errors, ${warnings} structural warnings. Browser behaviour still requires /harness.`);

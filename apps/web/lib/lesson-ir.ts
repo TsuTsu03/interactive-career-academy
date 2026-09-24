@@ -391,10 +391,21 @@ export type TestSpec =
       label: Copy;
       kind: "local-http";
       file: string;
-      requests: { method: string; path: string; body?: string; headers?: Record<string, string> }[];
+      requests: {
+        method: string;
+        path: string;
+        body?: string;
+        headers?: Record<string, string>;
+        /** Send a string field from an earlier JSON answer, such as a token, as this header. */
+        fromPrevious?: { header: string; field: string; prefix?: string };
+      }[];
       env?: Record<string, string>;
+      /** Keep cookies between the requests, but never let the server clear one. */
+      cookies?: boolean;
       status?: number;
       bodyContains?: string;
+      /** Text the last answer must never contain, such as a fake secret. */
+      bodyLacks?: string;
       header?: { name: string; value: string };
     }
 

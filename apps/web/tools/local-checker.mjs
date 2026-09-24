@@ -222,14 +222,43 @@ async function runHttp(root, full, test) {
       await new Promise((resolve) => setTimeout(resolve, 50));
     }
     let last = null;
+    // A small cookie jar, used only when the check asks for it. A cookie the
+    // server tries to clear keeps its old value here, so a check can prove the
+    // server itself forgot the session instead of trusting the browser to.
+    const jar = new Map();
+    // String fields from earlier JSON answers, latest first, so a later
+    // request can send a token or CSRF value the server handed out.
+    const remembered = {};
     for (const request of test.requests) {
+      const headers = { ...(request.headers ?? {}) };
+      if (test.cookies && jar.size) headers.Cookie = [...jar].map(([name, value]) => `${name}=${value}`).join("; ");
+      if (request.fromPrevious) {
+        const value = remembered[request.fromPrevious.field];
+        if (typeof value === "string") headers[request.fromPrevious.header] = `${request.fromPrevious.prefix ?? ""}${value}`;
+      }
       const response = await fetch(`http://127.0.0.1:${port}${request.path}`, {
         method: request.method,
-        headers: request.headers,
+        headers,
         body: request.body,
+        redirect: "manual",
         signal: AbortSignal.timeout(NODE_TIMEOUT_MS),
       });
+      if (test.cookies) {
+        for (const line of response.headers.getSetCookie()) {
+          const [pair] = line.split(";");
+          const index = pair.indexOf("=");
+          const name = pair.slice(0, index).trim();
+          const value = pair.slice(index + 1).trim();
+          if (name && value) jar.set(name, value);
+        }
+      }
       last = { status: response.status, headers: response.headers, body: (await response.text()).slice(0, MAX_OUTPUT_CHARS) };
+      try {
+        const data = JSON.parse(last.body);
+        if (data && typeof data === "object" && !Array.isArray(data)) for (const [key, value] of Object.entries(data)) if (typeof value === "string") remembered[key] = value;
+      } catch {
+        // Not JSON; nothing to remember.
+      }
     }
     return last;
   } catch (error) {
@@ -268,6 +297,7 @@ async function runCheck(root, test, state) {
     if (last.error) return fail(last.error);
     if (test.status !== undefined && last.status !== test.status) return fail(`${what} answered with status ${last.status}; the step expects ${test.status}.`);
     if (test.bodyContains !== undefined && !last.body.includes(test.bodyContains)) return fail(`${what} answered, but the body does not contain the expected text.`);
+    if (test.bodyLacks !== undefined && last.body.includes(test.bodyLacks)) return fail(`${what} answered with text that must never be sent.`);
     if (test.header !== undefined && !(last.headers.get(test.header.name) ?? "").includes(test.header.value)) return fail(`${what} answered without the expected ${test.header.name} header.`);
     return pass;
   }

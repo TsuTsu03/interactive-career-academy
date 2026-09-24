@@ -218,7 +218,7 @@ coverage like decision 38's, and an estimate until a batch is timed.
 | Command Line and Git | ~180 | Own computer | Paths, files, processes, `git` day-to-day, branches, GitHub. Named unsolved in decision 39; decision 43 checks it with a local checker, as learner-reported practice |
 | Node.js Fundamentals | ~350 | Own computer | JavaScript outside the browser, modules, npm scripts, the file system, async I/O, environment variables. Checked by the local checker (decision 45) |
 | **Building APIs** | **500** | Own computer | Routing, middleware, request validation, the database layer, error shapes, and REST as it is actually practised. Built on `node:http` and `node:sqlite` and checked by the local checker (decision 45); 50 projects of 10 steps cover the list above, so the ~650 estimate was not padded |
-| Auth and Security | ~300 | Own computer | Password hashing, sessions and tokens, and the OWASP failures a beginner ships by default |
+| Auth and Security | 300 | Own computer | Password hashing, sessions and tokens, and the OWASP failures a beginner ships by default. Built on `node:crypto` and `node:http`, with fake users and secrets, and checked by the local checker (decision 45). The checks prove specific protections work, never that an app is secure |
 | Full-Stack Integration | ~400 | Own computer | Connecting a React front end to the learner's own API, deployment, and the full-stack capstones |
 
 The two database courses run SQLite compiled to WebAssembly in the sandboxed
