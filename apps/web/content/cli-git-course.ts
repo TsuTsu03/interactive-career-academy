@@ -751,3 +751,222 @@ cliGitCourse.steps.push(...([
     "projectId": "first-commit-sari-sari"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: first-commit-sari-sari.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-first-commit-sari-sari-6",
+    "index": 16,
+    "task": "You will save your first work in Git. This is called a commit. It keeps a record of your changes. Run this command exactly as shown: `git commit -m \"Start sari-sari store list\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has one commit",
+        "kind": "local-git-commit-count",
+        "count": 1
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of a commit like saving a photo of your work so you can return to it later."
+      },
+      {
+        "level": 2,
+        "text": "`git commit -m \"Start sari-sari store list\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Start sari-sari store list\""
+    },
+    "conceptIds": [
+      "git-commit"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "first-commit-sari-sari"
+  },
+  {
+    "id": "cli-first-commit-sari-sari-7",
+    "index": 17,
+    "task": "You will add a new item to your prices list. This edit is not yet saved in Git. Run this command exactly as shown: `echo \"Soap 25\" >> prices.txt`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "changed",
+        "label": "prices.txt has an unstaged change",
+        "kind": "local-git-unstaged",
+        "path": "prices.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This command adds text to the file without needing to open it."
+      },
+      {
+        "level": 2,
+        "text": "`echo \"Soap 25\" >> prices.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Soap 25\" >> prices.txt"
+    },
+    "conceptIds": [
+      "git-unstaged-change"
+    ],
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-sari-sari"
+  },
+  {
+    "id": "cli-first-commit-sari-sari-8",
+    "index": 18,
+    "task": "You will tell Git to save this new change. Run this command exactly as shown: `git add prices.txt`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "staged",
+        "label": "The change to prices.txt is staged",
+        "kind": "local-git-staged",
+        "path": "prices.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This command prepares the file for saving in Git, like putting it in a box before sealing it."
+      },
+      {
+        "level": 2,
+        "text": "`git add prices.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add prices.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-sari-sari"
+  },
+  {
+    "id": "cli-first-commit-sari-sari-9",
+    "index": 19,
+    "task": "You will save the change you prepared. This will be your second commit. Run this command exactly as shown: `git commit -m \"Add soap lne\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has two commits",
+        "kind": "local-git-commit-count",
+        "count": 2
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This saves your change with a message, even if the message has a mistake."
+      },
+      {
+        "level": 2,
+        "text": "`git commit -m \"Add soap lne\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Add soap lne\""
+    },
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-sari-sari"
+  },
+  {
+    "id": "cli-first-commit-sari-sari-10",
+    "index": 20,
+    "task": "You will fix the mistake in your last commit message. Git lets you change the most recent commit message with --amend. Run this command exactly as shown: `git commit --amend -m \"Add soap line\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "message",
+        "label": "The last commit message is spelled correctly",
+        "kind": "local-git-head-message",
+        "value": "Add soap line"
+      },
+      {
+        "id": "still-two",
+        "label": "There are still two commits, not three",
+        "kind": "local-git-commit-count",
+        "count": 2
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use --amend to fix the message without making a new commit."
+      },
+      {
+        "level": 2,
+        "text": "`git commit --amend -m \"Add soap line\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit --amend -m \"Add soap line\""
+    },
+    "conceptIds": [
+      "git-amend"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "first-commit-sari-sari"
+  }
+] satisfies typeof cliGitCourse.steps));
