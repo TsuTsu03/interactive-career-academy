@@ -3665,3 +3665,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-24: Local Qwen wrote the lesson text for cli-git/first-commit-sari-sari, steps 16-20; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
 
 - 2026-09-24: Local Qwen wrote the lesson text for cli-git/undo-sari-sari, steps 21-25; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/undo-sari-sari, steps 26-30; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.

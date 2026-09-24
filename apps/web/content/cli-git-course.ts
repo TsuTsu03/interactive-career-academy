@@ -1200,3 +1200,227 @@ cliGitCourse.steps.push(...([
     "projectId": "undo-sari-sari"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: undo-sari-sari.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-undo-sari-sari-6",
+    "index": 26,
+    "task": "You made a mistake in prices.txt. You want to throw away that mistake. Use git restore to fix it. This command puts the file back to its last saved state. Run the checker to see if the mistake is gone. Then paste its report.\n\nType this command in your terminal:\n`git restore prices.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\nSoap 25\n"
+    },
+    "tests": [
+      {
+        "id": "fixed",
+        "label": "The mistaken line is gone",
+        "kind": "local-file-lacks",
+        "path": "prices.txt",
+        "value": "Wrong line"
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think: throw away the edit you made but keep the last saved version."
+      },
+      {
+        "level": 2,
+        "text": "git restore prices.txt"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git restore prices.txt"
+    },
+    "conceptIds": [
+      "git-restore"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "undo-sari-sari"
+  },
+  {
+    "id": "cli-undo-sari-sari-7",
+    "index": 27,
+    "task": "You want to add a new item: Egg 9. Type echo \"Egg 9\" >> prices.txt to write it into the file. This adds the line without saving it yet. Run the checker to see if the new line appears. Then paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\nSoap 25\n"
+    },
+    "tests": [
+      {
+        "id": "unstaged",
+        "label": "prices.txt has an unstaged change",
+        "kind": "local-git-unstaged",
+        "path": "prices.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think: write the new line into the file without staging it."
+      },
+      {
+        "level": 2,
+        "text": "echo \"Egg 9\" >> prices.txt"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Egg 9\" >> prices.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "undo-sari-sari"
+  },
+  {
+    "id": "cli-undo-sari-sari-8",
+    "index": 28,
+    "task": "You now want to prepare the new line to be saved. Use git add prices.txt to stage it. This tells Git you are ready to save this change. Run the checker to see if the file is now staged. Then paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\nSoap 25\n"
+    },
+    "tests": [
+      {
+        "id": "staged",
+        "label": "prices.txt is staged",
+        "kind": "local-git-staged",
+        "path": "prices.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think: mark the new line so Git knows you want to save it next."
+      },
+      {
+        "level": 2,
+        "text": "git add prices.txt"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add prices.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "undo-sari-sari"
+  },
+  {
+    "id": "cli-undo-sari-sari-9",
+    "index": 29,
+    "task": "You changed your mind. You want to remove the new line from the staging area but keep it in the file. Use git restore --staged prices.txt. This takes the change out of staging but leaves the file as is. Run the checker to see if it's unstaged. Then paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\nSoap 25\n"
+    },
+    "tests": [
+      {
+        "id": "unstaged",
+        "label": "prices.txt is back to unstaged",
+        "kind": "local-git-unstaged",
+        "path": "prices.txt"
+      },
+      {
+        "id": "kept",
+        "label": "Egg 9 is still in the file",
+        "kind": "local-file-contains",
+        "path": "prices.txt",
+        "value": "Egg 9"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think: take the change out of the staging area but leave the file unchanged."
+      },
+      {
+        "level": 2,
+        "text": "git restore --staged prices.txt"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git restore --staged prices.txt"
+    },
+    "conceptIds": [
+      "git-unstage"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "undo-sari-sari"
+  },
+  {
+    "id": "cli-undo-sari-sari-10",
+    "index": 30,
+    "task": "You decide not to save the change. You want to throw away the new line and return to the last saved version. Use git restore prices.txt. This removes the edit and returns the file to its last commit. Run the checker to see if the line is gone. Then paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\nSoap 25\n"
+    },
+    "tests": [
+      {
+        "id": "dropped",
+        "label": "Egg 9 is gone again",
+        "kind": "local-file-lacks",
+        "path": "prices.txt",
+        "value": "Egg 9"
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think: remove the edit and return to the last saved version."
+      },
+      {
+        "level": 2,
+        "text": "git restore prices.txt"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git restore prices.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "undo-sari-sari"
+  }
+] satisfies typeof cliGitCourse.steps));
