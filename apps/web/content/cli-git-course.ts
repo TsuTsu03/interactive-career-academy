@@ -5659,3 +5659,217 @@ cliGitCourse.steps.push(...([
     "projectId": "files-school-club"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: files-school-club.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-files-school-club-6",
+    "index": 126,
+    "task": "You make a new folder called archive. This folder will hold old files. You type the command exactly as shown. Then you run the checker to see if it worked.\n\nType this command in your terminal:\n`mkdir archive`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "archive",
+        "label": "The archive folder exists",
+        "kind": "local-dir-exists",
+        "path": "archive"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of a new folder like a box for old things. You create it with mkdir."
+      },
+      {
+        "level": 2,
+        "text": "Type `mkdir archive` and press Enter."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "mkdir archive"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-school-club"
+  },
+  {
+    "id": "cli-files-school-club-7",
+    "index": 127,
+    "task": "You move the file backup.txt into the archive folder. This keeps old files safe. You type the command exactly as shown. Then you run the checker to see if it worked.\n\nType this command in your terminal:\n`mv events/backup.txt archive/backup.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "moved",
+        "label": "archive/backup.txt exists",
+        "kind": "local-file-exists",
+        "path": "archive/backup.txt"
+      },
+      {
+        "id": "gone",
+        "label": "backup.txt is no longer in events",
+        "kind": "local-path-missing",
+        "path": "events/backup.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You take a file from one place and put it in another. Use mv to move it."
+      },
+      {
+        "level": 2,
+        "text": "Type `mv events/backup.txt archive/backup.txt` and press Enter."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "mv events/backup.txt archive/backup.txt"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-school-club"
+  },
+  {
+    "id": "cli-files-school-club-8",
+    "index": 128,
+    "task": "You add a line to the schedule file. This updates the current plan. You type the command exactly as shown. Then you run the checker to see if it worked.\n\nType this command in your terminal:\n`echo \"Friday Cleanup\" >> events/schedule.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "third",
+        "label": "schedule.txt now says Friday Cleanup",
+        "kind": "local-file-contains",
+        "path": "events/schedule.txt",
+        "value": "Friday Cleanup"
+      },
+      {
+        "id": "backup-old",
+        "label": "The backup does not have Friday Cleanup",
+        "kind": "local-file-lacks",
+        "path": "archive/backup.txt",
+        "value": "Friday Cleanup"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You add text to a file without changing the old version. Use >> to add."
+      },
+      {
+        "level": 2,
+        "text": "Type `echo \"Friday Cleanup\" >> events/schedule.txt` and press Enter."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Friday Cleanup\" >> events/schedule.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-school-club"
+  },
+  {
+    "id": "cli-files-school-club-9",
+    "index": 129,
+    "task": "You delete the old backup file. This clears space. You type the command exactly as shown. Then you run the checker to see if it worked.\n\nType this command in your terminal:\n`rm archive/backup.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "deleted",
+        "label": "The old backup is deleted",
+        "kind": "local-path-missing",
+        "path": "archive/backup.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You remove a file with rm. You type the full path to the file."
+      },
+      {
+        "level": 2,
+        "text": "Type `rm archive/backup.txt` and press Enter."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "rm archive/backup.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "files-school-club"
+  },
+  {
+    "id": "cli-files-school-club-10",
+    "index": 130,
+    "task": "You remove the empty archive folder. This cleans up space. You type the command exactly as shown. Then you run the checker to see if it worked.\n\nType this command in your terminal:\n`rm -r archive`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "no-archive",
+        "label": "The archive folder is gone",
+        "kind": "local-path-missing",
+        "path": "archive"
+      },
+      {
+        "id": "kept",
+        "label": "The events folder is still there",
+        "kind": "local-dir-exists",
+        "path": "events"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You delete a folder and all inside it with rm -r. Be careful with this."
+      },
+      {
+        "level": 2,
+        "text": "Type `rm -r archive` and press Enter."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "rm -r archive"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-school-club"
+  }
+] satisfies typeof cliGitCourse.steps));
