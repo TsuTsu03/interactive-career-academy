@@ -10523,3 +10523,234 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "scripts-school-club"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: scripts-school-club.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-scripts-school-club-6",
+    "index": 216,
+    "task": "You will print each product name with a dash in front. Add the code below at the end of app.js. This loop goes through each item in the list. The checker confirms the last line is - Badge.\n\nIn app.js:\n```\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "last",
+        "label": "The list ends with - Badge",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "- Badge"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use a for...of loop to go through each item in the items array."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of app.js, after the items list.\n\nIn app.js:\n```\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"School Club\");\nconst item = \"Shirt\";\nconst price = 250;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Shirt\", \"Pin\", \"Badge\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-school-club"
+  },
+  {
+    "id": "node-scripts-school-club-7",
+    "index": 217,
+    "task": "You will add the prices and print the total. Add the code below at the end of app.js. The checker confirms the total is 325. This is the sum of 250, 30, and 45.\n\nIn app.js:\n```\nconst total = 250 + 30 + 45;\nconsole.log(`Total: ${total}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "total",
+        "label": "The script prints Total: 325",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Total: 325"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add two lines: one to calculate the total, one to print it."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of app.js, after the loop.\n\nIn app.js:\n```\nconst total = 250 + 30 + 45;\nconsole.log(`Total: ${total}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"School Club\");\nconst item = \"Shirt\";\nconst price = 250;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Shirt\", \"Pin\", \"Badge\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 250 + 30 + 45;\nconsole.log(`Total: ${total}`);\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "scripts-school-club"
+  },
+  {
+    "id": "node-scripts-school-club-8",
+    "index": 218,
+    "task": "You will add a tax of 12% to the total. Add the code below at the end of app.js. The checker confirms the total with tax is 364. The function multiplies the amount by 1.12 and rounds it.\n\nIn app.js:\n```\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "tax",
+        "label": "The script prints With tax: 364",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "With tax: 364"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Write a function that takes an amount and returns it with 12% tax."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of app.js, after the total line.\n\nIn app.js:\n```\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"School Club\");\nconst item = \"Shirt\";\nconst price = 250;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Shirt\", \"Pin\", \"Badge\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 250 + 30 + 45;\nconsole.log(`Total: ${total}`);\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-school-club"
+  },
+  {
+    "id": "node-scripts-school-club-9",
+    "index": 219,
+    "task": "You will label the order as big or small. Add the code below at the end of app.js. The checker confirms the order is big because the total is over 100. If the total is not over 100, it says small.\n\nIn app.js:\n```\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "size",
+        "label": "The script prints Big order",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Big order"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use an if statement to check if total is greater than 100."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of app.js, after the tax line.\n\nIn app.js:\n```\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"School Club\");\nconst item = \"Shirt\";\nconst price = 250;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Shirt\", \"Pin\", \"Badge\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 250 + 30 + 45;\nconsole.log(`Total: ${total}`);\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-school-club"
+  },
+  {
+    "id": "node-scripts-school-club-10",
+    "index": 220,
+    "task": "You will report a warning using console.error. Add the code below at the end of app.js. The checker confirms it prints as an error message but the script still finishes. This is for warning messages, not normal output.\n\nIn app.js:\n```\nconsole.error(\"Low stock: Badge\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "warning",
+        "label": "The script reports Low stock: Badge as an error message",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "value": "Low stock: Badge"
+      },
+      {
+        "id": "still-runs",
+        "label": "The script still finishes normally",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use console.error to show a warning message."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of app.js, after the order label.\n\nIn app.js:\n```\nconsole.error(\"Low stock: Badge\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"School Club\");\nconst item = \"Shirt\";\nconst price = 250;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Shirt\", \"Pin\", \"Badge\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 250 + 30 + 45;\nconsole.log(`Total: ${total}`);\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\nconsole.error(\"Low stock: Badge\");\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "scripts-school-club"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
