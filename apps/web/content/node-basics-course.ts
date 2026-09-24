@@ -10754,3 +10754,228 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "scripts-school-club"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: modules-school-club.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-modules-school-club-1",
+    "index": 221,
+    "task": "Create a new file named prices.js. Type the code below into it. This file holds the store name. You will use it later in app.js. Run the checker to confirm it works.\n\nIn prices.js:\n```\nexport const storeName = \"School Club\";\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "export",
+        "label": "prices.js exports storeName",
+        "kind": "local-file-contains",
+        "path": "prices.js",
+        "value": "export const storeName"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of prices.js as a small notebook that holds store details."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in prices.js, not in app.js.\n\nIn prices.js:\n```\nexport const storeName = \"School Club\";\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"School Club\";\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "modules-school-club"
+  },
+  {
+    "id": "node-modules-school-club-2",
+    "index": 222,
+    "task": "Open app.js. Add an import at the top to bring in storeName from prices.js. Add a console.log at the end to print it. Run the checker to confirm it prints the store name.\n\nIn app.js:\n```\nimport { storeName } from \"./prices.js\";\nconsole.log(storeName);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "imported",
+        "label": "node app.js prints School Club from prices.js",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "School Club"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You need to tell app.js to borrow storeName from prices.js."
+      },
+      {
+        "level": 2,
+        "text": "Put the import and log at the end of app.js.\n\nIn app.js:\n```\nimport { storeName } from \"./prices.js\";\nconsole.log(storeName);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { storeName } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-school-club"
+  },
+  {
+    "id": "node-modules-school-club-3",
+    "index": 223,
+    "task": "Add a prices object to prices.js. Update app.js to import prices and print the price of Shirt. Run the checker to confirm it prints 250.\n\nIn prices.js:\n```\nexport const prices = { \"Shirt\": 250, \"Pin\": 30, \"Badge\": 45 };\n```\n\nIn app.js:\n```\nimport { storeName, prices } from \"./prices.js\";\nconsole.log(prices[\"Shirt\"]);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "price",
+        "label": "The script prints 250 on its own line",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "250\n"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "prices.js now holds both store name and item prices."
+      },
+      {
+        "level": 2,
+        "text": "Add prices to the import in app.js and print prices[\"Shirt\"].\n\nIn prices.js:\n```\nexport const prices = { \"Shirt\": 250, \"Pin\": 30, \"Badge\": 45 };\n```\n\nIn app.js:\n```\nimport { storeName, prices } from \"./prices.js\";\nconsole.log(prices[\"Shirt\"]);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"School Club\";\nexport const prices = { \"Shirt\": 250, \"Pin\": 30, \"Badge\": 45 };\n",
+      "app.js": "import { storeName, prices } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Shirt\"]);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "modules-school-club"
+  },
+  {
+    "id": "node-modules-school-club-4",
+    "index": 224,
+    "task": "Add a function called priceOf to prices.js. This function looks up a price and returns 0 if the item is not found. Run the checker to confirm it exports the function.\n\nIn prices.js:\n```\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "function",
+        "label": "prices.js exports priceOf",
+        "kind": "local-file-contains",
+        "path": "prices.js",
+        "value": "export function priceOf(name)"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The function uses a special operator to check if the item exists."
+      },
+      {
+        "level": 2,
+        "text": "Put the function at the end of prices.js.\n\nIn prices.js:\n```\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"School Club\";\nexport const prices = { \"Shirt\": 250, \"Pin\": 30, \"Badge\": 45 };\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-school-club"
+  },
+  {
+    "id": "node-modules-school-club-5",
+    "index": 225,
+    "task": "Update app.js to import priceOf. Print the price of Pin using the function. Run the checker to confirm it prints Pin: 30.\n\nIn app.js:\n```\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(`Pin: ${priceOf(\"Pin\")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "lookup",
+        "label": "The script prints Pin: 30",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Pin: 30"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You need to add priceOf to the import list in app.js."
+      },
+      {
+        "level": 2,
+        "text": "Use priceOf(\"Pin\") to get the price and print it with a label.\n\nIn app.js:\n```\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(`Pin: ${priceOf(\"Pin\")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Shirt\"]);\nconsole.log(`Pin: ${priceOf(\"Pin\")}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-school-club"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
