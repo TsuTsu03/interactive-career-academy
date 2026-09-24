@@ -7862,3 +7862,232 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "modules-barangay"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: files-barangay.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-files-barangay-1",
+    "index": 161,
+    "task": "You will read the file stock.txt. The code below reads it and prints its text. Replace the console.log line in app.js with those two lines. This lets you see the file's content in the terminal. Run the checker to confirm.\n\nIn app.js:\n```\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Clearance,50\nPermit,300\nID,20\n"
+    },
+    "tests": [
+      {
+        "id": "text",
+        "label": "The script prints the line Clearance,50 from stock.txt",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Clearance,50"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of readFile as opening a door to the file's content."
+      },
+      {
+        "level": 2,
+        "text": "Put the two lines right after the import line in app.js.\n\nIn app.js:\n```\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-barangay"
+  },
+  {
+    "id": "node-files-barangay-2",
+    "index": 162,
+    "task": "You will split the text into lines. The code below splits the text and prints how many lines there are. Add those two lines at the end of app.js. This helps you count the items in the file. Run the checker to confirm.\n\nIn app.js:\n```\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Clearance,50\nPermit,300\nID,20\n"
+    },
+    "tests": [
+      {
+        "id": "lines",
+        "label": "The script prints Lines: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Lines: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use split to break the text into parts, like cutting a rope into pieces."
+      },
+      {
+        "level": 2,
+        "text": "Add the lines after the previous code in app.js.\n\nIn app.js:\n```\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-barangay"
+  },
+  {
+    "id": "node-files-barangay-3",
+    "index": 163,
+    "task": "You will split each line by the comma and print the second item's name. The code below splits each line and prints the second part's first word. Add those two lines at the end of app.js. This helps you find the item name. Run the checker to confirm.\n\nIn app.js:\n```\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Clearance,50\nPermit,300\nID,20\n"
+    },
+    "tests": [
+      {
+        "id": "second",
+        "label": "The script prints Second item: Permit",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Second item: Permit"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Split by comma to find the item name in each line."
+      },
+      {
+        "level": 2,
+        "text": "Add the lines after the previous code in app.js.\n\nIn app.js:\n```\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-barangay"
+  },
+  {
+    "id": "node-files-barangay-4",
+    "index": 164,
+    "task": "You will turn each row into an object with a number price and print the cheapest price. The code below turns each row into an object and finds the lowest price. Add those two lines at the end of app.js. This helps you find the cheapest item. Run the checker to confirm.\n\nIn app.js:\n```\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Clearance,50\nPermit,300\nID,20\n"
+    },
+    "tests": [
+      {
+        "id": "cheapest",
+        "label": "The script prints Cheapest: 20",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Cheapest: 20"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use map to turn each row into an object with a price."
+      },
+      {
+        "level": 2,
+        "text": "Add the lines after the previous code in app.js.\n\nIn app.js:\n```\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "files-barangay"
+  },
+  {
+    "id": "node-files-barangay-5",
+    "index": 165,
+    "task": "You will write a report file with the number of items. The code below adds writeFile to the import and writes a line to report.txt. Add these lines at the end of app.js. Then run `node app.js` to create the file. Run the checker to confirm.\n\nIn app.js:\n```\nimport { readFile, writeFile } from \"node:fs/promises\";\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Clearance,50\nPermit,300\nID,20\n"
+    },
+    "tests": [
+      {
+        "id": "report",
+        "label": "report.txt says Items: 3",
+        "kind": "local-file-contains",
+        "path": "report.txt",
+        "value": "Items: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "WriteFile saves text to a new file on your computer."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js, then run `node app.js`.\n\nIn app.js:\n```\nimport { readFile, writeFile } from \"node:fs/promises\";\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-barangay"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
