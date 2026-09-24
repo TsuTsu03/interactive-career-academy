@@ -8236,3 +8236,260 @@ apiBasicsCourse.steps.push(...([
     "projectId": "query-strings-carinderia"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: query-strings-carinderia.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-query-strings-carinderia-6",
+    "index": 146,
+    "task": "You will add a line to limit the list. This line goes after the second sort line. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"limit\")) list = list.slice(0, Number(url.searchParams.get(\"limit\")));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Pancit\", price: 60 }, { id: 2, name: \"Lumpia\", price: 15 }, { id: 3, name: \"Adobo\", price: 80 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "limit",
+        "label": "GET /items?sort=price&limit=1 answers only the cheapest item",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?sort=price&limit=1"
+          }
+        ],
+        "bodyContains": "[{\"id\":2,\"name\":\"Lumpia\",\"price\":15}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You need to check if the limit is in the URL. Then cut the list to that size."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the second sort line in server.js.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"limit\")) list = list.slice(0, Number(url.searchParams.get(\"limit\")));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Pancit\", price: 60 }, { id: 2, name: \"Lumpia\", price: 15 }, { id: 3, name: \"Adobo\", price: 80 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n  if (url.searchParams.has(\"limit\")) list = list.slice(0, Number(url.searchParams.get(\"limit\")));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "query-strings-carinderia"
+  },
+  {
+    "id": "api-query-strings-carinderia-7",
+    "index": 147,
+    "task": "You will add a line to show only names. This line goes after the limit line. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (url.searchParams.get(\"fields\") === \"name\") list = list.map((item) => ({ name: item.name }));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Pancit\", price: 60 }, { id: 2, name: \"Lumpia\", price: 15 }, { id: 3, name: \"Adobo\", price: 80 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "fields",
+        "label": "GET /items?fields=name answers names only",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?fields=name"
+          }
+        ],
+        "bodyContains": "[{\"name\":\"Pancit\"},{\"name\":\"Lumpia\"},{\"name\":\"Adobo\"}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You need to check if the fields are set to name. Then change each item to only have its name."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the limit line in server.js.\n\nIn server.js:\n```\n  if (url.searchParams.get(\"fields\") === \"name\") list = list.map((item) => ({ name: item.name }));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Pancit\", price: 60 }, { id: 2, name: \"Lumpia\", price: 15 }, { id: 3, name: \"Adobo\", price: 80 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n  if (url.searchParams.has(\"limit\")) list = list.slice(0, Number(url.searchParams.get(\"limit\")));\n  if (url.searchParams.get(\"fields\") === \"name\") list = list.map((item) => ({ name: item.name }));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "query-strings-carinderia"
+  },
+  {
+    "id": "api-query-strings-carinderia-8",
+    "index": 148,
+    "task": "You will add a line to send 400 if max is not a number. This line goes right after the url line. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"max\") && Number.isNaN(Number(url.searchParams.get(\"max\")))) return send(res, 400, { error: \"max must be a number\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Pancit\", price: 60 }, { id: 2, name: \"Lumpia\", price: 15 }, { id: 3, name: \"Adobo\", price: 80 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "bad",
+        "label": "GET /items?max=abc answers 400",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?max=abc"
+          }
+        ],
+        "status": 400
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You need to check if max is in the URL and if it is not a number. Then send 400 with an error message."
+      },
+      {
+        "level": 2,
+        "text": "Add the code right after the url line in server.js.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"max\") && Number.isNaN(Number(url.searchParams.get(\"max\")))) return send(res, 400, { error: \"max must be a number\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Pancit\", price: 60 }, { id: 2, name: \"Lumpia\", price: 15 }, { id: 3, name: \"Adobo\", price: 80 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.searchParams.has(\"max\") && Number.isNaN(Number(url.searchParams.get(\"max\")))) return send(res, 400, { error: \"max must be a number\" });\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n  if (url.searchParams.has(\"limit\")) list = list.slice(0, Number(url.searchParams.get(\"limit\")));\n  if (url.searchParams.get(\"fields\") === \"name\") list = list.map((item) => ({ name: item.name }));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-carinderia"
+  },
+  {
+    "id": "api-query-strings-carinderia-9",
+    "index": 149,
+    "task": "You will change the /items line to send a header. This line replaces the old /items line. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (url.pathname === \"/items\") { res.setHeader(\"X-Total-Count\", String(list.length)); return send(res, 200, list); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Pancit\", price: 60 }, { id: 2, name: \"Lumpia\", price: 15 }, { id: 3, name: \"Adobo\", price: 80 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "GET /items?max=60 sends X-Total-Count: 2",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?max=60"
+          }
+        ],
+        "header": {
+          "name": "x-total-count",
+          "value": "2"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You need to send the total number of items in the X-Total-Count header before sending the list."
+      },
+      {
+        "level": 2,
+        "text": "Replace the /items line in server.js with the new code.\n\nIn server.js:\n```\n  if (url.pathname === \"/items\") { res.setHeader(\"X-Total-Count\", String(list.length)); return send(res, 200, list); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Pancit\", price: 60 }, { id: 2, name: \"Lumpia\", price: 15 }, { id: 3, name: \"Adobo\", price: 80 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.searchParams.has(\"max\") && Number.isNaN(Number(url.searchParams.get(\"max\")))) return send(res, 400, { error: \"max must be a number\" });\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n  if (url.searchParams.has(\"limit\")) list = list.slice(0, Number(url.searchParams.get(\"limit\")));\n  if (url.searchParams.get(\"fields\") === \"name\") list = list.map((item) => ({ name: item.name }));\n  if (url.pathname === \"/items\") { res.setHeader(\"X-Total-Count\", String(list.length)); return send(res, 200, list); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-carinderia"
+  },
+  {
+    "id": "api-query-strings-carinderia-10",
+    "index": 150,
+    "task": "You will add a line to show the supported options. This line goes after the 400 line. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (url.pathname === \"/items/options\") return send(res, 200, { filters: [\"max\", \"min\", \"q\"], sort: [\"price\", \"-price\"], other: [\"limit\", \"fields\"] });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Pancit\", price: 60 }, { id: 2, name: \"Lumpia\", price: 15 }, { id: 3, name: \"Adobo\", price: 80 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "options",
+        "label": "GET /items/options lists the filters",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/options"
+          }
+        ],
+        "bodyContains": "\"filters\":[\"max\",\"min\",\"q\"]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You need to check if the path is /items/options. Then send a JSON object with the filters, sort, and other options."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the 400 line in server.js.\n\nIn server.js:\n```\n  if (url.pathname === \"/items/options\") return send(res, 200, { filters: [\"max\", \"min\", \"q\"], sort: [\"price\", \"-price\"], other: [\"limit\", \"fields\"] });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Pancit\", price: 60 }, { id: 2, name: \"Lumpia\", price: 15 }, { id: 3, name: \"Adobo\", price: 80 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.searchParams.has(\"max\") && Number.isNaN(Number(url.searchParams.get(\"max\")))) return send(res, 400, { error: \"max must be a number\" });\n  if (url.pathname === \"/items/options\") return send(res, 200, { filters: [\"max\", \"min\", \"q\"], sort: [\"price\", \"-price\"], other: [\"limit\", \"fields\"] });\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n  if (url.searchParams.has(\"limit\")) list = list.slice(0, Number(url.searchParams.get(\"limit\")));\n  if (url.searchParams.get(\"fields\") === \"name\") list = list.map((item) => ({ name: item.name }));\n  if (url.pathname === \"/items\") { res.setHeader(\"X-Total-Count\", String(list.length)); return send(res, 200, list); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-carinderia"
+  }
+] satisfies typeof apiBasicsCourse.steps));
