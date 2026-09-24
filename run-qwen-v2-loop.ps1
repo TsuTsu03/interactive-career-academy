@@ -15,7 +15,7 @@ param(
   [ValidateRange(1, 100)][int]$CommitEvery = 1,
   [string]$Model = "qwen/qwen3-vl-8b",
   [string]$LmsUrl = "http://localhost:1234",
-  [ValidateSet("sql-basics", "nosql-basics", "cli-git")][string]$CourseId = "sql-basics",
+  [ValidateSet("sql-basics", "nosql-basics", "cli-git", "node-basics")][string]$CourseId = "sql-basics",
   [string]$ProjectId = "",
   [ValidateRange(5, 10)][int]$BatchSize = 5,
   [ValidateLength(0, 12000)][string]$BatchBrief = "",
@@ -25,9 +25,9 @@ param(
 $ErrorActionPreference = "Stop"
 $repo = $PSScriptRoot
 $webDir = Join-Path $repo "apps\web"
-$promptFile = if ($CourseId -eq "cli-git") { Join-Path $repo "QWEN_CLI_GIT_AUTHORING_PROMPT.md" } else { Join-Path $repo "QWEN_V2_AUTHORING_PROMPT.md" }
+$promptFile = if ($CourseId -eq "cli-git") { Join-Path $repo "QWEN_CLI_GIT_AUTHORING_PROMPT.md" } elseif ($CourseId -eq "node-basics") { Join-Path $repo "QWEN_NODE_AUTHORING_PROMPT.md" } else { Join-Path $repo "QWEN_V2_AUTHORING_PROMPT.md" }
 $stopFile = Join-Path $repo "STOP_LOOP"
-$courseFile = if ($CourseId -eq "sql-basics") { "apps/web/content/sql-course.ts" } elseif ($CourseId -eq "cli-git") { "apps/web/content/cli-git-course.ts" } else { "apps/web/content/nosql-course.ts" }
+$courseFile = if ($CourseId -eq "sql-basics") { "apps/web/content/sql-course.ts" } elseif ($CourseId -eq "nosql-basics") { "apps/web/content/nosql-course.ts" } else { "apps/web/content/$CourseId-course.ts" }
 $allowed = @($courseFile, "apps/web/content/AUTHORING_LOG.md")
 $briefRoot = [System.IO.Path]::GetFullPath((Join-Path $repo ".qwen-v2-campaign"))
 if ($BatchBriefFile) {
@@ -57,9 +57,9 @@ const ownerBatchBrief = briefArgument && briefArgument !== "__no_batch_brief__" 
 if (ownerBatchBrief && ownerBatchBrief.length > 12000) throw Error("BatchBrief exceeds 12,000 characters.");
 const count = Number(batchText);
 const isSql = courseId === "sql-basics";
-const isLocal = courseId === "cli-git";
-if (!["sql-basics", "nosql-basics", "cli-git"].includes(courseId)) throw Error("Unknown course.");
-const relative = `apps/web/content/${isLocal ? "cli-git" : isSql ? "sql" : "nosql"}-course.ts`;
+const isLocal = ["cli-git", "node-basics"].includes(courseId);
+if (!["sql-basics", "nosql-basics", "cli-git", "node-basics"].includes(courseId)) throw Error("Unknown course.");
+const relative = `apps/web/content/${isLocal ? courseId : isSql ? "sql" : "nosql"}-course.ts`;
 const allowed = [relative, "apps/web/content/AUTHORING_LOG.md"];
 const resolve = file => path.join(root, file);
 const git = (...args) => execFileSync("git", ["-c", `safe.directory=${root}`, ...args], { cwd: root, encoding: "utf8", maxBuffer: 20e6 });
@@ -97,7 +97,7 @@ if (mode === "snapshot") {
     // Command Line and Git: commands and checks come from the fixed plan; the
     // model writes only the lesson text. See apps/web/tools/qwen-local-author.mjs.
     const { authorLocalBatch } = await import(pathToFileURL(resolve("apps/web/tools/qwen-local-author.mjs")));
-    await authorLocalBatch({ root, courseFile: relative, logFile: allowed[1], projectId: requestedProject, endpoint, model, promptPath, receiptPath });
+    await authorLocalBatch({ root, courseId, courseFile: relative, logFile: allowed[1], projectId: requestedProject, endpoint, model, promptPath, receiptPath });
   } else if (mode === "author") {
     const { concepts } = await import(pathToFileURL(resolve("apps/web/content/concepts.ts")));
     const last = course.steps.at(-1);

@@ -71,7 +71,7 @@ export function checkShape(step: Step, independent = false): Finding[] {
  * per file. A rough measure, not a real diff: good enough to catch a step
  * that bundles several changes, which is the failure mode that matters.
  */
-function lineDiffCount(a: string, b: string): number {
+export function lineDiffCount(a: string, b: string): number {
   const linesA = a.split("\n");
   const linesB = b.split("\n");
   const previous = Array.from({ length: linesB.length + 1 }, (_, index) => index);

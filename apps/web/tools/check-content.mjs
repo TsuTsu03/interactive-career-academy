@@ -13,6 +13,7 @@ const { runSqlTest } = await import("../lib/sql-assertions.ts");
 const localChecker = await import("./local-checker.mjs");
 const { runCommand, tokenize, gateEnv } = await import("./local-commands.mjs");
 const localReport = await import("../lib/local-report.ts");
+const { lineDiffCount } = await import("../lib/content-shape.ts");
 
 // Execute only the vendored engine as code. Queries remain SQL data.
 async function sqlEngine() {
@@ -93,7 +94,8 @@ function localShape(step) {
   if (!step.solution || Object.keys(step.solution).join() !== "commands.txt" || typeof commands !== "string") errors.push("local solution must be { commands.txt }");
   else {
     const lines = commands.split("\n").filter(line => line.trim());
-    if (lines.length < 1 || lines.length > 3) errors.push("local solution needs 1-3 commands");
+    const edits = step.localFiles && Object.keys(step.localFiles).length;
+    if ((!edits && lines.length < 1) || lines.length > 3) errors.push("local solution needs 1-3 commands, or file edits with at most 3 commands");
     for (const line of lines) { try { tokenize(line.trim()); } catch (error) { errors.push(String(error.message)); } }
   }
   const seed = step.localSeed;
@@ -108,6 +110,13 @@ function localShape(step) {
     if (bytes > 20000) errors.push("localSeed is larger than 20,000 characters");
   }
   if (step.sqlSeed !== undefined || step.nosqlSeed !== undefined || step.runtimeFixtures !== undefined) errors.push("local steps carry no browser runtime data");
+  if (step.localFiles !== undefined) {
+    if (!step.localFiles || typeof step.localFiles !== "object" || Array.isArray(step.localFiles)) errors.push("localFiles must be an object");
+    else for (const [file, text] of Object.entries(step.localFiles)) {
+      if (!safe(file) || file.split("/")[0] === ".git") errors.push(`unsafe localFiles path ${file}`);
+      if (typeof text !== "string" || text.length > 20000) errors.push(`localFiles ${file} must be text under 20,000 characters`);
+    }
+  }
   for (const test of step.tests) {
     if (!test.kind.startsWith("local-")) errors.push(`local steps use local checks only, not ${test.kind}`);
     if ("path" in test && !safe(test.path)) errors.push(`unsafe check path ${test.path}`);
@@ -115,7 +124,14 @@ function localShape(step) {
     if (test.kind === "local-git-branch" && !localChecker.safeBranch(test.value)) errors.push(`unsafe branch ${test.value}`);
     if (test.kind === "local-git-config" && !localChecker.safeConfigKey(test.key)) errors.push(`unsafe config key ${test.key}`);
     if (test.kind === "local-git-commit-count" && (!Number.isInteger(test.count) || test.count < 0)) errors.push("commit count must be a whole number");
-    if (["local-file-contains", "local-file-lacks", "local-git-head-message", "local-git-config"].includes(test.kind) && (typeof test.value !== "string" || !test.value.trim())) errors.push(`${test.kind} needs a value`);
+    if (["local-file-contains", "local-file-lacks", "local-git-head-message", "local-git-config", "local-node-prints", "local-node-stderr"].includes(test.kind) && (typeof test.value !== "string" || !test.value.trim())) errors.push(`${test.kind} needs a value`);
+    if (test.kind.startsWith("local-node-")) {
+      if (!safe(test.file) || !/\.(m?js)$/.test(test.file)) errors.push(`node checks run a .js or .mjs file inside the project, not ${test.file}`);
+      if (test.args !== undefined && (!Array.isArray(test.args) || test.args.length > 10 || test.args.some(arg => typeof arg !== "string" || arg.length > 200))) errors.push("node check args must be up to 10 short strings");
+      if (test.env !== undefined && (typeof test.env !== "object" || Object.entries(test.env).some(([key, value]) => !localChecker.safeEnvName(key) || typeof value !== "string" || value.length > 200))) errors.push("node check env must map UPPER_CASE names to short strings");
+      if (test.stdin !== undefined && (typeof test.stdin !== "string" || test.stdin.length > 2000)) errors.push("node check stdin must be a short string");
+      if (test.kind === "local-node-exit-code" && (!Number.isInteger(test.code) || test.code < 0 || test.code > 255)) errors.push("exit code must be 0-255");
+    }
   }
   return errors;
 }
@@ -162,6 +178,16 @@ async function localBehaviour(steps) {
         if (JSON.stringify(step.localSeed) !== JSON.stringify(seed)) { errors.push(`${step.id}: localSeed differs within project ${step.projectId}`); return; }
         const before = await localChecker.runChecks(root, step.tests, { env });
         if (before.every(result => result.pass)) errors.push(`${step.id}: teaches-nothing: every local check passes before the solution`);
+        let changedLines = 0;
+        for (const [file, text] of Object.entries(step.localFiles ?? {})) {
+          const full = join(root, ...file.split("/"));
+          let previous = "";
+          try { previous = readFileSync(full, "utf8"); } catch { previous = ""; }
+          changedLines += previous ? lineDiffCount(previous, text) : text.split("\n").filter(line => line.trim()).length;
+          mkdirSync(dirname(full), { recursive: true });
+          writeFileSync(full, text);
+        }
+        if (changedLines > 3) errors.push(`${step.id}: granularity: the file edits change ${changedLines} lines; one step changes at most 3`);
         for (const line of step.solution["commands.txt"].split("\n").filter(item => item.trim())) {
           try { await runCommand(root, line, env); } catch (error) { errors.push(`${step.id}: solution-command: ${error.message}`); return; }
         }

@@ -15,7 +15,7 @@
 // tools/check-content.mjs, so the checks the gate proves are the checks the
 // learner runs. The download route fills in MANIFEST; the source copy has none.
 
-import { execFile } from "node:child_process";
+import { execFile, spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -135,6 +135,46 @@ export function parseStatus(output) {
   return entries;
 }
 
+const NODE_TIMEOUT_MS = 5000;
+const MAX_OUTPUT_CHARS = 65536;
+
+export function safeEnvName(value) {
+  return typeof value === "string" && /^[A-Z_][A-Z0-9_]{0,40}$/.test(value);
+}
+
+/**
+ * Runs the learner's own script with Node, on their own computer. A short
+ * time limit, a small environment, and captured output: the same run serves
+ * every check in the step that asks for the same file, arguments, and input.
+ */
+function runNode(root, full, test) {
+  return new Promise((resolve) => {
+    const env = { PATH: process.env.PATH ?? "", NODE_NO_WARNINGS: "1" };
+    for (const key of ["SystemRoot", "SYSTEMROOT", "TEMP", "TMP", "HOME", "USERPROFILE"]) if (process.env[key]) env[key] = process.env[key];
+    Object.assign(env, test.env ?? {});
+    const child = spawn(process.execPath, [full, ...(test.args ?? [])], { cwd: root, env, windowsHide: true });
+    let stdout = "";
+    let stderr = "";
+    let settled = false;
+    const finish = (result) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      resolve(result);
+    };
+    const timer = setTimeout(() => {
+      child.kill();
+      finish({ timedOut: true, code: null, stdout, stderr });
+    }, NODE_TIMEOUT_MS);
+    child.stdout.on("data", (chunk) => { if (stdout.length < MAX_OUTPUT_CHARS) stdout += chunk; });
+    child.stderr.on("data", (chunk) => { if (stderr.length < MAX_OUTPUT_CHARS) stderr += chunk; });
+    child.on("error", () => finish({ failedToStart: true, code: null, stdout, stderr }));
+    child.on("close", (code) => finish({ code, stdout: stdout.replace(/\r\n?/g, "\n"), stderr: stderr.replace(/\r\n?/g, "\n") }));
+    child.stdin.on("error", () => {});
+    child.stdin.end(test.stdin ?? "");
+  });
+}
+
 const pass = { pass: true, reason: "" };
 const fail = (reason) => ({ pass: false, reason });
 
@@ -146,6 +186,20 @@ async function runCheck(root, test, state) {
   }
   const target = "path" in test ? inside(root, test.path) : null;
   if ("path" in test && !target) return fail("The check names a path this checker will not read.");
+
+  if (test.kind.startsWith("local-node-")) {
+    const script = inside(root, test.file);
+    if (!script) return fail("The check names a file this checker will not run.");
+    if (kindOf(script) !== "file") return fail(`There is no file named ${test.file}.`);
+    if (Object.keys(test.env ?? {}).some((key) => !safeEnvName(key))) return fail("The check sets an environment variable this checker will not set.");
+    const run = await state.node(script, test);
+    const command = `node ${[test.file, ...(test.args ?? [])].join(" ")}`;
+    if (run.failedToStart) return fail("Node could not start. Check that Node.js is installed.");
+    if (run.timedOut) return fail(`${command} was still running after 5 seconds. Look for code that never finishes.`);
+    if (test.kind === "local-node-prints") return run.stdout.includes(test.value) ? pass : fail(`${command} did not print the expected text.${run.stderr.trim() ? " It printed an error; run it yourself to read it." : ""}`);
+    if (test.kind === "local-node-stderr") return run.stderr.includes(test.value) ? pass : fail(`${command} did not report the expected error message.`);
+    return run.code === test.code ? pass : fail(`${command} ended with exit code ${run.code}; the step expects ${test.code}.`);
+  }
 
   switch (test.kind) {
     case "local-dir-exists":
@@ -227,8 +281,14 @@ export async function runChecks(root, tests, options = {}) {
   const env = options.env;
   const version = await git(root, ["--version"], env);
   let statusCache = null;
+  const nodeRuns = new Map();
   const state = {
     env,
+    node(script, test) {
+      const key = JSON.stringify([script, test.args ?? [], test.env ?? {}, test.stdin ?? ""]);
+      if (!nodeRuns.has(key)) nodeRuns.set(key, runNode(root, script, test));
+      return nodeRuns.get(key);
+    },
     gitMissing: version.missing,
     async status() {
       if (!statusCache) {

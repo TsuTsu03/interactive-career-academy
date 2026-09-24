@@ -1,8 +1,9 @@
 <#
   ASCII ONLY. Resumable SQL/NoSQL authoring campaign for Windows PowerShell 5.1.
   Each child pass has exact rollback, static gates, and a human checkpoint.
-  It targets SQL, NoSQL, and Command Line and Git (local checker, option B).
-  It never targets the four computer courses that still lack a grading model.
+  It targets SQL, NoSQL, Command Line and Git, and Node.js Fundamentals (local
+  checker, PLAN.md decisions 43 and 45). It never targets the computer courses
+  that still lack a plan.
 #>
 param(
   [ValidateRange(0, 190)][int]$MaxAcceptedBatches = 0,
@@ -56,6 +57,7 @@ function Save-State($Progress, [string]$Status, [string]$Detail) {
     sql = $Progress.sql
     nosql = $Progress.nosql
     cligit = $Progress.cligit
+    nodebasics = $Progress.nodebasics
   } | ConvertTo-Json -Depth 8 | ForEach-Object { Write-QwenFile $stateFile $_ }
 }
 
@@ -132,8 +134,8 @@ try {
     Save-State $progress "running" "Selecting the next bounded batch."
     if ($progress.complete) {
       if ($sincePush -gt 0) { Push-Checkpoint }
-      Save-State $progress "complete" "SQL 750, NoSQL 250, and Command Line and Git $($progress.cligit.target) reached with green gates."
-      Write-Campaign "Campaign complete: SQL 750, NoSQL 250, CLI/Git $($progress.cligit.current)/$($progress.cligit.target)."
+      Save-State $progress "complete" "SQL, NoSQL, Command Line and Git, and Node.js Fundamentals reached their targets with green gates."
+      Write-Campaign "Campaign complete: CLI/Git $($progress.cligit.current)/$($progress.cligit.target); Node $($progress.nodebasics.current)/$($progress.nodebasics.target)."
       break
     }
     if (Test-Path -LiteralPath $stopFile) {
@@ -148,7 +150,7 @@ try {
       break
     }
     $available = @()
-    foreach ($candidate in @($progress.sql, $progress.nosql, $progress.cligit)) {
+    foreach ($candidate in @($progress.sql, $progress.nosql, $progress.cligit, $progress.nodebasics)) {
       if ($candidate -and -not $candidate.complete) { $available += $candidate }
     }
     $job = $null
@@ -187,7 +189,7 @@ try {
     if ($sinceStuckReset -ge $StuckResetEvery) { $stuck = @{}; $sinceStuckReset = 0 }
     $progress = Read-Progress
     Save-State $progress "running" "Accepted $($job.courseId)/$($job.projectId) batch $($job.batch)."
-    Write-Campaign "Accepted batch $accepted this run. SQL $($progress.sql.current)/750; NoSQL $($progress.nosql.current)/250; CLI/Git $($progress.cligit.current)/$($progress.cligit.target)."
+    Write-Campaign "Accepted batch $accepted this run. SQL $($progress.sql.current)/750; NoSQL $($progress.nosql.current)/250; CLI/Git $($progress.cligit.current)/$($progress.cligit.target); Node $($progress.nodebasics.current)/$($progress.nodebasics.target)."
     if ($sincePush -ge $PushEvery) { Push-Checkpoint }
     if ($PauseSeconds -gt 0) { Start-Sleep -Seconds $PauseSeconds }
   }

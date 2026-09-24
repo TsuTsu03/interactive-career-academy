@@ -133,6 +133,20 @@ export async function runCommand(root, line, env) {
       await runGit(root, args, env);
       return;
     }
+    case "node": {
+      // Runs a script the plan itself wrote, never model output, so a step can
+      // prove what the script leaves behind in files.
+      const [script, ...rest] = args;
+      if (!script || !/\.m?js$/.test(script)) throw Error(`node runs a .js or .mjs file in a solution: ${line}`);
+      const full = resolveInside(root, script);
+      await new Promise((resolve, reject) => {
+        execFile(process.execPath, [full, ...rest], { cwd: root, env, timeout: 10000, windowsHide: true, encoding: "utf8" }, (error, _stdout, stderr) => {
+          if (error) reject(Error(`${line} failed: ${String(stderr || error.message).trim().slice(0, 300)}`));
+          else resolve();
+        });
+      });
+      return;
+    }
     default:
       throw Error(`Command ${program} is not allowed in a solution.`);
   }

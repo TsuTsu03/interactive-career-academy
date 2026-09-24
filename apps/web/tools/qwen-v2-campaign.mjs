@@ -2,6 +2,7 @@ import "./content-loader.mjs";
 const { curriculum } = await import("../content/curriculum.ts");
 const { concepts } = await import("../content/concepts.ts");
 const { cliGitProjects } = await import("./cli-git-plan.mjs");
+const { nodeBasicsProjects } = await import("./node-basics-plan.mjs");
 
 const sqlSectors = [
   ["sari-sari", "Sari-Sari Store", ["Rice", "Soap", "Cooking Oil", "Egg"]],
@@ -417,23 +418,24 @@ function progress(courseId) {
 
 // Command Line and Git: the plan fixes commands and checks; the model writes
 // the lesson text. Projects fill in plan order, five steps at a time.
-function cliGitProgress() {
-  const course = curriculum.courses.find((item) => item.id === "cli-git");
-  if (!course) throw new Error("Unknown campaign course cli-git");
-  const target = cliGitProjects.length * 10;
-  for (const project of cliGitProjects) {
+function localProgress(courseId, plan) {
+  const course = curriculum.courses.find((item) => item.id === courseId);
+  if (!course) throw new Error(`Unknown campaign course ${courseId}`);
+  const target = plan.length * 10;
+  for (const project of plan) {
     const count = course.steps.filter((step) => step.projectId === project.id).length;
     if (count === 0 || count === 5) {
-      return { complete: false, courseId: "cli-git", target, current: course.steps.length, projectId: project.id, batch: count === 0 ? 1 : 2, brief: `Write the lesson text for ${project.title}, batch ${count === 0 ? 1 : 2} of 2. Commands and checks come from tools/cli-git-plan.mjs.` };
+      return { complete: false, courseId, target, current: course.steps.length, projectId: project.id, batch: count === 0 ? 1 : 2, brief: `Write the lesson text for ${project.title}, batch ${count === 0 ? 1 : 2} of 2. Code, commands, and checks come from the course plan.` };
     }
     if (count !== 10) throw new Error(`${project.id} has ${count} steps; expected 0, 5, or 10`);
   }
-  if (course.steps.length !== target) throw new Error(`cli-git exhausted its plan at ${course.steps.length}; target is ${target}`);
-  return { complete: true, courseId: "cli-git", target, current: course.steps.length };
+  if (course.steps.length !== target) throw new Error(`${courseId} exhausted its plan at ${course.steps.length}; target is ${target}`);
+  return { complete: true, courseId, target, current: course.steps.length };
 }
 
 const sql = progress("sql-basics");
 const nosql = progress("nosql-basics");
-const cligit = cliGitProgress();
-const next = !sql.complete ? sql : !nosql.complete ? nosql : cligit;
-console.log(JSON.stringify({ complete: sql.complete && nosql.complete && cligit.complete, sql, nosql, cligit, next }));
+const cligit = localProgress("cli-git", cliGitProjects);
+const nodebasics = localProgress("node-basics", nodeBasicsProjects);
+const next = [sql, nosql, cligit, nodebasics].find((item) => !item.complete) ?? nodebasics;
+console.log(JSON.stringify({ complete: [sql, nosql, cligit, nodebasics].every((item) => item.complete), sql, nosql, cligit, nodebasics, next }));

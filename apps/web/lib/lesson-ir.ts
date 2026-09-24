@@ -371,6 +371,16 @@ export type TestSpec =
   | { id: string; label: Copy; kind: "local-git-branch-exists"; branch: string }
   | { id: string; label: Copy; kind: "local-git-branch-missing"; branch: string }
   | { id: string; label: Copy; kind: "local-git-merged"; branch: string }
+  /*
+   * Run `node <file> [args]` in the project folder with a short time limit and
+   * a minimal environment plus `env`, feeding `stdin` if given. The checker
+   * runs the learner's own code on the learner's own computer; the website
+   * never does. `value` is matched as a substring of standard output, of
+   * standard error, or the exit code is compared.
+   */
+  | { id: string; label: Copy; kind: "local-node-prints"; file: string; value: string; args?: string[]; env?: Record<string, string>; stdin?: string }
+  | { id: string; label: Copy; kind: "local-node-stderr"; file: string; value: string; args?: string[]; env?: Record<string, string>; stdin?: string }
+  | { id: string; label: Copy; kind: "local-node-exit-code"; file: string; code: number; args?: string[]; env?: Record<string, string>; stdin?: string }
 
   // --- Source assertions (any kind) ---
   /**
@@ -425,6 +435,13 @@ export interface Step {
    * by the authoring gate, never by the website or the learner's checker.
    */
   localSeed?: Record<string, string>;
+  /**
+   * `local` steps only. The files, keyed by relative path, exactly as they
+   * stand after this step. Authoring data like `solution`: the content gate
+   * writes them before replaying `commands.txt`, and they are never shipped
+   * to the learner's checker.
+   */
+  localFiles?: Record<string, string>;
   /** tap-to-build only: the tray contents and which one is correct. */
   blocks?: string[];
   correctBlock?: string;

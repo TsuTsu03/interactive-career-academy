@@ -142,6 +142,51 @@ function loadSession(course: Course): Session | null {
   }
 }
 
+/**
+ * A task or hint is plain text with two small conventions. A block fenced by
+ * three backticks is shown as a code block, which is how a step shows code
+ * that itself contains backticks. Text between single backticks is shown as
+ * inline code. Line breaks are kept. Nothing is parsed as HTML: every piece is
+ * a React text node, and code blocks use <code> so they stay valid inside a
+ * heading.
+ */
+function InlineCode({ text }: { text: string }) {
+  const parts = text.split("`");
+  // An unmatched backtick leaves an even number of parts; show it as text.
+  if (parts.length % 2 === 0) return <>{text}</>;
+  return (
+    <>
+      {parts.map((part, index) =>
+        index % 2 === 1 ? (
+          <code key={index} className="whitespace-pre-wrap break-words rounded bg-surface-container px-1.5 py-0.5 font-mono text-[0.85em] font-normal">
+            {part}
+          </code>
+        ) : (
+          part
+        ),
+      )}
+    </>
+  );
+}
+
+function TaskText({ text }: { text: string }) {
+  const blocks = text.split("```");
+  if (blocks.length % 2 === 0) return <InlineCode text={text} />;
+  return (
+    <>
+      {blocks.map((block, index) =>
+        index % 2 === 1 ? (
+          <code key={index} className="my-2 block max-w-full overflow-x-auto whitespace-pre rounded border border-hairline bg-surface-container p-3 font-mono text-[14px] font-normal leading-relaxed">
+            {block.replace(/^\n/, "").replace(/\n$/, "")}
+          </code>
+        ) : (
+          <InlineCode key={index} text={block} />
+        ),
+      )}
+    </>
+  );
+}
+
 export function Workspace({ course }: { course: Course }) {
   const [session, setSession] = useState<Session>(() => initialSession(course));
   const { game, stepIdx, files, activeFile } = session;
@@ -791,13 +836,13 @@ export function Workspace({ course }: { course: Course }) {
           </div>
 
           <div className="mb-4 flex items-start gap-3">
-            <div className="flex-1">
+            <div className="min-w-0 flex-1">
               <p className="inline-block rounded bg-tertiary-container px-2 py-1 text-label-caps uppercase text-on-tertiary">Current Task</p>
-              <h1 className="mt-2 text-[20px] font-semibold leading-snug text-chalk">{step.task}</h1>
+              <h1 className="mt-2 whitespace-pre-line text-[20px] font-semibold leading-snug text-chalk"><TaskText text={step.task} /></h1>
             </div>
             <button
               type="button"
-              onClick={() => speak(step.task)}
+              onClick={() => speak(step.task.replaceAll("`", ""))}
               aria-label="Read this out loud"
               className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded border border-primary/60 text-primary transition-transform active:scale-95"
             >
@@ -952,9 +997,9 @@ export function Workspace({ course }: { course: Course }) {
                 {step.hints.slice(0, hintLevel).map((h) => (
                   <p
                     key={h.level}
-                    className="rounded border border-hairline bg-panel p-2.5 text-[14px] text-ash"
+                    className="whitespace-pre-line rounded border border-hairline bg-panel p-2.5 text-[14px] text-ash"
                   >
-                    {h.text}
+                    <TaskText text={h.text} />
                   </p>
                 ))}
               </div>
