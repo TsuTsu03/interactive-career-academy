@@ -2985,3 +2985,288 @@ apiBasicsCourse.steps.push(...([
     "projectId": "query-strings-sari-sari"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: middleware-sari-sari.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-middleware-sari-sari-1",
+    "index": 51,
+    "task": "You will add a counter and a function to add request IDs. This helps every answer have a unique number. The code below goes above the server. You call this function at the top of the handler. This way, every request gets a numbered header.\n\nIn server.js:\n```\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\n  addRequestId(req, res);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "id",
+        "label": "The first answer sends X-Request-Id: 1",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "header": {
+          "name": "x-request-id",
+          "value": "1"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of the counter as a small machine that counts up each time you use it."
+      },
+      {
+        "level": 2,
+        "text": "Put the code above the server, right after the empty line.\n\nIn server.js:\n```\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\n  addRequestId(req, res);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  addRequestId(req, res);\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-middleware"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "middleware-sari-sari"
+  },
+  {
+    "id": "api-middleware-sari-sari-2",
+    "index": 52,
+    "task": "You will add another function to set a place header. This tells the browser where the answer comes from. The code below goes right after the first function. You call it after the first one. This way, every answer gets the store's name.\n\nIn server.js:\n```\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"sari-sari\"); }\n  addPlace(req, res);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "place",
+        "label": "Answers send X-Place: sari-sari",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "header": {
+          "name": "x-place",
+          "value": "sari-sari"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Imagine this function as a sign that says 'sari-sari' on every answer."
+      },
+      {
+        "level": 2,
+        "text": "Put the code after the first function, right before the first call.\n\nIn server.js:\n```\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"sari-sari\"); }\n  addPlace(req, res);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"sari-sari\"); }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  addRequestId(req, res);\n  addPlace(req, res);\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "middleware-sari-sari"
+  },
+  {
+    "id": "api-middleware-sari-sari-3",
+    "index": 53,
+    "task": "You will make a list of all the functions you added. This lets you run them all in order. The code below replaces the two calls with one loop. This way, you can add or change steps without changing the handler.\n\nIn server.js:\n```\nconst middleware = [addRequestId, addPlace];\n  for (const step of middleware) step(req, res);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "list",
+        "label": "server.js keeps its middleware in one list",
+        "kind": "local-file-contains",
+        "path": "server.js",
+        "value": "const middleware = [addRequestId, addPlace];"
+      },
+      {
+        "id": "still",
+        "label": "Answers still send X-Place",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "header": {
+          "name": "x-place",
+          "value": "sari-sari"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of the list as a recipe where you follow each step in order."
+      },
+      {
+        "level": 2,
+        "text": "Put the code right after the functions, before the handler.\n\nIn server.js:\n```\nconst middleware = [addRequestId, addPlace];\n  for (const step of middleware) step(req, res);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"sari-sari\"); }\nconst middleware = [addRequestId, addPlace];\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  for (const step of middleware) step(req, res);\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-middleware-list"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "middleware-sari-sari"
+  },
+  {
+    "id": "api-middleware-sari-sari-4",
+    "index": 54,
+    "task": "You will add a new function that sets a powered-by header. This tells the browser what tools you used. The code below adds this function to the list. You do not change the handler. This way, every answer gets the tool name.\n\nIn server.js:\n```\nfunction addPoweredBy(req, res) { res.setHeader(\"X-Powered-By\", \"Node built-ins\"); }\nconst middleware = [addRequestId, addPlace, addPoweredBy];\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "powered",
+        "label": "Answers send X-Powered-By: Node built-ins",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "header": {
+          "name": "x-powered-by",
+          "value": "Node built-ins"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of this function as a credit card for your tools."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the list, right after addPlace.\n\nIn server.js:\n```\nfunction addPoweredBy(req, res) { res.setHeader(\"X-Powered-By\", \"Node built-ins\"); }\nconst middleware = [addRequestId, addPlace, addPoweredBy];\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"sari-sari\"); }\nfunction addPoweredBy(req, res) { res.setHeader(\"X-Powered-By\", \"Node built-ins\"); }\nconst middleware = [addRequestId, addPlace, addPoweredBy];\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  for (const step of middleware) step(req, res);\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "middleware-sari-sari"
+  },
+  {
+    "id": "api-middleware-sari-sari-5",
+    "index": 55,
+    "task": "You will add a function to let other websites call this API. This uses CORS headers. The code below adds this function to the list. You do not change the handler. This way, every answer lets other sites use it.\n\nIn server.js:\n```\nfunction allowBrowsers(req, res) { res.setHeader(\"Access-Control-Allow-Origin\", \"*\"); }\nconst middleware = [addRequestId, addPlace, addPoweredBy, allowBrowsers];\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "cors",
+        "label": "Answers send Access-Control-Allow-Origin: *",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "header": {
+          "name": "access-control-allow-origin",
+          "value": "*"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of CORS as a door that opens for other websites."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the list, right after addPoweredBy.\n\nIn server.js:\n```\nfunction allowBrowsers(req, res) { res.setHeader(\"Access-Control-Allow-Origin\", \"*\"); }\nconst middleware = [addRequestId, addPlace, addPoweredBy, allowBrowsers];\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"sari-sari\"); }\nfunction addPoweredBy(req, res) { res.setHeader(\"X-Powered-By\", \"Node built-ins\"); }\nfunction allowBrowsers(req, res) { res.setHeader(\"Access-Control-Allow-Origin\", \"*\"); }\nconst middleware = [addRequestId, addPlace, addPoweredBy, allowBrowsers];\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  for (const step of middleware) step(req, res);\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-cors"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "middleware-sari-sari"
+  }
+] satisfies typeof apiBasicsCourse.steps));
