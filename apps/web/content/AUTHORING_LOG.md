@@ -3689,3 +3689,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-24: Local Qwen wrote the lesson text for cli-git/first-commit-barangay, steps 76-80; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
 
 - 2026-09-24: Local Qwen wrote the lesson text for cli-git/undo-barangay, steps 81-85; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/undo-barangay, steps 86-90; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.

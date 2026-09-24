@@ -3876,3 +3876,221 @@ cliGitCourse.steps.push(...([
     "projectId": "undo-barangay"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: undo-barangay.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-undo-barangay-6",
+    "index": 86,
+    "task": "You made a mistake in the fees.txt file. You want to throw away that mistake. This keeps your work clean. Run this command exactly as shown. Then run the checker and paste its report.\n\nType this command in your terminal:\n`git restore fees.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\nPermit 300\n"
+    },
+    "tests": [
+      {
+        "id": "fixed",
+        "label": "The mistaken line is gone",
+        "kind": "local-file-lacks",
+        "path": "fees.txt",
+        "value": "Wrong line"
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of this like erasing a wrong line you wrote on paper. You don't keep the mistake."
+      },
+      {
+        "level": 2,
+        "text": "Run `git restore fees.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git restore fees.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "undo-barangay"
+  },
+  {
+    "id": "cli-undo-barangay-7",
+    "index": 87,
+    "task": "You want to add a new line with ID 20. This is a real change you want to keep. Run this command exactly as shown. Then run the checker and paste its report.\n\nType this command in your terminal:\n`echo \"ID 20\" >> fees.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\nPermit 300\n"
+    },
+    "tests": [
+      {
+        "id": "unstaged",
+        "label": "fees.txt has an unstaged change",
+        "kind": "local-git-unstaged",
+        "path": "fees.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are adding a line to the file. It's not yet saved in Git. You'll stage it next."
+      },
+      {
+        "level": 2,
+        "text": "Run `echo \"ID 20\" >> fees.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"ID 20\" >> fees.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "undo-barangay"
+  },
+  {
+    "id": "cli-undo-barangay-8",
+    "index": 88,
+    "task": "You want to tell Git you are ready to save this new line. This is called staging. Run this command exactly as shown. Then run the checker and paste its report.\n\nType this command in your terminal:\n`git add fees.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\nPermit 300\n"
+    },
+    "tests": [
+      {
+        "id": "staged",
+        "label": "fees.txt is staged",
+        "kind": "local-git-staged",
+        "path": "fees.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are preparing the file to be saved. Git will remember this change soon."
+      },
+      {
+        "level": 2,
+        "text": "Run `git add fees.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add fees.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "undo-barangay"
+  },
+  {
+    "id": "cli-undo-barangay-9",
+    "index": 89,
+    "task": "You want to take back the staging without losing the new line you typed. This is useful if you change your mind. Run this command exactly as shown. Then run the checker and paste its report.\n\nType this command in your terminal:\n`git restore --staged fees.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\nPermit 300\n"
+    },
+    "tests": [
+      {
+        "id": "unstaged",
+        "label": "fees.txt is back to unstaged",
+        "kind": "local-git-unstaged",
+        "path": "fees.txt"
+      },
+      {
+        "id": "kept",
+        "label": "ID 20 is still in the file",
+        "kind": "local-file-contains",
+        "path": "fees.txt",
+        "value": "ID 20"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are removing the 'ready to save' mark, but the line stays in the file. You can stage it again later."
+      },
+      {
+        "level": 2,
+        "text": "Run `git restore --staged fees.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git restore --staged fees.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "undo-barangay"
+  },
+  {
+    "id": "cli-undo-barangay-10",
+    "index": 90,
+    "task": "You decide not to keep the new line. You want to go back to the last saved version. Run this command exactly as shown. Then run the checker and paste its report.\n\nType this command in your terminal:\n`git restore fees.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\nPermit 300\n"
+    },
+    "tests": [
+      {
+        "id": "dropped",
+        "label": "ID 20 is gone again",
+        "kind": "local-file-lacks",
+        "path": "fees.txt",
+        "value": "ID 20"
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are undoing the change and returning to what was saved. The new line disappears."
+      },
+      {
+        "level": 2,
+        "text": "Run `git restore fees.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git restore fees.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "undo-barangay"
+  }
+] satisfies typeof cliGitCourse.steps));
