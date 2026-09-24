@@ -11203,3 +11203,232 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "modules-school-club"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: files-school-club.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-files-school-club-1",
+    "index": 231,
+    "task": "You will read the file stock.txt. This file has the club's inventory. Replace the console.log line in app.js with two lines. The code below reads the file and prints its text. Run the checker to confirm the script prints Shirt,250.\n\nIn app.js:\n```\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Shirt,250\nPin,30\nBadge,45\n"
+    },
+    "tests": [
+      {
+        "id": "text",
+        "label": "The script prints the line Shirt,250 from stock.txt",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Shirt,250"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Read the file using readFile and await. The file name is stock.txt."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in app.js, right after the import line.\n\nIn app.js:\n```\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-school-club"
+  },
+  {
+    "id": "node-files-school-club-2",
+    "index": 232,
+    "task": "You will split the text into lines. This helps count how many items are in the file. Add two lines at the end of app.js. The code below splits the text and prints the number of lines. Run the checker to confirm the script prints Lines: 3.\n\nIn app.js:\n```\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Shirt,250\nPin,30\nBadge,45\n"
+    },
+    "tests": [
+      {
+        "id": "lines",
+        "label": "The script prints Lines: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Lines: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use trim() to remove extra spaces, then split by newline (\\n)."
+      },
+      {
+        "level": 2,
+        "text": "Put the code after the previous code in app.js.\n\nIn app.js:\n```\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-school-club"
+  },
+  {
+    "id": "node-files-school-club-3",
+    "index": 233,
+    "task": "You will split each line by the comma. This separates the item name and price. Add two lines at the end of app.js. The code below splits each line and prints the second item's name. Run the checker to confirm the script prints Second item: Pin.\n\nIn app.js:\n```\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Shirt,250\nPin,30\nBadge,45\n"
+    },
+    "tests": [
+      {
+        "id": "second",
+        "label": "The script prints Second item: Pin",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Second item: Pin"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use map to process each line. Split each line by comma (,)."
+      },
+      {
+        "level": 2,
+        "text": "Put the code after the previous code in app.js.\n\nIn app.js:\n```\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-school-club"
+  },
+  {
+    "id": "node-files-school-club-4",
+    "index": 234,
+    "task": "You will turn each row into an object with a name and price. This helps find the cheapest item. Add two lines at the end of app.js. The code below creates objects and prints the cheapest price. Run the checker to confirm the script prints Cheapest: 30.\n\nIn app.js:\n```\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Shirt,250\nPin,30\nBadge,45\n"
+    },
+    "tests": [
+      {
+        "id": "cheapest",
+        "label": "The script prints Cheapest: 30",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Cheapest: 30"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use map to create objects. Convert the price to a number using Number()."
+      },
+      {
+        "level": 2,
+        "text": "Put the code after the previous code in app.js.\n\nIn app.js:\n```\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "files-school-club"
+  },
+  {
+    "id": "node-files-school-club-5",
+    "index": 235,
+    "task": "You will write a report file. This file will say how many items are in the club. Add two lines at the end of app.js. The first line imports writeFile. The second line writes to report.txt. Then run node app.js. Run the checker to confirm report.txt says Items: 3.\n\nIn app.js:\n```\nimport { readFile, writeFile } from \"node:fs/promises\";\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Shirt,250\nPin,30\nBadge,45\n"
+    },
+    "tests": [
+      {
+        "id": "report",
+        "label": "report.txt says Items: 3",
+        "kind": "local-file-contains",
+        "path": "report.txt",
+        "value": "Items: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Import writeFile from node:fs/promises. Then write to report.txt."
+      },
+      {
+        "level": 2,
+        "text": "Put the code after the previous code in app.js. Then run node app.js.\n\nIn app.js:\n```\nimport { readFile, writeFile } from \"node:fs/promises\";\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\n"
+    },
+    "estimatedMinutes": 6,
+    "projectId": "files-school-club"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
