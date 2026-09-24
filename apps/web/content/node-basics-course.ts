@@ -2060,3 +2060,256 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "async-sari-sari"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: cli-sari-sari.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-cli-sari-sari-1",
+    "index": 41,
+    "task": "You will add one line to the end of app.js. This line prints how many words you typed after node app.js. The checker runs node app.js Rice 2 to test it. You must run the checker after you add the line. The checker will say if it worked.\n\nIn app.js:\n```\nconsole.log(`You typed ${args.length} words`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "words",
+        "label": "node app.js Rice 2 prints You typed 2 words",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Rice",
+          "2"
+        ],
+        "value": "You typed 2 words"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of process.argv as a list of all the words you type after node app.js."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the very end of app.js, after the existing code.\n\nIn app.js:\n```\nconsole.log(`You typed ${args.length} words`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\n"
+    },
+    "conceptIds": [
+      "node-argv"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "cli-sari-sari"
+  },
+  {
+    "id": "node-cli-sari-sari-2",
+    "index": 42,
+    "task": "You will add two lines to the end of app.js. The first line takes the first two words and splits them into name and quantity. The second line prints the name. The checker runs node app.js Rice 2 to test it. You must run the checker after you add the lines. The checker will say if it worked.\n\nIn app.js:\n```\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "item",
+        "label": "node app.js Rice 2 prints Item: Rice",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Rice",
+          "2"
+        ],
+        "value": "Item: Rice"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the array destructuring syntax to split the words into name and quantity."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines right after the line you added in step 1.\n\nIn app.js:\n```\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "cli-sari-sari"
+  },
+  {
+    "id": "node-cli-sari-sari-3",
+    "index": 43,
+    "task": "You will add two lines to the end of app.js. The first line turns the quantity text into a number. The second line prints that number. The checker runs node app.js Rice 2 to test it. You must run the checker after you add the lines. The checker will say if it worked.\n\nIn app.js:\n```\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "quantity",
+        "label": "node app.js Rice 2 prints Quantity: 2",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Rice",
+          "2"
+        ],
+        "value": "Quantity: 2"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use Number() to turn the text into a number."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines right after the lines you added in step 2.\n\nIn app.js:\n```\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "cli-sari-sari"
+  },
+  {
+    "id": "node-cli-sari-sari-4",
+    "index": 44,
+    "task": "You will add two lines to the end of app.js. The first line sets up a prices object with item names and their prices. The second line calculates and prints the total cost. The checker runs node app.js Rice 2 to test it. You must run the checker after you add the lines. The checker will say if it worked.\n\nIn app.js:\n```\nconst prices = { \"Rice\": 50, \"Soap\": 25, \"Egg\": 9 };\nconsole.log(`Total: ${prices[name] * count}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "total",
+        "label": "node app.js Rice 2 prints Total: 100",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Rice",
+          "2"
+        ],
+        "value": "Total: 100"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The prices object holds the price for each item, like Rice: 50."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines right after the lines you added in step 3.\n\nIn app.js:\n```\nconst prices = { \"Rice\": 50, \"Soap\": 25, \"Egg\": 9 };\nconsole.log(`Total: ${prices[name] * count}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Rice\": 50, \"Soap\": 25, \"Egg\": 9 };\nconsole.log(`Total: ${prices[name] * count}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cli-sari-sari"
+  },
+  {
+    "id": "node-cli-sari-sari-5",
+    "index": 45,
+    "task": "You will add one line to app.js. This line checks if the name is empty. If it is, it prints a message and stops the program with exit code 1. The checker tests this by running node app.js with no words. You must run the checker after you add the line. The checker will say if it worked.\n\nIn app.js:\n```\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "exit",
+        "label": "node app.js with no words ends with exit code 1",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 1
+      },
+      {
+        "id": "usage",
+        "label": "It explains how to use the tool",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "value": "Usage: node app.js <item> <quantity>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If name is empty, the program should stop and show a message."
+      },
+      {
+        "level": 2,
+        "text": "Add this line right after the line that sets name and quantity.\n\nIn app.js:\n```\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Rice\": 50, \"Soap\": 25, \"Egg\": 9 };\nconsole.log(`Total: ${prices[name] * count}`);\n"
+    },
+    "conceptIds": [
+      "node-exit-code"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "cli-sari-sari"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
