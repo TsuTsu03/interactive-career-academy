@@ -8334,3 +8334,234 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "files-barangay"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: async-barangay.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-async-barangay-1",
+    "index": 171,
+    "task": "You add two lines to the end of app.js. The first line pauses for 100 milliseconds. The second line prints After wait. This lets you see the pause before the next message. The code below does this. Run the checker and paste its report.\n\nIn app.js:\n```\nawait wait(100);\nconsole.log(\"After wait\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "after",
+        "label": "The script prints Start and then After wait",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Start\nAfter wait"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of await like a pause button that waits for something to finish before moving on."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nawait wait(100);\nconsole.log(\"After wait\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "async-barangay"
+  },
+  {
+    "id": "node-async-barangay-2",
+    "index": 172,
+    "task": "You add two lines to the end of app.js. The first line defines a function called fetchPrice. It takes a name and returns a price after waiting 20 milliseconds. The second line calls this function with \"Clearance\" and prints the result. The code below does this. Run the checker and paste its report.\n\nIn app.js:\n```\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Clearance\")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "price",
+        "label": "The script prints Price: 90",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Price: 90"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This function waits a little, then returns a number based on the name's length."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Clearance\")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Clearance\")}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "async-barangay"
+  },
+  {
+    "id": "node-async-barangay-3",
+    "index": 173,
+    "task": "You add two lines to the end of app.js. The first line uses Promise.all to run fetchPrice on three names at the same time. The second line prints all the prices joined by commas. The code below does this. Run the checker and paste its report.\n\nIn app.js:\n```\nconst prices = await Promise.all([\"Clearance\", \"Permit\", \"ID\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "all",
+        "label": "The script prints All: 90, 60, 20",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "All: 90, 60, 20"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Promise.all runs multiple promises at once and waits for all to finish."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst prices = await Promise.all([\"Clearance\", \"Permit\", \"ID\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Clearance\")}`);\nconst prices = await Promise.all([\"Clearance\", \"Permit\", \"ID\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "async-barangay"
+  },
+  {
+    "id": "node-async-barangay-4",
+    "index": 174,
+    "task": "You add three lines to the end of app.js. The first line creates a slow promise that waits 200 milliseconds. The second line creates a fast promise that waits 20 milliseconds. The third line races them and prints which one finished first. The code below does this. Run the checker and paste its report.\n\nIn app.js:\n```\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "race",
+        "label": "The script prints First: fast",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "First: fast"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Promise.race waits for the first promise to finish, even if others are still running."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Clearance\")}`);\nconst prices = await Promise.all([\"Clearance\", \"Permit\", \"ID\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "async-barangay"
+  },
+  {
+    "id": "node-async-barangay-5",
+    "index": 175,
+    "task": "You add two lines to the end of app.js. The first line defines a function called failing that throws an error. The second line tries to run it and catches the error, printing its message to the error stream. The code below does this. Run the checker and paste its report.\n\nIn app.js:\n```\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "caught",
+        "label": "The script reports Supplier offline",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "value": "Supplier offline"
+      },
+      {
+        "id": "finishes",
+        "label": "The script still finishes normally",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Try...catch lets you handle errors without stopping the whole script."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Clearance\")}`);\nconst prices = await Promise.all([\"Clearance\", \"Permit\", \"ID\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "async-barangay"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
