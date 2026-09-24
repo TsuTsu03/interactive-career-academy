@@ -10056,3 +10056,246 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "folders-barangay"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: folders-barangay.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-folders-barangay-6",
+    "index": 206,
+    "task": "You will make a folder called 'archive'. This folder will hold copies of files. The code below lets you make it even if it already exists. Type the code in app.js. Then run the command `node app.js` in your terminal. After that, run the checker and paste its report.\n\nIn app.js:\n```\nimport { readdir, mkdir } from \"node:fs/promises\";\nawait mkdir(\"archive\", { recursive: true });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Clearance 50\n",
+      "records/b.txt": "Permit 300\n",
+      "records/notes.md": "# Notes\nKeep Barangay Office records here.\n"
+    },
+    "tests": [
+      {
+        "id": "archive",
+        "label": "The archive folder exists",
+        "kind": "local-dir-exists",
+        "path": "archive"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of 'recursive' as a safety switch. It lets you make folders even if they already exist."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the end of app.js, right after the 'mkdir' line.\n\nIn app.js:\n```\nimport { readdir, mkdir } from \"node:fs/promises\";\nawait mkdir(\"archive\", { recursive: true });\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "folders-barangay"
+  },
+  {
+    "id": "node-folders-barangay-7",
+    "index": 207,
+    "task": "You will copy a file named 'a.txt' from the 'records' folder into the 'archive' folder. The code below does this. Type it in app.js. Then run `node app.js` in your terminal. After that, run the checker and paste its report.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile } from \"node:fs/promises\";\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Clearance 50\n",
+      "records/b.txt": "Permit 300\n",
+      "records/notes.md": "# Notes\nKeep Barangay Office records here.\n"
+    },
+    "tests": [
+      {
+        "id": "copied",
+        "label": "archive/a.txt is a copy of records/a.txt",
+        "kind": "local-file-contains",
+        "path": "archive/a.txt",
+        "value": "Clearance 50"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The 'copyFile' function takes two paths: where the file is now, and where it should go."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the end of app.js, right after the 'copyFile' line.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile } from \"node:fs/promises\";\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir, copyFile } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "folders-barangay"
+  },
+  {
+    "id": "node-folders-barangay-8",
+    "index": 208,
+    "task": "You will read the file's details using 'stat'. This tells you how big the file is. The code below gets the size and prints it. Type it in app.js. Then run `node app.js` in your terminal. After that, run the checker and paste its report.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile, stat } from \"node:fs/promises\";\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Clearance 50\n",
+      "records/b.txt": "Permit 300\n",
+      "records/notes.md": "# Notes\nKeep Barangay Office records here.\n"
+    },
+    "tests": [
+      {
+        "id": "size",
+        "label": "The script prints Size: 13 bytes",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Size: 13 bytes"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The 'stat' function gives you a report. The 'size' property tells you how big the file is in bytes."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the end of app.js, right after the 'stat' line.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile, stat } from \"node:fs/promises\";\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir, copyFile, stat } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "folders-barangay"
+  },
+  {
+    "id": "node-folders-barangay-9",
+    "index": 209,
+    "task": "You will rename the file 'a.txt' in the archive folder to 'a-old.txt'. The code below does this. Type it in app.js. Then run `node app.js` in your terminal. After that, run the checker and paste its report.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile, stat, rename } from \"node:fs/promises\";\nawait rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Clearance 50\n",
+      "records/b.txt": "Permit 300\n",
+      "records/notes.md": "# Notes\nKeep Barangay Office records here.\n"
+    },
+    "tests": [
+      {
+        "id": "renamed",
+        "label": "archive/a-old.txt exists",
+        "kind": "local-file-exists",
+        "path": "archive/a-old.txt"
+      },
+      {
+        "id": "moved",
+        "label": "archive/a.txt is gone",
+        "kind": "local-path-missing",
+        "path": "archive/a.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The 'rename' function changes the name of a file. It takes the old name and the new name."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the end of app.js, right after the 'rename' line.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile, stat, rename } from \"node:fs/promises\";\nawait rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir, copyFile, stat, rename } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\nawait rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "folders-barangay"
+  },
+  {
+    "id": "node-folders-barangay-10",
+    "index": 210,
+    "task": "You will turn the file path into a full path using 'path.resolve'. This makes sure the path is absolute. The code below prints 'true' if it is. Type it in app.js. Then run `node app.js` in your terminal. After that, run the checker and paste its report.\n\nIn app.js:\n```\nconsole.log(`Absolute: ${path.isAbsolute(path.resolve(file))}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Clearance 50\n",
+      "records/b.txt": "Permit 300\n",
+      "records/notes.md": "# Notes\nKeep Barangay Office records here.\n"
+    },
+    "tests": [
+      {
+        "id": "absolute",
+        "label": "The script prints Absolute: true",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Absolute: true"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "An absolute path starts from the root of your computer. 'path.resolve' makes sure it does."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the end of app.js, right after the 'rename' line.\n\nIn app.js:\n```\nconsole.log(`Absolute: ${path.isAbsolute(path.resolve(file))}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir, copyFile, stat, rename } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\nawait rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));\nconsole.log(`Absolute: ${path.isAbsolute(path.resolve(file))}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "folders-barangay"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
