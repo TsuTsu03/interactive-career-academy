@@ -10299,3 +10299,227 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "folders-barangay"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: scripts-school-club.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-scripts-school-club-1",
+    "index": 211,
+    "task": "Open the file app.js. Change the line to say School Club. Run the script with node app.js. The checker will confirm it prints School Club.\n\nIn app.js:\n```\nconsole.log(\"School Club\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "node app.js prints School Club",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "School Club"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The script runs with node app.js. Make sure the text is exactly School Club."
+      },
+      {
+        "level": 2,
+        "text": "Type the code in app.js, then run node app.js in the terminal.\n\nIn app.js:\n```\nconsole.log(\"School Club\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"School Club\");\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-school-club"
+  },
+  {
+    "id": "node-scripts-school-club-2",
+    "index": 212,
+    "task": "Add two lines at the end of app.js. First, make a constant called item with the value Shirt. Then print that value. The checker will confirm it prints Shirt on its own line.\n\nIn app.js:\n```\nconst item = \"Shirt\";\nconsole.log(item);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "item",
+        "label": "The script prints Shirt on its own line",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Shirt\n"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use const to make a constant. The value must be Shirt."
+      },
+      {
+        "level": 2,
+        "text": "Add the lines at the end of app.js, after the first line.\n\nIn app.js:\n```\nconst item = \"Shirt\";\nconsole.log(item);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"School Club\");\nconst item = \"Shirt\";\nconsole.log(item);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "scripts-school-club"
+  },
+  {
+    "id": "node-scripts-school-club-3",
+    "index": 213,
+    "task": "Add a new constant called price with the value 250. Change the last console.log to print both item and price together. The checker will confirm it prints Shirt 250.\n\nIn app.js:\n```\nconst price = 250;\nconsole.log(item, price);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "pair",
+        "label": "The script prints Shirt 250",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Shirt 250"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the price constant before the last line. Use 250 as the value."
+      },
+      {
+        "level": 2,
+        "text": "Change the last line to console.log(item, price);\n\nIn app.js:\n```\nconst price = 250;\nconsole.log(item, price);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"School Club\");\nconst item = \"Shirt\";\nconst price = 250;\nconsole.log(item, price);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "scripts-school-club"
+  },
+  {
+    "id": "node-scripts-school-club-4",
+    "index": 214,
+    "task": "Change the last console.log to use a template literal. Print the item and price in one sentence. The checker will confirm it prints Shirt costs 250 pesos.\n\nIn app.js:\n```\nconsole.log(`${item} costs ${price} pesos`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "sentence",
+        "label": "The script prints Shirt costs 250 pesos",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Shirt costs 250 pesos"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use backticks to start and end the template. Use ${} to insert variables."
+      },
+      {
+        "level": 2,
+        "text": "Replace the last line with console.log(`${item} costs ${price} pesos`);\n\nIn app.js:\n```\nconsole.log(`${item} costs ${price} pesos`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"School Club\");\nconst item = \"Shirt\";\nconst price = 250;\nconsole.log(`${item} costs ${price} pesos`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "scripts-school-club"
+  },
+  {
+    "id": "node-scripts-school-club-5",
+    "index": 215,
+    "task": "Add two lines at the end of app.js. First, make an array called items with three strings: Shirt, Pin, and Badge. Then print how many items there are. The checker will confirm it prints Items: 3.\n\nIn app.js:\n```\nconst items = [\"Shirt\", \"Pin\", \"Badge\"];\nconsole.log(`Items: ${items.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The script prints Items: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Items: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use square brackets to make an array. Add the three names inside."
+      },
+      {
+        "level": 2,
+        "text": "Add the last line as console.log(`Items: ${items.length}`);\n\nIn app.js:\n```\nconst items = [\"Shirt\", \"Pin\", \"Badge\"];\nconsole.log(`Items: ${items.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"School Club\");\nconst item = \"Shirt\";\nconst price = 250;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Shirt\", \"Pin\", \"Badge\"];\nconsole.log(`Items: ${items.length}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "scripts-school-club"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
