@@ -6972,3 +6972,221 @@ cliGitCourse.steps.push(...([
     "projectId": "branches-school-club"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: branches-school-club.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-branches-school-club-6",
+    "index": 156,
+    "task": "You are now on the friday-plan branch. This branch is for planning Friday activities. You must be here to add the Wednesday Meeting. Run this command: `git switch friday-plan`. Then run the checker to see if you are on the right branch.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "on-branch",
+        "label": "You are on friday-plan",
+        "kind": "local-git-branch",
+        "value": "friday-plan"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change your branch to friday-plan to start adding the meeting."
+      },
+      {
+        "level": 2,
+        "text": "`git switch friday-plan`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git switch friday-plan"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "branches-school-club"
+  },
+  {
+    "id": "cli-branches-school-club-7",
+    "index": 157,
+    "task": "You are on the friday-plan branch. Add the text 'Wednesday Meeting' to the schedule file. This is a new idea for Friday. Run this command: `echo \"Wednesday Meeting\" >> schedule.txt`. Then run the checker to confirm the file changed.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "unstaged",
+        "label": "schedule.txt has an unstaged change",
+        "kind": "local-git-unstaged",
+        "path": "schedule.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the text to the file without typing it out manually."
+      },
+      {
+        "level": 2,
+        "text": "`echo \"Wednesday Meeting\" >> schedule.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Wednesday Meeting\" >> schedule.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "branches-school-club"
+  },
+  {
+    "id": "cli-branches-school-club-8",
+    "index": 158,
+    "task": "You are on the friday-plan branch. The file changed but not saved yet. Save it with one command. Run this command: `git commit -am \"Add Wednesday Meeting\"`. Then run the checker to confirm the commit was made.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "This branch has two commits",
+        "kind": "local-git-commit-count",
+        "count": 2
+      },
+      {
+        "id": "message",
+        "label": "The last commit says Add Wednesday Meeting",
+        "kind": "local-git-head-message",
+        "value": "Add Wednesday Meeting"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Save the change with one command that adds and commits at once."
+      },
+      {
+        "level": 2,
+        "text": "`git commit -am \"Add Wednesday Meeting\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -am \"Add Wednesday Meeting\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "branches-school-club"
+  },
+  {
+    "id": "cli-branches-school-club-9",
+    "index": 159,
+    "task": "Switch back to the main branch. This branch holds the official plan. You will check that the Wednesday Meeting is not here. Run this command: `git switch main`. Then run the checker to confirm you are back and the meeting is missing.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "main",
+        "label": "You are back on main",
+        "kind": "local-git-branch",
+        "value": "main"
+      },
+      {
+        "id": "not-here",
+        "label": "main does not have Wednesday Meeting",
+        "kind": "local-file-lacks",
+        "path": "schedule.txt",
+        "value": "Wednesday Meeting"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Go back to the main branch to check if the meeting was added there."
+      },
+      {
+        "level": 2,
+        "text": "`git switch main`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git switch main"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "branches-school-club"
+  },
+  {
+    "id": "cli-branches-school-club-10",
+    "index": 160,
+    "task": "Create a new branch named sports-week and move onto it in one step. This branch is for sports plans. Run this command: `git switch -c sports-week`. Then run the checker to confirm the branch was made and you are on it.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "created",
+        "label": "The sports-week branch exists",
+        "kind": "local-git-branch-exists",
+        "branch": "sports-week"
+      },
+      {
+        "id": "on-it",
+        "label": "You are on sports-week",
+        "kind": "local-git-branch",
+        "value": "sports-week"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Make and switch to the new branch using one command."
+      },
+      {
+        "level": 2,
+        "text": "`git switch -c sports-week`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git switch -c sports-week"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "branches-school-club"
+  }
+] satisfies typeof cliGitCourse.steps));
