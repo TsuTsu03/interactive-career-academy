@@ -4750,3 +4750,246 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "files-carinderia"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: files-carinderia.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-files-carinderia-6",
+    "index": 96,
+    "task": "You will save the item list as a file. This file will hold the menu in a format called JSON. You add one line at the end of app.js. Then you run the command `node app.js` to test it. The checker will confirm that stock.json now holds Adobo as JSON.\n\nIn app.js:\n```\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Adobo,80\nPancit,60\nLumpia,15\n"
+    },
+    "tests": [
+      {
+        "id": "json",
+        "label": "stock.json holds Adobo as JSON",
+        "kind": "local-file-contains",
+        "path": "stock.json",
+        "value": "\"name\": \"Adobo\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of JSON as a way to store data that your computer can read later."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the end of app.js, right after the last line.\n\nIn app.js:\n```\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-carinderia"
+  },
+  {
+    "id": "node-files-carinderia-7",
+    "index": 97,
+    "task": "You will read the saved file back into objects. This lets you count how many items are in the menu. Add two lines at the end of app.js. The checker will confirm that the script prints 'Saved: 3 items'.\n\nIn app.js:\n```\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Adobo,80\nPancit,60\nLumpia,15\n"
+    },
+    "tests": [
+      {
+        "id": "saved",
+        "label": "The script prints Saved: 3 items",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Saved: 3 items"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You need to read the file, turn it back into objects, then count them."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js, after the last line.\n\nIn app.js:\n```\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-carinderia"
+  },
+  {
+    "id": "node-files-carinderia-8",
+    "index": 98,
+    "task": "You will add a line to report.txt without deleting what's already there. You add one line to the import section and one line at the end of app.js. Then you run `node app.js`. The checker will confirm that report.txt ends with 'Checked today' but still says 'Items: 3'.\n\nIn app.js:\n```\nimport { readFile, writeFile, appendFile } from \"node:fs/promises\";\nawait appendFile(\"report.txt\", \"Checked today\\n\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Adobo,80\nPancit,60\nLumpia,15\n"
+    },
+    "tests": [
+      {
+        "id": "appended",
+        "label": "report.txt ends with Checked today",
+        "kind": "local-file-contains",
+        "path": "report.txt",
+        "value": "Checked today"
+      },
+      {
+        "id": "kept",
+        "label": "report.txt still says Items: 3",
+        "kind": "local-file-contains",
+        "path": "report.txt",
+        "value": "Items: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use appendFile to add to the end of a file, not to replace it."
+      },
+      {
+        "level": 2,
+        "text": "Add the new import line at the top, then the append line at the end.\n\nIn app.js:\n```\nimport { readFile, writeFile, appendFile } from \"node:fs/promises\";\nawait appendFile(\"report.txt\", \"Checked today\\n\");\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile, appendFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\nawait appendFile(\"report.txt\", \"Checked today\\n\");\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-carinderia"
+  },
+  {
+    "id": "node-files-carinderia-9",
+    "index": 99,
+    "task": "You will raise the price of the first item by 7 and save the updated list. Add two lines at the end of app.js. Then run `node app.js`. The checker will confirm that stock.json now shows Adobo at 87.\n\nIn app.js:\n```\nsaved[0].price += 7;\nawait writeFile(\"stock.json\", JSON.stringify(saved, null, 2));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Adobo,80\nPancit,60\nLumpia,15\n"
+    },
+    "tests": [
+      {
+        "id": "raised",
+        "label": "stock.json now has Adobo at 87",
+        "kind": "local-file-contains",
+        "path": "stock.json",
+        "value": "\"price\": 87"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You change the first item's price, then save the whole list again."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js, after the last line.\n\nIn app.js:\n```\nsaved[0].price += 7;\nawait writeFile(\"stock.json\", JSON.stringify(saved, null, 2));\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile, appendFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\nawait appendFile(\"report.txt\", \"Checked today\\n\");\nsaved[0].price += 7;\nawait writeFile(\"stock.json\", JSON.stringify(saved, null, 2));\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-carinderia"
+  },
+  {
+    "id": "node-files-carinderia-10",
+    "index": 100,
+    "task": "You will read a file that does not exist and handle the error. You add a try and catch block at the end of app.js. The checker will confirm that the script reports 'Could not read: ENOENT' and still finishes normally.\n\nIn app.js:\n```\ntry { await readFile(\"missing.txt\", \"utf8\"); }\ncatch (error) { console.error(`Could not read: ${error.code}`); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Adobo,80\nPancit,60\nLumpia,15\n"
+    },
+    "tests": [
+      {
+        "id": "code",
+        "label": "The script reports Could not read: ENOENT",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "value": "Could not read: ENOENT"
+      },
+      {
+        "id": "finishes",
+        "label": "The script still finishes normally",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Wrap the file reading in a try block and catch the error to avoid crashing."
+      },
+      {
+        "level": 2,
+        "text": "Add the try-catch block at the end of app.js, after the last line.\n\nIn app.js:\n```\ntry { await readFile(\"missing.txt\", \"utf8\"); }\ncatch (error) { console.error(`Could not read: ${error.code}`); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile, appendFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\nawait writeFile(\"stock.json\", JSON.stringify(items, null, 2));\nconst saved = JSON.parse(await readFile(\"stock.json\", \"utf8\"));\nconsole.log(`Saved: ${saved.length} items`);\nawait appendFile(\"report.txt\", \"Checked today\\n\");\nsaved[0].price += 7;\nawait writeFile(\"stock.json\", JSON.stringify(saved, null, 2));\ntry { await readFile(\"missing.txt\", \"utf8\"); }\ncatch (error) { console.error(`Could not read: ${error.code}`); }\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "files-carinderia"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
