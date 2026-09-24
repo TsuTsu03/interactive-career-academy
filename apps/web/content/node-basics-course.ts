@@ -4521,3 +4521,232 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "modules-carinderia"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: files-carinderia.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-files-carinderia-1",
+    "index": 91,
+    "task": "Open app.js. Replace the console.log line with two lines. The code below reads stock.txt and prints its text. Run the checker to confirm it works.\n\nIn app.js:\n```\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Adobo,80\nPancit,60\nLumpia,15\n"
+    },
+    "tests": [
+      {
+        "id": "text",
+        "label": "The script prints the line Adobo,80 from stock.txt",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Adobo,80"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Read the file first, then print its content."
+      },
+      {
+        "level": 2,
+        "text": "Put the code where the console.log line is.\n\nIn app.js:\n```\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-carinderia"
+  },
+  {
+    "id": "node-files-carinderia-2",
+    "index": 92,
+    "task": "Add two lines at the end of app.js. The code below splits the text into lines and prints how many lines there are. Run the checker to confirm it works.\n\nIn app.js:\n```\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Adobo,80\nPancit,60\nLumpia,15\n"
+    },
+    "tests": [
+      {
+        "id": "lines",
+        "label": "The script prints Lines: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Lines: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Split the text by new lines to count each dish."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the first two lines you added.\n\nIn app.js:\n```\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-carinderia"
+  },
+  {
+    "id": "node-files-carinderia-3",
+    "index": 93,
+    "task": "Add two lines at the end of app.js. The code below splits each line by comma and prints the second item's name. Run the checker to confirm it works.\n\nIn app.js:\n```\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Adobo,80\nPancit,60\nLumpia,15\n"
+    },
+    "tests": [
+      {
+        "id": "second",
+        "label": "The script prints Second item: Pancit",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Second item: Pancit"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Each line has a name and price. Split it to get the name."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the lines you added before.\n\nIn app.js:\n```\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-carinderia"
+  },
+  {
+    "id": "node-files-carinderia-4",
+    "index": 94,
+    "task": "Add two lines at the end of app.js. The code below turns each row into an object with price and prints the cheapest. Run the checker to confirm it works.\n\nIn app.js:\n```\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Adobo,80\nPancit,60\nLumpia,15\n"
+    },
+    "tests": [
+      {
+        "id": "cheapest",
+        "label": "The script prints Cheapest: 15",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Cheapest: 15"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Turn each row into an object with name and price. Use Math.min to find the lowest price."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the lines you added before.\n\nIn app.js:\n```\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "files-carinderia"
+  },
+  {
+    "id": "node-files-carinderia-5",
+    "index": 95,
+    "task": "Add two lines at the end of app.js. The first line imports writeFile. The second line writes a report to report.txt. Then run `node app.js` in the terminal. Run the checker to confirm report.txt says Items: 3.\n\nIn app.js:\n```\nimport { readFile, writeFile } from \"node:fs/promises\";\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Adobo,80\nPancit,60\nLumpia,15\n"
+    },
+    "tests": [
+      {
+        "id": "report",
+        "label": "report.txt says Items: 3",
+        "kind": "local-file-contains",
+        "path": "report.txt",
+        "value": "Items: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Import writeFile first. Then write to report.txt after you finish reading the stock."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of app.js, after the other lines.\n\nIn app.js:\n```\nimport { readFile, writeFile } from \"node:fs/promises\";\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\n"
+    },
+    "estimatedMinutes": 6,
+    "projectId": "files-carinderia"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
