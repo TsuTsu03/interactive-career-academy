@@ -15478,3 +15478,250 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "async-tricycle"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: cli-tricycle.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-cli-tricycle-1",
+    "index": 321,
+    "task": "You will add one line to the end of app.js. This line prints how many words you typed after running node app.js. The checker runs node app.js Market 2 to test it. After you add the line, run the checker and paste its report.\n\nIn app.js:\n```\nconsole.log(`You typed ${args.length} words`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "words",
+        "label": "node app.js Market 2 prints You typed 2 words",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Market",
+          "2"
+        ],
+        "value": "You typed 2 words"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of args as an array that holds all the words you typed after node app.js."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the very end of app.js, after the existing code.\n\nIn app.js:\n```\nconsole.log(`You typed ${args.length} words`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "cli-tricycle"
+  },
+  {
+    "id": "node-cli-tricycle-2",
+    "index": 322,
+    "task": "You will add two lines to the end of app.js. The first line splits the first two words into name and quantity. The second line prints the name. The checker runs node app.js Market 2 to test it. After you add the lines, run the checker and paste its report.\n\nIn app.js:\n```\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "item",
+        "label": "node app.js Market 2 prints Item: Market",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Market",
+          "2"
+        ],
+        "value": "Item: Market"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the array destructuring syntax to split the first two words into name and quantity."
+      },
+      {
+        "level": 2,
+        "text": "Add these two lines at the very end of app.js, after the previous code.\n\nIn app.js:\n```\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cli-tricycle"
+  },
+  {
+    "id": "node-cli-tricycle-3",
+    "index": 323,
+    "task": "You will add two lines to the end of app.js. The first line turns the quantity text into a number. The second line prints that number. The checker runs node app.js Market 2 to test it. After you add the lines, run the checker and paste its report.\n\nIn app.js:\n```\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "quantity",
+        "label": "node app.js Market 2 prints Quantity: 2",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Market",
+          "2"
+        ],
+        "value": "Quantity: 2"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use Number() to turn the text into a number. For example, Number('2') becomes 2."
+      },
+      {
+        "level": 2,
+        "text": "Add these two lines at the very end of app.js, after the previous code.\n\nIn app.js:\n```\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cli-tricycle"
+  },
+  {
+    "id": "node-cli-tricycle-4",
+    "index": 324,
+    "task": "You will add two lines to the end of app.js. The first line sets up a prices object with item names and their costs. The second line calculates and prints the total cost. The checker runs node app.js Market 2 to test it. After you add the lines, run the checker and paste its report.\n\nIn app.js:\n```\nconst prices = { \"Market\": 20, \"School\": 30, \"Clinic\": 25 };\nconsole.log(`Total: ${prices[name] * count}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "total",
+        "label": "node app.js Market 2 prints Total: 40",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Market",
+          "2"
+        ],
+        "value": "Total: 40"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The prices object holds the cost for each item. Use prices[name] to get the cost for the item you typed."
+      },
+      {
+        "level": 2,
+        "text": "Add these two lines at the very end of app.js, after the previous code.\n\nIn app.js:\n```\nconst prices = { \"Market\": 20, \"School\": 30, \"Clinic\": 25 };\nconsole.log(`Total: ${prices[name] * count}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Market\": 20, \"School\": 30, \"Clinic\": 25 };\nconsole.log(`Total: ${prices[name] * count}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "cli-tricycle"
+  },
+  {
+    "id": "node-cli-tricycle-5",
+    "index": 325,
+    "task": "You will add one line to app.js, right after the line that sets name and quantity. This line checks if name is empty. If it is, it prints a message and stops the program with exit code 1. The checker tests this by running node app.js with no words. After you add the line, run the checker and paste its report.\n\nIn app.js:\n```\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "exit",
+        "label": "node app.js with no words ends with exit code 1",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 1
+      },
+      {
+        "id": "usage",
+        "label": "It explains how to use the tool",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "value": "Usage: node app.js <item> <quantity>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If name is empty, the program should stop and show a message. Use process.exit(1) to stop with error code 1."
+      },
+      {
+        "level": 2,
+        "text": "Add this line right after the line that sets name and quantity.\n\nIn app.js:\n```\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Market\": 20, \"School\": 30, \"Clinic\": 25 };\nconsole.log(`Total: ${prices[name] * count}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cli-tricycle"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
