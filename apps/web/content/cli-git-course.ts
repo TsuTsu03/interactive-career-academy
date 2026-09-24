@@ -3224,3 +3224,215 @@ cliGitCourse.steps.push(...([
     "projectId": "files-barangay"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: first-commit-barangay.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-first-commit-barangay-1",
+    "index": 71,
+    "task": "You turn this folder into a Git repository. Git lets you save changes to files. You name the first branch 'main'. This is the default branch for new projects. Run this command: `git init -b main`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "repo",
+        "label": "The folder is a Git repository",
+        "kind": "local-git-repo"
+      },
+      {
+        "id": "untracked",
+        "label": "fees.txt is not tracked yet",
+        "kind": "local-git-untracked",
+        "path": "fees.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You make this folder a Git project by telling Git to start tracking it. The branch 'main' is the main path for your work."
+      },
+      {
+        "level": 2,
+        "text": "Run `git init -b main`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git init -b main"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-commit-barangay"
+  },
+  {
+    "id": "cli-first-commit-barangay-2",
+    "index": 72,
+    "task": "You tell Git who made the first commits. This is your name. You set it to 'Jose Reyes'. Git uses this to mark your work. Run this command: `git config user.name \"Jose Reyes\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "Commits will be signed by Jose Reyes",
+        "kind": "local-git-config",
+        "key": "user.name",
+        "value": "Jose Reyes"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Git needs your name to know who wrote the changes. You give it 'Jose Reyes'."
+      },
+      {
+        "level": 2,
+        "text": "Run `git config user.name \"Jose Reyes\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.name \"Jose Reyes\""
+    },
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-barangay"
+  },
+  {
+    "id": "cli-first-commit-barangay-3",
+    "index": 73,
+    "task": "You tell Git your email address. This is your contact. You set it to 'jose@example.com'. Git uses this to link your name to your work. Run this command: `git config user.email \"jose@example.com\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "email",
+        "label": "The commit email is jose@example.com",
+        "kind": "local-git-config",
+        "key": "user.email",
+        "value": "jose@example.com"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Git needs your email to connect your name to your changes. You give it 'jose@example.com'."
+      },
+      {
+        "level": 2,
+        "text": "Run `git config user.email \"jose@example.com\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.email \"jose@example.com\""
+    },
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-barangay"
+  },
+  {
+    "id": "cli-first-commit-barangay-4",
+    "index": 74,
+    "task": "You tell Git to save only 'fees.txt'. This file will be part of your first commit. 'README.txt' stays out for now. Run this command: `git add fees.txt`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "staged",
+        "label": "fees.txt is staged",
+        "kind": "local-git-staged",
+        "path": "fees.txt"
+      },
+      {
+        "id": "readme-waits",
+        "label": "README.txt is still untracked",
+        "kind": "local-git-untracked",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You mark 'fees.txt' to be saved. Git will include it in your next save. 'README.txt' is not marked yet."
+      },
+      {
+        "level": 2,
+        "text": "Run `git add fees.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add fees.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-barangay"
+  },
+  {
+    "id": "cli-first-commit-barangay-5",
+    "index": 75,
+    "task": "You tell Git to save 'README.txt' too. Now both files are ready to be saved. Run this command: `git add README.txt`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "readme",
+        "label": "README.txt is staged",
+        "kind": "local-git-staged",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You mark 'README.txt' to be saved. Now both files are ready. Git will save them together."
+      },
+      {
+        "level": 2,
+        "text": "Run `git add README.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add README.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-barangay"
+  }
+] satisfies typeof cliGitCourse.steps));
