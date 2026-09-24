@@ -15247,3 +15247,234 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "async-tricycle"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: async-tricycle.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-async-tricycle-6",
+    "index": 316,
+    "task": "You add two lines at the end of app.js. The code below waits for both promises to finish, even if one fails. It then prints their statuses. Run the checker to confirm it works.\n\nIn app.js:\n```\nconst results = await Promise.allSettled([fetchPrice(\"Market\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "settled",
+        "label": "The script prints Settled: fulfilled rejected",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Settled: fulfilled rejected"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Promise.allSettled waits for all promises to finish, whether they succeed or fail."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the existing code.\n\nIn app.js:\n```\nconst results = await Promise.allSettled([fetchPrice(\"Market\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Market\")}`);\nconst prices = await Promise.all([\"Market\", \"School\", \"Clinic\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\nconst results = await Promise.allSettled([fetchPrice(\"Market\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "async-tricycle"
+  },
+  {
+    "id": "node-async-tricycle-7",
+    "index": 317,
+    "task": "You add a for...of loop at the end of app.js. The code below checks two names one after the other. It prints each result. Run the checker to confirm it works.\n\nIn app.js:\n```\nfor (const name of [\"Market\", \"School\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "loop",
+        "label": "The script prints Checked School: 60",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Checked School: 60"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The loop runs once for each name in the array. Wait for each fetch to finish before moving to the next."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the existing code.\n\nIn app.js:\n```\nfor (const name of [\"Market\", \"School\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Market\")}`);\nconst prices = await Promise.all([\"Market\", \"School\", \"Clinic\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\nconst results = await Promise.allSettled([fetchPrice(\"Market\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\nfor (const name of [\"Market\", \"School\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "async-tricycle"
+  },
+  {
+    "id": "node-async-tricycle-8",
+    "index": 318,
+    "task": "You add one line at the end of app.js. The code below runs the wait function, then always prints a cleanup message, whether it succeeds or fails. Run the checker to confirm it works.\n\nIn app.js:\n```\ntry { await wait(10); } finally { console.log(\"Cleanup done\"); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "cleanup",
+        "label": "The script prints Cleanup done",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Cleanup done"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The finally block runs no matter what happens in the try block."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the existing code.\n\nIn app.js:\n```\ntry { await wait(10); } finally { console.log(\"Cleanup done\"); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Market\")}`);\nconst prices = await Promise.all([\"Market\", \"School\", \"Clinic\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\nconst results = await Promise.allSettled([fetchPrice(\"Market\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\nfor (const name of [\"Market\", \"School\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\ntry { await wait(10); } finally { console.log(\"Cleanup done\"); }\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "async-tricycle"
+  },
+  {
+    "id": "node-async-tricycle-9",
+    "index": 319,
+    "task": "You add two lines at the end of app.js. The code below starts a timer that runs every 10 milliseconds. It counts ticks and stops after three. Run the checker to confirm it works.\n\nIn app.js:\n```\nlet ticks = 0;\nconst timer = setInterval(() => { ticks += 1; if (ticks === 3) { clearInterval(timer); console.log(\"Ticks: 3\"); } }, 10);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "ticks",
+        "label": "The script prints Ticks: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Ticks: 3"
+      },
+      {
+        "id": "stops",
+        "label": "The script stops on its own",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "setInterval runs a function repeatedly. clearInterval stops it."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the existing code.\n\nIn app.js:\n```\nlet ticks = 0;\nconst timer = setInterval(() => { ticks += 1; if (ticks === 3) { clearInterval(timer); console.log(\"Ticks: 3\"); } }, 10);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Market\")}`);\nconst prices = await Promise.all([\"Market\", \"School\", \"Clinic\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\nconst results = await Promise.allSettled([fetchPrice(\"Market\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\nfor (const name of [\"Market\", \"School\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\ntry { await wait(10); } finally { console.log(\"Cleanup done\"); }\nlet ticks = 0;\nconst timer = setInterval(() => { ticks += 1; if (ticks === 3) { clearInterval(timer); console.log(\"Ticks: 3\"); } }, 10);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "async-tricycle"
+  },
+  {
+    "id": "node-async-tricycle-10",
+    "index": 320,
+    "task": "You add two lines at the end of app.js. The code below runs a timer with zero delay, then prints a sync message. The sync message prints first. Run the checker to confirm it works.\n\nIn app.js:\n```\nsetTimeout(() => console.log(\"Timer done\"), 0);\nconsole.log(\"Sync done\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "order",
+        "label": "Sync done prints before Timer done",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Sync done\nTimer done"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "setTimeout with 0 delay runs after the current code finishes, but not instantly."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the existing code.\n\nIn app.js:\n```\nsetTimeout(() => console.log(\"Timer done\"), 0);\nconsole.log(\"Sync done\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Market\")}`);\nconst prices = await Promise.all([\"Market\", \"School\", \"Clinic\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\nconst results = await Promise.allSettled([fetchPrice(\"Market\"), failing()]);\nconsole.log(`Settled: ${results.map((result) => result.status).join(\" \")}`);\nfor (const name of [\"Market\", \"School\"]) {\n  console.log(`Checked ${name}: ${await fetchPrice(name)}`);\n}\ntry { await wait(10); } finally { console.log(\"Cleanup done\"); }\nlet ticks = 0;\nconst timer = setInterval(() => { ticks += 1; if (ticks === 3) { clearInterval(timer); console.log(\"Ticks: 3\"); } }, 10);\nsetTimeout(() => console.log(\"Timer done\"), 0);\nconsole.log(\"Sync done\");\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "async-tricycle"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
