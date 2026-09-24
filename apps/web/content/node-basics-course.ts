@@ -8796,3 +8796,250 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "async-barangay"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: cli-barangay.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-cli-barangay-1",
+    "index": 181,
+    "task": "You will add a line to app.js. This line prints how many words you typed. The checker runs node app.js Clearance 2 to test it. After you add the line, run the checker and paste its report.\n\nIn app.js:\n```\nconsole.log(`You typed ${args.length} words`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "words",
+        "label": "node app.js Clearance 2 prints You typed 2 words",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Clearance",
+          "2"
+        ],
+        "value": "You typed 2 words"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The code uses args to get the words you typed."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the end of app.js.\n\nIn app.js:\n```\nconsole.log(`You typed ${args.length} words`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "cli-barangay"
+  },
+  {
+    "id": "node-cli-barangay-2",
+    "index": 182,
+    "task": "You will add two lines to app.js. These lines split the first two words into name and quantity. The checker runs node app.js Clearance 2 to test it. After you add the lines, run the checker and paste its report.\n\nIn app.js:\n```\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "item",
+        "label": "node app.js Clearance 2 prints Item: Clearance",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Clearance",
+          "2"
+        ],
+        "value": "Item: Clearance"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the array syntax to split the words into name and quantity."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js.\n\nIn app.js:\n```\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cli-barangay"
+  },
+  {
+    "id": "node-cli-barangay-3",
+    "index": 183,
+    "task": "You will add two lines to app.js. These lines turn the quantity into a number and print it. The checker runs node app.js Clearance 2 to test it. After you add the lines, run the checker and paste its report.\n\nIn app.js:\n```\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "quantity",
+        "label": "node app.js Clearance 2 prints Quantity: 2",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Clearance",
+          "2"
+        ],
+        "value": "Quantity: 2"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use Number() to turn text into a number."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js.\n\nIn app.js:\n```\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cli-barangay"
+  },
+  {
+    "id": "node-cli-barangay-4",
+    "index": 184,
+    "task": "You will add two lines to app.js. These lines look up the price of the item and print the total cost. The checker runs node app.js Clearance 2 to test it. After you add the lines, run the checker and paste its report.\n\nIn app.js:\n```\nconst prices = { \"Clearance\": 50, \"Permit\": 300, \"ID\": 20 };\nconsole.log(`Total: ${prices[name] * count}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "total",
+        "label": "node app.js Clearance 2 prints Total: 100",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Clearance",
+          "2"
+        ],
+        "value": "Total: 100"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use a prices object to store item prices."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js.\n\nIn app.js:\n```\nconst prices = { \"Clearance\": 50, \"Permit\": 300, \"ID\": 20 };\nconsole.log(`Total: ${prices[name] * count}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Clearance\": 50, \"Permit\": 300, \"ID\": 20 };\nconsole.log(`Total: ${prices[name] * count}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "cli-barangay"
+  },
+  {
+    "id": "node-cli-barangay-5",
+    "index": 185,
+    "task": "You will add one line to app.js. This line checks if the item name is missing. If it is, it prints a message and stops with exit code 1. The checker tests this by running node app.js with no words. After you add the line, run the checker and paste its report.\n\nIn app.js:\n```\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "exit",
+        "label": "node app.js with no words ends with exit code 1",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 1
+      },
+      {
+        "id": "usage",
+        "label": "It explains how to use the tool",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "value": "Usage: node app.js <item> <quantity>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use if (!name) to check if the name is empty."
+      },
+      {
+        "level": 2,
+        "text": "Add the line right after the line that sets name and quantity.\n\nIn app.js:\n```\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Clearance\": 50, \"Permit\": 300, \"ID\": 20 };\nconsole.log(`Total: ${prices[name] * count}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cli-barangay"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
