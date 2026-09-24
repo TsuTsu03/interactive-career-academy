@@ -4094,3 +4094,232 @@ cliGitCourse.steps.push(...([
     "projectId": "undo-barangay"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: branches-barangay.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-branches-barangay-1",
+    "index": 91,
+    "task": "You turn this folder into a Git repository. This lets you save your work safely. You name the first branch 'main'. This is the default branch for your project. Run this command exactly: `git init -b main`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "repo",
+        "label": "The folder is a Git repository",
+        "kind": "local-git-repo"
+      },
+      {
+        "id": "untracked",
+        "label": "fees.txt is not tracked yet",
+        "kind": "local-git-untracked",
+        "path": "fees.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are starting a new Git project. The '-b main' part sets the first branch name."
+      },
+      {
+        "level": 2,
+        "text": "Run: `git init -b main`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git init -b main"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "branches-barangay"
+  },
+  {
+    "id": "cli-branches-barangay-2",
+    "index": 92,
+    "task": "You tell Git who you are. This helps identify your work later. You set your name and email. Run these commands one at a time: `git config user.name \"Jose Reyes\"` and `git config user.email \"jose@example.com\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "Commits will be signed by Jose Reyes",
+        "kind": "local-git-config",
+        "key": "user.name",
+        "value": "Jose Reyes"
+      },
+      {
+        "id": "email",
+        "label": "The commit email is jose@example.com",
+        "kind": "local-git-config",
+        "key": "user.email",
+        "value": "jose@example.com"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Git needs your name and email to mark your changes. Use the exact quotes."
+      },
+      {
+        "level": 2,
+        "text": "Run: `git config user.name \"Jose Reyes\"` and `git config user.email \"jose@example.com\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.name \"Jose Reyes\"\ngit config user.email \"jose@example.com\""
+    },
+    "estimatedMinutes": 4,
+    "projectId": "branches-barangay"
+  },
+  {
+    "id": "cli-branches-barangay-3",
+    "index": 93,
+    "task": "You prepare all files for saving. This is called staging. You use a dot (.) to include every file. Run this command: `git add .`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "file",
+        "label": "fees.txt is staged",
+        "kind": "local-git-staged",
+        "path": "fees.txt"
+      },
+      {
+        "id": "readme",
+        "label": "README.txt is staged",
+        "kind": "local-git-staged",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Staging means you are ready to save all files together. The dot means 'all files'."
+      },
+      {
+        "level": 2,
+        "text": "Run: `git add .`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add ."
+    },
+    "estimatedMinutes": 2,
+    "projectId": "branches-barangay"
+  },
+  {
+    "id": "cli-branches-barangay-4",
+    "index": 94,
+    "task": "You save your prepared files as the first commit. This is your first record of work. You use a message to describe what you did. Run this command: `git commit -m \"Start barangay office list\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has one commit",
+        "kind": "local-git-commit-count",
+        "count": 1
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Commit means you save your changes permanently. The message explains what you did."
+      },
+      {
+        "level": 2,
+        "text": "Run: `git commit -m \"Start barangay office list\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Start barangay office list\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "branches-barangay"
+  },
+  {
+    "id": "cli-branches-barangay-5",
+    "index": 95,
+    "task": "You make a new branch named 'new-fees'. This branch is separate from 'main'. You stay on 'main' after making it. Run this command: `git branch new-fees`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "exists",
+        "label": "The new-fees branch exists",
+        "kind": "local-git-branch-exists",
+        "branch": "new-fees"
+      },
+      {
+        "id": "still-main",
+        "label": "You are still on main",
+        "kind": "local-git-branch",
+        "value": "main"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Branches are like separate paths for your work. 'new-fees' is a new path. You stay on 'main' after creating it."
+      },
+      {
+        "level": 2,
+        "text": "Run: `git branch new-fees`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git branch new-fees"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "branches-barangay"
+  }
+] satisfies typeof cliGitCourse.steps));
