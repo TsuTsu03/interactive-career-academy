@@ -10979,3 +10979,227 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "modules-school-club"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: modules-school-club.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-modules-school-club-6",
+    "index": 226,
+    "task": "You will add a default export to prices.js. This lets other files use it easily. The code below formats an amount as pesos. You must add it at the end of prices.js. After you add it, run the checker to confirm it worked.\n\nIn prices.js:\n```\nexport default function formatPeso(amount) {\n  return `PHP ${amount.toFixed(2)}`;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "default",
+        "label": "prices.js has a default export",
+        "kind": "local-file-contains",
+        "path": "prices.js",
+        "value": "export default function formatPeso"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of default export like a main tool you give to others."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of prices.js, right after the last line.\n\nIn prices.js:\n```\nexport default function formatPeso(amount) {\n  return `PHP ${amount.toFixed(2)}`;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"School Club\";\nexport const prices = { \"Shirt\": 250, \"Pin\": 30, \"Badge\": 45 };\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\nexport default function formatPeso(amount) {\n  return `PHP ${amount.toFixed(2)}`;\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "modules-school-club"
+  },
+  {
+    "id": "node-modules-school-club-7",
+    "index": 227,
+    "task": "You will import the default export in app.js. You do not use braces for default imports. The code below prints 250 as PHP 250.00. Add it at the top of app.js and one line at the end. Then run the checker to confirm it prints correctly.\n\nIn app.js:\n```\nimport formatPeso from \"./prices.js\";\nconsole.log(formatPeso(250));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "peso",
+        "label": "The script prints PHP 250.00",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "PHP 250.00"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Default imports are like taking a tool from a box, no braces needed."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the top of app.js, then add the console.log line at the end.\n\nIn app.js:\n```\nimport formatPeso from \"./prices.js\";\nconsole.log(formatPeso(250));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import formatPeso from \"./prices.js\";\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Shirt\"]);\nconsole.log(`Pin: ${priceOf(\"Pin\")}`);\nconsole.log(formatPeso(250));\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-school-club"
+  },
+  {
+    "id": "node-modules-school-club-8",
+    "index": 228,
+    "task": "You will import from Node's built-in os module. This gives you info about your computer's operating system. The code below prints the system name. Add it at the top of app.js and one line at the end. Then run the checker to confirm it prints your system name.\n\nIn app.js:\n```\nimport { platform } from \"node:os\";\nconsole.log(`Running on ${platform()}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "os",
+        "label": "The script prints Running on and your system name",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Running on "
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Node's os module is like a built-in tool for checking your computer's system."
+      },
+      {
+        "level": 2,
+        "text": "Add the import line at the top of app.js, then add the console.log line at the end.\n\nIn app.js:\n```\nimport { platform } from \"node:os\";\nconsole.log(`Running on ${platform()}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { platform } from \"node:os\";\nimport formatPeso from \"./prices.js\";\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Shirt\"]);\nconsole.log(`Pin: ${priceOf(\"Pin\")}`);\nconsole.log(formatPeso(250));\nconsole.log(`Running on ${platform()}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-school-club"
+  },
+  {
+    "id": "node-modules-school-club-9",
+    "index": 229,
+    "task": "You will add a start script to package.json. This lets you run npm run start to start the app. The code below adds a scripts entry. Change package.json to include it. Then run the checker to confirm it's there.\n\nIn package.json:\n```\n  \"type\": \"module\",\n  \"scripts\": { \"start\": \"node app.js\" }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "script",
+        "label": "package.json has a start script",
+        "kind": "local-file-contains",
+        "path": "package.json",
+        "value": "\"start\": \"node app.js\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The start script is like a button, when you press it, it runs your app."
+      },
+      {
+        "level": 2,
+        "text": "Add the scripts entry inside package.json, right after type: \"module\".\n\nIn package.json:\n```\n  \"type\": \"module\",\n  \"scripts\": { \"start\": \"node app.js\" }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "package.json": "{\n  \"type\": \"module\",\n  \"scripts\": { \"start\": \"node app.js\" }\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "modules-school-club"
+  },
+  {
+    "id": "node-modules-school-club-10",
+    "index": 230,
+    "task": "You will import priceOf under a new name, lookup, and use it. The code below imports it and prints the price of a Badge. Add it at the top of app.js and one line at the end. Then run the checker to confirm it prints Last item: 45.\n\nIn app.js:\n```\nimport { priceOf as lookup } from \"./prices.js\";\nconsole.log(`Last item: ${lookup(\"Badge\")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "alias",
+        "label": "The script prints Last item: 45",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Last item: 45"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You can rename imports to make your code clearer, like giving a tool a new name."
+      },
+      {
+        "level": 2,
+        "text": "Add the import line at the top of app.js, then add the console.log line at the end.\n\nIn app.js:\n```\nimport { priceOf as lookup } from \"./prices.js\";\nconsole.log(`Last item: ${lookup(\"Badge\")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { priceOf as lookup } from \"./prices.js\";\nimport { platform } from \"node:os\";\nimport formatPeso from \"./prices.js\";\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Shirt\"]);\nconsole.log(`Pin: ${priceOf(\"Pin\")}`);\nconsole.log(formatPeso(250));\nconsole.log(`Running on ${platform()}`);\nconsole.log(`Last item: ${lookup(\"Badge\")}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-school-club"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
