@@ -2331,3 +2331,240 @@ cliGitCourse.steps.push(...([
     "projectId": "merging-sari-sari"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: tidy-sari-sari.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-tidy-sari-sari-1",
+    "index": 51,
+    "task": "You turn this folder into a Git repository. Git tracks changes to files. You name the first branch main. This is the start of your project's history. Run this command: `git init -b main`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "repo",
+        "label": "The folder is a Git repository",
+        "kind": "local-git-repo"
+      },
+      {
+        "id": "untracked",
+        "label": "prices.txt is not tracked yet",
+        "kind": "local-git-untracked",
+        "path": "prices.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are starting a new project with Git. The branch name main is the default branch."
+      },
+      {
+        "level": 2,
+        "text": "Run `git init -b main` to start the repository."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git init -b main"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-sari-sari"
+  },
+  {
+    "id": "cli-tidy-sari-sari-2",
+    "index": 52,
+    "task": "Git needs to know who is making the changes. You tell Git your name and email. This helps identify your work later. Run these two commands: `git config user.name \"Maria Santos\"` and `git config user.email \"maria@example.com\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "Commits will be signed by Maria Santos",
+        "kind": "local-git-config",
+        "key": "user.name",
+        "value": "Maria Santos"
+      },
+      {
+        "id": "email",
+        "label": "The commit email is maria@example.com",
+        "kind": "local-git-config",
+        "key": "user.email",
+        "value": "maria@example.com"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are setting your identity so Git can tag your commits with your name and email."
+      },
+      {
+        "level": 2,
+        "text": "Run `git config user.name \"Maria Santos\"` and `git config user.email \"maria@example.com\"`."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.name \"Maria Santos\"\ngit config user.email \"maria@example.com\""
+    },
+    "estimatedMinutes": 4,
+    "projectId": "tidy-sari-sari"
+  },
+  {
+    "id": "cli-tidy-sari-sari-3",
+    "index": 53,
+    "task": "You stage all files in the folder at once. Staging means Git will record these files in your next commit. You use a dot (.) to stage everything. Run this command: `git add .`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "file",
+        "label": "prices.txt is staged",
+        "kind": "local-git-staged",
+        "path": "prices.txt"
+      },
+      {
+        "id": "readme",
+        "label": "README.txt is staged",
+        "kind": "local-git-staged",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are telling Git to prepare all files for your first commit. The dot means all files."
+      },
+      {
+        "level": 2,
+        "text": "Run `git add .` to stage every file in the folder."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add ."
+    },
+    "estimatedMinutes": 2,
+    "projectId": "tidy-sari-sari"
+  },
+  {
+    "id": "cli-tidy-sari-sari-4",
+    "index": 54,
+    "task": "You save the staged files as your first commit. This commit records the files you staged. You give it a message that says what you did. Run this command: `git commit -m \"Start sari-sari store files\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has one commit",
+        "kind": "local-git-commit-count",
+        "count": 1
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are saving your work as a commit. The message explains what you did."
+      },
+      {
+        "level": 2,
+        "text": "Run `git commit -m \"Start sari-sari store files\"` to save your changes."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Start sari-sari store files\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-sari-sari"
+  },
+  {
+    "id": "cli-tidy-sari-sari-5",
+    "index": 55,
+    "task": "You rename the file prices.txt to price-list.txt. Git will record this rename. You use git mv to do this. Run this command: `git mv prices.txt price-list.txt`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "renamed",
+        "label": "price-list.txt is staged",
+        "kind": "local-git-staged",
+        "path": "price-list.txt"
+      },
+      {
+        "id": "old-gone",
+        "label": "prices.txt no longer exists",
+        "kind": "local-path-missing",
+        "path": "prices.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are renaming a file and Git will record the change. Use git mv to rename a file."
+      },
+      {
+        "level": 2,
+        "text": "Run `git mv prices.txt price-list.txt` to rename the file."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git mv prices.txt price-list.txt"
+    },
+    "conceptIds": [
+      "git-mv"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "tidy-sari-sari"
+  }
+] satisfies typeof cliGitCourse.steps));
