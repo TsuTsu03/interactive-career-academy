@@ -3671,3 +3671,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-24: Local Qwen wrote the lesson text for cli-git/branches-sari-sari, steps 31-35; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
 
 - 2026-09-24: Local Qwen wrote the lesson text for cli-git/branches-sari-sari, steps 36-40; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/merging-sari-sari, steps 41-45; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.

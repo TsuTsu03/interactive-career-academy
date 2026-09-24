@@ -1877,3 +1877,226 @@ cliGitCourse.steps.push(...([
     "projectId": "branches-sari-sari"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: merging-sari-sari.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-merging-sari-sari-1",
+    "index": 41,
+    "task": "You turn this folder into a Git repository. This lets you save your work safely. You name the first branch main. This is the default branch for your store's work. Run this command: `git init -b main`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "repo",
+        "label": "The folder is a Git repository",
+        "kind": "local-git-repo"
+      },
+      {
+        "id": "untracked",
+        "label": "prices.txt is not tracked yet",
+        "kind": "local-git-untracked",
+        "path": "prices.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are starting a new Git project. Think of it like opening a new notebook for your store's records."
+      },
+      {
+        "level": 2,
+        "text": "Run `git init -b main` to start the repository."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git init -b main"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "merging-sari-sari"
+  },
+  {
+    "id": "cli-merging-sari-sari-2",
+    "index": 42,
+    "task": "You tell Git who you are. This helps track your changes. You use the name Maria Santos and the email maria@example.com. Run these commands: `git config user.name \"Maria Santos\"` and `git config user.email \"maria@example.com\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "Commits will be signed by Maria Santos",
+        "kind": "local-git-config",
+        "key": "user.name",
+        "value": "Maria Santos"
+      },
+      {
+        "id": "email",
+        "label": "The commit email is maria@example.com",
+        "kind": "local-git-config",
+        "key": "user.email",
+        "value": "maria@example.com"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Git needs your name and email to mark your work. Think of it like signing your store's daily log."
+      },
+      {
+        "level": 2,
+        "text": "Run `git config user.name \"Maria Santos\"` and `git config user.email \"maria@example.com\"`."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.name \"Maria Santos\"\ngit config user.email \"maria@example.com\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "merging-sari-sari"
+  },
+  {
+    "id": "cli-merging-sari-sari-3",
+    "index": 43,
+    "task": "You prepare all files for saving. You stage them with a dot. This means you include everything. Run this command: `git add .`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "file",
+        "label": "prices.txt is staged",
+        "kind": "local-git-staged",
+        "path": "prices.txt"
+      },
+      {
+        "id": "readme",
+        "label": "README.txt is staged",
+        "kind": "local-git-staged",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are telling Git to save all files. Think of it like putting all your store's items on a shelf before packing them."
+      },
+      {
+        "level": 2,
+        "text": "Run `git add .` to stage every file."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add ."
+    },
+    "estimatedMinutes": 2,
+    "projectId": "merging-sari-sari"
+  },
+  {
+    "id": "cli-merging-sari-sari-4",
+    "index": 44,
+    "task": "You save the staged files as your first commit. This is your first record of your store's work. Run this command: `git commit -m \"Start sari-sari store list\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has one commit",
+        "kind": "local-git-commit-count",
+        "count": 1
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are saving your work with a message. Think of it like writing a note on your store's first day."
+      },
+      {
+        "level": 2,
+        "text": "Run `git commit -m \"Start sari-sari store list\"` to save your changes."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Start sari-sari store list\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "merging-sari-sari"
+  },
+  {
+    "id": "cli-merging-sari-sari-5",
+    "index": 45,
+    "task": "You create a new branch named update-prices. This branch will hold your price changes. You switch to this branch. Run this command: `git switch -c update-prices`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "on-branch",
+        "label": "You are on update-prices",
+        "kind": "local-git-branch",
+        "value": "update-prices"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are making a new branch for your price updates. Think of it like opening a new notebook for price changes."
+      },
+      {
+        "level": 2,
+        "text": "Run `git switch -c update-prices` to move to the new branch."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git switch -c update-prices"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "merging-sari-sari"
+  }
+] satisfies typeof cliGitCourse.steps));
