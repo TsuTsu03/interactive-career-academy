@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Icon } from "@/components/icon";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CourseGate } from "@/components/course-gate";
 import { ComputerPrerequisite } from "@/components/computer-prerequisite";
 import { Workspace } from "@/components/workspace";
 import { StructuredData } from "@/components/structured-data";
@@ -61,7 +60,7 @@ export default async function Page({ params }: { params: Promise<Params> }) {
           <ul className="mt-3 list-disc space-y-2 pl-5">{course.projects.map(project => <li key={project.id}>{project.title}</li>)}</ul>
           <Link className="mt-8 inline-flex min-h-11 items-center underline" href="/curriculum">Back to the course map</Link>
         </main>
-      ) : course.requires.length > 0 ? <CourseGate course={course} /> : <Workspace course={course} />}
+      ) : <Workspace course={course} />}
     </>
   );
 }

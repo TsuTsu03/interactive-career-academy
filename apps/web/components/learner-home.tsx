@@ -137,7 +137,8 @@ export function LearnerHome() {
 
     return (
       curriculum.courses.find((course) =>
-        course.steps.length > 0 && course.requires.every((requiredId) => progress[requiredId]?.isComplete),
+        // Courses never lock (PLAN.md decision 44); suggest the first unfinished one.
+        course.steps.length > 0 && !progress[course.id]?.isComplete,
       ) ?? curriculum.courses[0]
     );
   }, [progress]);
