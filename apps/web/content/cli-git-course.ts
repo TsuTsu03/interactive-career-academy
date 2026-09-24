@@ -3646,3 +3646,233 @@ cliGitCourse.steps.push(...([
     "projectId": "first-commit-barangay"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: undo-barangay.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-undo-barangay-1",
+    "index": 81,
+    "task": "You turn this folder into a Git repository. Git tracks changes to files. You name the first branch main. This is the start of your project's history. Run this command: `git init -b main`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\nPermit 300\n"
+    },
+    "tests": [
+      {
+        "id": "repo",
+        "label": "The folder is a Git repository",
+        "kind": "local-git-repo"
+      },
+      {
+        "id": "untracked",
+        "label": "fees.txt is not tracked yet",
+        "kind": "local-git-untracked",
+        "path": "fees.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are starting a new Git project. The branch name is main. This is the default branch."
+      },
+      {
+        "level": 2,
+        "text": "Run `git init -b main` to start the repository."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git init -b main"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "undo-barangay"
+  },
+  {
+    "id": "cli-undo-barangay-2",
+    "index": 82,
+    "task": "You tell Git who you are. This helps identify your changes. You set your name to Jose Reyes and your email to jose@example.com. Run these commands: `git config user.name \"Jose Reyes\"` and `git config user.email \"jose@example.com\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\nPermit 300\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "Commits will be signed by Jose Reyes",
+        "kind": "local-git-config",
+        "key": "user.name",
+        "value": "Jose Reyes"
+      },
+      {
+        "id": "email",
+        "label": "The commit email is jose@example.com",
+        "kind": "local-git-config",
+        "key": "user.email",
+        "value": "jose@example.com"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Git needs your name and email to mark your work. This is like signing your work."
+      },
+      {
+        "level": 2,
+        "text": "Run `git config user.name \"Jose Reyes\"` and `git config user.email \"jose@example.com\"`."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.name \"Jose Reyes\"\ngit config user.email \"jose@example.com\""
+    },
+    "estimatedMinutes": 4,
+    "projectId": "undo-barangay"
+  },
+  {
+    "id": "cli-undo-barangay-3",
+    "index": 83,
+    "task": "You prepare all files to be saved in Git. You use the dot (.) to include every file. This is called staging. Run this command: `git add .`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\nPermit 300\n"
+    },
+    "tests": [
+      {
+        "id": "file",
+        "label": "fees.txt is staged",
+        "kind": "local-git-staged",
+        "path": "fees.txt"
+      },
+      {
+        "id": "readme",
+        "label": "README.txt is staged",
+        "kind": "local-git-staged",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are telling Git to save all files. The dot means all files in the folder."
+      },
+      {
+        "level": 2,
+        "text": "Run `git add .` to stage all files."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add ."
+    },
+    "estimatedMinutes": 2,
+    "projectId": "undo-barangay"
+  },
+  {
+    "id": "cli-undo-barangay-4",
+    "index": 84,
+    "task": "You save the staged files as your first commit. This is your first saved version. You write a message: Start barangay office list. Run this command: `git commit -m \"Start barangay office list\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\nPermit 300\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has one commit",
+        "kind": "local-git-commit-count",
+        "count": 1
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are saving your work. The message explains what you did."
+      },
+      {
+        "level": 2,
+        "text": "Run `git commit -m \"Start barangay office list\"` to save."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Start barangay office list\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "undo-barangay"
+  },
+  {
+    "id": "cli-undo-barangay-5",
+    "index": 85,
+    "task": "You add a wrong line to fees.txt. This is a mistake. You use echo to add the line. Run this command: `echo \"Wrong line\" >> fees.txt`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\nPermit 300\n"
+    },
+    "tests": [
+      {
+        "id": "mistake",
+        "label": "fees.txt has the mistaken line",
+        "kind": "local-file-contains",
+        "path": "fees.txt",
+        "value": "Wrong line"
+      },
+      {
+        "id": "unstaged",
+        "label": "Git sees an unstaged change",
+        "kind": "local-git-unstaged",
+        "path": "fees.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are adding a line to the file. The >> means add to the end."
+      },
+      {
+        "level": 2,
+        "text": "Run `echo \"Wrong line\" >> fees.txt` to add the mistake."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Wrong line\" >> fees.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "undo-barangay"
+  }
+] satisfies typeof cliGitCourse.steps));
