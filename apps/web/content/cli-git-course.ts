@@ -1424,3 +1424,235 @@ cliGitCourse.steps.push(...([
     "projectId": "undo-sari-sari"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: branches-sari-sari.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-branches-sari-sari-1",
+    "index": 31,
+    "task": "You turn your folder into a Git repository. This lets you save your work safely. You name the first branch 'main'. This is the main line of work. Run this command: `git init -b main`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "repo",
+        "label": "The folder is a Git repository",
+        "kind": "local-git-repo"
+      },
+      {
+        "id": "untracked",
+        "label": "prices.txt is not tracked yet",
+        "kind": "local-git-untracked",
+        "path": "prices.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are starting a Git repo. The 'main' branch is the default line of work."
+      },
+      {
+        "level": 2,
+        "text": "`git init -b main`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git init -b main"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "branches-sari-sari"
+  },
+  {
+    "id": "cli-branches-sari-sari-2",
+    "index": 32,
+    "task": "You tell Git who you are. This helps others know who made the changes. You set your name and email. Run these commands: `git config user.name \"Maria Santos\"` and `git config user.email \"maria@example.com\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "Commits will be signed by Maria Santos",
+        "kind": "local-git-config",
+        "key": "user.name",
+        "value": "Maria Santos"
+      },
+      {
+        "id": "email",
+        "label": "The commit email is maria@example.com",
+        "kind": "local-git-config",
+        "key": "user.email",
+        "value": "maria@example.com"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Git needs your name and email to mark your work. Use your real details."
+      },
+      {
+        "level": 2,
+        "text": "`git config user.name \"Maria Santos\"` and `git config user.email \"maria@example.com\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.name \"Maria Santos\"\ngit config user.email \"maria@example.com\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "branches-sari-sari"
+  },
+  {
+    "id": "cli-branches-sari-sari-3",
+    "index": 33,
+    "task": "You prepare all files for saving. This is called staging. You use a dot (.) to include everything. Run this command: `git add .`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "file",
+        "label": "prices.txt is staged",
+        "kind": "local-git-staged",
+        "path": "prices.txt"
+      },
+      {
+        "id": "readme",
+        "label": "README.txt is staged",
+        "kind": "local-git-staged",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Staging means you are ready to save your files. The dot means all files."
+      },
+      {
+        "level": 2,
+        "text": "`git add .` is the command to stage everything."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add ."
+    },
+    "estimatedMinutes": 2,
+    "projectId": "branches-sari-sari"
+  },
+  {
+    "id": "cli-branches-sari-sari-4",
+    "index": 34,
+    "task": "You save your staged files as the first commit. This is your first step. You write a message: 'Start sari-sari store list'. Run this command: `git commit -m \"Start sari-sari store list\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has one commit",
+        "kind": "local-git-commit-count",
+        "count": 1
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Commit means you save your work. The message explains what you did."
+      },
+      {
+        "level": 2,
+        "text": "`git commit -m \"Start sari-sari store list\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Start sari-sari store list\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "branches-sari-sari"
+  },
+  {
+    "id": "cli-branches-sari-sari-5",
+    "index": 35,
+    "task": "You make a new branch named 'update-prices'. This is a separate line of work. You stay on 'main'. Run this command: `git branch update-prices`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "exists",
+        "label": "The update-prices branch exists",
+        "kind": "local-git-branch-exists",
+        "branch": "update-prices"
+      },
+      {
+        "id": "still-main",
+        "label": "You are still on main",
+        "kind": "local-git-branch",
+        "value": "main"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "A branch is like a separate notebook. You can try changes without affecting main."
+      },
+      {
+        "level": 2,
+        "text": "`git branch update-prices`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git branch update-prices"
+    },
+    "conceptIds": [
+      "git-branch"
+    ],
+    "estimatedMinutes": 2,
+    "projectId": "branches-sari-sari"
+  }
+] satisfies typeof cliGitCourse.steps));
