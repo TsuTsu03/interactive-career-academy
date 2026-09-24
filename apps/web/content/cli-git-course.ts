@@ -5873,3 +5873,215 @@ cliGitCourse.steps.push(...([
     "projectId": "files-school-club"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: first-commit-school-club.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-first-commit-school-club-1",
+    "index": 131,
+    "task": "You turn this folder into a Git repository. Git helps you save and share your work. You name the first branch 'main'. This is the default branch for your project. Run this command: `git init -b main`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "repo",
+        "label": "The folder is a Git repository",
+        "kind": "local-git-repo"
+      },
+      {
+        "id": "untracked",
+        "label": "schedule.txt is not tracked yet",
+        "kind": "local-git-untracked",
+        "path": "schedule.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are starting a new Git project. Think of it like setting up a new folder for your club's files."
+      },
+      {
+        "level": 2,
+        "text": "Run `git init -b main` to start the repository with the branch named 'main'."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git init -b main"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-commit-school-club"
+  },
+  {
+    "id": "cli-first-commit-school-club-2",
+    "index": 132,
+    "task": "You tell Git who you are. This helps others know who made the changes. You set your name to Ana Cruz. Run this command: `git config user.name \"Ana Cruz\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "Commits will be signed by Ana Cruz",
+        "kind": "local-git-config",
+        "key": "user.name",
+        "value": "Ana Cruz"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Git needs to know your name so your work can be credited. Think of it like signing your name on a school project."
+      },
+      {
+        "level": 2,
+        "text": "Run `git config user.name \"Ana Cruz\"` to set your name in Git."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.name \"Ana Cruz\""
+    },
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-school-club"
+  },
+  {
+    "id": "cli-first-commit-school-club-3",
+    "index": 133,
+    "task": "You tell Git your email address. This helps others contact you if needed. You set it to ana@example.com. Run this command: `git config user.email \"ana@example.com\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "email",
+        "label": "The commit email is ana@example.com",
+        "kind": "local-git-config",
+        "key": "user.email",
+        "value": "ana@example.com"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Your email helps identify you in the Git history. Think of it like your contact for the club's work."
+      },
+      {
+        "level": 2,
+        "text": "Run `git config user.email \"ana@example.com\"` to set your email in Git."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.email \"ana@example.com\""
+    },
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-school-club"
+  },
+  {
+    "id": "cli-first-commit-school-club-4",
+    "index": 134,
+    "task": "You prepare only schedule.txt for saving. This means Git will track changes to it. README.txt is not ready yet. Run this command: `git add schedule.txt`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "staged",
+        "label": "schedule.txt is staged",
+        "kind": "local-git-staged",
+        "path": "schedule.txt"
+      },
+      {
+        "id": "readme-waits",
+        "label": "README.txt is still untracked",
+        "kind": "local-git-untracked",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are telling Git to watch schedule.txt. Think of it like marking a file to save later."
+      },
+      {
+        "level": 2,
+        "text": "Run `git add schedule.txt` to stage only this file."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add schedule.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-school-club"
+  },
+  {
+    "id": "cli-first-commit-school-club-5",
+    "index": 135,
+    "task": "You now prepare README.txt too. This means Git will track changes to it. Both files are now ready to be saved. Run this command: `git add README.txt`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "readme",
+        "label": "README.txt is staged",
+        "kind": "local-git-staged",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are adding another file to be saved. Think of it like marking README.txt to save with schedule.txt."
+      },
+      {
+        "level": 2,
+        "text": "Run `git add README.txt` to stage this file too."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add README.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-school-club"
+  }
+] satisfies typeof cliGitCourse.steps));
