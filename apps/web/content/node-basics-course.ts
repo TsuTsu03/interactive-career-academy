@@ -11675,3 +11675,234 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "files-school-club"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: async-school-club.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-async-school-club-1",
+    "index": 241,
+    "task": "You will add two lines to the end of app.js. The first line says await wait(100);. This pauses the script for 100 milliseconds. The second line says console.log(\"After wait\");. This prints the message after the pause. The code below does this. Run the checker to confirm it works.\n\nIn app.js:\n```\nawait wait(100);\nconsole.log(\"After wait\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "after",
+        "label": "The script prints Start and then After wait",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Start\nAfter wait"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The await makes the script wait before moving on."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines at the end of app.js.\n\nIn app.js:\n```\nawait wait(100);\nconsole.log(\"After wait\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "async-school-club"
+  },
+  {
+    "id": "node-async-school-club-2",
+    "index": 242,
+    "task": "You will add two lines to the end of app.js. The first line defines a function called fetchPrice. It takes a name and returns a price after waiting 20 milliseconds. The second line calls this function with \"Shirt\" and prints the result. The code below does this. Run the checker to confirm it works.\n\nIn app.js:\n```\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Shirt\")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "price",
+        "label": "The script prints Price: 50",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Price: 50"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The function uses await to wait before returning the price."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines at the end of app.js.\n\nIn app.js:\n```\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Shirt\")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Shirt\")}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "async-school-club"
+  },
+  {
+    "id": "node-async-school-club-3",
+    "index": 243,
+    "task": "You will add two lines to the end of app.js. The first line uses Promise.all to run fetchPrice for three items at the same time. The second line prints all the prices joined by commas. The code below does this. Run the checker to confirm it works.\n\nIn app.js:\n```\nconst prices = await Promise.all([\"Shirt\", \"Pin\", \"Badge\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "all",
+        "label": "The script prints All: 50, 30, 50",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "All: 50, 30, 50"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Promise.all runs all the promises at once, not one after another."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines at the end of app.js.\n\nIn app.js:\n```\nconst prices = await Promise.all([\"Shirt\", \"Pin\", \"Badge\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Shirt\")}`);\nconst prices = await Promise.all([\"Shirt\", \"Pin\", \"Badge\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "async-school-club"
+  },
+  {
+    "id": "node-async-school-club-4",
+    "index": 244,
+    "task": "You will add three lines to the end of app.js. The first line creates a slow promise that waits 200 milliseconds. The second line creates a fast promise that waits 20 milliseconds. The third line uses Promise.race to see which finishes first and prints it. The code below does this. Run the checker to confirm it works.\n\nIn app.js:\n```\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "race",
+        "label": "The script prints First: fast",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "First: fast"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Promise.race lets you see which promise finishes first."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines at the end of app.js.\n\nIn app.js:\n```\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Shirt\")}`);\nconst prices = await Promise.all([\"Shirt\", \"Pin\", \"Badge\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "async-school-club"
+  },
+  {
+    "id": "node-async-school-club-5",
+    "index": 245,
+    "task": "You will add two lines to the end of app.js. The first line defines a function called failing that throws an error. The second line tries to run it and catches the error, printing its message. The code below does this. Run the checker to confirm it works.\n\nIn app.js:\n```\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\n"
+    },
+    "tests": [
+      {
+        "id": "caught",
+        "label": "The script reports Supplier offline",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "value": "Supplier offline"
+      },
+      {
+        "id": "finishes",
+        "label": "The script still finishes normally",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The try...catch block catches errors and prints them."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines at the end of app.js.\n\nIn app.js:\n```\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconsole.log(\"Start\");\nawait wait(100);\nconsole.log(\"After wait\");\nconst fetchPrice = async (name) => { await wait(20); return name.length * 10; };\nconsole.log(`Price: ${await fetchPrice(\"Shirt\")}`);\nconst prices = await Promise.all([\"Shirt\", \"Pin\", \"Badge\"].map(fetchPrice));\nconsole.log(`All: ${prices.join(\", \")}`);\nconst slow = wait(200).then(() => \"slow\");\nconst fast = wait(20).then(() => \"fast\");\nconsole.log(`First: ${await Promise.race([slow, fast])}`);\nconst failing = async () => { throw new Error(\"Supplier offline\"); };\ntry { await failing(); } catch (error) { console.error(error.message); }\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "async-school-club"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
