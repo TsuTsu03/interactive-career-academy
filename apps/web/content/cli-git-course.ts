@@ -4323,3 +4323,221 @@ cliGitCourse.steps.push(...([
     "projectId": "branches-barangay"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: branches-barangay.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-branches-barangay-6",
+    "index": 96,
+    "task": "You are now in the barangay office's computer. You will move to a branch called new-fees. This branch is for updating the fees list. Run this command exactly as shown: `git switch new-fees`. Then run the checker to confirm you are on the new-fees branch.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "on-branch",
+        "label": "You are on new-fees",
+        "kind": "local-git-branch",
+        "value": "new-fees"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are switching to a branch that holds changes for new fees. Think of it like picking a folder to work in."
+      },
+      {
+        "level": 2,
+        "text": "Run `git switch new-fees` to move there."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git switch new-fees"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "branches-barangay"
+  },
+  {
+    "id": "cli-branches-barangay-7",
+    "index": 97,
+    "task": "You are now on the new-fees branch. You will add a new permit to the fees file. This is like writing a new entry in the barangay's fee log. Run this command exactly as shown: `echo \"Permit 300\" >> fees.txt`. Then run the checker to confirm the file has an unstaged change.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "unstaged",
+        "label": "fees.txt has an unstaged change",
+        "kind": "local-git-unstaged",
+        "path": "fees.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are adding text to the fees file without saving it yet. Think of it like writing a note on paper but not putting it in a box."
+      },
+      {
+        "level": 2,
+        "text": "Run `echo \"Permit 300\" >> fees.txt` to add the permit."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Permit 300\" >> fees.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "branches-barangay"
+  },
+  {
+    "id": "cli-branches-barangay-8",
+    "index": 98,
+    "task": "You are still on the new-fees branch. You will save the new permit in the file. This is like putting the note in a box and labeling it. Run this command exactly as shown: `git commit -am \"Add Permit 300\"`. Then run the checker to confirm the branch now has two commits and the last one says Add Permit 300.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "This branch has two commits",
+        "kind": "local-git-commit-count",
+        "count": 2
+      },
+      {
+        "id": "message",
+        "label": "The last commit says Add Permit 300",
+        "kind": "local-git-head-message",
+        "value": "Add Permit 300"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are saving your change with a message. Think of it like writing a note and putting it in a box with a label."
+      },
+      {
+        "level": 2,
+        "text": "Run `git commit -am \"Add Permit 300\"` to save the change."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -am \"Add Permit 300\""
+    },
+    "estimatedMinutes": 4,
+    "projectId": "branches-barangay"
+  },
+  {
+    "id": "cli-branches-barangay-9",
+    "index": 99,
+    "task": "You will now go back to the main branch. This is the main folder for the barangay's official records. Run this command exactly as shown: `git switch main`. Then run the checker to confirm you are back on main and that the Permit 300 is not there.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "main",
+        "label": "You are back on main",
+        "kind": "local-git-branch",
+        "value": "main"
+      },
+      {
+        "id": "not-here",
+        "label": "main does not have Permit 300",
+        "kind": "local-file-lacks",
+        "path": "fees.txt",
+        "value": "Permit 300"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are returning to the main folder. Think of it like going back to the main room after working in a side room."
+      },
+      {
+        "level": 2,
+        "text": "Run `git switch main` to return to the main branch."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git switch main"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "branches-barangay"
+  },
+  {
+    "id": "cli-branches-barangay-10",
+    "index": 100,
+    "task": "You will now create a new branch called holiday-hours and move onto it. This branch is for planning holiday office hours. Run this command exactly as shown: `git switch -c holiday-hours`. Then run the checker to confirm the holiday-hours branch exists and you are on it.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n"
+    },
+    "tests": [
+      {
+        "id": "created",
+        "label": "The holiday-hours branch exists",
+        "kind": "local-git-branch-exists",
+        "branch": "holiday-hours"
+      },
+      {
+        "id": "on-it",
+        "label": "You are on holiday-hours",
+        "kind": "local-git-branch",
+        "value": "holiday-hours"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are making a new folder and moving into it at the same time. Think of it like creating a new room and walking into it."
+      },
+      {
+        "level": 2,
+        "text": "Run `git switch -c holiday-hours` to create and move to the new branch."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git switch -c holiday-hours"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "branches-barangay"
+  }
+] satisfies typeof cliGitCourse.steps));
