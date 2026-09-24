@@ -159,3 +159,230 @@ export const nodeBasicsCourse: Course = {
   "kind": "local",
   "steps": []
 };
+
+// Validated local authoring batch: scripts-sari-sari.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-scripts-sari-sari-1",
+    "index": 1,
+    "task": "The script now says Sari-Sari Store. You change the line in app.js. This is the store's name. The checker runs the script and confirms it prints Sari-Sari Store. Run the checker to check your work.\n\nIn app.js:\n```\nconsole.log(\"Sari-Sari Store\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "node app.js prints Sari-Sari Store",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Sari-Sari Store"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change the text inside the console.log to match the store's name."
+      },
+      {
+        "level": 2,
+        "text": "Type the code below in app.js, then run the checker.\n\nIn app.js:\n```\nconsole.log(\"Sari-Sari Store\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Sari-Sari Store\");\n"
+    },
+    "conceptIds": [
+      "node-runtime"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "scripts-sari-sari"
+  },
+  {
+    "id": "node-scripts-sari-sari-2",
+    "index": 2,
+    "task": "You add a constant called item. It holds the product name Rice. You print it after the store name. The checker confirms it prints Rice. Run the checker to check your work.\n\nIn app.js:\n```\nconst item = \"Rice\";\nconsole.log(item);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "item",
+        "label": "The script prints Rice on its own line",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Rice\n"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use const to make a constant that won't change."
+      },
+      {
+        "level": 2,
+        "text": "Type the code below at the end of app.js, then run the checker.\n\nIn app.js:\n```\nconst item = \"Rice\";\nconsole.log(item);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Sari-Sari Store\");\nconst item = \"Rice\";\nconsole.log(item);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-sari-sari"
+  },
+  {
+    "id": "node-scripts-sari-sari-3",
+    "index": 3,
+    "task": "You add a price constant. You change the last console.log to show both the item and its price. The checker confirms it prints Rice 50. Run the checker to check your work.\n\nIn app.js:\n```\nconst price = 50;\nconsole.log(item, price);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "pair",
+        "label": "The script prints Rice 50",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Rice 50"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the price constant before the last console.log."
+      },
+      {
+        "level": 2,
+        "text": "Type the code below at the end of app.js, then run the checker.\n\nIn app.js:\n```\nconst price = 50;\nconsole.log(item, price);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Sari-Sari Store\");\nconst item = \"Rice\";\nconst price = 50;\nconsole.log(item, price);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "scripts-sari-sari"
+  },
+  {
+    "id": "node-scripts-sari-sari-4",
+    "index": 4,
+    "task": "You use a template literal to print a full sentence. The sentence says Rice costs 50 pesos. The checker confirms it prints the full sentence. Run the checker to check your work.\n\nIn app.js:\n```\nconsole.log(`${item} costs ${price} pesos`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "sentence",
+        "label": "The script prints Rice costs 50 pesos",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Rice costs 50 pesos"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use backticks and ${} to insert variables into the sentence."
+      },
+      {
+        "level": 2,
+        "text": "Type the code below at the end of app.js, then run the checker.\n\nIn app.js:\n```\nconsole.log(`${item} costs ${price} pesos`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Sari-Sari Store\");\nconst item = \"Rice\";\nconst price = 50;\nconsole.log(`${item} costs ${price} pesos`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "scripts-sari-sari"
+  },
+  {
+    "id": "node-scripts-sari-sari-5",
+    "index": 5,
+    "task": "You add an array called items with three product names. You print how many items there are. The checker confirms it prints Items: 3. Run the checker to check your work.\n\nIn app.js:\n```\nconst items = [\"Rice\", \"Soap\", \"Egg\"];\nconsole.log(`Items: ${items.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The script prints Items: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Items: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use [] to make an array. Use .length to count items."
+      },
+      {
+        "level": 2,
+        "text": "Type the code below at the end of app.js, then run the checker.\n\nIn app.js:\n```\nconst items = [\"Rice\", \"Soap\", \"Egg\"];\nconsole.log(`Items: ${items.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Sari-Sari Store\");\nconst item = \"Rice\";\nconst price = 50;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Rice\", \"Soap\", \"Egg\"];\nconsole.log(`Items: ${items.length}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "scripts-sari-sari"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
