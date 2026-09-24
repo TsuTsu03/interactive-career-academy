@@ -16004,3 +16004,245 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "cli-tricycle"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: config-tricycle.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-config-tricycle-1",
+    "index": 331,
+    "task": "Add two lines at the end of app.js. The first line reads the PLACE environment variable. The second line prints it. This shows the terminal's name. The code below does this.\n\nIn app.js:\n```\nconst place = process.env.PLACE;\nconsole.log(`Place: ${place}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "place",
+        "label": "With PLACE=Tricycle Terminal it prints Place: Tricycle Terminal",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "PLACE": "Tricycle Terminal"
+        },
+        "value": "Place: Tricycle Terminal"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Read the environment variable named PLACE."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js.\n\nIn app.js:\n```\nconst place = process.env.PLACE;\nconsole.log(`Place: ${place}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE;\nconsole.log(`Place: ${place}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "config-tricycle"
+  },
+  {
+    "id": "node-config-tricycle-2",
+    "index": 332,
+    "task": "Change the line that reads PLACE. Use the ?? operator to show 'Unknown place' if PLACE is not set. This helps when the terminal name is missing. The code below does this.\n\nIn app.js:\n```\nconst place = process.env.PLACE ?? \"Unknown place\";\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "fallback",
+        "label": "Without PLACE it prints Place: Unknown place",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Place: Unknown place"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use ?? to give a default if the variable is empty."
+      },
+      {
+        "level": 2,
+        "text": "Replace the old line with the new one at the end of app.js.\n\nIn app.js:\n```\nconst place = process.env.PLACE ?? \"Unknown place\";\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "config-tricycle"
+  },
+  {
+    "id": "node-config-tricycle-3",
+    "index": 333,
+    "task": "Add two lines at the end of app.js. The first line reads LIMIT as a number, with 5 as the default. The second line prints it. This sets how many trips are allowed. The code below does this.\n\nIn app.js:\n```\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "limit",
+        "label": "With LIMIT=12 it prints Limit: 12",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "LIMIT": "12"
+        },
+        "value": "Limit: 12"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Convert the string to a number using Number()."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js.\n\nIn app.js:\n```\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "config-tricycle"
+  },
+  {
+    "id": "node-config-tricycle-4",
+    "index": 334,
+    "task": "Add two lines at the end of app.js. The first line checks if DEBUG equals 'true'. The second line prints 'Debug mode on' only if DEBUG is true. This turns on extra messages. The code below does this.\n\nIn app.js:\n```\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "debug",
+        "label": "With DEBUG=true it prints Debug mode on",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "DEBUG": "true"
+        },
+        "value": "Debug mode on"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use === to check if DEBUG is exactly 'true'."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js.\n\nIn app.js:\n```\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "config-tricycle"
+  },
+  {
+    "id": "node-config-tricycle-5",
+    "index": 335,
+    "task": "Add two lines at the end of app.js. The first line makes an object called config with place, limit, and debug. The second line prints it as JSON. This collects all settings. The code below does this.\n\nIn app.js:\n```\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "json",
+        "label": "With PLACE=Hall and LIMIT=3 it prints the settings as JSON",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "PLACE": "Hall",
+          "LIMIT": "3"
+        },
+        "value": "{\"place\":\"Hall\",\"limit\":3,\"debug\":false}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use { place, limit, debug } to make the object."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js.\n\nIn app.js:\n```\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "config-tricycle"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
