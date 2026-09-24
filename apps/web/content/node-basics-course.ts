@@ -1087,3 +1087,241 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "modules-sari-sari"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: files-sari-sari.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-files-sari-sari-1",
+    "index": 21,
+    "task": "You will read the stock file. The code below reads the file and prints its text. Replace the console.log line in app.js with the two lines. This lets you see what's in the file. Then run the checker to confirm.\n\nIn app.js:\n```\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Rice,50\nSoap,25\nEgg,9\n"
+    },
+    "tests": [
+      {
+        "id": "text",
+        "label": "The script prints the line Rice,50 from stock.txt",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Rice,50"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of readFile as opening a file to read its contents."
+      },
+      {
+        "level": 2,
+        "text": "Put the two lines right after the import line in app.js.\n\nIn app.js:\n```\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\n"
+    },
+    "conceptIds": [
+      "node-read-file"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "files-sari-sari"
+  },
+  {
+    "id": "node-files-sari-sari-2",
+    "index": 22,
+    "task": "You will split the text into lines. The code below splits the text and counts how many lines there are. Add these two lines at the end of app.js. This helps you count the items. Then run the checker to confirm.\n\nIn app.js:\n```\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Rice,50\nSoap,25\nEgg,9\n"
+    },
+    "tests": [
+      {
+        "id": "lines",
+        "label": "The script prints Lines: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Lines: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use split to cut the text into pieces at each line break."
+      },
+      {
+        "level": 2,
+        "text": "Put the two lines at the end of app.js, after the previous code.\n\nIn app.js:\n```\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\n"
+    },
+    "conceptIds": [
+      "node-split-lines"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "files-sari-sari"
+  },
+  {
+    "id": "node-files-sari-sari-3",
+    "index": 23,
+    "task": "You will split each line into parts. The code below splits each line at the comma and prints the second item's name. Add these two lines at the end of app.js. This helps you find the item name. Then run the checker to confirm.\n\nIn app.js:\n```\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Rice,50\nSoap,25\nEgg,9\n"
+    },
+    "tests": [
+      {
+        "id": "second",
+        "label": "The script prints Second item: Soap",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Second item: Soap"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use map to process each line, then split each line by the comma."
+      },
+      {
+        "level": 2,
+        "text": "Put the two lines at the end of app.js, after the previous code.\n\nIn app.js:\n```\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-sari-sari"
+  },
+  {
+    "id": "node-files-sari-sari-4",
+    "index": 24,
+    "task": "You will turn each row into an object. The code below turns each row into an object with a name and price, then finds the cheapest price. Add these two lines at the end of app.js. This helps you find the lowest price. Then run the checker to confirm.\n\nIn app.js:\n```\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Rice,50\nSoap,25\nEgg,9\n"
+    },
+    "tests": [
+      {
+        "id": "cheapest",
+        "label": "The script prints Cheapest: 9",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Cheapest: 9"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use map to make each row into an object with name and price."
+      },
+      {
+        "level": 2,
+        "text": "Put the two lines at the end of app.js, after the previous code.\n\nIn app.js:\n```\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "files-sari-sari"
+  },
+  {
+    "id": "node-files-sari-sari-5",
+    "index": 25,
+    "task": "You will write a report file. The code below adds writeFile to the import and writes a short report to report.txt. Add these two lines at the end of app.js. Then run node app.js to save the report. The checker confirms the file was written correctly.\n\nIn app.js:\n```\nimport { readFile, writeFile } from \"node:fs/promises\";\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Stock reader\");\n",
+      "stock.txt": "Rice,50\nSoap,25\nEgg,9\n"
+    },
+    "tests": [
+      {
+        "id": "report",
+        "label": "report.txt says Items: 3",
+        "kind": "local-file-contains",
+        "path": "report.txt",
+        "value": "Items: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add writeFile to the import line at the top of app.js."
+      },
+      {
+        "level": 2,
+        "text": "Put the one line at the end of app.js, after the previous code.\n\nIn app.js:\n```\nimport { readFile, writeFile } from \"node:fs/promises\";\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import { readFile, writeFile } from \"node:fs/promises\";\nconst text = await readFile(\"stock.txt\", \"utf8\");\nconsole.log(text);\nconst lines = text.trim().split(\"\\n\");\nconsole.log(`Lines: ${lines.length}`);\nconst rows = lines.map((line) => line.split(\",\"));\nconsole.log(`Second item: ${rows[1][0]}`);\nconst items = rows.map(([name, price]) => ({ name, price: Number(price) }));\nconsole.log(`Cheapest: ${Math.min(...items.map((item) => item.price))}`);\nawait writeFile(\"report.txt\", `Items: ${items.length}\\n`);\n"
+    },
+    "conceptIds": [
+      "node-write-file"
+    ],
+    "estimatedMinutes": 5,
+    "projectId": "files-sari-sari"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
