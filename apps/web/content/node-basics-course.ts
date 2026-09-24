@@ -14095,3 +14095,228 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "scripts-tricycle"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: modules-tricycle.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-modules-tricycle-1",
+    "index": 291,
+    "task": "Make a new file named prices.js. Put this code inside it. This file will hold the store name. You will use it later in app.js. The code below is what you type.\n\nIn prices.js:\n```\nexport const storeName = \"Tricycle Terminal\";\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "export",
+        "label": "prices.js exports storeName",
+        "kind": "local-file-contains",
+        "path": "prices.js",
+        "value": "export const storeName"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of prices.js as a small notebook for your store's info."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in prices.js, not in app.js.\n\nIn prices.js:\n```\nexport const storeName = \"Tricycle Terminal\";\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"Tricycle Terminal\";\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "modules-tricycle"
+  },
+  {
+    "id": "node-modules-tricycle-2",
+    "index": 292,
+    "task": "Open app.js. Add this import at the top. Then add this console.log at the end. This lets app.js use the store name from prices.js. The code below is what you type.\n\nIn app.js:\n```\nimport { storeName } from \"./prices.js\";\nconsole.log(storeName);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "imported",
+        "label": "node app.js prints Tricycle Terminal from prices.js",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Tricycle Terminal"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are borrowing the store name from prices.js like sharing a book."
+      },
+      {
+        "level": 2,
+        "text": "Put the import and log at the top and bottom of app.js.\n\nIn app.js:\n```\nimport { storeName } from \"./prices.js\";\nconsole.log(storeName);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { storeName } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-tricycle"
+  },
+  {
+    "id": "node-modules-tricycle-3",
+    "index": 293,
+    "task": "Add this to prices.js: a prices object with Market, School, and Clinic. Then in app.js, add prices to the import. At the end, print prices[\"Market\"]. The code below is what you type.\n\nIn prices.js:\n```\nexport const prices = { \"Market\": 20, \"School\": 30, \"Clinic\": 25 };\n```\n\nIn app.js:\n```\nimport { storeName, prices } from \"./prices.js\";\nconsole.log(prices[\"Market\"]);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "price",
+        "label": "The script prints 20 on its own line",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "20\n"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The prices object holds the cost for each trip type."
+      },
+      {
+        "level": 2,
+        "text": "Put the prices object in prices.js, then use it in app.js.\n\nIn prices.js:\n```\nexport const prices = { \"Market\": 20, \"School\": 30, \"Clinic\": 25 };\n```\n\nIn app.js:\n```\nimport { storeName, prices } from \"./prices.js\";\nconsole.log(prices[\"Market\"]);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"Tricycle Terminal\";\nexport const prices = { \"Market\": 20, \"School\": 30, \"Clinic\": 25 };\n",
+      "app.js": "import { storeName, prices } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Market\"]);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "modules-tricycle"
+  },
+  {
+    "id": "node-modules-tricycle-4",
+    "index": 294,
+    "task": "Add this function to the end of prices.js. It looks up a price and returns 0 if not found. The code below is what you type.\n\nIn prices.js:\n```\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "function",
+        "label": "prices.js exports priceOf",
+        "kind": "local-file-contains",
+        "path": "prices.js",
+        "value": "export function priceOf(name)"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This function finds the price for any trip name you give it."
+      },
+      {
+        "level": 2,
+        "text": "Put the function at the end of prices.js.\n\nIn prices.js:\n```\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"Tricycle Terminal\";\nexport const prices = { \"Market\": 20, \"School\": 30, \"Clinic\": 25 };\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-tricycle"
+  },
+  {
+    "id": "node-modules-tricycle-5",
+    "index": 295,
+    "task": "In app.js, add priceOf to the import. Then at the end, print the price of School using the function. The code below is what you type.\n\nIn app.js:\n```\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(`School: ${priceOf(\"School\")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "lookup",
+        "label": "The script prints School: 30",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "School: 30"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are now using the function to get the price for School."
+      },
+      {
+        "level": 2,
+        "text": "Put priceOf in the import list and print it at the end of app.js.\n\nIn app.js:\n```\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(`School: ${priceOf(\"School\")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Market\"]);\nconsole.log(`School: ${priceOf(\"School\")}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-tricycle"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
