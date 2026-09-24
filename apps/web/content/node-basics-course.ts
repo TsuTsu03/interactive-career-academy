@@ -6476,3 +6476,242 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "config-carinderia"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: folders-carinderia.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-folders-carinderia-1",
+    "index": 131,
+    "task": "You will add two lines to the end of app.js. The first line builds a path using path.join. The second line prints that path with forward slashes. This helps you write paths that work on any computer. The code below does this. Run the checker to see if it works.\n\nIn app.js:\n```\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Adobo 80\n",
+      "records/b.txt": "Pancit 60\n",
+      "records/notes.md": "# Notes\nKeep Carinderia records here.\n"
+    },
+    "tests": [
+      {
+        "id": "joined",
+        "label": "The script prints records/a.txt",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "records/a.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of path.join as a tool that puts folder names together safely."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "folders-carinderia"
+  },
+  {
+    "id": "node-folders-carinderia-2",
+    "index": 132,
+    "task": "You will add one line to the end of app.js. This line gets the file's extension using path.extname. The checker will confirm it prints .txt. The code below does this. Run the checker to check your work.\n\nIn app.js:\n```\nconsole.log(`Extension: ${path.extname(file)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Adobo 80\n",
+      "records/b.txt": "Pancit 60\n",
+      "records/notes.md": "# Notes\nKeep Carinderia records here.\n"
+    },
+    "tests": [
+      {
+        "id": "ext",
+        "label": "The script prints Extension: .txt",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Extension: .txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The extension is the part after the last dot, like .txt or .md."
+      },
+      {
+        "level": 2,
+        "text": "Add this line at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconsole.log(`Extension: ${path.extname(file)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "folders-carinderia"
+  },
+  {
+    "id": "node-folders-carinderia-3",
+    "index": 133,
+    "task": "You will add one line to the end of app.js. This line gets the file name without its extension using path.basename. The checker will confirm it prints a. The code below does this. Run the checker to check your work.\n\nIn app.js:\n```\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Adobo 80\n",
+      "records/b.txt": "Pancit 60\n",
+      "records/notes.md": "# Notes\nKeep Carinderia records here.\n"
+    },
+    "tests": [
+      {
+        "id": "base",
+        "label": "The script prints Base: a",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Base: a"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "path.basename removes the extension, so it leaves only the name."
+      },
+      {
+        "level": 2,
+        "text": "Add this line at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "folders-carinderia"
+  },
+  {
+    "id": "node-folders-carinderia-4",
+    "index": 134,
+    "task": "You will add an import and two lines to app.js. The import brings in a tool to read folder contents. The two lines read the records folder and print how many files it has. The code below does this. Run the checker to check your work.\n\nIn app.js:\n```\nimport { readdir } from \"node:fs/promises\";\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Adobo 80\n",
+      "records/b.txt": "Pancit 60\n",
+      "records/notes.md": "# Notes\nKeep Carinderia records here.\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The script prints Files: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Files: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The tool readdir reads folder contents. You must wait for it to finish with await."
+      },
+      {
+        "level": 2,
+        "text": "Add the import as the second line, then the two lines after the import.\n\nIn app.js:\n```\nimport { readdir } from \"node:fs/promises\";\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "folders-carinderia"
+  },
+  {
+    "id": "node-folders-carinderia-5",
+    "index": 135,
+    "task": "You will add two lines to the end of app.js. The first line filters the list to keep only .txt files. The second line prints how many there are. The code below does this. Run the checker to check your work.\n\nIn app.js:\n```\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Adobo 80\n",
+      "records/b.txt": "Pancit 60\n",
+      "records/notes.md": "# Notes\nKeep Carinderia records here.\n"
+    },
+    "tests": [
+      {
+        "id": "txt",
+        "label": "The script prints Text files: 2",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Text files: 2"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use filter to keep only files ending with .txt. The condition checks the extension."
+      },
+      {
+        "level": 2,
+        "text": "Add these two lines at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "folders-carinderia"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
