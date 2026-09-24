@@ -885,7 +885,7 @@ cliGitCourse.steps.push(...([
   {
     "id": "cli-first-commit-sari-sari-9",
     "index": 19,
-    "task": "You will save the change you prepared. This will be your second commit. Run this command exactly as shown: `git commit -m \"Add soap lne\"`. Then run the checker and paste its report.",
+    "task": "You will save the change you prepared. This will be your second commit. The message has a spelling mistake on purpose, and you fix it in the next step. Run this command exactly as shown: `git commit -m \"Add soap lne\"`. Then run the checker and paste its report.",
     "kind": "local",
     "inputMode": "free",
     "files": {
@@ -6213,7 +6213,7 @@ cliGitCourse.steps.push(...([
   {
     "id": "cli-first-commit-school-club-9",
     "index": 139,
-    "task": "You save the change with a message. The message has a mistake. Git saves it anyway. Run the checker to confirm two commits exist. Paste its report.\n\nType this command in your terminal:\n`git commit -m \"Add wednesday lne\"`",
+    "task": "You save the change with a message. The message has a spelling mistake on purpose, and you fix it in the next step. Git saves it anyway. Run the checker to confirm two commits exist. Paste its report.\n\nType this command in your terminal:\n`git commit -m \"Add wednesday lne\"`",
     "kind": "local",
     "inputMode": "free",
     "files": {
