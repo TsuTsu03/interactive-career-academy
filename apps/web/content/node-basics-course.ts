@@ -851,3 +851,239 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "modules-sari-sari"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: modules-sari-sari.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-modules-sari-sari-6",
+    "index": 16,
+    "task": "You will add a default export to prices.js. This lets other files use it without curly braces. The code below is what you type. Run the checker after you type it.\n\nIn prices.js:\n```\nexport default function formatPeso(amount) {\n  return `PHP ${amount.toFixed(2)}`;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "default",
+        "label": "prices.js has a default export",
+        "kind": "local-file-contains",
+        "path": "prices.js",
+        "value": "export default function formatPeso"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The function formatPeso turns a number into PHP with two decimal places."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of prices.js, after the existing exports.\n\nIn prices.js:\n```\nexport default function formatPeso(amount) {\n  return `PHP ${amount.toFixed(2)}`;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"Sari-Sari Store\";\nexport const prices = { \"Rice\": 50, \"Soap\": 25, \"Egg\": 9 };\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\nexport default function formatPeso(amount) {\n  return `PHP ${amount.toFixed(2)}`;\n}\n"
+    },
+    "conceptIds": [
+      "node-default-export"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "modules-sari-sari"
+  },
+  {
+    "id": "node-modules-sari-sari-7",
+    "index": 17,
+    "task": "You will import the default export in app.js. This lets you use the function without braces. The code below is what you type. Run the checker after you type it.\n\nIn app.js:\n```\nimport formatPeso from \"./prices.js\";\nconsole.log(formatPeso(50));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "peso",
+        "label": "The script prints PHP 50.00",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "PHP 50.00"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The import line brings the function into app.js so you can use it."
+      },
+      {
+        "level": 2,
+        "text": "Put the import at the top of app.js, then add the console.log line at the end.\n\nIn app.js:\n```\nimport formatPeso from \"./prices.js\";\nconsole.log(formatPeso(50));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import formatPeso from \"./prices.js\";\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Rice\"]);\nconsole.log(`Soap: ${priceOf(\"Soap\")}`);\nconsole.log(formatPeso(50));\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "modules-sari-sari"
+  },
+  {
+    "id": "node-modules-sari-sari-8",
+    "index": 18,
+    "task": "You will import from Node's built-in os module. This gives you info about your computer. The code below is what you type. Run the checker after you type it.\n\nIn app.js:\n```\nimport { platform } from \"node:os\";\nconsole.log(`Running on ${platform()}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "os",
+        "label": "The script prints Running on and your system name",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Running on "
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The platform() function tells you what operating system you're using."
+      },
+      {
+        "level": 2,
+        "text": "Put the import at the top of app.js, then add the console.log line at the end.\n\nIn app.js:\n```\nimport { platform } from \"node:os\";\nconsole.log(`Running on ${platform()}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { platform } from \"node:os\";\nimport formatPeso from \"./prices.js\";\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Rice\"]);\nconsole.log(`Soap: ${priceOf(\"Soap\")}`);\nconsole.log(formatPeso(50));\nconsole.log(`Running on ${platform()}`);\n"
+    },
+    "conceptIds": [
+      "node-builtin-module"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "modules-sari-sari"
+  },
+  {
+    "id": "node-modules-sari-sari-9",
+    "index": 19,
+    "task": "You will add a start script to package.json. This lets you run the app with npm run start. The code below is what you type. Run the checker after you type it.\n\nIn package.json:\n```\n  \"type\": \"module\",\n  \"scripts\": { \"start\": \"node app.js\" }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "script",
+        "label": "package.json has a start script",
+        "kind": "local-file-contains",
+        "path": "package.json",
+        "value": "\"start\": \"node app.js\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The scripts entry in package.json lets npm run commands like start."
+      },
+      {
+        "level": 2,
+        "text": "Add the scripts entry under type: \"module\" in package.json.\n\nIn package.json:\n```\n  \"type\": \"module\",\n  \"scripts\": { \"start\": \"node app.js\" }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "package.json": "{\n  \"type\": \"module\",\n  \"scripts\": { \"start\": \"node app.js\" }\n}\n"
+    },
+    "conceptIds": [
+      "npm-script"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "modules-sari-sari"
+  },
+  {
+    "id": "node-modules-sari-sari-10",
+    "index": 20,
+    "task": "You will import priceOf under a new name, lookup. This lets you use it without changing the original name. The code below is what you type. Run the checker after you type it.\n\nIn app.js:\n```\nimport { priceOf as lookup } from \"./prices.js\";\nconsole.log(`Last item: ${lookup(\"Egg\")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "alias",
+        "label": "The script prints Last item: 9",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Last item: 9"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The as keyword lets you rename the imported value inside your file."
+      },
+      {
+        "level": 2,
+        "text": "Put the import at the top of app.js, then add the console.log line at the end.\n\nIn app.js:\n```\nimport { priceOf as lookup } from \"./prices.js\";\nconsole.log(`Last item: ${lookup(\"Egg\")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { priceOf as lookup } from \"./prices.js\";\nimport { platform } from \"node:os\";\nimport formatPeso from \"./prices.js\";\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Rice\"]);\nconsole.log(`Soap: ${priceOf(\"Soap\")}`);\nconsole.log(formatPeso(50));\nconsole.log(`Running on ${platform()}`);\nconsole.log(`Last item: ${lookup(\"Egg\")}`);\n"
+    },
+    "conceptIds": [
+      "node-import-alias"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "modules-sari-sari"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
