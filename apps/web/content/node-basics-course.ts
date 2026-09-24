@@ -6223,3 +6223,256 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "config-carinderia"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: config-carinderia.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-config-carinderia-6",
+    "index": 126,
+    "task": "Add this line at the end of app.js. It checks if the API_KEY is missing. If it is, the program stops with error code 1. This stops bad things from happening when the secret is not set. Run the checker to see if it works.\n\nIn app.js:\n```\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "missing",
+        "label": "Without API_KEY it ends with exit code 1",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 1
+      },
+      {
+        "id": "present",
+        "label": "With API_KEY it finishes normally",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "env": {
+          "API_KEY": "sk12345"
+        },
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If the secret is missing, the program must stop right away."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of app.js, right before the last line.\n\nIn app.js:\n```\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "config-carinderia"
+  },
+  {
+    "id": "node-config-carinderia-7",
+    "index": 127,
+    "task": "Add these two lines at the end of app.js. The first line gets the secret. The second prints only the first two letters, then hides the rest with stars. This keeps the secret safe. Run the checker to test it.\n\nIn app.js:\n```\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "masked",
+        "label": "With API_KEY=sk12345 it prints Key: sk***",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "API_KEY": "sk12345"
+        },
+        "value": "Key: sk***"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Hide the secret by showing only the first two letters, then use stars."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of app.js, right after the previous code.\n\nIn app.js:\n```\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "config-carinderia"
+  },
+  {
+    "id": "node-config-carinderia-8",
+    "index": 128,
+    "task": "Add these three lines at the end of app.js. The first imports a tool to read files. The next reads config.json and turns it into a JavaScript object. The last prints the currency from that file. Run the checker to test it.\n\nIn app.js:\n```\nimport { readFile } from \"node:fs/promises\";\nconst fileConfig = JSON.parse(await readFile(\"config.json\", \"utf8\"));\nconsole.log(`Currency: ${fileConfig.currency}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "currency",
+        "label": "It prints Currency: PHP from config.json",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "API_KEY": "sk12345"
+        },
+        "value": "Currency: PHP"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the tool to read the file, then turn it into a JavaScript object."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of app.js, right after the previous code.\n\nIn app.js:\n```\nimport { readFile } from \"node:fs/promises\";\nconst fileConfig = JSON.parse(await readFile(\"config.json\", \"utf8\"));\nconsole.log(`Currency: ${fileConfig.currency}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\nconst fileConfig = JSON.parse(await readFile(\"config.json\", \"utf8\"));\nconsole.log(`Currency: ${fileConfig.currency}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "config-carinderia"
+  },
+  {
+    "id": "node-config-carinderia-9",
+    "index": 129,
+    "task": "Add these two lines at the end of app.js. The first gets the CURRENCY from the environment, or uses the one from config.json if none is set. The second prints what it is using. Run the checker to test it.\n\nIn app.js:\n```\nconst currency = process.env.CURRENCY ?? fileConfig.currency;\nconsole.log(`Using ${currency}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "override",
+        "label": "With CURRENCY=USD it prints Using USD",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "API_KEY": "sk12345",
+          "CURRENCY": "USD"
+        },
+        "value": "Using USD"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If CURRENCY is set, use it. If not, use the one from config.json."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of app.js, right after the previous code.\n\nIn app.js:\n```\nconst currency = process.env.CURRENCY ?? fileConfig.currency;\nconsole.log(`Using ${currency}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\nconst fileConfig = JSON.parse(await readFile(\"config.json\", \"utf8\"));\nconsole.log(`Currency: ${fileConfig.currency}`);\nconst currency = process.env.CURRENCY ?? fileConfig.currency;\nconsole.log(`Using ${currency}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "config-carinderia"
+  },
+  {
+    "id": "node-config-carinderia-10",
+    "index": 130,
+    "task": "Add these two lines at the end of app.js. The first checks if NODE_ENV is production. If yes, it sets mode to production. If not, it sets mode to development. The second prints the mode. Run the checker to test it.\n\nIn app.js:\n```\nconst mode = process.env.NODE_ENV === \"production\" ? \"production\" : \"development\";\nconsole.log(`Mode: ${mode}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "mode",
+        "label": "With NODE_ENV=production it prints Mode: production",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "API_KEY": "sk12345",
+          "NODE_ENV": "production"
+        },
+        "value": "Mode: production"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If NODE_ENV is production, the mode is production. Otherwise, it's development."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of app.js, right after the previous code.\n\nIn app.js:\n```\nconst mode = process.env.NODE_ENV === \"production\" ? \"production\" : \"development\";\nconsole.log(`Mode: ${mode}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\nconst fileConfig = JSON.parse(await readFile(\"config.json\", \"utf8\"));\nconsole.log(`Currency: ${fileConfig.currency}`);\nconst currency = process.env.CURRENCY ?? fileConfig.currency;\nconsole.log(`Using ${currency}`);\nconst mode = process.env.NODE_ENV === \"production\" ? \"production\" : \"development\";\nconsole.log(`Mode: ${mode}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "config-carinderia"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
