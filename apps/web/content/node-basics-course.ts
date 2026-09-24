@@ -9817,3 +9817,242 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "config-barangay"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: folders-barangay.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-folders-barangay-1",
+    "index": 201,
+    "task": "You will add two lines to the end of app.js. The first line builds a path using path.join. The second line prints that path with forward slashes. This shows how to make file paths safely in Node.js. The code below does this. Run the checker and paste its report.\n\nIn app.js:\n```\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Clearance 50\n",
+      "records/b.txt": "Permit 300\n",
+      "records/notes.md": "# Notes\nKeep Barangay Office records here.\n"
+    },
+    "tests": [
+      {
+        "id": "joined",
+        "label": "The script prints records/a.txt",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "records/a.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use path.join to build the path safely, even if the folder names have spaces or special characters."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "folders-barangay"
+  },
+  {
+    "id": "node-folders-barangay-2",
+    "index": 202,
+    "task": "You will add one line to the end of app.js. This line prints the file's extension using path.extname. The extension is the part after the dot, like .txt. The code below does this. Run the checker and paste its report.\n\nIn app.js:\n```\nconsole.log(`Extension: ${path.extname(file)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Clearance 50\n",
+      "records/b.txt": "Permit 300\n",
+      "records/notes.md": "# Notes\nKeep Barangay Office records here.\n"
+    },
+    "tests": [
+      {
+        "id": "ext",
+        "label": "The script prints Extension: .txt",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Extension: .txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "path.extname takes the full file name and returns only the part after the dot."
+      },
+      {
+        "level": 2,
+        "text": "Add this line at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconsole.log(`Extension: ${path.extname(file)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "folders-barangay"
+  },
+  {
+    "id": "node-folders-barangay-3",
+    "index": 203,
+    "task": "You will add one line to the end of app.js. This line prints the file name without its extension using path.basename. You tell it to remove .txt. The code below does this. Run the checker and paste its report.\n\nIn app.js:\n```\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Clearance 50\n",
+      "records/b.txt": "Permit 300\n",
+      "records/notes.md": "# Notes\nKeep Barangay Office records here.\n"
+    },
+    "tests": [
+      {
+        "id": "base",
+        "label": "The script prints Base: a",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Base: a"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "path.basename removes the extension if you give it the extension as a second argument."
+      },
+      {
+        "level": 2,
+        "text": "Add this line at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "folders-barangay"
+  },
+  {
+    "id": "node-folders-barangay-4",
+    "index": 204,
+    "task": "You will add three lines to the end of app.js. The first line imports readdir from Node.js. The next two lines read the records folder and print how many files it has. The code below does this. Run the checker and paste its report.\n\nIn app.js:\n```\nimport { readdir } from \"node:fs/promises\";\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Clearance 50\n",
+      "records/b.txt": "Permit 300\n",
+      "records/notes.md": "# Notes\nKeep Barangay Office records here.\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The script prints Files: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Files: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "readdir reads a folder and returns an array of file names. Use await to wait for it to finish."
+      },
+      {
+        "level": 2,
+        "text": "Add the three lines at the end of app.js, right after the last line.\n\nIn app.js:\n```\nimport { readdir } from \"node:fs/promises\";\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "folders-barangay"
+  },
+  {
+    "id": "node-folders-barangay-5",
+    "index": 205,
+    "task": "You will add two lines to the end of app.js. The first line filters the file names to keep only those ending with .txt. The second line prints how many .txt files there are. The code below does this. Run the checker and paste its report.\n\nIn app.js:\n```\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Clearance 50\n",
+      "records/b.txt": "Permit 300\n",
+      "records/notes.md": "# Notes\nKeep Barangay Office records here.\n"
+    },
+    "tests": [
+      {
+        "id": "txt",
+        "label": "The script prints Text files: 2",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Text files: 2"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use filter to keep only files that end with .txt. Check the file's extension with path.extname."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "folders-barangay"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
