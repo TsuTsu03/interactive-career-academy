@@ -2456,3 +2456,266 @@ apiBasicsCourse.steps.push(...([
     "projectId": "one-item-sari-sari"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: query-strings-sari-sari.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-query-strings-sari-sari-1",
+    "index": 41,
+    "task": "You will add two lines to server.js. The first line gets the items. The second line checks if the client sent ?max. If yes, it filters the list to keep only items that cost at most that number. This helps the client find items they can afford. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Soap\", price: 25 }, { id: 2, name: \"Egg\", price: 9 }, { id: 3, name: \"Rice\", price: 50 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "max",
+        "label": "GET /items?max=25 answers only the items up to 25",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?max=25"
+          }
+        ],
+        "bodyContains": "[{\"id\":1,\"name\":\"Soap\",\"price\":25},{\"id\":2,\"name\":\"Egg\",\"price\":9}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of filtering like picking only the items that fit your budget."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the url line, right before the /items line.\n\nIn server.js:\n```\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Soap\", price: 25 }, { id: 2, name: \"Egg\", price: 9 }, { id: 3, name: \"Rice\", price: 50 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-filter"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-sari-sari"
+  },
+  {
+    "id": "api-query-strings-sari-sari-2",
+    "index": 42,
+    "task": "You will add one line to server.js. This line checks if the client sent ?min. If yes, it filters the list to keep only items that cost at least that number. This helps the client find items they want to buy. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Soap\", price: 25 }, { id: 2, name: \"Egg\", price: 9 }, { id: 3, name: \"Rice\", price: 50 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "min",
+        "label": "GET /items?min=25 answers only the items from 25",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?min=25"
+          }
+        ],
+        "bodyContains": "[{\"id\":1,\"name\":\"Soap\",\"price\":25},{\"id\":3,\"name\":\"Rice\",\"price\":50}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of filtering like picking only the items that cost more than or equal to the minimum."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the max line, right before the q line.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Soap\", price: 25 }, { id: 2, name: \"Egg\", price: 9 }, { id: 3, name: \"Rice\", price: 50 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "query-strings-sari-sari"
+  },
+  {
+    "id": "api-query-strings-sari-sari-3",
+    "index": 43,
+    "task": "You will add one line to server.js. This line checks if the client sent ?q. If yes, it filters the list to keep only items whose name contains what the client typed, ignoring upper and lower case. This helps the client find items by name. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Soap\", price: 25 }, { id: 2, name: \"Egg\", price: 9 }, { id: 3, name: \"Rice\", price: 50 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "q",
+        "label": "GET /items?q=gg finds Egg",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?q=gg"
+          }
+        ],
+        "bodyContains": "[{\"id\":2,\"name\":\"Egg\",\"price\":9}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of searching like looking for a word in a list, no matter if it's uppercase or lowercase."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the min line, right before the sort line.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Soap\", price: 25 }, { id: 2, name: \"Egg\", price: 9 }, { id: 3, name: \"Rice\", price: 50 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-search"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-sari-sari"
+  },
+  {
+    "id": "api-query-strings-sari-sari-4",
+    "index": 44,
+    "task": "You will add one line to server.js. This line checks if the client sent ?sort=price. If yes, it sorts the list from cheapest to most expensive. This helps the client see the best deals first. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Soap\", price: 25 }, { id: 2, name: \"Egg\", price: 9 }, { id: 3, name: \"Rice\", price: 50 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "asc",
+        "label": "GET /items?sort=price answers cheapest first",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?sort=price"
+          }
+        ],
+        "bodyContains": "[{\"id\":2,\"name\":\"Egg\",\"price\":9},{\"id\":1,\"name\":\"Soap\",\"price\":25},{\"id\":3,\"name\":\"Rice\",\"price\":50}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of sorting like arranging items from lowest to highest price."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the q line, right before the -price line.\n\nIn server.js:\n```\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Soap\", price: 25 }, { id: 2, name: \"Egg\", price: 9 }, { id: 3, name: \"Rice\", price: 50 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-sort"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-sari-sari"
+  },
+  {
+    "id": "api-query-strings-sari-sari-5",
+    "index": 45,
+    "task": "You will add one line to server.js. This line checks if the client sent ?sort=-price. If yes, it sorts the list from most expensive to cheapest. This helps the client see the most costly items first. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Soap\", price: 25 }, { id: 2, name: \"Egg\", price: 9 }, { id: 3, name: \"Rice\", price: 50 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "desc",
+        "label": "GET /items?sort=-price answers most expensive first",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?sort=-price"
+          }
+        ],
+        "bodyContains": "[{\"id\":3,\"name\":\"Rice\",\"price\":50},{\"id\":1,\"name\":\"Soap\",\"price\":25},{\"id\":2,\"name\":\"Egg\",\"price\":9}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of sorting like arranging items from highest to lowest price."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the sort line, right before the end of the filter block.\n\nIn server.js:\n```\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Soap\", price: 25 }, { id: 2, name: \"Egg\", price: 9 }, { id: 3, name: \"Rice\", price: 50 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-sari-sari"
+  }
+] satisfies typeof apiBasicsCourse.steps));
