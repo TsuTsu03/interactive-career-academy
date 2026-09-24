@@ -13640,3 +13640,227 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "folders-school-club"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: scripts-tricycle.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-scripts-tricycle-1",
+    "index": 281,
+    "task": "You will change the script to print the store name. The code below replaces the only line in app.js. Run the checker to confirm the change.\n\nIn app.js:\n```\nconsole.log(\"Tricycle Terminal\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "node app.js prints Tricycle Terminal",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Tricycle Terminal"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change the message to match the terminal's name."
+      },
+      {
+        "level": 2,
+        "text": "Put the new code at the start of app.js.\n\nIn app.js:\n```\nconsole.log(\"Tricycle Terminal\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Tricycle Terminal\");\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "scripts-tricycle"
+  },
+  {
+    "id": "node-scripts-tricycle-2",
+    "index": 282,
+    "task": "Add a constant called item to store the product name. The code below goes at the end of app.js. Then run the checker to confirm it prints the name.\n\nIn app.js:\n```\nconst item = \"Market\";\nconsole.log(item);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "item",
+        "label": "The script prints Market on its own line",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Market\n"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use const to make the name unchangeable."
+      },
+      {
+        "level": 2,
+        "text": "Put the new code after the first line of app.js.\n\nIn app.js:\n```\nconst item = \"Market\";\nconsole.log(item);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Tricycle Terminal\");\nconst item = \"Market\";\nconsole.log(item);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-tricycle"
+  },
+  {
+    "id": "node-scripts-tricycle-3",
+    "index": 283,
+    "task": "Add a constant called price to store the cost. Then change the last console.log to show both the item and price. Run the checker to confirm it prints them together.\n\nIn app.js:\n```\nconst price = 20;\nconsole.log(item, price);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "pair",
+        "label": "The script prints Market 20",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Market 20"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use const to store the price value."
+      },
+      {
+        "level": 2,
+        "text": "Replace the last line with the new code.\n\nIn app.js:\n```\nconst price = 20;\nconsole.log(item, price);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Tricycle Terminal\");\nconst item = \"Market\";\nconst price = 20;\nconsole.log(item, price);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "scripts-tricycle"
+  },
+  {
+    "id": "node-scripts-tricycle-4",
+    "index": 284,
+    "task": "Change the last console.log to use a template literal. The code below shows the item and price in one sentence. Run the checker to confirm it prints the full sentence.\n\nIn app.js:\n```\nconsole.log(`${item} costs ${price} pesos`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "sentence",
+        "label": "The script prints Market costs 20 pesos",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Market costs 20 pesos"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use backticks and dollar signs to build the sentence."
+      },
+      {
+        "level": 2,
+        "text": "Replace the last line with the new code.\n\nIn app.js:\n```\nconsole.log(`${item} costs ${price} pesos`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Tricycle Terminal\");\nconst item = \"Market\";\nconst price = 20;\nconsole.log(`${item} costs ${price} pesos`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-tricycle"
+  },
+  {
+    "id": "node-scripts-tricycle-5",
+    "index": 285,
+    "task": "Add an array called items with three product names. Then print how many items are in the array. Run the checker to confirm it prints the count.\n\nIn app.js:\n```\nconst items = [\"Market\", \"School\", \"Clinic\"];\nconsole.log(`Items: ${items.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The script prints Items: 3",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Items: 3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use square brackets to make the array."
+      },
+      {
+        "level": 2,
+        "text": "Put the new code at the end of app.js.\n\nIn app.js:\n```\nconst items = [\"Market\", \"School\", \"Clinic\"];\nconsole.log(`Items: ${items.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Tricycle Terminal\");\nconst item = \"Market\";\nconst price = 20;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Market\", \"School\", \"Clinic\"];\nconsole.log(`Items: ${items.length}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "scripts-tricycle"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
