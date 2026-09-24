@@ -1059,3 +1059,262 @@ apiBasicsCourse.steps.push(...([
     "projectId": "json-routes-sari-sari"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: json-routes-sari-sari.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-json-routes-sari-sari-6",
+    "index": 16,
+    "task": "You will change the last line of the handler. This line tells the server what to send when a path is not found. You will replace it with a 404 error in JSON format. The code below does that. Run the checker to confirm the server now answers 404 with a JSON error.\n\nIn server.js:\n```\n  send(res, 404, { error: \"Not found\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "missing",
+        "label": "GET /nope answers 404 with a JSON error",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/nope"
+          }
+        ],
+        "status": 404,
+        "bodyContains": "{\"error\":\"Not found\"}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The server must send a 404 status and a JSON error body when a path is unknown."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of the handler, right before the 404 line.\n\nIn server.js:\n```\n  send(res, 404, { error: \"Not found\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-json-error"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "json-routes-sari-sari"
+  },
+  {
+    "id": "api-json-routes-sari-sari-7",
+    "index": 17,
+    "task": "Add one line at the top of the handler. This line handles the root path. It sends back the API's name and its routes. The code below does that. Run the checker to confirm the server now lists the routes.\n\nIn server.js:\n```\n  if (req.url === \"/\") return send(res, 200, { name: \"Sari-Sari Store\", routes: [\"/items\"] });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "root",
+        "label": "GET / lists the routes",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "\"routes\":[\"/items\"]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The server must return a 200 status and a JSON object with name and routes for the root path."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the top of the handler, right after the import lines.\n\nIn server.js:\n```\n  if (req.url === \"/\") return send(res, 200, { name: \"Sari-Sari Store\", routes: [\"/items\"] });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") return send(res, 200, { name: \"Sari-Sari Store\", routes: [\"/items\"] });\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "json-routes-sari-sari"
+  },
+  {
+    "id": "api-json-routes-sari-sari-8",
+    "index": 18,
+    "task": "Add one line before the 404 line. This line handles the /items/cheapest path. It finds the item with the lowest price and sends it back. The code below does that. Run the checker to confirm the server now answers with the cheapest item.\n\nIn server.js:\n```\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "cheapest",
+        "label": "GET /items/cheapest answers Egg",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/cheapest"
+          }
+        ],
+        "bodyContains": "\"name\":\"Egg\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The server must sort the items by price and pick the first one for /items/cheapest."
+      },
+      {
+        "level": 2,
+        "text": "Put the code before the 404 line, right after the /items path check.\n\nIn server.js:\n```\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") return send(res, 200, { name: \"Sari-Sari Store\", routes: [\"/items\"] });\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "json-routes-sari-sari"
+  },
+  {
+    "id": "api-json-routes-sari-sari-9",
+    "index": 19,
+    "task": "Add one line before the 404 line. This line handles the /items/pretty path. It sends the items in indented JSON so it's easier to read. The code below does that. Run the checker to confirm the server now answers with indented JSON.\n\nIn server.js:\n```\n  if (req.url === \"/items/pretty\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify(items, null, 2)); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "pretty",
+        "label": "GET /items/pretty answers indented JSON",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/pretty"
+          }
+        ],
+        "bodyContains": "[\n  {\n    \"id\": 1"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The server must set the Content-Type header to application/json and use JSON.stringify with 2 spaces for indentation."
+      },
+      {
+        "level": 2,
+        "text": "Put the code before the 404 line, right after the /items path check.\n\nIn server.js:\n```\n  if (req.url === \"/items/pretty\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify(items, null, 2)); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") return send(res, 200, { name: \"Sari-Sari Store\", routes: [\"/items\"] });\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n  if (req.url === \"/items/pretty\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify(items, null, 2)); return; }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "json-routes-sari-sari"
+  },
+  {
+    "id": "api-json-routes-sari-sari-10",
+    "index": 20,
+    "task": "Add one line before the 404 line. This line handles the /items/expensive path. It filters items with price over 40 and sends them back. The code below does that. Run the checker to confirm the server now answers with expensive items.\n\nIn server.js:\n```\n  if (req.url === \"/items/expensive\") return send(res, 200, items.filter((item) => item.price > 40));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "expensive",
+        "label": "GET /items/expensive answers Rice",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/expensive"
+          }
+        ],
+        "bodyContains": "\"name\":\"Rice\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The server must use filter to keep only items with price greater than 40."
+      },
+      {
+        "level": 2,
+        "text": "Put the code before the 404 line, right after the /items path check.\n\nIn server.js:\n```\n  if (req.url === \"/items/expensive\") return send(res, 200, items.filter((item) => item.price > 40));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") return send(res, 200, { name: \"Sari-Sari Store\", routes: [\"/items\"] });\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n  if (req.url === \"/items/pretty\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify(items, null, 2)); return; }\n  if (req.url === \"/items/expensive\") return send(res, 200, items.filter((item) => item.price > 40));\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "json-routes-sari-sari"
+  }
+] satisfies typeof apiBasicsCourse.steps));
