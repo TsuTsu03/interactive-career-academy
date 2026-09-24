@@ -3775,3 +3775,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-24: Local Qwen wrote the lesson text for node-basics/cli-carinderia, steps 111-115; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
 
 - 2026-09-24: Local Qwen wrote the lesson text for node-basics/cli-carinderia, steps 116-120; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/config-carinderia, steps 121-125; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.

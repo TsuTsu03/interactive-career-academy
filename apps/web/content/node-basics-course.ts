@@ -5981,3 +5981,245 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "cli-carinderia"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: config-carinderia.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-config-carinderia-1",
+    "index": 121,
+    "task": "You will read the PLACE environment variable. This tells where the carinderia is. Add the code below at the end of app.js. Then run the checker to test it. The checker sets PLACE to Carinderia. After you run it, you will see the text: Place: Carinderia.\n\nIn app.js:\n```\nconst place = process.env.PLACE;\nconsole.log(`Place: ${place}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "place",
+        "label": "With PLACE=Carinderia it prints Place: Carinderia",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "PLACE": "Carinderia"
+        },
+        "value": "Place: Carinderia"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You use process.env to read environment variables. Think of it like a secret box that holds settings."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst place = process.env.PLACE;\nconsole.log(`Place: ${place}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE;\nconsole.log(`Place: ${place}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "config-carinderia"
+  },
+  {
+    "id": "node-config-carinderia-2",
+    "index": 122,
+    "task": "Now, if PLACE is not set, the program should say 'Unknown place'. Change the line that reads PLACE to use the ?? operator. Add the code below at the end of app.js. Then run the checker. Without PLACE, it will print: Place: Unknown place.\n\nIn app.js:\n```\nconst place = process.env.PLACE ?? \"Unknown place\";\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "fallback",
+        "label": "Without PLACE it prints Place: Unknown place",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Place: Unknown place"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The ?? operator gives a default value if the first part is empty or not set."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst place = process.env.PLACE ?? \"Unknown place\";\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "config-carinderia"
+  },
+  {
+    "id": "node-config-carinderia-3",
+    "index": 123,
+    "task": "You will read a LIMIT setting as a number. If LIMIT is not set, use 5 as the default. Add the code below at the end of app.js. Then run the checker. With LIMIT=12, it will print: Limit: 12.\n\nIn app.js:\n```\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "limit",
+        "label": "With LIMIT=12 it prints Limit: 12",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "LIMIT": "12"
+        },
+        "value": "Limit: 12"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use Number() to turn a string into a number. The ?? operator gives a default if the setting is missing."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "config-carinderia"
+  },
+  {
+    "id": "node-config-carinderia-4",
+    "index": 124,
+    "task": "You will turn on a debug message only when DEBUG is set to true. Add the code below at the end of app.js. Then run the checker. With DEBUG=true, it will print: Debug mode on.\n\nIn app.js:\n```\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "debug",
+        "label": "With DEBUG=true it prints Debug mode on",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "DEBUG": "true"
+        },
+        "value": "Debug mode on"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use === to check if a string is exactly 'true'. This is not the same as true or false."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "config-carinderia"
+  },
+  {
+    "id": "node-config-carinderia-5",
+    "index": 125,
+    "task": "You will collect all settings into one object. Then print it as JSON. Add the code below at the end of app.js. Then run the checker. With PLACE=Hall and LIMIT=3, it will print the settings as JSON.\n\nIn app.js:\n```\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "json",
+        "label": "With PLACE=Hall and LIMIT=3 it prints the settings as JSON",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "PLACE": "Hall",
+          "LIMIT": "3"
+        },
+        "value": "{\"place\":\"Hall\",\"limit\":3,\"debug\":false}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use an object to group settings together. Use JSON.stringify() to turn it into a string."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the last line.\n\nIn app.js:\n```\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "config-carinderia"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
