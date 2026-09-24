@@ -6525,3 +6525,221 @@ cliGitCourse.steps.push(...([
     "projectId": "undo-school-club"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: undo-school-club.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-undo-school-club-6",
+    "index": 146,
+    "task": "You will remove the wrong line you added earlier. This keeps your file clean. Run this command exactly as shown. Then run the checker and paste its report.\n\nType this command in your terminal:\n`git restore schedule.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\nWednesday Meeting\n"
+    },
+    "tests": [
+      {
+        "id": "fixed",
+        "label": "The mistaken line is gone",
+        "kind": "local-file-lacks",
+        "path": "schedule.txt",
+        "value": "Wrong line"
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of this as undoing a mistake you made before saving anything."
+      },
+      {
+        "level": 2,
+        "text": "git restore schedule.txt"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git restore schedule.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "undo-school-club"
+  },
+  {
+    "id": "cli-undo-school-club-7",
+    "index": 147,
+    "task": "You will add a new line called 'Friday Cleanup' to the file. This is a real change you want to keep. Run this command exactly as shown. Then run the checker and paste its report.\n\nType this command in your terminal:\n`echo \"Friday Cleanup\" >> schedule.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\nWednesday Meeting\n"
+    },
+    "tests": [
+      {
+        "id": "unstaged",
+        "label": "schedule.txt has an unstaged change",
+        "kind": "local-git-unstaged",
+        "path": "schedule.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are adding text to the file, not removing it. Think of it like writing a note."
+      },
+      {
+        "level": 2,
+        "text": "echo \"Friday Cleanup\" >> schedule.txt"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Friday Cleanup\" >> schedule.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "undo-school-club"
+  },
+  {
+    "id": "cli-undo-school-club-8",
+    "index": 148,
+    "task": "You will tell Git to prepare this new line for saving. This makes it ready to be committed. Run this command exactly as shown. Then run the checker and paste its report.\n\nType this command in your terminal:\n`git add schedule.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\nWednesday Meeting\n"
+    },
+    "tests": [
+      {
+        "id": "staged",
+        "label": "schedule.txt is staged",
+        "kind": "local-git-staged",
+        "path": "schedule.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are telling Git to mark the new line as ready to be saved permanently."
+      },
+      {
+        "level": 2,
+        "text": "git add schedule.txt"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add schedule.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "undo-school-club"
+  },
+  {
+    "id": "cli-undo-school-club-9",
+    "index": 149,
+    "task": "You will take back the new line from being ready to save, but keep it in the file. This lets you think again. Run this command exactly as shown. Then run the checker and paste its report.\n\nType this command in your terminal:\n`git restore --staged schedule.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\nWednesday Meeting\n"
+    },
+    "tests": [
+      {
+        "id": "unstaged",
+        "label": "schedule.txt is back to unstaged",
+        "kind": "local-git-unstaged",
+        "path": "schedule.txt"
+      },
+      {
+        "id": "kept",
+        "label": "Friday Cleanup is still in the file",
+        "kind": "local-file-contains",
+        "path": "schedule.txt",
+        "value": "Friday Cleanup"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are removing the 'staged' state, but not deleting the text you wrote."
+      },
+      {
+        "level": 2,
+        "text": "git restore --staged schedule.txt"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git restore --staged schedule.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "undo-school-club"
+  },
+  {
+    "id": "cli-undo-school-club-10",
+    "index": 150,
+    "task": "You will decide not to keep the new line. You will return the file to its last saved version. Run this command exactly as shown. Then run the checker and paste its report.\n\nType this command in your terminal:\n`git restore schedule.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\nWednesday Meeting\n"
+    },
+    "tests": [
+      {
+        "id": "dropped",
+        "label": "Friday Cleanup is gone again",
+        "kind": "local-file-lacks",
+        "path": "schedule.txt",
+        "value": "Friday Cleanup"
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are going back to the version that was saved before you added anything new."
+      },
+      {
+        "level": 2,
+        "text": "git restore schedule.txt"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git restore schedule.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "undo-school-club"
+  }
+] satisfies typeof cliGitCourse.steps));
