@@ -9322,3 +9322,245 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "cli-barangay"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: config-barangay.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-config-barangay-1",
+    "index": 191,
+    "task": "You will read the PLACE environment variable. This tells the program where the barangay office is. Add the code below at the end of app.js. Then run the checker to see if it prints 'Place: Barangay Office'.\n\nIn app.js:\n```\nconst place = process.env.PLACE;\nconsole.log(`Place: ${place}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "place",
+        "label": "With PLACE=Barangay Office it prints Place: Barangay Office",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "PLACE": "Barangay Office"
+        },
+        "value": "Place: Barangay Office"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The PLACE variable holds the name of the barangay office. Use process.env to read it."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the existing code.\n\nIn app.js:\n```\nconst place = process.env.PLACE;\nconsole.log(`Place: ${place}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE;\nconsole.log(`Place: ${place}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "config-barangay"
+  },
+  {
+    "id": "node-config-barangay-2",
+    "index": 192,
+    "task": "Now, if PLACE is not set, the program should show 'Unknown place'. Change the line that reads PLACE to use the ?? operator. Then run the checker to see if it prints 'Place: Unknown place'.\n\nIn app.js:\n```\nconst place = process.env.PLACE ?? \"Unknown place\";\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "fallback",
+        "label": "Without PLACE it prints Place: Unknown place",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Place: Unknown place"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The ?? operator gives a default value if the variable is empty or not set."
+      },
+      {
+        "level": 2,
+        "text": "Replace the previous line with the new one at the end of app.js.\n\nIn app.js:\n```\nconst place = process.env.PLACE ?? \"Unknown place\";\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "config-barangay"
+  },
+  {
+    "id": "node-config-barangay-3",
+    "index": 193,
+    "task": "You will read the LIMIT setting as a number. If not set, it defaults to 5. Add the code below at the end of app.js. Then run the checker to see if it prints 'Limit: 12' when LIMIT=12.\n\nIn app.js:\n```\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "limit",
+        "label": "With LIMIT=12 it prints Limit: 12",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "LIMIT": "12"
+        },
+        "value": "Limit: 12"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use Number() to convert the setting to a number. The ?? operator gives 5 if LIMIT is not set."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the previous lines.\n\nIn app.js:\n```\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "config-barangay"
+  },
+  {
+    "id": "node-config-barangay-4",
+    "index": 194,
+    "task": "You will turn on debug mode only if DEBUG is set to 'true'. Add the code below at the end of app.js. Then run the checker to see if it prints 'Debug mode on' when DEBUG=true.\n\nIn app.js:\n```\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "debug",
+        "label": "With DEBUG=true it prints Debug mode on",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "DEBUG": "true"
+        },
+        "value": "Debug mode on"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use === to check if DEBUG is exactly the string 'true'."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the previous lines.\n\nIn app.js:\n```\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "config-barangay"
+  },
+  {
+    "id": "node-config-barangay-5",
+    "index": 195,
+    "task": "You will collect all settings into one object. Add the code below at the end of app.js. Then run the checker to see if it prints the settings as JSON when PLACE=Hall and LIMIT=3.\n\nIn app.js:\n```\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "json",
+        "label": "With PLACE=Hall and LIMIT=3 it prints the settings as JSON",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "PLACE": "Hall",
+          "LIMIT": "3"
+        },
+        "value": "{\"place\":\"Hall\",\"limit\":3,\"debug\":false}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Create an object with the keys: place, limit, and debug. Use the variables you already created."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the previous lines.\n\nIn app.js:\n```\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "config-barangay"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
