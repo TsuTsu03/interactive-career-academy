@@ -15725,3 +15725,282 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "cli-tricycle"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: cli-tricycle.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-cli-tricycle-6",
+    "index": 326,
+    "task": "You will add a check for the item name. If the item is not in the prices list, the program stops. This stops the program from giving wrong prices. The code below does this. Run the checker to confirm it works.\n\nIn app.js:\n```\nif (!(name in prices)) { console.error(`Unknown item: ${name}`); process.exit(2); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "exit",
+        "label": "node app.js Milk 1 ends with exit code 2",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "args": [
+          "Milk",
+          "1"
+        ],
+        "code": 2
+      },
+      {
+        "id": "message",
+        "label": "It reports Unknown item: Milk",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "args": [
+          "Milk",
+          "1"
+        ],
+        "value": "Unknown item: Milk"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the name is in the prices list before calculating the price."
+      },
+      {
+        "level": 2,
+        "text": "Add the code right before the last console.log line.\n\nIn app.js:\n```\nif (!(name in prices)) { console.error(`Unknown item: ${name}`); process.exit(2); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Market\": 20, \"School\": 30, \"Clinic\": 25 };\nif (!(name in prices)) { console.error(`Unknown item: ${name}`); process.exit(2); }\nconsole.log(`Total: ${prices[name] * count}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "cli-tricycle"
+  },
+  {
+    "id": "node-cli-tricycle-7",
+    "index": 327,
+    "task": "You will add a check for the quantity. If it is not a whole number, the program stops. This stops the program from accepting bad numbers. The code below does this. Run the checker to confirm it works.\n\nIn app.js:\n```\nif (!Number.isInteger(count) || count < 1) { console.error(\"Quantity must be a whole number\"); process.exit(3); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "exit",
+        "label": "node app.js Market abc ends with exit code 3",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "args": [
+          "Market",
+          "abc"
+        ],
+        "code": 3
+      },
+      {
+        "id": "fine",
+        "label": "node app.js Market 2 still works",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "args": [
+          "Market",
+          "2"
+        ],
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the quantity is a whole number and greater than zero."
+      },
+      {
+        "level": 2,
+        "text": "Add the code right after the line that sets count.\n\nIn app.js:\n```\nif (!Number.isInteger(count) || count < 1) { console.error(\"Quantity must be a whole number\"); process.exit(3); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nif (!Number.isInteger(count) || count < 1) { console.error(\"Quantity must be a whole number\"); process.exit(3); }\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Market\": 20, \"School\": 30, \"Clinic\": 25 };\nif (!(name in prices)) { console.error(`Unknown item: ${name}`); process.exit(2); }\nconsole.log(`Total: ${prices[name] * count}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cli-tricycle"
+  },
+  {
+    "id": "node-cli-tricycle-8",
+    "index": 328,
+    "task": "You will add a check for the --receipt flag. If it is typed, the program prints a thank-you message. This helps the user know they are being thanked. The code below does this. Run the checker to confirm it works.\n\nIn app.js:\n```\nconst receipt = args.includes(\"--receipt\");\nif (receipt) console.log(\"Receipt: thank you!\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "flag",
+        "label": "node app.js Market 2 --receipt prints the receipt line",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Market",
+          "2",
+          "--receipt"
+        ],
+        "value": "Receipt: thank you!"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use args.includes to check if --receipt is in the arguments."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of the file, after the total line.\n\nIn app.js:\n```\nconst receipt = args.includes(\"--receipt\");\nif (receipt) console.log(\"Receipt: thank you!\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nif (!Number.isInteger(count) || count < 1) { console.error(\"Quantity must be a whole number\"); process.exit(3); }\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Market\": 20, \"School\": 30, \"Clinic\": 25 };\nif (!(name in prices)) { console.error(`Unknown item: ${name}`); process.exit(2); }\nconsole.log(`Total: ${prices[name] * count}`);\nconst receipt = args.includes(\"--receipt\");\nif (receipt) console.log(\"Receipt: thank you!\");\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "cli-tricycle"
+  },
+  {
+    "id": "node-cli-tricycle-9",
+    "index": 329,
+    "task": "You will add a check for the currency. It comes from the CURRENCY environment variable or defaults to PHP. This lets you change the currency for the total. The code below does this. Run the checker to confirm it works.\n\nIn app.js:\n```\nconst currency = process.env.CURRENCY ?? \"PHP\";\nconsole.log(`Total: ${currency} ${prices[name] * count}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "currency",
+        "label": "With CURRENCY=USD it prints Total: USD 40",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Market",
+          "2"
+        ],
+        "env": {
+          "CURRENCY": "USD"
+        },
+        "value": "Total: USD 40"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use process.env.CURRENCY to get the currency, or use PHP if it is not set."
+      },
+      {
+        "level": 2,
+        "text": "Add the code before the total line, and change the total line to use the new currency.\n\nIn app.js:\n```\nconst currency = process.env.CURRENCY ?? \"PHP\";\nconsole.log(`Total: ${currency} ${prices[name] * count}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nif (!Number.isInteger(count) || count < 1) { console.error(\"Quantity must be a whole number\"); process.exit(3); }\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Market\": 20, \"School\": 30, \"Clinic\": 25 };\nif (!(name in prices)) { console.error(`Unknown item: ${name}`); process.exit(2); }\nconst currency = process.env.CURRENCY ?? \"PHP\";\nconsole.log(`Total: ${currency} ${prices[name] * count}`);\nconst receipt = args.includes(\"--receipt\");\nif (receipt) console.log(\"Receipt: thank you!\");\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cli-tricycle"
+  },
+  {
+    "id": "node-cli-tricycle-10",
+    "index": 330,
+    "task": "You will add a check for the --help flag. If it is typed, the program prints usage and stops. This helps users know how to use the program. The code below does this. Run the checker to confirm it works.\n\nIn app.js:\n```\nif (args[0] === \"--help\") { console.log(\"Usage: node app.js <item> <quantity> [--receipt]\"); process.exit(0); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "help",
+        "label": "node app.js --help prints the usage",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "--help"
+        ],
+        "value": "[--receipt]"
+      },
+      {
+        "id": "exit",
+        "label": "node app.js --help ends with exit code 0",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "args": [
+          "--help"
+        ],
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the first argument is --help, then print the usage and stop."
+      },
+      {
+        "level": 2,
+        "text": "Add the code right after the first line of the file.\n\nIn app.js:\n```\nif (args[0] === \"--help\") { console.log(\"Usage: node app.js <item> <quantity> [--receipt]\"); process.exit(0); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nif (args[0] === \"--help\") { console.log(\"Usage: node app.js <item> <quantity> [--receipt]\"); process.exit(0); }\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nif (!Number.isInteger(count) || count < 1) { console.error(\"Quantity must be a whole number\"); process.exit(3); }\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Market\": 20, \"School\": 30, \"Clinic\": 25 };\nif (!(name in prices)) { console.error(`Unknown item: ${name}`); process.exit(2); }\nconst currency = process.env.CURRENCY ?? \"PHP\";\nconsole.log(`Total: ${currency} ${prices[name] * count}`);\nconst receipt = args.includes(\"--receipt\");\nif (receipt) console.log(\"Receipt: thank you!\");\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "cli-tricycle"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
