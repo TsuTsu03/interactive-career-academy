@@ -310,3 +310,223 @@ cliGitCourse.steps.push(...([
     "projectId": "files-sari-sari"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: files-sari-sari.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-files-sari-sari-6",
+    "index": 6,
+    "task": "You make a new folder called archive. This is like a box for old papers. You put it next to your main box. This helps you keep things tidy. Run this command: `mkdir archive`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "archive",
+        "label": "The archive folder exists",
+        "kind": "local-dir-exists",
+        "path": "archive"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of it as making a new box next to your main box. You don't need to type the whole command."
+      },
+      {
+        "level": 2,
+        "text": "Run `mkdir archive` to make the box."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "mkdir archive"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-sari-sari"
+  },
+  {
+    "id": "cli-files-sari-sari-7",
+    "index": 7,
+    "task": "You move the backup file into the archive folder. This is like putting a paper in a box. The backup file will stay safe there. Run this command: `mv orders/backup.txt archive/backup.txt`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "moved",
+        "label": "archive/backup.txt exists",
+        "kind": "local-file-exists",
+        "path": "archive/backup.txt"
+      },
+      {
+        "id": "gone",
+        "label": "backup.txt is no longer in orders",
+        "kind": "local-path-missing",
+        "path": "orders/backup.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of moving a paper from one box to another. You don't need to type the whole command."
+      },
+      {
+        "level": 2,
+        "text": "Run `mv orders/backup.txt archive/backup.txt` to move the paper."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "mv orders/backup.txt archive/backup.txt"
+    },
+    "conceptIds": [
+      "cli-move"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "files-sari-sari"
+  },
+  {
+    "id": "cli-files-sari-sari-8",
+    "index": 8,
+    "task": "You add Egg 9 to the prices file. This is like writing a new price on the list. The backup file stays old and unchanged. Run this command: `echo \"Egg 9\" >> orders/prices.txt`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "third",
+        "label": "prices.txt now says Egg 9",
+        "kind": "local-file-contains",
+        "path": "orders/prices.txt",
+        "value": "Egg 9"
+      },
+      {
+        "id": "backup-old",
+        "label": "The backup does not have Egg 9",
+        "kind": "local-file-lacks",
+        "path": "archive/backup.txt",
+        "value": "Egg 9"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of adding a new price to the list. You don't need to type the whole command."
+      },
+      {
+        "level": 2,
+        "text": "Run `echo \"Egg 9\" >> orders/prices.txt` to add the price."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Egg 9\" >> orders/prices.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "files-sari-sari"
+  },
+  {
+    "id": "cli-files-sari-sari-9",
+    "index": 9,
+    "task": "You delete the old backup file. This is like throwing away a paper. It's gone for good. Run this command: `rm archive/backup.txt`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "deleted",
+        "label": "The old backup is deleted",
+        "kind": "local-path-missing",
+        "path": "archive/backup.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of throwing away a paper. You don't need to type the whole command."
+      },
+      {
+        "level": 2,
+        "text": "Run `rm archive/backup.txt` to delete the paper."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "rm archive/backup.txt"
+    },
+    "conceptIds": [
+      "cli-remove"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "files-sari-sari"
+  },
+  {
+    "id": "cli-files-sari-sari-10",
+    "index": 10,
+    "task": "You remove the empty archive folder. This is like taking away an empty box. The main folder stays. Run this command: `rm -r archive`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n"
+    },
+    "tests": [
+      {
+        "id": "no-archive",
+        "label": "The archive folder is gone",
+        "kind": "local-path-missing",
+        "path": "archive"
+      },
+      {
+        "id": "kept",
+        "label": "The orders folder is still there",
+        "kind": "local-dir-exists",
+        "path": "orders"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of taking away an empty box. You don't need to type the whole command."
+      },
+      {
+        "level": 2,
+        "text": "Run `rm -r archive` to remove the box."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "rm -r archive"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "files-sari-sari"
+  }
+] satisfies typeof cliGitCourse.steps));

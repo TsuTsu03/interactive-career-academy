@@ -3657,3 +3657,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-18: Local Qwen authored nosql-basics/food-pantry, steps 246-250; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
 
 - 2026-09-24: Local Qwen wrote the lesson text for cli-git/files-sari-sari, steps 1-5; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/files-sari-sari, steps 6-10; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
