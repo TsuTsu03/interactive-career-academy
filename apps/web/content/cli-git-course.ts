@@ -4989,3 +4989,237 @@ cliGitCourse.steps.push(...([
     "projectId": "merging-barangay"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: tidy-barangay.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-tidy-barangay-1",
+    "index": 111,
+    "task": "You turn this folder into a Git repository. Git helps you track changes to files. You use the command `git init -b main` to start. This makes a branch named main. The checker will confirm the folder is now a Git repo and that fees.txt is not tracked yet.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "repo",
+        "label": "The folder is a Git repository",
+        "kind": "local-git-repo"
+      },
+      {
+        "id": "untracked",
+        "label": "fees.txt is not tracked yet",
+        "kind": "local-git-untracked",
+        "path": "fees.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of Git as a digital notebook for your files. Use the command to start writing in it."
+      },
+      {
+        "level": 2,
+        "text": "Run `git init -b main` exactly as shown."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git init -b main"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-barangay"
+  },
+  {
+    "id": "cli-tidy-barangay-2",
+    "index": 112,
+    "task": "You tell Git who you are. This helps identify your changes. You use `git config user.name \"Jose Reyes\"` to set your name. Then use `git config user.email \"jose@example.com\"` to set your email. The checker will confirm your name and email are set.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "Commits will be signed by Jose Reyes",
+        "kind": "local-git-config",
+        "key": "user.name",
+        "value": "Jose Reyes"
+      },
+      {
+        "id": "email",
+        "label": "The commit email is jose@example.com",
+        "kind": "local-git-config",
+        "key": "user.email",
+        "value": "jose@example.com"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Git needs to know who made the changes. Think of it like signing a document."
+      },
+      {
+        "level": 2,
+        "text": "Run `git config user.name \"Jose Reyes\"` and then `git config user.email \"jose@example.com\"`."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.name \"Jose Reyes\"\ngit config user.email \"jose@example.com\""
+    },
+    "estimatedMinutes": 4,
+    "projectId": "tidy-barangay"
+  },
+  {
+    "id": "cli-tidy-barangay-3",
+    "index": 113,
+    "task": "You prepare all files for saving. You use `git add .` to stage every file. This means Git will remember these files when you save them. The checker will confirm fees.txt and README.txt are now staged.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "file",
+        "label": "fees.txt is staged",
+        "kind": "local-git-staged",
+        "path": "fees.txt"
+      },
+      {
+        "id": "readme",
+        "label": "README.txt is staged",
+        "kind": "local-git-staged",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Staging means you're telling Git: 'I'm ready to save these files.'"
+      },
+      {
+        "level": 2,
+        "text": "Run `git add .` to stage all files at once."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add ."
+    },
+    "estimatedMinutes": 2,
+    "projectId": "tidy-barangay"
+  },
+  {
+    "id": "cli-tidy-barangay-4",
+    "index": 114,
+    "task": "You save the staged files as the first commit. You use `git commit -m \"Start barangay office files\"` to do this. This records your work. The checker will confirm there is now one commit and nothing is left uncommitted.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has one commit",
+        "kind": "local-git-commit-count",
+        "count": 1
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "A commit is like a snapshot of your work. Give it a message so you know what it is."
+      },
+      {
+        "level": 2,
+        "text": "Run `git commit -m \"Start barangay office files\"` to save your work."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Start barangay office files\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-barangay"
+  },
+  {
+    "id": "cli-tidy-barangay-5",
+    "index": 115,
+    "task": "You rename fees.txt to fee-list.txt. Git will record this change. You use `git mv fees.txt fee-list.txt` to rename. The checker will confirm fee-list.txt is staged and fees.txt no longer exists.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Barangay Office project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "fees.txt": "Clearance 50\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "renamed",
+        "label": "fee-list.txt is staged",
+        "kind": "local-git-staged",
+        "path": "fee-list.txt"
+      },
+      {
+        "id": "old-gone",
+        "label": "fees.txt no longer exists",
+        "kind": "local-path-missing",
+        "path": "fees.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Renaming a file is like changing its name on a label. Git tracks this change."
+      },
+      {
+        "level": 2,
+        "text": "Run `git mv fees.txt fee-list.txt` to rename the file."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git mv fees.txt fee-list.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-barangay"
+  }
+] satisfies typeof cliGitCourse.steps));
