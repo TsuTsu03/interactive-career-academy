@@ -4297,3 +4297,227 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "modules-carinderia"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: modules-carinderia.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-modules-carinderia-6",
+    "index": 86,
+    "task": "You will add a default export to prices.js. This lets other files use it easily. The code below will format a number as pesos. You must add it at the end of prices.js. Then run the checker to confirm it works.\n\nIn prices.js:\n```\nexport default function formatPeso(amount) {\n  return `PHP ${amount.toFixed(2)}`;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "default",
+        "label": "prices.js has a default export",
+        "kind": "local-file-contains",
+        "path": "prices.js",
+        "value": "export default function formatPeso"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of default export as the main thing you want to share."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of prices.js, right after the last line.\n\nIn prices.js:\n```\nexport default function formatPeso(amount) {\n  return `PHP ${amount.toFixed(2)}`;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "prices.js": "export const storeName = \"Carinderia\";\nexport const prices = { \"Adobo\": 80, \"Pancit\": 60, \"Lumpia\": 15 };\nexport function priceOf(name) {\n  return prices[name] ?? 0;\n}\nexport default function formatPeso(amount) {\n  return `PHP ${amount.toFixed(2)}`;\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "modules-carinderia"
+  },
+  {
+    "id": "node-modules-carinderia-7",
+    "index": 87,
+    "task": "You will import the default export in app.js. This lets you use the formatPeso function. Add the import at the top of app.js. Then add one line at the end to print 80 as pesos. Run the checker to confirm it prints PHP 80.00.\n\nIn app.js:\n```\nimport formatPeso from \"./prices.js\";\nconsole.log(formatPeso(80));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "peso",
+        "label": "The script prints PHP 80.00",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "PHP 80.00"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You import a default export without braces, like importing a single tool."
+      },
+      {
+        "level": 2,
+        "text": "Add the import at the top of app.js, then add the console.log line at the end.\n\nIn app.js:\n```\nimport formatPeso from \"./prices.js\";\nconsole.log(formatPeso(80));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import formatPeso from \"./prices.js\";\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Adobo\"]);\nconsole.log(`Pancit: ${priceOf(\"Pancit\")}`);\nconsole.log(formatPeso(80));\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "modules-carinderia"
+  },
+  {
+    "id": "node-modules-carinderia-8",
+    "index": 88,
+    "task": "You will import from Node's built-in os module. This gives you info about your computer. Add the import at the top of app.js. Then add one line at the end to print the operating system name. Run the checker to confirm it prints Running on and your system name.\n\nIn app.js:\n```\nimport { platform } from \"node:os\";\nconsole.log(`Running on ${platform()}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "os",
+        "label": "The script prints Running on and your system name",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Running on "
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the platform property to get the system name."
+      },
+      {
+        "level": 2,
+        "text": "Add the import at the top of app.js, then add the console.log line at the end.\n\nIn app.js:\n```\nimport { platform } from \"node:os\";\nconsole.log(`Running on ${platform()}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { platform } from \"node:os\";\nimport formatPeso from \"./prices.js\";\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Adobo\"]);\nconsole.log(`Pancit: ${priceOf(\"Pancit\")}`);\nconsole.log(formatPeso(80));\nconsole.log(`Running on ${platform()}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-carinderia"
+  },
+  {
+    "id": "node-modules-carinderia-9",
+    "index": 89,
+    "task": "You will add a start script to package.json. This lets you run the app with npm run start. Change package.json to add a scripts entry. Then run npm run start to test it. Run the checker to confirm package.json has a start script.\n\nIn package.json:\n```\n  \"type\": \"module\",\n  \"scripts\": { \"start\": \"node app.js\" }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "script",
+        "label": "package.json has a start script",
+        "kind": "local-file-contains",
+        "path": "package.json",
+        "value": "\"start\": \"node app.js\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The start script tells npm how to run your app."
+      },
+      {
+        "level": 2,
+        "text": "Add the scripts entry inside package.json, right after type: \"module\".\n\nIn package.json:\n```\n  \"type\": \"module\",\n  \"scripts\": { \"start\": \"node app.js\" }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "package.json": "{\n  \"type\": \"module\",\n  \"scripts\": { \"start\": \"node app.js\" }\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-carinderia"
+  },
+  {
+    "id": "node-modules-carinderia-10",
+    "index": 90,
+    "task": "You will import priceOf under a new name, lookup, and use it. Add the import at the top of app.js. Then add one line at the end to print the price of \"Lumpia\". Run the checker to confirm it prints Last item: 15.\n\nIn app.js:\n```\nimport { priceOf as lookup } from \"./prices.js\";\nconsole.log(`Last item: ${lookup(\"Lumpia\")}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Price list\");\n"
+    },
+    "tests": [
+      {
+        "id": "alias",
+        "label": "The script prints Last item: 15",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Last item: 15"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use \"as lookup\" to rename the imported function."
+      },
+      {
+        "level": 2,
+        "text": "Add the import at the top of app.js, then add the console.log line at the end.\n\nIn app.js:\n```\nimport { priceOf as lookup } from \"./prices.js\";\nconsole.log(`Last item: ${lookup(\"Lumpia\")}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { priceOf as lookup } from \"./prices.js\";\nimport { platform } from \"node:os\";\nimport formatPeso from \"./prices.js\";\nimport { storeName, prices, priceOf } from \"./prices.js\";\nconsole.log(\"Price list\");\nconsole.log(storeName);\nconsole.log(prices[\"Adobo\"]);\nconsole.log(`Pancit: ${priceOf(\"Pancit\")}`);\nconsole.log(formatPeso(80));\nconsole.log(`Running on ${platform()}`);\nconsole.log(`Last item: ${lookup(\"Lumpia\")}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "modules-carinderia"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
