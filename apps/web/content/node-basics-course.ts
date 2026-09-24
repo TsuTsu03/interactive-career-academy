@@ -2843,3 +2843,271 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "config-sari-sari"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: config-sari-sari.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-config-sari-sari-6",
+    "index": 56,
+    "task": "Add one line at the end of app.js. This line checks if the API_KEY secret is missing. If it is, the program stops and shows an error. This is important because the store's API needs this key to work. The code below does this. Run the checker to confirm it stops with exit code 1 when API_KEY is missing.\n\nIn app.js:\n```\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "missing",
+        "label": "Without API_KEY it ends with exit code 1",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 1
+      },
+      {
+        "id": "present",
+        "label": "With API_KEY it finishes normally",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "env": {
+          "API_KEY": "sk12345"
+        },
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If the key is missing, the program should stop right away with a clear message."
+      },
+      {
+        "level": 2,
+        "text": "Add this line at the very end of app.js, after the other code.\n\nIn app.js:\n```\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\n"
+    },
+    "conceptIds": [
+      "node-required-setting"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "config-sari-sari"
+  },
+  {
+    "id": "node-config-sari-sari-7",
+    "index": 57,
+    "task": "Add two lines at the end of app.js. The first line gets the secret. The second line prints only the first two characters, then hides the rest with asterisks. This is important because secrets must never be shown in full. The code below does this. Run the checker to confirm it prints Key: sk*** when the key is sk12345.\n\nIn app.js:\n```\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "masked",
+        "label": "With API_KEY=sk12345 it prints Key: sk***",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "API_KEY": "sk12345"
+        },
+        "value": "Key: sk***"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the .slice(0, 2) method to take only the first two characters."
+      },
+      {
+        "level": 2,
+        "text": "Add these two lines at the very end of app.js, after the other code.\n\nIn app.js:\n```\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\n"
+    },
+    "conceptIds": [
+      "node-secret"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "config-sari-sari"
+  },
+  {
+    "id": "node-config-sari-sari-8",
+    "index": 58,
+    "task": "Add an import at the top and two lines at the end of app.js. The import brings in the file reading tool. The next two lines read config.json and print the currency. This is important because settings like currency can change without changing code. The code below does this. Run the checker to confirm it prints Currency: PHP from config.json.\n\nIn app.js:\n```\nimport { readFile } from \"node:fs/promises\";\nconst fileConfig = JSON.parse(await readFile(\"config.json\", \"utf8\"));\nconsole.log(`Currency: ${fileConfig.currency}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "currency",
+        "label": "It prints Currency: PHP from config.json",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "API_KEY": "sk12345"
+        },
+        "value": "Currency: PHP"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the import statement to get the file reading tool from node:fs/promises."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines at the very end of app.js, after the other code.\n\nIn app.js:\n```\nimport { readFile } from \"node:fs/promises\";\nconst fileConfig = JSON.parse(await readFile(\"config.json\", \"utf8\"));\nconsole.log(`Currency: ${fileConfig.currency}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\nconst fileConfig = JSON.parse(await readFile(\"config.json\", \"utf8\"));\nconsole.log(`Currency: ${fileConfig.currency}`);\n"
+    },
+    "conceptIds": [
+      "node-config-file"
+    ],
+    "estimatedMinutes": 5,
+    "projectId": "config-sari-sari"
+  },
+  {
+    "id": "node-config-sari-sari-9",
+    "index": 59,
+    "task": "Add two lines at the end of app.js. The first line checks if CURRENCY is set in the environment. If yes, it uses that. If not, it uses the value from config.json. This is important because environment settings can override file settings. The code below does this. Run the checker to confirm it prints Using USD when CURRENCY=USD.\n\nIn app.js:\n```\nconst currency = process.env.CURRENCY ?? fileConfig.currency;\nconsole.log(`Using ${currency}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "override",
+        "label": "With CURRENCY=USD it prints Using USD",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "API_KEY": "sk12345",
+          "CURRENCY": "USD"
+        },
+        "value": "Using USD"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the ?? operator to pick the environment value if it exists, otherwise use the file value."
+      },
+      {
+        "level": 2,
+        "text": "Add these two lines at the very end of app.js, after the other code.\n\nIn app.js:\n```\nconst currency = process.env.CURRENCY ?? fileConfig.currency;\nconsole.log(`Using ${currency}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\nconst fileConfig = JSON.parse(await readFile(\"config.json\", \"utf8\"));\nconsole.log(`Currency: ${fileConfig.currency}`);\nconst currency = process.env.CURRENCY ?? fileConfig.currency;\nconsole.log(`Using ${currency}`);\n"
+    },
+    "conceptIds": [
+      "node-setting-order"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "config-sari-sari"
+  },
+  {
+    "id": "node-config-sari-sari-10",
+    "index": 60,
+    "task": "Add two lines at the end of app.js. The first line checks if NODE_ENV is production. If yes, it sets mode to production. If not, it sets mode to development. This is important because the store's system must know if it's running in production or development. The code below does this. Run the checker to confirm it prints Mode: production when NODE_ENV=production.\n\nIn app.js:\n```\nconst mode = process.env.NODE_ENV === \"production\" ? \"production\" : \"development\";\nconsole.log(`Mode: ${mode}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "mode",
+        "label": "With NODE_ENV=production it prints Mode: production",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "API_KEY": "sk12345",
+          "NODE_ENV": "production"
+        },
+        "value": "Mode: production"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use a ternary operator to set mode based on the environment variable."
+      },
+      {
+        "level": 2,
+        "text": "Add these two lines at the very end of app.js, after the other code.\n\nIn app.js:\n```\nconst mode = process.env.NODE_ENV === \"production\" ? \"production\" : \"development\";\nconsole.log(`Mode: ${mode}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\nconst fileConfig = JSON.parse(await readFile(\"config.json\", \"utf8\"));\nconsole.log(`Currency: ${fileConfig.currency}`);\nconst currency = process.env.CURRENCY ?? fileConfig.currency;\nconsole.log(`Using ${currency}`);\nconst mode = process.env.NODE_ENV === \"production\" ? \"production\" : \"development\";\nconsole.log(`Mode: ${mode}`);\n"
+    },
+    "conceptIds": [
+      "node-env-mode"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "config-sari-sari"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
