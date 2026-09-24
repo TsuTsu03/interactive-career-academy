@@ -3841,3 +3841,234 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "scripts-carinderia"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: scripts-carinderia.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-scripts-carinderia-6",
+    "index": 76,
+    "task": "You will print each product name with a dash in front. Add the code below at the end of app.js. This loop goes through every item in the list. It prints each name with a dash before it. The checker will confirm that the last item printed is - Lumpia.\n\nIn app.js:\n```\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "last",
+        "label": "The list ends with - Lumpia",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "- Lumpia"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of a loop that goes through each item in the list one by one."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, right after the items list.\n\nIn app.js:\n```\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Carinderia\");\nconst item = \"Adobo\";\nconst price = 80;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Adobo\", \"Pancit\", \"Lumpia\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-carinderia"
+  },
+  {
+    "id": "node-scripts-carinderia-7",
+    "index": 77,
+    "task": "You will add up the three prices and print the total. Add the code below at the end of app.js. This adds 80, 60, and 15 to get 155. The checker will confirm that the script prints Total: 155.\n\nIn app.js:\n```\nconst total = 80 + 60 + 15;\nconsole.log(`Total: ${total}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "total",
+        "label": "The script prints Total: 155",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Total: 155"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add two lines that calculate the total by adding the three prices."
+      },
+      {
+        "level": 2,
+        "text": "Place these lines at the end of app.js, after the loop.\n\nIn app.js:\n```\nconst total = 80 + 60 + 15;\nconsole.log(`Total: ${total}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Carinderia\");\nconst item = \"Adobo\";\nconst price = 80;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Adobo\", \"Pancit\", \"Lumpia\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 80 + 60 + 15;\nconsole.log(`Total: ${total}`);\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "scripts-carinderia"
+  },
+  {
+    "id": "node-scripts-carinderia-8",
+    "index": 78,
+    "task": "You will write a function that adds 12% tax to any amount. Add the code below at the end of app.js. The function multiplies the amount by 1.12 and rounds it. The checker will confirm that the script prints With tax: 174.\n\nIn app.js:\n```\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "tax",
+        "label": "The script prints With tax: 174",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "With tax: 174"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Create a function that takes an amount and returns it with 12% tax added."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines at the end of app.js, after the total line.\n\nIn app.js:\n```\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Carinderia\");\nconst item = \"Adobo\";\nconst price = 80;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Adobo\", \"Pancit\", \"Lumpia\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 80 + 60 + 15;\nconsole.log(`Total: ${total}`);\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-carinderia"
+  },
+  {
+    "id": "node-scripts-carinderia-9",
+    "index": 79,
+    "task": "You will label the order as big if the total is over 100, otherwise small. Add the code below at the end of app.js. The if statement checks if total is greater than 100. The checker will confirm that the script prints Big order.\n\nIn app.js:\n```\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "size",
+        "label": "The script prints Big order",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Big order"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use an if statement to check if the total is over 100. If yes, print 'Big order'. If no, print 'Small order'."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines at the end of app.js, after the tax line.\n\nIn app.js:\n```\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Carinderia\");\nconst item = \"Adobo\";\nconst price = 80;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Adobo\", \"Pancit\", \"Lumpia\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 80 + 60 + 15;\nconsole.log(`Total: ${total}`);\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-carinderia"
+  },
+  {
+    "id": "node-scripts-carinderia-10",
+    "index": 80,
+    "task": "You will report a warning using console.error. Add the code below at the end of app.js. This prints 'Low stock: Lumpia' as an error message. The checker will confirm that this message appears as an error, but the script still finishes normally.\n\nIn app.js:\n```\nconsole.error(\"Low stock: Lumpia\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "warning",
+        "label": "The script reports Low stock: Lumpia as an error message",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "value": "Low stock: Lumpia"
+      },
+      {
+        "id": "still-runs",
+        "label": "The script still finishes normally",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use console.error to print a warning message, not console.log."
+      },
+      {
+        "level": 2,
+        "text": "Add this line at the end of app.js, after the order label.\n\nIn app.js:\n```\nconsole.error(\"Low stock: Lumpia\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Carinderia\");\nconst item = \"Adobo\";\nconst price = 80;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Adobo\", \"Pancit\", \"Lumpia\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 80 + 60 + 15;\nconsole.log(`Total: ${total}`);\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\nconsole.error(\"Low stock: Lumpia\");\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "scripts-carinderia"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
