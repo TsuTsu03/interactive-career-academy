@@ -16738,3 +16738,246 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "folders-tricycle"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: folders-tricycle.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-folders-tricycle-6",
+    "index": 346,
+    "task": "Add `mkdir` to the import list. This lets you make folders. Add this line at the end: `await mkdir(\"archive\", { recursive: true });`. This makes the folder `archive` even if it already exists. Run `node app.js` to test it. Then paste the checker's report.\n\nIn app.js:\n```\nimport { readdir, mkdir } from \"node:fs/promises\";\nawait mkdir(\"archive\", { recursive: true });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Market 20\n",
+      "records/b.txt": "School 30\n",
+      "records/notes.md": "# Notes\nKeep Tricycle Terminal records here.\n"
+    },
+    "tests": [
+      {
+        "id": "archive",
+        "label": "The archive folder exists",
+        "kind": "local-dir-exists",
+        "path": "archive"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of `mkdir` as a tool to build a new folder. Use `{ recursive: true }` to avoid errors if the folder is already there."
+      },
+      {
+        "level": 2,
+        "text": "Put this line at the very end of the file, after the `import` line.\n\nIn app.js:\n```\nimport { readdir, mkdir } from \"node:fs/promises\";\nawait mkdir(\"archive\", { recursive: true });\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "folders-tricycle"
+  },
+  {
+    "id": "node-folders-tricycle-7",
+    "index": 347,
+    "task": "Add `copyFile` to the import list. This copies files. Add this line at the end: `await copyFile(file, path.join(\"archive\", \"a.txt\"));`. This copies `records/a.txt` into the `archive` folder. Run `node app.js` to test it. Then paste the checker's report.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile } from \"node:fs/promises\";\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Market 20\n",
+      "records/b.txt": "School 30\n",
+      "records/notes.md": "# Notes\nKeep Tricycle Terminal records here.\n"
+    },
+    "tests": [
+      {
+        "id": "copied",
+        "label": "archive/a.txt is a copy of records/a.txt",
+        "kind": "local-file-contains",
+        "path": "archive/a.txt",
+        "value": "Market 20"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The `copyFile` command takes two paths: where the file is now, and where you want to put the copy."
+      },
+      {
+        "level": 2,
+        "text": "Put this line at the end of the file, after the `import` line.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile } from \"node:fs/promises\";\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir, copyFile } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "folders-tricycle"
+  },
+  {
+    "id": "node-folders-tricycle-8",
+    "index": 348,
+    "task": "Add `stat` to the import list. This reads file details. Add these two lines at the end: `const info = await stat(file);` and `console.log(`Size: ${info.size} bytes`);`. This prints the file's size in bytes. The checker confirms it prints `Size: 10 bytes`.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile, stat } from \"node:fs/promises\";\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Market 20\n",
+      "records/b.txt": "School 30\n",
+      "records/notes.md": "# Notes\nKeep Tricycle Terminal records here.\n"
+    },
+    "tests": [
+      {
+        "id": "size",
+        "label": "The script prints Size: 10 bytes",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Size: 10 bytes"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The `stat` command gives you information about a file, like its size. Use `info.size` to get the number."
+      },
+      {
+        "level": 2,
+        "text": "Put these two lines at the end of the file, after the `import` line.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile, stat } from \"node:fs/promises\";\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir, copyFile, stat } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "folders-tricycle"
+  },
+  {
+    "id": "node-folders-tricycle-9",
+    "index": 349,
+    "task": "Add `rename` to the import list. This changes a file's name. Add this line at the end: `await rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));`. This renames the file to `a-old.txt`. Run `node app.js` to test it. Then paste the checker's report.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile, stat, rename } from \"node:fs/promises\";\nawait rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Market 20\n",
+      "records/b.txt": "School 30\n",
+      "records/notes.md": "# Notes\nKeep Tricycle Terminal records here.\n"
+    },
+    "tests": [
+      {
+        "id": "renamed",
+        "label": "archive/a-old.txt exists",
+        "kind": "local-file-exists",
+        "path": "archive/a-old.txt"
+      },
+      {
+        "id": "moved",
+        "label": "archive/a.txt is gone",
+        "kind": "local-path-missing",
+        "path": "archive/a.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The `rename` command takes the old name and the new name. Use `path.join` to build the full path."
+      },
+      {
+        "level": 2,
+        "text": "Put this line at the end of the file, after the `import` line.\n\nIn app.js:\n```\nimport { readdir, mkdir, copyFile, stat, rename } from \"node:fs/promises\";\nawait rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));\n``` The command is: `node app.js`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "node app.js"
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir, copyFile, stat, rename } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\nawait rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "folders-tricycle"
+  },
+  {
+    "id": "node-folders-tricycle-10",
+    "index": 350,
+    "task": "Add this line at the end: `console.log(`Absolute: ${path.isAbsolute(path.resolve(file))}`);`. This checks if the file path is absolute. The checker confirms it prints `Absolute: true`.\n\nIn app.js:\n```\nconsole.log(`Absolute: ${path.isAbsolute(path.resolve(file))}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "import path from \"node:path\";\nconsole.log(\"Folder tool\");\n",
+      "records/a.txt": "Market 20\n",
+      "records/b.txt": "School 30\n",
+      "records/notes.md": "# Notes\nKeep Tricycle Terminal records here.\n"
+    },
+    "tests": [
+      {
+        "id": "absolute",
+        "label": "The script prints Absolute: true",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Absolute: true"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The `path.resolve` command turns a relative path into a full one. `path.isAbsolute` checks if it is absolute."
+      },
+      {
+        "level": 2,
+        "text": "Put this line at the very end of the file, after the `import` line.\n\nIn app.js:\n```\nconsole.log(`Absolute: ${path.isAbsolute(path.resolve(file))}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import path from \"node:path\";\nimport { readdir, mkdir, copyFile, stat, rename } from \"node:fs/promises\";\nconsole.log(\"Folder tool\");\nconst file = path.join(\"records\", \"a.txt\");\nconsole.log(file.split(path.sep).join(\"/\"));\nconsole.log(`Extension: ${path.extname(file)}`);\nconsole.log(`Base: ${path.basename(file, \".txt\")}`);\nconst names = await readdir(\"records\");\nconsole.log(`Files: ${names.length}`);\nconst textFiles = names.filter((name) => path.extname(name) === \".txt\");\nconsole.log(`Text files: ${textFiles.length}`);\nawait mkdir(\"archive\", { recursive: true });\nawait copyFile(file, path.join(\"archive\", \"a.txt\"));\nconst info = await stat(file);\nconsole.log(`Size: ${info.size} bytes`);\nawait rename(path.join(\"archive\", \"a.txt\"), path.join(\"archive\", \"a-old.txt\"));\nconsole.log(`Absolute: ${path.isAbsolute(path.resolve(file))}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "folders-tricycle"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
