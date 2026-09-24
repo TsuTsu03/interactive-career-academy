@@ -12137,3 +12137,250 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "async-school-club"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: cli-school-club.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-cli-school-club-1",
+    "index": 251,
+    "task": "You will add code to app.js. This code counts how many words you typed after node app.js. The checker runs your code with the words Shirt 2. It checks if your code prints You typed 2 words. Run the checker to see the result.\n\nIn app.js:\n```\nconsole.log(`You typed ${args.length} words`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "words",
+        "label": "node app.js Shirt 2 prints You typed 2 words",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Shirt",
+          "2"
+        ],
+        "value": "You typed 2 words"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of words as pieces you type after the command."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js.\n\nIn app.js:\n```\nconsole.log(`You typed ${args.length} words`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "cli-school-club"
+  },
+  {
+    "id": "node-cli-school-club-2",
+    "index": 252,
+    "task": "You will split the first two words into name and quantity. The checker runs your code with Shirt 2. It checks if your code prints Item: Shirt. Add the code at the end of app.js.\n\nIn app.js:\n```\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "item",
+        "label": "node app.js Shirt 2 prints Item: Shirt",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Shirt",
+          "2"
+        ],
+        "value": "Item: Shirt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the code to split the words into two parts: the item name and the number."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js.\n\nIn app.js:\n```\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "cli-school-club"
+  },
+  {
+    "id": "node-cli-school-club-3",
+    "index": 253,
+    "task": "You will turn the quantity text into a number. The checker runs your code with Shirt 2. It checks if your code prints Quantity: 2. Add the code at the end of app.js.\n\nIn app.js:\n```\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "quantity",
+        "label": "node app.js Shirt 2 prints Quantity: 2",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Shirt",
+          "2"
+        ],
+        "value": "Quantity: 2"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use Number() to turn text into a number."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js.\n\nIn app.js:\n```\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "cli-school-club"
+  },
+  {
+    "id": "node-cli-school-club-4",
+    "index": 254,
+    "task": "You will look up the item's price and print the total cost. The checker runs your code with Shirt 2. It checks if your code prints Total: 500. Add the code at the end of app.js.\n\nIn app.js:\n```\nconst prices = { \"Shirt\": 250, \"Pin\": 30, \"Badge\": 45 };\nconsole.log(`Total: ${prices[name] * count}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "total",
+        "label": "node app.js Shirt 2 prints Total: 500",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "args": [
+          "Shirt",
+          "2"
+        ],
+        "value": "Total: 500"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use a price list to find the cost of the item."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js.\n\nIn app.js:\n```\nconst prices = { \"Shirt\": 250, \"Pin\": 30, \"Badge\": 45 };\nconsole.log(`Total: ${prices[name] * count}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Shirt\": 250, \"Pin\": 30, \"Badge\": 45 };\nconsole.log(`Total: ${prices[name] * count}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cli-school-club"
+  },
+  {
+    "id": "node-cli-school-club-5",
+    "index": 255,
+    "task": "You will stop the program with exit code 1 if no item is typed. The checker runs your code with no words. It checks if your code stops and shows a message. Add the code right after the line that sets name and quantity.\n\nIn app.js:\n```\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "exit",
+        "label": "node app.js with no words ends with exit code 1",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 1
+      },
+      {
+        "id": "usage",
+        "label": "It explains how to use the tool",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "value": "Usage: node app.js <item> <quantity>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use process.exit(1) to stop the program with an error."
+      },
+      {
+        "level": 2,
+        "text": "Add the code right after the line that sets name and quantity.\n\nIn app.js:\n```\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "const args = process.argv.slice(2);\nconsole.log(\"Order tool\");\nconsole.log(`You typed ${args.length} words`);\nconst [name, quantity] = args;\nif (!name) { console.error(\"Usage: node app.js <item> <quantity>\"); process.exit(1); }\nconsole.log(`Item: ${name}`);\nconst count = Number(quantity);\nconsole.log(`Quantity: ${count}`);\nconst prices = { \"Shirt\": 250, \"Pin\": 30, \"Badge\": 45 };\nconsole.log(`Total: ${prices[name] * count}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "cli-school-club"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
