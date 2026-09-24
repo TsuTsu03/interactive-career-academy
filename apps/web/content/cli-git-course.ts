@@ -7872,3 +7872,235 @@ cliGitCourse.steps.push(...([
     "projectId": "tidy-school-club"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: tidy-school-club.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-tidy-school-club-6",
+    "index": 176,
+    "task": "You are ready to save your rename. This step saves the change to the club's schedule file. You must type the exact command. After you run it, check that the commit saved the rename and nothing else is waiting to be saved. This is important because your club's schedule file now has the correct name for everyone to see.\n\nType this command in your terminal:\n`git commit -m \"Rename schedule.txt\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "in-commit",
+        "label": "The last commit includes club-schedule.txt",
+        "kind": "local-git-head-has-file",
+        "path": "club-schedule.txt"
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of saving your rename like writing a note in a notebook and closing it. You don't need to write the note again."
+      },
+      {
+        "level": 2,
+        "text": "Run `git commit -m \"Rename schedule.txt\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Rename schedule.txt\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-school-club"
+  },
+  {
+    "id": "cli-tidy-school-club-7",
+    "index": 177,
+    "task": "You will now delete the old draft file. This step removes the file from your folder and tells Git to prepare it for deletion. You must type the exact command. After you run it, check that the file is gone and Git knows it's ready to be deleted. This matters because your club no longer needs this old draft.\n\nType this command in your terminal:\n`git rm draft.txt`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "gone",
+        "label": "draft.txt is deleted",
+        "kind": "local-path-missing",
+        "path": "draft.txt"
+      },
+      {
+        "id": "staged",
+        "label": "The deletion is staged",
+        "kind": "local-git-staged",
+        "path": "draft.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Imagine removing a paper from your desk and telling your teacher you're done with it. You don't need to write the name again."
+      },
+      {
+        "level": 2,
+        "text": "Run `git rm draft.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git rm draft.txt"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-school-club"
+  },
+  {
+    "id": "cli-tidy-school-club-8",
+    "index": 178,
+    "task": "Now you save the deletion. This step makes sure your club's records show the file is gone. You must type the exact command. After you run it, check that your project has three commits and nothing is left uncommitted. This is important because your club's records are now clean and up to date.\n\nType this command in your terminal:\n`git commit -m \"Remove old draft\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has three commits",
+        "kind": "local-git-commit-count",
+        "count": 3
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of saving your deletion like putting a sticker on your notebook that says 'This page is removed.' You don't need to write the name again."
+      },
+      {
+        "level": 2,
+        "text": "Run `git commit -m \"Remove old draft\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Remove old draft\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-school-club"
+  },
+  {
+    "id": "cli-tidy-school-club-9",
+    "index": 179,
+    "task": "You will now make a file called .gitignore. This file tells Git to ignore any file that ends with .log. You must type the exact command. After you run it, check that .gitignore lists *.log and that it is a new, untracked file. This is important because your club doesn't want log files in the project.\n\nType this command in your terminal:\n`echo \"*.log\" > .gitignore`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "rule",
+        "label": ".gitignore lists *.log",
+        "kind": "local-file-contains",
+        "path": ".gitignore",
+        "value": "*.log"
+      },
+      {
+        "id": "new",
+        "label": ".gitignore is a new, untracked file",
+        "kind": "local-git-untracked",
+        "path": ".gitignore"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Imagine writing a rule that says 'Do not include any file with .log' and saving it in a special folder. You don't need to write the name again."
+      },
+      {
+        "level": 2,
+        "text": "Run `echo \"*.log\" > .gitignore`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"*.log\" > .gitignore"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tidy-school-club"
+  },
+  {
+    "id": "cli-tidy-school-club-10",
+    "index": 180,
+    "task": "You will now save the .gitignore file. This step tells Git to include the ignore rule in your project. You must type the exact two commands. After you run them, check that the last commit includes .gitignore and nothing is left uncommitted. This is important because your club's project will now ignore log files forever.\n\nType these commands in your terminal:\n`git add .gitignore`\n`git commit -m \"Ignore log files\"`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n",
+      "draft.txt": "Old draft notes\n"
+    },
+    "tests": [
+      {
+        "id": "saved",
+        "label": "The last commit includes .gitignore",
+        "kind": "local-git-head-has-file",
+        "path": ".gitignore"
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of saving your ignore rule like writing a note in your notebook and closing it. You don't need to write the name again."
+      },
+      {
+        "level": 2,
+        "text": "Run `git add .gitignore` then `git commit -m \"Ignore log files\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add .gitignore\ngit commit -m \"Ignore log files\""
+    },
+    "estimatedMinutes": 4,
+    "projectId": "tidy-school-club"
+  }
+] satisfies typeof cliGitCourse.steps));
