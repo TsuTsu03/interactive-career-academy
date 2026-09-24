@@ -6295,3 +6295,233 @@ cliGitCourse.steps.push(...([
     "projectId": "first-commit-school-club"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: undo-school-club.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-undo-school-club-1",
+    "index": 141,
+    "task": "You turn this folder into a Git project. Git will track your work. You name the first branch main. This is the start of your school club's record. Run this command: `git init -b main`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\nWednesday Meeting\n"
+    },
+    "tests": [
+      {
+        "id": "repo",
+        "label": "The folder is a Git repository",
+        "kind": "local-git-repo"
+      },
+      {
+        "id": "untracked",
+        "label": "schedule.txt is not tracked yet",
+        "kind": "local-git-untracked",
+        "path": "schedule.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are starting a Git project. The branch name is main. Git will remember your files."
+      },
+      {
+        "level": 2,
+        "text": "`git init -b main`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git init -b main"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "undo-school-club"
+  },
+  {
+    "id": "cli-undo-school-club-2",
+    "index": 142,
+    "task": "You tell Git who you are. This helps others know who made the changes. You use the name Ana Cruz and the email ana@example.com. Run these two commands: `git config user.name \"Ana Cruz\"` and `git config user.email \"ana@example.com\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\nWednesday Meeting\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "Commits will be signed by Ana Cruz",
+        "kind": "local-git-config",
+        "key": "user.name",
+        "value": "Ana Cruz"
+      },
+      {
+        "id": "email",
+        "label": "The commit email is ana@example.com",
+        "kind": "local-git-config",
+        "key": "user.email",
+        "value": "ana@example.com"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are setting your name and email so Git can mark your work. This is like signing your paper."
+      },
+      {
+        "level": 2,
+        "text": "`git config user.name \"Ana Cruz\"` and `git config user.email \"ana@example.com\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.name \"Ana Cruz\"\ngit config user.email \"ana@example.com\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "undo-school-club"
+  },
+  {
+    "id": "cli-undo-school-club-3",
+    "index": 143,
+    "task": "You prepare all files to be saved. You use a dot (.) to mean all files. This is like putting all your homework in a box before handing it in. Run this command: `git add .`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\nWednesday Meeting\n"
+    },
+    "tests": [
+      {
+        "id": "file",
+        "label": "schedule.txt is staged",
+        "kind": "local-git-staged",
+        "path": "schedule.txt"
+      },
+      {
+        "id": "readme",
+        "label": "README.txt is staged",
+        "kind": "local-git-staged",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are telling Git to save all files. The dot means everything in the folder."
+      },
+      {
+        "level": 2,
+        "text": "`git add .` is the command to stage all files."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add ."
+    },
+    "estimatedMinutes": 2,
+    "projectId": "undo-school-club"
+  },
+  {
+    "id": "cli-undo-school-club-4",
+    "index": 144,
+    "task": "You save your prepared files as the first step. You write a message: Start school club list. This is your first record. Run this command: `git commit -m \"Start school club list\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\nWednesday Meeting\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has one commit",
+        "kind": "local-git-commit-count",
+        "count": 1
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are saving your work with a message. This is like writing a note on your homework."
+      },
+      {
+        "level": 2,
+        "text": "`git commit -m \"Start school club list\"`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Start school club list\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "undo-school-club"
+  },
+  {
+    "id": "cli-undo-school-club-5",
+    "index": 145,
+    "task": "You add a mistake to schedule.txt. You write: Wrong line. This is a test for undoing changes. Run this command: `echo \"Wrong line\" >> schedule.txt`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\nWednesday Meeting\n"
+    },
+    "tests": [
+      {
+        "id": "mistake",
+        "label": "schedule.txt has the mistaken line",
+        "kind": "local-file-contains",
+        "path": "schedule.txt",
+        "value": "Wrong line"
+      },
+      {
+        "id": "unstaged",
+        "label": "Git sees an unstaged change",
+        "kind": "local-git-unstaged",
+        "path": "schedule.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are adding a line to test undoing. The >> means you add to the end of the file."
+      },
+      {
+        "level": 2,
+        "text": "`echo \"Wrong line\" >> schedule.txt`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "echo \"Wrong line\" >> schedule.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "undo-school-club"
+  }
+] satisfies typeof cliGitCourse.steps));
