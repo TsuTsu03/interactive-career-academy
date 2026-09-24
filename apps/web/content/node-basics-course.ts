@@ -7182,3 +7182,234 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "scripts-barangay"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: scripts-barangay.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-scripts-barangay-6",
+    "index": 146,
+    "task": "You will print each product name with a dash in front. Add the code below at the end of app.js. This makes the list look neat for the barangay office. Run the checker to confirm it works.\n\nIn app.js:\n```\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "last",
+        "label": "The list ends with - ID",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "- ID"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of a list of names with dashes before each one."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the items list.\n\nIn app.js:\n```\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Barangay Office\");\nconst item = \"Clearance\";\nconst price = 50;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Clearance\", \"Permit\", \"ID\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-barangay"
+  },
+  {
+    "id": "node-scripts-barangay-7",
+    "index": 147,
+    "task": "You will add up the three prices and print the total. Add the code below at the end of app.js. This helps the barangay office know how much to charge. Run the checker to confirm it works.\n\nIn app.js:\n```\nconst total = 50 + 300 + 20;\nconsole.log(`Total: ${total}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "total",
+        "label": "The script prints Total: 370",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Total: 370"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the prices together: 50 + 300 + 20 equals 370."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the for loop.\n\nIn app.js:\n```\nconst total = 50 + 300 + 20;\nconsole.log(`Total: ${total}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Barangay Office\");\nconst item = \"Clearance\";\nconst price = 50;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Clearance\", \"Permit\", \"ID\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 50 + 300 + 20;\nconsole.log(`Total: ${total}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-barangay"
+  },
+  {
+    "id": "node-scripts-barangay-8",
+    "index": 148,
+    "task": "You will add 12% tax to the total and print the new amount. Add the code below at the end of app.js. This shows the barangay office the final cost with tax. Run the checker to confirm it works.\n\nIn app.js:\n```\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "tax",
+        "label": "The script prints With tax: 414",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "With tax: 414"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the arrow function to multiply the total by 1.12 for tax."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the total line.\n\nIn app.js:\n```\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Barangay Office\");\nconst item = \"Clearance\";\nconst price = 50;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Clearance\", \"Permit\", \"ID\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 50 + 300 + 20;\nconsole.log(`Total: ${total}`);\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "scripts-barangay"
+  },
+  {
+    "id": "node-scripts-barangay-9",
+    "index": 149,
+    "task": "You will label the order as big if the total is over 100, or small if not. Add the code below at the end of app.js. This helps the barangay office decide if the order is large or small. Run the checker to confirm it works.\n\nIn app.js:\n```\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "size",
+        "label": "The script prints Big order",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Big order"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use if and else to check if total is bigger than 100."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the tax line.\n\nIn app.js:\n```\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Barangay Office\");\nconst item = \"Clearance\";\nconst price = 50;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Clearance\", \"Permit\", \"ID\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 50 + 300 + 20;\nconsole.log(`Total: ${total}`);\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "scripts-barangay"
+  },
+  {
+    "id": "node-scripts-barangay-10",
+    "index": 150,
+    "task": "You will report a warning using console.error instead of console.log. Add the code below at the end of app.js. This shows the barangay office a warning message, but the script still finishes normally. Run the checker to confirm it works.\n\nIn app.js:\n```\nconsole.error(\"Low stock: ID\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Hello from Node\");\n"
+    },
+    "tests": [
+      {
+        "id": "warning",
+        "label": "The script reports Low stock: ID as an error message",
+        "kind": "local-node-stderr",
+        "file": "app.js",
+        "value": "Low stock: ID"
+      },
+      {
+        "id": "still-runs",
+        "label": "The script still finishes normally",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use console.error to show warnings, not console.log."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of app.js, after the if-else block.\n\nIn app.js:\n```\nconsole.error(\"Low stock: ID\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Barangay Office\");\nconst item = \"Clearance\";\nconst price = 50;\nconsole.log(`${item} costs ${price} pesos`);\nconst items = [\"Clearance\", \"Permit\", \"ID\"];\nconsole.log(`Items: ${items.length}`);\nfor (const name of items) {\n  console.log(`- ${name}`);\n}\nconst total = 50 + 300 + 20;\nconsole.log(`Total: ${total}`);\nconst withTax = (amount) => Math.round(amount * 1.12);\nconsole.log(`With tax: ${withTax(total)}`);\nif (total > 100) console.log(\"Big order\");\nelse console.log(\"Small order\");\nconsole.error(\"Low stock: ID\");\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "scripts-barangay"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
