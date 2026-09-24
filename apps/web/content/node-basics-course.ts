@@ -16246,3 +16246,256 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "config-tricycle"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: config-tricycle.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-config-tricycle-6",
+    "index": 336,
+    "task": "Add this line at the end of app.js. It checks if the API_KEY is missing. If it is, the program stops with error code 1. This stops the program from running without the secret. Run the checker to confirm it works.\n\nIn app.js:\n```\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "missing",
+        "label": "Without API_KEY it ends with exit code 1",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "code": 1
+      },
+      {
+        "id": "present",
+        "label": "With API_KEY it finishes normally",
+        "kind": "local-node-exit-code",
+        "file": "app.js",
+        "env": {
+          "API_KEY": "sk12345"
+        },
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If the secret is missing, the program must stop right away."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the end of app.js, right before the last line.\n\nIn app.js:\n```\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "config-tricycle"
+  },
+  {
+    "id": "node-config-tricycle-7",
+    "index": 337,
+    "task": "Add these two lines at the end of app.js. The first line gets the secret. The second line prints only the first two letters, then hides the rest with stars. This keeps the secret safe. Run the checker to confirm it prints Key: sk***.\n\nIn app.js:\n```\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "masked",
+        "label": "With API_KEY=sk12345 it prints Key: sk***",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "API_KEY": "sk12345"
+        },
+        "value": "Key: sk***"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Hide the secret by showing only the first two letters, then use stars."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines at the end of app.js, after the previous code.\n\nIn app.js:\n```\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "config-tricycle"
+  },
+  {
+    "id": "node-config-tricycle-8",
+    "index": 338,
+    "task": "Add these three lines at the top and bottom of app.js. The first line imports a tool to read files. The next two lines read config.json and print the currency. This lets the program use settings from a file. Run the checker to confirm it prints Currency: PHP.\n\nIn app.js:\n```\nimport { readFile } from \"node:fs/promises\";\nconst fileConfig = JSON.parse(await readFile(\"config.json\", \"utf8\"));\nconsole.log(`Currency: ${fileConfig.currency}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "currency",
+        "label": "It prints Currency: PHP from config.json",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "API_KEY": "sk12345"
+        },
+        "value": "Currency: PHP"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the tool to read the file, then parse it as JSON."
+      },
+      {
+        "level": 2,
+        "text": "Add the import at the top, then the two lines after the import.\n\nIn app.js:\n```\nimport { readFile } from \"node:fs/promises\";\nconst fileConfig = JSON.parse(await readFile(\"config.json\", \"utf8\"));\nconsole.log(`Currency: ${fileConfig.currency}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\nconst fileConfig = JSON.parse(await readFile(\"config.json\", \"utf8\"));\nconsole.log(`Currency: ${fileConfig.currency}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "config-tricycle"
+  },
+  {
+    "id": "node-config-tricycle-9",
+    "index": 339,
+    "task": "Add these two lines at the end of app.js. The first line checks if CURRENCY is set. If yes, it uses that. If no, it uses the value from config.json. The second line prints what it's using. This lets you override the file's value with an environment variable. Run the checker to confirm it prints Using USD.\n\nIn app.js:\n```\nconst currency = process.env.CURRENCY ?? fileConfig.currency;\nconsole.log(`Using ${currency}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "override",
+        "label": "With CURRENCY=USD it prints Using USD",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "API_KEY": "sk12345",
+          "CURRENCY": "USD"
+        },
+        "value": "Using USD"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If CURRENCY is set, use it. Otherwise, use the file's value."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines at the end of app.js, after the previous code.\n\nIn app.js:\n```\nconst currency = process.env.CURRENCY ?? fileConfig.currency;\nconsole.log(`Using ${currency}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\nconst fileConfig = JSON.parse(await readFile(\"config.json\", \"utf8\"));\nconsole.log(`Currency: ${fileConfig.currency}`);\nconst currency = process.env.CURRENCY ?? fileConfig.currency;\nconsole.log(`Using ${currency}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "config-tricycle"
+  },
+  {
+    "id": "node-config-tricycle-10",
+    "index": 340,
+    "task": "Add these two lines at the end of app.js. The first line checks if NODE_ENV is production. If yes, it sets mode to production. If no, it sets mode to development. The second line prints the mode. This lets you know if the program runs in production or development. Run the checker to confirm it prints Mode: production.\n\nIn app.js:\n```\nconst mode = process.env.NODE_ENV === \"production\" ? \"production\" : \"development\";\nconsole.log(`Mode: ${mode}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "mode",
+        "label": "With NODE_ENV=production it prints Mode: production",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "API_KEY": "sk12345",
+          "NODE_ENV": "production"
+        },
+        "value": "Mode: production"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If NODE_ENV is production, set mode to production. Otherwise, set it to development."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines at the end of app.js, after the previous code.\n\nIn app.js:\n```\nconst mode = process.env.NODE_ENV === \"production\" ? \"production\" : \"development\";\nconsole.log(`Mode: ${mode}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "import { readFile } from \"node:fs/promises\";\nconsole.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\nif (!process.env.API_KEY) { console.error(\"Missing API_KEY\"); process.exit(1); }\nconst key = process.env.API_KEY;\nconsole.log(`Key: ${key.slice(0, 2)}***`);\nconst fileConfig = JSON.parse(await readFile(\"config.json\", \"utf8\"));\nconsole.log(`Currency: ${fileConfig.currency}`);\nconst currency = process.env.CURRENCY ?? fileConfig.currency;\nconsole.log(`Using ${currency}`);\nconst mode = process.env.NODE_ENV === \"production\" ? \"production\" : \"development\";\nconsole.log(`Mode: ${mode}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "config-tricycle"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
