@@ -530,3 +530,224 @@ cliGitCourse.steps.push(...([
     "projectId": "files-sari-sari"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: first-commit-sari-sari.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-first-commit-sari-sari-1",
+    "index": 11,
+    "task": "You turn your folder into a Git repository. This lets Git track your files. You name the first branch main. This is the default branch name. Run this command: `git init -b main`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "repo",
+        "label": "The folder is a Git repository",
+        "kind": "local-git-repo"
+      },
+      {
+        "id": "untracked",
+        "label": "prices.txt is not tracked yet",
+        "kind": "local-git-untracked",
+        "path": "prices.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Make your folder a Git project by running git init with the -b flag for main."
+      },
+      {
+        "level": 2,
+        "text": "Run `git init -b main` to start the repository with the branch named main."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git init -b main"
+    },
+    "conceptIds": [
+      "git-repository"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "first-commit-sari-sari"
+  },
+  {
+    "id": "cli-first-commit-sari-sari-2",
+    "index": 12,
+    "task": "You set your Git identity name to Maria Santos. This name appears on every commit. Run this command: `git config user.name \"Maria Santos\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "Commits will be signed by Maria Santos",
+        "kind": "local-git-config",
+        "key": "user.name",
+        "value": "Maria Santos"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Set your Git name so future commits show Maria Santos as the author."
+      },
+      {
+        "level": 2,
+        "text": "Run `git config user.name \"Maria Santos\"` to set your name in Git."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.name \"Maria Santos\""
+    },
+    "conceptIds": [
+      "git-identity"
+    ],
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-sari-sari"
+  },
+  {
+    "id": "cli-first-commit-sari-sari-3",
+    "index": 13,
+    "task": "You set your Git identity email to maria@example.com. This email appears on every commit. Run this command: `git config user.email \"maria@example.com\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "email",
+        "label": "The commit email is maria@example.com",
+        "kind": "local-git-config",
+        "key": "user.email",
+        "value": "maria@example.com"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Set your Git email so commits show maria@example.com as the contact."
+      },
+      {
+        "level": 2,
+        "text": "Run `git config user.email \"maria@example.com\"` to set your email in Git."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.email \"maria@example.com\""
+    },
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-sari-sari"
+  },
+  {
+    "id": "cli-first-commit-sari-sari-4",
+    "index": 14,
+    "task": "You stage only prices.txt. This means Git will save its changes next. README.txt stays unstaged. Run this command: `git add prices.txt`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "staged",
+        "label": "prices.txt is staged",
+        "kind": "local-git-staged",
+        "path": "prices.txt"
+      },
+      {
+        "id": "readme-waits",
+        "label": "README.txt is still untracked",
+        "kind": "local-git-untracked",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add prices.txt to the staging area so Git knows it's ready to save."
+      },
+      {
+        "level": 2,
+        "text": "Run `git add prices.txt` to stage only this file for your next commit."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add prices.txt"
+    },
+    "conceptIds": [
+      "git-staging"
+    ],
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-sari-sari"
+  },
+  {
+    "id": "cli-first-commit-sari-sari-5",
+    "index": 15,
+    "task": "You stage README.txt too. Now both files are ready to be saved. Run this command: `git add README.txt`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "Sari-Sari Store project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "prices.txt": "Rice 50\n"
+    },
+    "tests": [
+      {
+        "id": "readme",
+        "label": "README.txt is staged",
+        "kind": "local-git-staged",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add README.txt to the staging area so Git saves it with prices.txt."
+      },
+      {
+        "level": 2,
+        "text": "Run `git add README.txt` to stage this file for your next commit."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add README.txt"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "first-commit-sari-sari"
+  }
+] satisfies typeof cliGitCourse.steps));
