@@ -2595,3 +2595,251 @@ nodeBasicsCourse.steps.push(...([
     "projectId": "cli-sari-sari"
   }
 ] satisfies typeof nodeBasicsCourse.steps));
+
+// Validated local authoring batch: config-sari-sari.
+nodeBasicsCourse.steps.push(...([
+  {
+    "id": "node-config-sari-sari-1",
+    "index": 51,
+    "task": "You will read the PLACE environment variable. This tells the app where the store is. Add these two lines at the end of app.js. The code below reads the variable and prints it. Run the checker to confirm it works with PLACE set to Sari-Sari Store.\n\nIn app.js:\n```\nconst place = process.env.PLACE;\nconsole.log(`Place: ${place}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "place",
+        "label": "With PLACE=Sari-Sari Store it prints Place: Sari-Sari Store",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "PLACE": "Sari-Sari Store"
+        },
+        "value": "Place: Sari-Sari Store"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The code uses process.env to get the setting from outside the file."
+      },
+      {
+        "level": 2,
+        "text": "Add the lines at the end of app.js, after the existing code.\n\nIn app.js:\n```\nconst place = process.env.PLACE;\nconsole.log(`Place: ${place}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE;\nconsole.log(`Place: ${place}`);\n"
+    },
+    "conceptIds": [
+      "node-env-var"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "config-sari-sari"
+  },
+  {
+    "id": "node-config-sari-sari-2",
+    "index": 52,
+    "task": "Now, if PLACE is not set, the app should say 'Unknown place'. Change the line that reads PLACE to use ?? for a fallback. The code below does that. Run the checker to confirm it prints 'Unknown place' when PLACE is not set.\n\nIn app.js:\n```\nconst place = process.env.PLACE ?? \"Unknown place\";\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "fallback",
+        "label": "Without PLACE it prints Place: Unknown place",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "value": "Place: Unknown place"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use ?? to give a default value if the setting is missing."
+      },
+      {
+        "level": 2,
+        "text": "Replace the old line with the new one at the end of app.js.\n\nIn app.js:\n```\nconst place = process.env.PLACE ?? \"Unknown place\";\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\n"
+    },
+    "conceptIds": [
+      "node-default-value"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "config-sari-sari"
+  },
+  {
+    "id": "node-config-sari-sari-3",
+    "index": 53,
+    "task": "You will read LIMIT as a number. The default is 5. Add these two lines at the end of app.js. The code below converts the setting to a number and prints it. Run the checker to confirm it prints 12 when LIMIT is set to 12.\n\nIn app.js:\n```\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "limit",
+        "label": "With LIMIT=12 it prints Limit: 12",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "LIMIT": "12"
+        },
+        "value": "Limit: 12"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use Number() to turn the setting into a number."
+      },
+      {
+        "level": 2,
+        "text": "Add the lines at the end of app.js, after the existing code.\n\nIn app.js:\n```\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "config-sari-sari"
+  },
+  {
+    "id": "node-config-sari-sari-4",
+    "index": 54,
+    "task": "You will turn on debug mode only if DEBUG is set to true. Add these two lines at the end of app.js. The code below checks if DEBUG equals 'true' and prints a message if it does. Run the checker to confirm it prints 'Debug mode on' when DEBUG is true.\n\nIn app.js:\n```\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "debug",
+        "label": "With DEBUG=true it prints Debug mode on",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "DEBUG": "true"
+        },
+        "value": "Debug mode on"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use === to check if DEBUG is exactly 'true'."
+      },
+      {
+        "level": 2,
+        "text": "Add the lines at the end of app.js, after the existing code.\n\nIn app.js:\n```\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "config-sari-sari"
+  },
+  {
+    "id": "node-config-sari-sari-5",
+    "index": 55,
+    "task": "You will collect all settings into one object. Add these two lines at the end of app.js. The code below creates an object with place, limit, and debug, then prints it as JSON. Run the checker to confirm it prints the settings as JSON when PLACE is Hall and LIMIT is 3.\n\nIn app.js:\n```\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store Node.js project.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "app.js": "console.log(\"Config check\");\n",
+      "config.json": "{\n  \"currency\": \"PHP\",\n  \"taxRate\": 0.12\n}\n"
+    },
+    "tests": [
+      {
+        "id": "json",
+        "label": "With PLACE=Hall and LIMIT=3 it prints the settings as JSON",
+        "kind": "local-node-prints",
+        "file": "app.js",
+        "env": {
+          "PLACE": "Hall",
+          "LIMIT": "3"
+        },
+        "value": "{\"place\":\"Hall\",\"limit\":3,\"debug\":false}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use { place, limit, debug } to make an object with the settings."
+      },
+      {
+        "level": 2,
+        "text": "Add the lines at the end of app.js, after the existing code.\n\nIn app.js:\n```\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "app.js": "console.log(\"Config check\");\nconst place = process.env.PLACE ?? \"Unknown place\";\nconsole.log(`Place: ${place}`);\nconst limit = Number(process.env.LIMIT ?? 5);\nconsole.log(`Limit: ${limit}`);\nconst debug = process.env.DEBUG === \"true\";\nif (debug) console.log(\"Debug mode on\");\nconst config = { place, limit, debug };\nconsole.log(JSON.stringify(config));\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "config-sari-sari"
+  }
+] satisfies typeof nodeBasicsCourse.steps));
