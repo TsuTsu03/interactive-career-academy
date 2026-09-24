@@ -6743,3 +6743,232 @@ cliGitCourse.steps.push(...([
     "projectId": "undo-school-club"
   }
 ] satisfies typeof cliGitCourse.steps));
+
+// Validated local authoring batch: branches-school-club.
+cliGitCourse.steps.push(...([
+  {
+    "id": "cli-branches-school-club-1",
+    "index": 151,
+    "task": "You turn your folder into a Git project. This lets you save your work and share it with others. You name the first branch 'main'. This is the default branch for your project. Run this command: `git init -b main`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "repo",
+        "label": "The folder is a Git repository",
+        "kind": "local-git-repo"
+      },
+      {
+        "id": "untracked",
+        "label": "schedule.txt is not tracked yet",
+        "kind": "local-git-untracked",
+        "path": "schedule.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are starting a new project with Git. The branch 'main' will hold your main work."
+      },
+      {
+        "level": 2,
+        "text": "Run `git init -b main` to start the project."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git init -b main"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "branches-school-club"
+  },
+  {
+    "id": "cli-branches-school-club-2",
+    "index": 152,
+    "task": "You tell Git who you are. This helps others know who made the changes. You set your name and email. Run these commands: `git config user.name \"Ana Cruz\"` and `git config user.email \"ana@example.com\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "Commits will be signed by Ana Cruz",
+        "kind": "local-git-config",
+        "key": "user.name",
+        "value": "Ana Cruz"
+      },
+      {
+        "id": "email",
+        "label": "The commit email is ana@example.com",
+        "kind": "local-git-config",
+        "key": "user.email",
+        "value": "ana@example.com"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Git needs your name and email to mark your work. Use the exact text shown."
+      },
+      {
+        "level": 2,
+        "text": "Run `git config user.name \"Ana Cruz\"` first, then `git config user.email \"ana@example.com\"`."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git config user.name \"Ana Cruz\"\ngit config user.email \"ana@example.com\""
+    },
+    "estimatedMinutes": 4,
+    "projectId": "branches-school-club"
+  },
+  {
+    "id": "cli-branches-school-club-3",
+    "index": 153,
+    "task": "You prepare all files to be saved. This is called staging. You use a dot (.) to include every file. Run this command: `git add .`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "file",
+        "label": "schedule.txt is staged",
+        "kind": "local-git-staged",
+        "path": "schedule.txt"
+      },
+      {
+        "id": "readme",
+        "label": "README.txt is staged",
+        "kind": "local-git-staged",
+        "path": "README.txt"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are telling Git to save all files at once. The dot (.) means 'all files'."
+      },
+      {
+        "level": 2,
+        "text": "Run `git add .` to stage everything."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git add ."
+    },
+    "estimatedMinutes": 2,
+    "projectId": "branches-school-club"
+  },
+  {
+    "id": "cli-branches-school-club-4",
+    "index": 154,
+    "task": "You save your staged files as the first step. This is called a commit. You give it a message: 'Start school club list'. Run this command: `git commit -m \"Start school club list\"`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The repository has one commit",
+        "kind": "local-git-commit-count",
+        "count": 1
+      },
+      {
+        "id": "clean",
+        "label": "Nothing is left uncommitted",
+        "kind": "local-git-clean"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are saving your work with a message. The message explains what you did."
+      },
+      {
+        "level": 2,
+        "text": "Run `git commit -m \"Start school club list\"` to save your work."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git commit -m \"Start school club list\""
+    },
+    "estimatedMinutes": 3,
+    "projectId": "branches-school-club"
+  },
+  {
+    "id": "cli-branches-school-club-5",
+    "index": 155,
+    "task": "You make a new branch named 'friday-plan'. This is separate from 'main'. You stay on 'main' after making it. Run this command: `git branch friday-plan`. Then run the checker and paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "README.txt": "School Club project files.\nFollow the CodeDaddy course steps inside this folder.\n",
+      "schedule.txt": "Monday Practice\n"
+    },
+    "tests": [
+      {
+        "id": "exists",
+        "label": "The friday-plan branch exists",
+        "kind": "local-git-branch-exists",
+        "branch": "friday-plan"
+      },
+      {
+        "id": "still-main",
+        "label": "You are still on main",
+        "kind": "local-git-branch",
+        "value": "main"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are creating a new branch for planning Friday's activities. You don't leave 'main'."
+      },
+      {
+        "level": 2,
+        "text": "Run `git branch friday-plan` to make the new branch."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "git branch friday-plan"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "branches-school-club"
+  }
+] satisfies typeof cliGitCourse.steps));
