@@ -1606,3 +1606,292 @@ apiBasicsCourse.steps.push(...([
     "projectId": "request-bodies-sari-sari"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: request-bodies-sari-sari.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-request-bodies-sari-sari-6",
+    "index": 26,
+    "task": "If the body is not JSON, the server crashes. You fix this by catching the error. The code below shows how to return 400 instead. This helps customers know their request is broken. Run the checker to confirm.\n\nIn server.js:\n```\n  let data;\n  try { data = JSON.parse(await readBody(req)); } catch { return send(res, 400, { error: \"Body must be JSON\" }); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "bad",
+        "label": "POST /items with broken JSON answers 400",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/items",
+            "body": "not json",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 400,
+        "bodyContains": "Body must be JSON"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "When JSON.parse fails, the server should not crash. It should return 400."
+      },
+      {
+        "level": 2,
+        "text": "Put the two lines after the try block, right before the catch block.\n\nIn server.js:\n```\n  let data;\n  try { data = JSON.parse(await readBody(req)); } catch { return send(res, 400, { error: \"Body must be JSON\" }); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  let data;\n  try { data = JSON.parse(await readBody(req)); } catch { return send(res, 400, { error: \"Body must be JSON\" }); }\n  const item = { id: items.length + 1, ...data };\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/echo\" && req.method === \"POST\") return send(res, 200, { received: await readBody(req) });\n  if (req.url === \"/echo-json\" && req.method === \"POST\") return send(res, 200, JSON.parse(await readBody(req)));\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-bad-request"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "request-bodies-sari-sari"
+  },
+  {
+    "id": "api-request-bodies-sari-sari-7",
+    "index": 27,
+    "task": "Validation checks if data is correct before storing it. If the name is missing or empty, return 422. This tells the user what is wrong. The code below shows how to check. Run the checker to confirm.\n\nIn server.js:\n```\n  if (typeof data.name !== \"string\" || !data.name.trim()) return send(res, 422, { error: \"name is required\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "noname",
+        "label": "POST /items without a name answers 422",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/items",
+            "body": "{\"price\":5}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 422,
+        "bodyContains": "name is required"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if data.name is a string and not empty. If not, return 422."
+      },
+      {
+        "level": 2,
+        "text": "Put the check right after the try block, before the item creation.\n\nIn server.js:\n```\n  if (typeof data.name !== \"string\" || !data.name.trim()) return send(res, 422, { error: \"name is required\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  let data;\n  try { data = JSON.parse(await readBody(req)); } catch { return send(res, 400, { error: \"Body must be JSON\" }); }\n  if (typeof data.name !== \"string\" || !data.name.trim()) return send(res, 422, { error: \"name is required\" });\n  const item = { id: items.length + 1, ...data };\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/echo\" && req.method === \"POST\") return send(res, 200, { received: await readBody(req) });\n  if (req.url === \"/echo-json\" && req.method === \"POST\") return send(res, 200, JSON.parse(await readBody(req)));\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-validation"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "request-bodies-sari-sari"
+  },
+  {
+    "id": "api-request-bodies-sari-sari-8",
+    "index": 28,
+    "task": "Price must be a number, and it must be 0 or more. If not, return 422. This stops bad data from being stored. The code below shows how to check. Run the checker to confirm.\n\nIn server.js:\n```\n  if (!Number.isFinite(data.price) || data.price < 0) return send(res, 422, { error: \"price must be a number 0 or more\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "badprice",
+        "label": "POST /items with price five answers 422",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/items",
+            "body": "{\"name\":\"Tea\",\"price\":\"five\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 422,
+        "bodyContains": "price must be a number"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use Number.isFinite to check if price is a number. Then check if it's not less than 0."
+      },
+      {
+        "level": 2,
+        "text": "Put the check right after the name check, before creating the item.\n\nIn server.js:\n```\n  if (!Number.isFinite(data.price) || data.price < 0) return send(res, 422, { error: \"price must be a number 0 or more\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  let data;\n  try { data = JSON.parse(await readBody(req)); } catch { return send(res, 400, { error: \"Body must be JSON\" }); }\n  if (typeof data.name !== \"string\" || !data.name.trim()) return send(res, 422, { error: \"name is required\" });\n  if (!Number.isFinite(data.price) || data.price < 0) return send(res, 422, { error: \"price must be a number 0 or more\" });\n  const item = { id: items.length + 1, ...data };\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/echo\" && req.method === \"POST\") return send(res, 200, { received: await readBody(req) });\n  if (req.url === \"/echo-json\" && req.method === \"POST\") return send(res, 200, JSON.parse(await readBody(req)));\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "request-bodies-sari-sari"
+  },
+  {
+    "id": "api-request-bodies-sari-sari-9",
+    "index": 29,
+    "task": "Only keep the known fields: id, name, and price. Trim spaces from the name. This keeps data clean and safe. The code below shows how to build the item. Run the checker to confirm.\n\nIn server.js:\n```\n  const item = { id: items.length + 1, name: data.name.trim(), price: data.price };\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "trim",
+        "label": "The new item is stored with a trimmed name and no extra fields",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/items",
+            "body": "{\"name\":\"  Tea  \",\"price\":12,\"secret\":\"x\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "bodyContains": "{\"id\":4,\"name\":\"Tea\",\"price\":12}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use data.name.trim() to remove spaces from the name."
+      },
+      {
+        "level": 2,
+        "text": "Replace the old item line with the new one, keeping only id, name, and price.\n\nIn server.js:\n```\n  const item = { id: items.length + 1, name: data.name.trim(), price: data.price };\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  let data;\n  try { data = JSON.parse(await readBody(req)); } catch { return send(res, 400, { error: \"Body must be JSON\" }); }\n  if (typeof data.name !== \"string\" || !data.name.trim()) return send(res, 422, { error: \"name is required\" });\n  if (!Number.isFinite(data.price) || data.price < 0) return send(res, 422, { error: \"price must be a number 0 or more\" });\n  const item = { id: items.length + 1, name: data.name.trim(), price: data.price };\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/echo\" && req.method === \"POST\") return send(res, 200, { received: await readBody(req) });\n  if (req.url === \"/echo-json\" && req.method === \"POST\") return send(res, 200, JSON.parse(await readBody(req)));\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "request-bodies-sari-sari"
+  },
+  {
+    "id": "api-request-bodies-sari-sari-10",
+    "index": 30,
+    "task": "After creating an item, send a Location header. This tells the client where to find the new item. The code below shows how to add it. Run the checker to confirm.\n\nIn server.js:\n```\n  res.setHeader(\"Location\", `/items/${item.id}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "location",
+        "label": "POST /items sends Location: /items/4",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/items",
+            "body": "{\"name\":\"Tea\",\"price\":12}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "header": {
+          "name": "location",
+          "value": "/items/4"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the header before the return line in createItem. Use the item's id."
+      },
+      {
+        "level": 2,
+        "text": "The header should be: Location: /items/{id}.\n\nIn server.js:\n```\n  res.setHeader(\"Location\", `/items/${item.id}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  let data;\n  try { data = JSON.parse(await readBody(req)); } catch { return send(res, 400, { error: \"Body must be JSON\" }); }\n  if (typeof data.name !== \"string\" || !data.name.trim()) return send(res, 422, { error: \"name is required\" });\n  if (!Number.isFinite(data.price) || data.price < 0) return send(res, 422, { error: \"price must be a number 0 or more\" });\n  const item = { id: items.length + 1, name: data.name.trim(), price: data.price };\n  items.push(item);\n  res.setHeader(\"Location\", `/items/${item.id}`);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/echo\" && req.method === \"POST\") return send(res, 200, { received: await readBody(req) });\n  if (req.url === \"/echo-json\" && req.method === \"POST\") return send(res, 200, JSON.parse(await readBody(req)));\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "api-location-header"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "request-bodies-sari-sari"
+  }
+] satisfies typeof apiBasicsCourse.steps));
