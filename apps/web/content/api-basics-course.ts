@@ -24729,3 +24729,279 @@ apiBasicsCourse.steps.push(...([
     "projectId": "query-strings-tricycle"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: middleware-tricycle.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-middleware-tricycle-1",
+    "index": 451,
+    "task": "You add a counter and a function to give every answer a number. This number goes in the header X-Request-Id. The first answer will show 1. You put this code at the top of the server. The checker will test if the first answer has that header.\n\nIn server.js:\n```\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\n  addRequestId(req, res);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "id",
+        "label": "The first answer sends X-Request-Id: 1",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "header": {
+          "name": "x-request-id",
+          "value": "1"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of the counter like a ticket number that goes up every time you give an answer."
+      },
+      {
+        "level": 2,
+        "text": "Put the code above the server's main part, where the handler starts.\n\nIn server.js:\n```\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\n  addRequestId(req, res);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  addRequestId(req, res);\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "middleware-tricycle"
+  },
+  {
+    "id": "api-middleware-tricycle-2",
+    "index": 452,
+    "task": "You add a new function that sets the header X-Place to tricycle. You put this code right after the first function. The checker will test if every answer has that header.\n\nIn server.js:\n```\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"tricycle\"); }\n  addPlace(req, res);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "place",
+        "label": "Answers send X-Place: tricycle",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "header": {
+          "name": "x-place",
+          "value": "tricycle"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This header tells where the answer is coming from, like a place tag."
+      },
+      {
+        "level": 2,
+        "text": "Put the code right after the first function, before the handler.\n\nIn server.js:\n```\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"tricycle\"); }\n  addPlace(req, res);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"tricycle\"); }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  addRequestId(req, res);\n  addPlace(req, res);\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "middleware-tricycle"
+  },
+  {
+    "id": "api-middleware-tricycle-3",
+    "index": 453,
+    "task": "You make a list of all the functions you want to run. You replace the two calls with a loop that runs each function in the list. The checker will test if the server keeps the middleware in one list and still sends X-Place.\n\nIn server.js:\n```\nconst middleware = [addRequestId, addPlace];\n  for (const step of middleware) step(req, res);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "list",
+        "label": "server.js keeps its middleware in one list",
+        "kind": "local-file-contains",
+        "path": "server.js",
+        "value": "const middleware = [addRequestId, addPlace];"
+      },
+      {
+        "id": "still",
+        "label": "Answers still send X-Place",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "header": {
+          "name": "x-place",
+          "value": "tricycle"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of the list like a to-do list, you run each item one by one."
+      },
+      {
+        "level": 2,
+        "text": "Put the list above the loop, and replace the two calls with the loop.\n\nIn server.js:\n```\nconst middleware = [addRequestId, addPlace];\n  for (const step of middleware) step(req, res);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"tricycle\"); }\nconst middleware = [addRequestId, addPlace];\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  for (const step of middleware) step(req, res);\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "middleware-tricycle"
+  },
+  {
+    "id": "api-middleware-tricycle-4",
+    "index": 454,
+    "task": "You add a new function called addPoweredBy that sets the header X-Powered-By to Node built-ins. You add this function to the list. The checker will test if every answer now has that header.\n\nIn server.js:\n```\nfunction addPoweredBy(req, res) { res.setHeader(\"X-Powered-By\", \"Node built-ins\"); }\nconst middleware = [addRequestId, addPlace, addPoweredBy];\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "powered",
+        "label": "Answers send X-Powered-By: Node built-ins",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "header": {
+          "name": "x-powered-by",
+          "value": "Node built-ins"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This header tells what tool made the answer, like a maker's name."
+      },
+      {
+        "level": 2,
+        "text": "Add the function to the list, and put it after addPlace.\n\nIn server.js:\n```\nfunction addPoweredBy(req, res) { res.setHeader(\"X-Powered-By\", \"Node built-ins\"); }\nconst middleware = [addRequestId, addPlace, addPoweredBy];\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"tricycle\"); }\nfunction addPoweredBy(req, res) { res.setHeader(\"X-Powered-By\", \"Node built-ins\"); }\nconst middleware = [addRequestId, addPlace, addPoweredBy];\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  for (const step of middleware) step(req, res);\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "middleware-tricycle"
+  },
+  {
+    "id": "api-middleware-tricycle-5",
+    "index": 455,
+    "task": "You add a function called allowBrowsers that sets the header Access-Control-Allow-Origin to *. You add this function to the list. The checker will test if every answer now has that header.\n\nIn server.js:\n```\nfunction allowBrowsers(req, res) { res.setHeader(\"Access-Control-Allow-Origin\", \"*\"); }\nconst middleware = [addRequestId, addPlace, addPoweredBy, allowBrowsers];\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "cors",
+        "label": "Answers send Access-Control-Allow-Origin: *",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "header": {
+          "name": "access-control-allow-origin",
+          "value": "*"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This header lets web pages from other sites call your API."
+      },
+      {
+        "level": 2,
+        "text": "Add the function to the list, and put it after addPoweredBy.\n\nIn server.js:\n```\nfunction allowBrowsers(req, res) { res.setHeader(\"Access-Control-Allow-Origin\", \"*\"); }\nconst middleware = [addRequestId, addPlace, addPoweredBy, allowBrowsers];\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nlet nextId = 1;\nfunction addRequestId(req, res) { res.setHeader(\"X-Request-Id\", String(nextId++)); }\nfunction addPlace(req, res) { res.setHeader(\"X-Place\", \"tricycle\"); }\nfunction addPoweredBy(req, res) { res.setHeader(\"X-Powered-By\", \"Node built-ins\"); }\nfunction allowBrowsers(req, res) { res.setHeader(\"Access-Control-Allow-Origin\", \"*\"); }\nconst middleware = [addRequestId, addPlace, addPoweredBy, allowBrowsers];\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  for (const step of middleware) step(req, res);\n  if (req.url === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "middleware-tricycle"
+  }
+] satisfies typeof apiBasicsCourse.steps));

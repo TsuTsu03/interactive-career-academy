@@ -4047,3 +4047,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-25: Local Qwen wrote the lesson text for api-basics/query-strings-tricycle, steps 441-445; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
 
 - 2026-09-25: Local Qwen wrote the lesson text for api-basics/query-strings-tricycle, steps 446-450; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-25: Local Qwen wrote the lesson text for api-basics/middleware-tricycle, steps 451-455; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
