@@ -23681,3 +23681,263 @@ apiBasicsCourse.steps.push(...([
     "projectId": "request-bodies-tricycle"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: one-item-tricycle.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-one-item-tricycle-1",
+    "index": 431,
+    "task": "You will read the item ID from the path. The code below finds the ID in /items/2. Add these two lines at the top of the handler. This lets you get one item by its ID. Then run the checker to test it.\n\nIn server.js:\n```\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match && req.method === \"GET\") return send(res, 200, items.find((item) => item.id === Number(match[1])));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "one",
+        "label": "GET /items/2 answers School",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/2"
+          }
+        ],
+        "bodyContains": "\"name\":\"School\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Look for the pattern in the URL to get the ID."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the top of the handler, before the GET check.\n\nIn server.js:\n```\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match && req.method === \"GET\") return send(res, 200, items.find((item) => item.id === Number(match[1])));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match && req.method === \"GET\") return send(res, 200, items.find((item) => item.id === Number(match[1])));\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "one-item-tricycle"
+  },
+  {
+    "id": "api-one-item-tricycle-2",
+    "index": 432,
+    "task": "Now you will check if the item exists. Add a line to store the found item. Then change the GET line to send 404 if not found. This stops errors when the item doesn't exist. Run the checker to test it.\n\nIn server.js:\n```\n  const found = match && items.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return found ? send(res, 200, found) : send(res, 404, { error: \"Item not found\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "none",
+        "label": "GET /items/99 answers 404",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/99"
+          }
+        ],
+        "status": 404,
+        "bodyContains": "Item not found"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Store the result of the find in a variable first."
+      },
+      {
+        "level": 2,
+        "text": "Change the GET line to check if the item was found.\n\nIn server.js:\n```\n  const found = match && items.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return found ? send(res, 200, found) : send(res, 404, { error: \"Item not found\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  const found = match && items.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return found ? send(res, 200, found) : send(res, 404, { error: \"Item not found\" });\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "one-item-tricycle"
+  },
+  {
+    "id": "api-one-item-tricycle-3",
+    "index": 433,
+    "task": "You will delete an item. Add one line after the GET line. This line deletes the item and sends 204 No Content. Run the checker to test it.\n\nIn server.js:\n```\n  if (found && req.method === \"DELETE\") { items.splice(items.indexOf(found), 1); res.statusCode = 204; return res.end(); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "deleted",
+        "label": "DELETE /items/1 answers 204",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "DELETE",
+            "path": "/items/1"
+          }
+        ],
+        "status": 204
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Delete the item after checking if it exists."
+      },
+      {
+        "level": 2,
+        "text": "Add the code right after the GET line.\n\nIn server.js:\n```\n  if (found && req.method === \"DELETE\") { items.splice(items.indexOf(found), 1); res.statusCode = 204; return res.end(); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  const found = match && items.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return found ? send(res, 200, found) : send(res, 404, { error: \"Item not found\" });\n  if (found && req.method === \"DELETE\") { items.splice(items.indexOf(found), 1); res.statusCode = 204; return res.end(); }\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "one-item-tricycle"
+  },
+  {
+    "id": "api-one-item-tricycle-4",
+    "index": 434,
+    "task": "Now you will check if the item exists before deleting. Add one line after the DELETE line. This sends 404 if the item is not found. Run the checker to test it.\n\nIn server.js:\n```\n  if (match && req.method === \"DELETE\") return send(res, 404, { error: \"Item not found\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "gone",
+        "label": "DELETE /items/99 answers 404 Item not found",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "DELETE",
+            "path": "/items/99"
+          }
+        ],
+        "status": 404,
+        "bodyContains": "Item not found"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the item exists before deleting it."
+      },
+      {
+        "level": 2,
+        "text": "Add the code right after the DELETE line.\n\nIn server.js:\n```\n  if (match && req.method === \"DELETE\") return send(res, 404, { error: \"Item not found\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  const found = match && items.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return found ? send(res, 200, found) : send(res, 404, { error: \"Item not found\" });\n  if (found && req.method === \"DELETE\") { items.splice(items.indexOf(found), 1); res.statusCode = 204; return res.end(); }\n  if (match && req.method === \"DELETE\") return send(res, 404, { error: \"Item not found\" });\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "one-item-tricycle"
+  },
+  {
+    "id": "api-one-item-tricycle-5",
+    "index": 435,
+    "task": "You will update an item with PUT. Add one line after the DELETE lines. This line reads the new fields and updates the item. Run the checker to test it.\n\nIn server.js:\n```\n  if (found && req.method === \"PUT\") { Object.assign(found, JSON.parse(await readBody(req))); return send(res, 200, found); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "put",
+        "label": "PUT /items/1 with price 99 answers the new price",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "PUT",
+            "path": "/items/1",
+            "body": "{\"price\":99}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "bodyContains": "\"price\":99"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use PUT to replace the item's fields."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the DELETE lines.\n\nIn server.js:\n```\n  if (found && req.method === \"PUT\") { Object.assign(found, JSON.parse(await readBody(req))); return send(res, 200, found); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  const found = match && items.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return found ? send(res, 200, found) : send(res, 404, { error: \"Item not found\" });\n  if (found && req.method === \"DELETE\") { items.splice(items.indexOf(found), 1); res.statusCode = 204; return res.end(); }\n  if (match && req.method === \"DELETE\") return send(res, 404, { error: \"Item not found\" });\n  if (found && req.method === \"PUT\") { Object.assign(found, JSON.parse(await readBody(req))); return send(res, 200, found); }\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "one-item-tricycle"
+  }
+] satisfies typeof apiBasicsCourse.steps));
