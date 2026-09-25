@@ -3985,3 +3985,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-25: Local Qwen wrote the lesson text for api-basics/errors-barangay, steps 286-290; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
 
 - 2026-09-25: Local Qwen wrote the lesson text for api-basics/api-design-barangay, steps 291-295; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-25: Local Qwen wrote the lesson text for api-basics/api-design-barangay, steps 296-300; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
