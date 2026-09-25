@@ -24218,3 +24218,257 @@ apiBasicsCourse.steps.push(...([
     "projectId": "one-item-tricycle"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: query-strings-tricycle.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-query-strings-tricycle-1",
+    "index": 441,
+    "task": "You will add code to filter items by price. The code goes after the url line. It checks if the ?max parameter exists. If it does, it keeps only items that cost at most that amount. This helps passengers see only affordable options. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "max",
+        "label": "GET /items?max=25 answers only the items up to 25",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?max=25"
+          }
+        ],
+        "bodyContains": "[{\"id\":1,\"name\":\"Market\",\"price\":20},{\"id\":3,\"name\":\"Clinic\",\"price\":25}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of ?max as a limit: only items under or equal to that price stay."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the url line in server.js.\n\nIn server.js:\n```\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-tricycle"
+  },
+  {
+    "id": "api-query-strings-tricycle-2",
+    "index": 442,
+    "task": "You will add code to filter items by minimum price. The code goes after the max line. It checks if the ?min parameter exists. If it does, it keeps only items that cost at least that amount. This helps passengers see only expensive options. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "min",
+        "label": "GET /items?min=25 answers only the items from 25",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?min=25"
+          }
+        ],
+        "bodyContains": "[{\"id\":2,\"name\":\"School\",\"price\":30},{\"id\":3,\"name\":\"Clinic\",\"price\":25}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of ?min as a floor: only items equal or higher than that price stay."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the max line in server.js.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "query-strings-tricycle"
+  },
+  {
+    "id": "api-query-strings-tricycle-3",
+    "index": 443,
+    "task": "You will add code to search item names. The code goes after the min line. It checks if the ?q parameter exists. If it does, it keeps only items whose name matches the search term, ignoring upper or lower case. This helps passengers find specific items. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "q",
+        "label": "GET /items?q=cho finds School",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?q=cho"
+          }
+        ],
+        "bodyContains": "[{\"id\":2,\"name\":\"School\",\"price\":30}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of ?q as a search word: the code looks for that word in names, no matter how it's written."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the min line in server.js.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-tricycle"
+  },
+  {
+    "id": "api-query-strings-tricycle-4",
+    "index": 444,
+    "task": "You will add code to sort items by price from cheapest to most expensive. The code goes after the q line. It checks if the ?sort=price parameter exists. If it does, it sorts the list by price. This helps passengers see the cheapest first. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "asc",
+        "label": "GET /items?sort=price answers cheapest first",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?sort=price"
+          }
+        ],
+        "bodyContains": "[{\"id\":1,\"name\":\"Market\",\"price\":20},{\"id\":3,\"name\":\"Clinic\",\"price\":25},{\"id\":2,\"name\":\"School\",\"price\":30}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of ?sort=price as a request to arrange items from lowest to highest cost."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the q line in server.js.\n\nIn server.js:\n```\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-tricycle"
+  },
+  {
+    "id": "api-query-strings-tricycle-5",
+    "index": 445,
+    "task": "You will add code to sort items by price from most expensive to cheapest. The code goes after the sort line. It checks if the ?sort=-price parameter exists. If it does, it sorts the list in reverse. This helps passengers see the most expensive first. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "desc",
+        "label": "GET /items?sort=-price answers most expensive first",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?sort=-price"
+          }
+        ],
+        "bodyContains": "[{\"id\":2,\"name\":\"School\",\"price\":30},{\"id\":3,\"name\":\"Clinic\",\"price\":25},{\"id\":1,\"name\":\"Market\",\"price\":20}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of ?sort=-price as a request to arrange items from highest to lowest cost."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the sort line in server.js.\n\nIn server.js:\n```\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-tricycle"
+  }
+] satisfies typeof apiBasicsCourse.steps));
