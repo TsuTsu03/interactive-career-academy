@@ -22866,3 +22866,259 @@ apiBasicsCourse.steps.push(...([
     "projectId": "json-routes-tricycle"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: json-routes-tricycle.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-json-routes-tricycle-6",
+    "index": 416,
+    "task": "You will handle unknown paths. When someone asks for a path that does not exist, the server must say 404. This is important because users should know when a route is broken. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  send(res, 404, { error: \"Not found\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "missing",
+        "label": "GET /nope answers 404 with a JSON error",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/nope"
+          }
+        ],
+        "status": 404,
+        "bodyContains": "{\"error\":\"Not found\"}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If the URL is not known, send a 404 status with a JSON error message."
+      },
+      {
+        "level": 2,
+        "text": "Put this code at the end of the handler, right before the 404 line.\n\nIn server.js:\n```\n  send(res, 404, { error: \"Not found\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "json-routes-tricycle"
+  },
+  {
+    "id": "api-json-routes-tricycle-7",
+    "index": 417,
+    "task": "You will add a route for the home page. When someone asks for /, the server must return the API's name and its routes. This helps users know what the API offers. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (req.url === \"/\") return send(res, 200, { name: \"Tricycle Terminal\", routes: [\"/items\"] });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "root",
+        "label": "GET / lists the routes",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "\"routes\":[\"/items\"]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the URL is exactly \"/\". If yes, return a 200 status with the API's name and routes."
+      },
+      {
+        "level": 2,
+        "text": "Put this code at the top of the handler, before any other checks.\n\nIn server.js:\n```\n  if (req.url === \"/\") return send(res, 200, { name: \"Tricycle Terminal\", routes: [\"/items\"] });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") return send(res, 200, { name: \"Tricycle Terminal\", routes: [\"/items\"] });\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "json-routes-tricycle"
+  },
+  {
+    "id": "api-json-routes-tricycle-8",
+    "index": 418,
+    "task": "You will add a route to find the cheapest item. When someone asks for /items/cheapest, the server must return the item with the lowest price. This helps users find the best deal. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "cheapest",
+        "label": "GET /items/cheapest answers Market",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/cheapest"
+          }
+        ],
+        "bodyContains": "\"name\":\"Market\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Sort the items by price and pick the first one. Use the array's sort method."
+      },
+      {
+        "level": 2,
+        "text": "Put this code before the 404 line, after the home page code.\n\nIn server.js:\n```\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") return send(res, 200, { name: \"Tricycle Terminal\", routes: [\"/items\"] });\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "json-routes-tricycle"
+  },
+  {
+    "id": "api-json-routes-tricycle-9",
+    "index": 419,
+    "task": "You will add a route to show items in a readable format. When someone asks for /items/pretty, the server must return the items as indented JSON. This helps people read the data easily. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (req.url === \"/items/pretty\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify(items, null, 2)); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "pretty",
+        "label": "GET /items/pretty answers indented JSON",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/pretty"
+          }
+        ],
+        "bodyContains": "[\n  {\n    \"id\": 1"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Set the Content-Type header to application/json. Then use JSON.stringify with 2 spaces for indentation."
+      },
+      {
+        "level": 2,
+        "text": "Put this code before the 404 line, after the cheapest item code.\n\nIn server.js:\n```\n  if (req.url === \"/items/pretty\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify(items, null, 2)); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") return send(res, 200, { name: \"Tricycle Terminal\", routes: [\"/items\"] });\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n  if (req.url === \"/items/pretty\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify(items, null, 2)); return; }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "json-routes-tricycle"
+  },
+  {
+    "id": "api-json-routes-tricycle-10",
+    "index": 420,
+    "task": "You will add a route to find expensive items. When someone asks for /items/expensive, the server must return items priced over 40. This helps users find high-cost items. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (req.url === \"/items/expensive\") return send(res, 200, items.filter((item) => item.price > 40));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "expensive",
+        "label": "GET /items/expensive answers an empty list",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/expensive"
+          }
+        ],
+        "bodyContains": "[]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the filter method to keep only items with price greater than 40."
+      },
+      {
+        "level": 2,
+        "text": "Put this code before the 404 line, after the pretty JSON code.\n\nIn server.js:\n```\n  if (req.url === \"/items/expensive\") return send(res, 200, items.filter((item) => item.price > 40));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") return send(res, 200, { name: \"Tricycle Terminal\", routes: [\"/items\"] });\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n  if (req.url === \"/items/pretty\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify(items, null, 2)); return; }\n  if (req.url === \"/items/expensive\") return send(res, 200, items.filter((item) => item.price > 40));\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "json-routes-tricycle"
+  }
+] satisfies typeof apiBasicsCourse.steps));
