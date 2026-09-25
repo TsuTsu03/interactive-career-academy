@@ -22047,3 +22047,278 @@ apiBasicsCourse.steps.push(...([
     "projectId": "api-design-school-club"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: first-server-tricycle.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-first-server-tricycle-1",
+    "index": 401,
+    "task": "You will change the answer your server sends. The code below says the server answers every request with 'Tricycle Terminal API'. This is the first message your server sends. You must change the res.end line in server.js. This makes your server say what it is.\n\nIn server.js:\n```\n  res.end(\"Tricycle Terminal API\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "root",
+        "label": "GET / answers Tricycle Terminal API",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "Tricycle Terminal API"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The server must answer every request with the same message. Think of it like a greeting."
+      },
+      {
+        "level": 2,
+        "text": "Go to server.js and change the res.end line. The code is shown below.\n\nIn server.js:\n```\n  res.end(\"Tricycle Terminal API\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Tricycle Terminal API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-server-tricycle"
+  },
+  {
+    "id": "api-first-server-tricycle-2",
+    "index": 402,
+    "task": "You will add a header to tell the browser the answer is plain text. This helps the browser show the message correctly. Add one line above res.end. The code below sets the Content-Type header. This tells the browser how to read the answer.\n\nIn server.js:\n```\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "type",
+        "label": "GET / says its body is plain text",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "header": {
+          "name": "content-type",
+          "value": "text/plain"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The browser needs to know the answer is plain text. Add a header before sending the answer."
+      },
+      {
+        "level": 2,
+        "text": "Go to server.js and add the line above res.end. The code is shown below.\n\nIn server.js:\n```\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.end(\"Tricycle Terminal API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-server-tricycle"
+  },
+  {
+    "id": "api-first-server-tricycle-3",
+    "index": 403,
+    "task": "You will add a custom header to say where the server is. This helps other systems know the server's location. Add one line above res.end. The code below sets the X-Place header to 'tricycle'. This is your server's name.\n\nIn server.js:\n```\n  res.setHeader(\"X-Place\", \"tricycle\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "custom",
+        "label": "GET / sends X-Place: tricycle",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "header": {
+          "name": "x-place",
+          "value": "tricycle"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a header to tell others where your server is. Think of it like a sign on the building."
+      },
+      {
+        "level": 2,
+        "text": "Go to server.js and add the line above res.end. The code is shown below.\n\nIn server.js:\n```\n  res.setHeader(\"X-Place\", \"tricycle\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"tricycle\");\n  res.end(\"Tricycle Terminal API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-server-tricycle"
+  },
+  {
+    "id": "api-first-server-tricycle-4",
+    "index": 404,
+    "task": "You will add a special path for health checks. This lets other systems know your server is working. Add one line at the top of the handler. The code below checks if the request is for /health. If so, it sends 'healthy'. This is for monitoring.\n\nIn server.js:\n```\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "health",
+        "label": "GET /health answers healthy",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/health"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "healthy"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a path that answers 'healthy' for health checks. Think of it like a heartbeat."
+      },
+      {
+        "level": 2,
+        "text": "Go to server.js and add the line at the top of the handler. The code is shown below.\n\nIn server.js:\n```\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"tricycle\");\n  res.end(\"Tricycle Terminal API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-server-tricycle"
+  },
+  {
+    "id": "api-first-server-tricycle-5",
+    "index": 405,
+    "task": "You will add a rule for any other path. This tells the server to say 'Not found' if the path is not / or /health. Add one line right after the /health line. The code below sets the status to 404 and sends 'Not found'. This stops errors for unknown paths.\n\nIn server.js:\n```\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "missing",
+        "label": "GET /missing answers 404",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/missing"
+          }
+        ],
+        "status": 404
+      },
+      {
+        "id": "root",
+        "label": "GET / still answers 200",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "status": 200
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a rule for any path that is not / or /health. Think of it like a guard at the door."
+      },
+      {
+        "level": 2,
+        "text": "Go to server.js and add the line right after the /health line. The code is shown below.\n\nIn server.js:\n```\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"tricycle\");\n  res.end(\"Tricycle Terminal API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "first-server-tricycle"
+  }
+] satisfies typeof apiBasicsCourse.steps));
