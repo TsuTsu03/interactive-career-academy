@@ -22322,3 +22322,289 @@ apiBasicsCourse.steps.push(...([
     "projectId": "first-server-tricycle"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: first-server-tricycle.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-first-server-tricycle-6",
+    "index": 406,
+    "task": "You must refuse any method other than GET. Add this line at the very top of the handler. It stops other methods from working. The checker will test this by sending a POST request. Run the checker and paste its report.\n\nIn server.js:\n```\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "post",
+        "label": "POST / answers 405",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/",
+            "body": "{}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 405
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You stop unwanted methods by checking the request method first."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the very top of the handler, before any other code.\n\nIn server.js:\n```\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"tricycle\");\n  res.end(\"Tricycle Terminal API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-server-tricycle"
+  },
+  {
+    "id": "api-first-server-tricycle-7",
+    "index": 407,
+    "task": "You must answer /info with JSON describing the place. Add this line right after the /health line. It sends a JSON object with the name of the terminal. The checker will test this by sending a GET request. Run the checker and paste its report.\n\nIn server.js:\n```\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"Tricycle Terminal\" })); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "info",
+        "label": "GET /info answers JSON with the name",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/info"
+          }
+        ],
+        "bodyContains": "\"name\":\"Tricycle Terminal\"",
+        "header": {
+          "name": "content-type",
+          "value": "application/json"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You send JSON by setting the Content-Type header and using JSON.stringify."
+      },
+      {
+        "level": 2,
+        "text": "Add the line right after the /health route, before any other route.\n\nIn server.js:\n```\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"Tricycle Terminal\" })); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"Tricycle Terminal\" })); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"tricycle\");\n  res.end(\"Tricycle Terminal API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "first-server-tricycle"
+  },
+  {
+    "id": "api-first-server-tricycle-8",
+    "index": 408,
+    "task": "You must count requests and report the count at /visits. Add a counter above the server, count each request, and add a /visits route before the 404 line. The checker will test this by sending two requests and checking the count. Run the checker and paste its report.\n\nIn server.js:\n```\nlet visits = 0;\n  visits += 1;\n  if (req.url === \"/visits\") { res.end(String(visits)); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "visits",
+        "label": "After two requests, GET /visits answers 3",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          },
+          {
+            "method": "GET",
+            "path": "/"
+          },
+          {
+            "method": "GET",
+            "path": "/visits"
+          }
+        ],
+        "bodyContains": "3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You count requests by adding 1 to a variable each time a request comes in."
+      },
+      {
+        "level": 2,
+        "text": "Add the counter above the server, then add the /visits route before the 404 line.\n\nIn server.js:\n```\nlet visits = 0;\n  visits += 1;\n  if (req.url === \"/visits\") { res.end(String(visits)); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nlet visits = 0;\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n  visits += 1;\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"Tricycle Terminal\" })); return; }\n  if (req.url === \"/visits\") { res.end(String(visits)); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"tricycle\");\n  res.end(\"Tricycle Terminal API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "first-server-tricycle"
+  },
+  {
+    "id": "api-first-server-tricycle-9",
+    "index": 409,
+    "task": "You must tell browsers not to store any answer with Cache-Control. Add this line at the very top of the handler. It tells browsers to forget the answer. The checker will test this by sending a GET request and checking the header. Run the checker and paste its report.\n\nIn server.js:\n```\n  res.setHeader(\"Cache-Control\", \"no-store\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "cache",
+        "label": "GET / sends Cache-Control: no-store",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "header": {
+          "name": "cache-control",
+          "value": "no-store"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You control caching by setting the Cache-Control header to no-store."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the very top of the handler, before any other code.\n\nIn server.js:\n```\n  res.setHeader(\"Cache-Control\", \"no-store\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nlet visits = 0;\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"Cache-Control\", \"no-store\");\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n  visits += 1;\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"Tricycle Terminal\" })); return; }\n  if (req.url === \"/visits\") { res.end(String(visits)); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"tricycle\");\n  res.end(\"Tricycle Terminal API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-server-tricycle"
+  },
+  {
+    "id": "api-first-server-tricycle-10",
+    "index": 410,
+    "task": "You must read a name from the query string at /hello, with friend as the default. Add two lines right before the 404 line. The first line creates a URL object. The second line reads the name or uses 'friend' if none is given. The checker will test this by sending two requests. Run the checker and paste its report.\n\nIn server.js:\n```\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/hello\") { res.end(`Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}`); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "hello",
+        "label": "GET /hello?name=Ana answers Hello, Ana",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/hello?name=Ana"
+          }
+        ],
+        "bodyContains": "Hello, Ana"
+      },
+      {
+        "id": "default",
+        "label": "GET /hello answers Hello, friend",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/hello"
+          }
+        ],
+        "bodyContains": "Hello, friend"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You read query strings by using the URL class and its searchParams property."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines right before the 404 line, after the /hello route.\n\nIn server.js:\n```\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/hello\") { res.end(`Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}`); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nlet visits = 0;\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"Cache-Control\", \"no-store\");\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n  visits += 1;\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"Tricycle Terminal\" })); return; }\n  if (req.url === \"/visits\") { res.end(String(visits)); return; }\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/hello\") { res.end(`Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}`); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"tricycle\");\n  res.end(\"Tricycle Terminal API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "first-server-tricycle"
+  }
+] satisfies typeof apiBasicsCourse.steps));
