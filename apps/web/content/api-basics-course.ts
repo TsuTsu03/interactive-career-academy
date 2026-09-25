@@ -27189,3 +27189,273 @@ apiBasicsCourse.steps.push(...([
     "projectId": "api-design-tricycle"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: api-design-tricycle.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-api-design-tricycle-6",
+    "index": 496,
+    "task": "You add a new line to show the next page. This helps users go to the next page. The code below does that. Run the checker to confirm it works.\n\nIn server.js:\n```\n  const next = page * perPage < items.length ? `/v1/items?page=${page + 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "next",
+        "label": "Page 1 links to page 2",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items"
+          }
+        ],
+        "bodyContains": "\"next\":\"/v1/items?page=2&perPage=5\""
+      },
+      {
+        "id": "last",
+        "label": "The last page has no next link",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items?page=3"
+          }
+        ],
+        "bodyContains": "\"next\":null"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The next link should only appear if there is a next page."
+      },
+      {
+        "level": 2,
+        "text": "Add this line after the data line in server.js\n\nIn server.js:\n```\n  const next = page * perPage < items.length ? `/v1/items?page=${page + 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  const perPage = Number(url.searchParams.get(\"perPage\") ?? 5);\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  const next = page * perPage < items.length ? `/v1/items?page=${page + 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next });\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "api-design-tricycle"
+  },
+  {
+    "id": "api-api-design-tricycle-7",
+    "index": 497,
+    "task": "You add a previous line to show the page before. This helps users go back. The code below does that. Run the checker to confirm it works.\n\nIn server.js:\n```\n  const previous = page > 1 ? `/v1/items?page=${page - 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next, previous });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "previous",
+        "label": "Page 2 links back to page 1",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items?page=2"
+          }
+        ],
+        "bodyContains": "\"previous\":\"/v1/items?page=1&perPage=5\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The previous link should only appear if there is a previous page."
+      },
+      {
+        "level": 2,
+        "text": "Add this line after the next line in server.js\n\nIn server.js:\n```\n  const previous = page > 1 ? `/v1/items?page=${page - 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next, previous });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  const perPage = Number(url.searchParams.get(\"perPage\") ?? 5);\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  const next = page * perPage < items.length ? `/v1/items?page=${page + 1}&perPage=${perPage}` : null;\n  const previous = page > 1 ? `/v1/items?page=${page - 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next, previous });\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "api-design-tricycle"
+  },
+  {
+    "id": "api-api-design-tricycle-8",
+    "index": 498,
+    "task": "You add a check to stop bad page numbers. If the page is not a whole number or less than 1, you send a 400 error. The code below does that. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (!Number.isInteger(page) || page < 1) return send(res, 400, { error: \"page must be a whole number 1 or more\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "bad",
+        "label": "GET /v1/items?page=0 answers 400",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items?page=0"
+          }
+        ],
+        "status": 400
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the page is a whole number and at least 1 before sending data."
+      },
+      {
+        "level": 2,
+        "text": "Add this line after the page line in server.js\n\nIn server.js:\n```\n  if (!Number.isInteger(page) || page < 1) return send(res, 400, { error: \"page must be a whole number 1 or more\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  if (!Number.isInteger(page) || page < 1) return send(res, 400, { error: \"page must be a whole number 1 or more\" });\n  const perPage = Number(url.searchParams.get(\"perPage\") ?? 5);\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  const next = page * perPage < items.length ? `/v1/items?page=${page + 1}&perPage=${perPage}` : null;\n  const previous = page > 1 ? `/v1/items?page=${page - 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next, previous });\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "api-design-tricycle"
+  },
+  {
+    "id": "api-api-design-tricycle-9",
+    "index": 499,
+    "task": "You change the perPage line to limit items to 10 per page. This stops clients from asking for too many. The code below does that. Run the checker to confirm it works.\n\nIn server.js:\n```\n  const perPage = Math.min(Number(url.searchParams.get(\"perPage\") ?? 5), 10);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "cap",
+        "label": "GET /v1/items?perPage=100 answers perPage 10",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items?perPage=100"
+          }
+        ],
+        "bodyContains": "\"perPage\":10,\"total\":12"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use Math.min to cap the perPage value at 10."
+      },
+      {
+        "level": 2,
+        "text": "Change the perPage line in server.js to use this new code.\n\nIn server.js:\n```\n  const perPage = Math.min(Number(url.searchParams.get(\"perPage\") ?? 5), 10);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  if (!Number.isInteger(page) || page < 1) return send(res, 400, { error: \"page must be a whole number 1 or more\" });\n  const perPage = Math.min(Number(url.searchParams.get(\"perPage\") ?? 5), 10);\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  const next = page * perPage < items.length ? `/v1/items?page=${page + 1}&perPage=${perPage}` : null;\n  const previous = page > 1 ? `/v1/items?page=${page - 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next, previous });\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "api-design-tricycle"
+  },
+  {
+    "id": "api-api-design-tricycle-10",
+    "index": 500,
+    "task": "You mark the old /items route as deprecated. This tells users it's old and should not be used. The code below does that. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (url.pathname === \"/items\") { res.setHeader(\"Deprecation\", \"true\"); return send(res, 200, items); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "deprecated",
+        "label": "GET /items sends Deprecation: true",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "header": {
+          "name": "deprecation",
+          "value": "true"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Set the Deprecation header to true for the old route."
+      },
+      {
+        "level": 2,
+        "text": "Change the /items route in server.js to use this new code.\n\nIn server.js:\n```\n  if (url.pathname === \"/items\") { res.setHeader(\"Deprecation\", \"true\"); return send(res, 200, items); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  if (!Number.isInteger(page) || page < 1) return send(res, 400, { error: \"page must be a whole number 1 or more\" });\n  const perPage = Math.min(Number(url.searchParams.get(\"perPage\") ?? 5), 10);\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  const next = page * perPage < items.length ? `/v1/items?page=${page + 1}&perPage=${perPage}` : null;\n  const previous = page > 1 ? `/v1/items?page=${page - 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next, previous });\n  if (url.pathname === \"/items\") { res.setHeader(\"Deprecation\", \"true\"); return send(res, 200, items); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "api-design-tricycle"
+  }
+] satisfies typeof apiBasicsCourse.steps));
