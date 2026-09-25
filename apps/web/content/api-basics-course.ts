@@ -13648,3 +13648,260 @@ apiBasicsCourse.steps.push(...([
     "projectId": "query-strings-barangay"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: query-strings-barangay.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-query-strings-barangay-6",
+    "index": 246,
+    "task": "You add a line to limit the list. This line checks if the user asks for a limit. If yes, it cuts the list to that number. This helps the barangay office show only the first few items. The code below does this. Run the checker to confirm.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"limit\")) list = list.slice(0, Number(url.searchParams.get(\"limit\")));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "limit",
+        "label": "GET /items?sort=price&limit=1 answers only the cheapest item",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?sort=price&limit=1"
+          }
+        ],
+        "bodyContains": "[{\"id\":3,\"name\":\"ID\",\"price\":20}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of limit like a stop sign for the list. It stops at the number asked."
+      },
+      {
+        "level": 2,
+        "text": "Add this line after the second sort line in server.js.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"limit\")) list = list.slice(0, Number(url.searchParams.get(\"limit\")));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n  if (url.searchParams.has(\"limit\")) list = list.slice(0, Number(url.searchParams.get(\"limit\")));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "query-strings-barangay"
+  },
+  {
+    "id": "api-query-strings-barangay-7",
+    "index": 247,
+    "task": "You add a line to show only names. This line checks if the user asks for fields=name. If yes, it changes each item to show only its name. This helps the barangay office show only names. The code below does this. Run the checker to confirm.\n\nIn server.js:\n```\n  if (url.searchParams.get(\"fields\") === \"name\") list = list.map((item) => ({ name: item.name }));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "fields",
+        "label": "GET /items?fields=name answers names only",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?fields=name"
+          }
+        ],
+        "bodyContains": "[{\"name\":\"Clearance\"},{\"name\":\"Permit\"},{\"name\":\"ID\"}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are filtering the data to keep only the name part."
+      },
+      {
+        "level": 2,
+        "text": "Add this line after the limit line in server.js.\n\nIn server.js:\n```\n  if (url.searchParams.get(\"fields\") === \"name\") list = list.map((item) => ({ name: item.name }));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n  if (url.searchParams.has(\"limit\")) list = list.slice(0, Number(url.searchParams.get(\"limit\")));\n  if (url.searchParams.get(\"fields\") === \"name\") list = list.map((item) => ({ name: item.name }));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "query-strings-barangay"
+  },
+  {
+    "id": "api-query-strings-barangay-8",
+    "index": 248,
+    "task": "You add a line to catch bad numbers. This line checks if the user asks for max but gives a letter. If yes, it sends back a 400 error. This helps the barangay office stop bad requests. The code below does this. Run the checker to confirm.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"max\") && Number.isNaN(Number(url.searchParams.get(\"max\")))) return send(res, 400, { error: \"max must be a number\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "bad",
+        "label": "GET /items?max=abc answers 400",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?max=abc"
+          }
+        ],
+        "status": 400
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If max is not a number, the server should say it's wrong."
+      },
+      {
+        "level": 2,
+        "text": "Add this line right after the url line in server.js.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"max\") && Number.isNaN(Number(url.searchParams.get(\"max\")))) return send(res, 400, { error: \"max must be a number\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.searchParams.has(\"max\") && Number.isNaN(Number(url.searchParams.get(\"max\")))) return send(res, 400, { error: \"max must be a number\" });\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n  if (url.searchParams.has(\"limit\")) list = list.slice(0, Number(url.searchParams.get(\"limit\")));\n  if (url.searchParams.get(\"fields\") === \"name\") list = list.map((item) => ({ name: item.name }));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-barangay"
+  },
+  {
+    "id": "api-query-strings-barangay-9",
+    "index": 249,
+    "task": "You change the /items line to send a header. This header tells the user how many items match. This helps the barangay office know how many items they have. The code below does this. Run the checker to confirm.\n\nIn server.js:\n```\n  if (url.pathname === \"/items\") { res.setHeader(\"X-Total-Count\", String(list.length)); return send(res, 200, list); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "GET /items?max=50 sends X-Total-Count: 2",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?max=50"
+          }
+        ],
+        "header": {
+          "name": "x-total-count",
+          "value": "2"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You add a header called X-Total-Count to show the total number."
+      },
+      {
+        "level": 2,
+        "text": "Change the /items line in server.js to include this header.\n\nIn server.js:\n```\n  if (url.pathname === \"/items\") { res.setHeader(\"X-Total-Count\", String(list.length)); return send(res, 200, list); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.searchParams.has(\"max\") && Number.isNaN(Number(url.searchParams.get(\"max\")))) return send(res, 400, { error: \"max must be a number\" });\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n  if (url.searchParams.has(\"limit\")) list = list.slice(0, Number(url.searchParams.get(\"limit\")));\n  if (url.searchParams.get(\"fields\") === \"name\") list = list.map((item) => ({ name: item.name }));\n  if (url.pathname === \"/items\") { res.setHeader(\"X-Total-Count\", String(list.length)); return send(res, 200, list); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-barangay"
+  },
+  {
+    "id": "api-query-strings-barangay-10",
+    "index": 250,
+    "task": "You add a line to show what filters are allowed. This line checks if the user asks for /items/options. If yes, it sends back a list of filters. This helps the barangay office know what they can ask for. The code below does this. Run the checker to confirm.\n\nIn server.js:\n```\n  if (url.pathname === \"/items/options\") return send(res, 200, { filters: [\"max\", \"min\", \"q\"], sort: [\"price\", \"-price\"], other: [\"limit\", \"fields\"] });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "options",
+        "label": "GET /items/options lists the filters",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/options"
+          }
+        ],
+        "bodyContains": "\"filters\":[\"max\",\"min\",\"q\"]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The /items/options path tells users what filters they can use."
+      },
+      {
+        "level": 2,
+        "text": "Add this line after the 400 line in server.js.\n\nIn server.js:\n```\n  if (url.pathname === \"/items/options\") return send(res, 200, { filters: [\"max\", \"min\", \"q\"], sort: [\"price\", \"-price\"], other: [\"limit\", \"fields\"] });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.searchParams.has(\"max\") && Number.isNaN(Number(url.searchParams.get(\"max\")))) return send(res, 400, { error: \"max must be a number\" });\n  if (url.pathname === \"/items/options\") return send(res, 200, { filters: [\"max\", \"min\", \"q\"], sort: [\"price\", \"-price\"], other: [\"limit\", \"fields\"] });\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n  if (url.searchParams.has(\"limit\")) list = list.slice(0, Number(url.searchParams.get(\"limit\")));\n  if (url.searchParams.get(\"fields\") === \"name\") list = list.map((item) => ({ name: item.name }));\n  if (url.pathname === \"/items\") { res.setHeader(\"X-Total-Count\", String(list.length)); return send(res, 200, list); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-barangay"
+  }
+] satisfies typeof apiBasicsCourse.steps));
