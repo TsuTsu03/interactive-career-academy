@@ -431,3 +431,264 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "setup-sari-sari"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: setup-sari-sari.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-setup-sari-sari-6",
+    "index": 6,
+    "task": "Add an array called names above the return line. This array holds product names. Then, after the hours, add a list that uses map to show each name. This makes a list of products. The code below does this. Run the checker. Paste its report.\n\nIn src/App.jsx:\n```\n  const names = [\"Rice\",\"Soap\",\"Egg\"];\n      <ul>{names.map((name) => <li key={name}>{name}</li>)}</ul>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "list",
+        "label": "App lists Rice",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "<li>Rice</li>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use map to turn each name into a list item."
+      },
+      {
+        "level": 2,
+        "text": "Put the list after the hours in App.jsx.\n\nIn src/App.jsx:\n```\n  const names = [\"Rice\",\"Soap\",\"Egg\"];\n      <ul>{names.map((name) => <li key={name}>{name}</li>)}</ul>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "export default function App() {\n  const names = [\"Rice\",\"Soap\",\"Egg\"];\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n      <p>Open 7 AM to 7 PM</p>\n      <ul>{names.map((name) => <li key={name}>{name}</li>)}</ul>\n    </main>\n  );\n}\n"
+    },
+    "conceptIds": [
+      "react-list-rendering"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "setup-sari-sari"
+  },
+  {
+    "id": "fs-setup-sari-sari-7",
+    "index": 7,
+    "task": "Change the h1 line to add a class called title. This class lets you style the heading. The code below does this. Run the checker. Paste its report.\n\nIn src/App.jsx:\n```\n      <h1 className=\"title\">Sari-Sari Store</h1>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "class",
+        "label": "The heading has class title",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "class=\"title\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add className=\"title\" to the h1 tag."
+      },
+      {
+        "level": 2,
+        "text": "Put this line where the heading is in App.jsx.\n\nIn src/App.jsx:\n```\n      <h1 className=\"title\">Sari-Sari Store</h1>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "export default function App() {\n  const names = [\"Rice\",\"Soap\",\"Egg\"];\n  return (\n    <main>\n      <h1 className=\"title\">Sari-Sari Store</h1>\n      <p>Open 7 AM to 7 PM</p>\n      <ul>{names.map((name) => <li key={name}>{name}</li>)}</ul>\n    </main>\n  );\n}\n"
+    },
+    "conceptIds": [
+      "react-jsx-class-name"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "setup-sari-sari"
+  },
+  {
+    "id": "fs-setup-sari-sari-8",
+    "index": 8,
+    "task": "In the terminal, type `npm run build` and press Enter. This rebuilds the project so the new title appears in the HTML file. The checker confirms the title is there. Run the checker. Paste its report.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "rebuilt",
+        "label": "dist/index.html has the new title",
+        "kind": "local-file-contains",
+        "path": "dist/index.html",
+        "value": "<title>Sari-Sari Store</title>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The build command updates the files in the dist folder."
+      },
+      {
+        "level": 2,
+        "text": "Run `npm run build` in the terminal to rebuild."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "npm run build"
+    },
+    "localFiles": {},
+    "conceptIds": [
+      "fs-rebuild"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "setup-sari-sari"
+  },
+  {
+    "id": "fs-setup-sari-sari-9",
+    "index": 9,
+    "task": "Create a new file called src/Footer.jsx. Inside, write a function called Footer. This function returns a footer with store text. This is a React component. The code below does this. Run the checker. Paste its report.\n\nIn src/Footer.jsx:\n```\nexport default function Footer() {\n  return <footer>Sari-Sari Store, serving since 2026</footer>;\n}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "footer",
+        "label": "Footer shows its text",
+        "kind": "local-react-render",
+        "file": "src/Footer.jsx",
+        "props": {},
+        "contains": "serving since 2026"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Write a function that returns a footer tag with text."
+      },
+      {
+        "level": 2,
+        "text": "Save this code in src/Footer.jsx.\n\nIn src/Footer.jsx:\n```\nexport default function Footer() {\n  return <footer>Sari-Sari Store, serving since 2026</footer>;\n}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/Footer.jsx": "export default function Footer() {\n  return <footer>Sari-Sari Store, serving since 2026</footer>;\n}\n"
+    },
+    "conceptIds": [
+      "react-component"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "setup-sari-sari"
+  },
+  {
+    "id": "fs-setup-sari-sari-10",
+    "index": 10,
+    "task": "In App.jsx, import the Footer component at the top. Then, after the list, add <Footer />. This puts the footer inside the app. The code below does this. Run the checker. Paste its report.\n\nIn src/App.jsx:\n```\nimport Footer from \"./Footer.jsx\";\n      <Footer />\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "used",
+        "label": "App shows the footer",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "<footer>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Import Footer from \"./Footer.jsx\" at the top."
+      },
+      {
+        "level": 2,
+        "text": "Put <Footer /> after the list in App.jsx.\n\nIn src/App.jsx:\n```\nimport Footer from \"./Footer.jsx\";\n      <Footer />\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "import Footer from \"./Footer.jsx\";\nexport default function App() {\n  const names = [\"Rice\",\"Soap\",\"Egg\"];\n  return (\n    <main>\n      <h1 className=\"title\">Sari-Sari Store</h1>\n      <p>Open 7 AM to 7 PM</p>\n      <ul>{names.map((name) => <li key={name}>{name}</li>)}</ul>\n      <Footer />\n    </main>\n  );\n}\n"
+    },
+    "conceptIds": [
+      "react-component-composition"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "setup-sari-sari"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
