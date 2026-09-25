@@ -1,3 +1,9 @@
+import { fullstackIntegrationCourse } from "./fullstack-integration-course";
+import { authSecurityCourse } from "./auth-security-course";
+import { apiBasicsCourse } from "./api-basics-course";
+import { nodeBasicsCourse } from "./node-basics-course";
+import { cliGitCourse } from "./cli-git-course";
+import { nosqlCourse } from "./nosql-course";
 import type { Curriculum } from "@/lib/lesson-ir";
 import { cssCourse } from "./css-course";
 import { designFoundationsCourse } from "./design-foundations-course";
@@ -43,7 +49,7 @@ export const curriculum: Curriculum = {
       id: "back-end-development",
       title: "Back-End Development",
       summary: "Ask a database questions, then build and secure the server that answers them.",
-      courseIds: ["sql-basics"],
+      courseIds: ["sql-basics", "nosql-basics", "cli-git", "node-basics", "api-basics", "auth-security", "fullstack-integration"],
     },
   ],
   courses: [
@@ -58,9 +64,23 @@ export const curriculum: Curriculum = {
     typescriptReactCourse,
     testingDevtoolsCourse,
     sqlCourse,
+    nosqlCourse,
+    cliGitCourse,
+    nodeBasicsCourse,
+    apiBasicsCourse,
+    authSecurityCourse,
+    fullstackIntegrationCourse,
+
   ],
 };
 
 export function courseById(id: string) {
   return curriculum.courses.find((c) => c.id === id);
 }
+
+/** Program C does not expand the settled v1 Front-End certificate requirements. */
+export const frontEndCourses = curriculum.courses.filter(course =>
+  curriculum.programs.some(program =>
+    ["web-design-basics", "front-end-development"].includes(program.id) && program.courseIds.includes(course.id),
+  ),
+);

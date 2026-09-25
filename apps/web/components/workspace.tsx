@@ -14,6 +14,7 @@ import { RankUp } from "./rank-up";
 import { curriculum } from "@/content/curriculum";
 import { resolveConcepts } from "@/content/concepts";
 import { gradeStep, type TestResult } from "@/lib/grading";
+import { localProjectKey } from "@/lib/local-manifest";
 import { type Course, type Step } from "@/lib/lesson-ir";
 import { characterIssues, type CharacterIssue } from "@/lib/character-guard";
 import { conceptConnections } from "@/lib/concept-connections";
@@ -140,6 +141,51 @@ function loadSession(course: Course): Session | null {
     // A corrupt snapshot must never block the learner. Start clean instead.
     return null;
   }
+}
+
+/**
+ * A task or hint is plain text with two small conventions. A block fenced by
+ * three backticks is shown as a code block, which is how a step shows code
+ * that itself contains backticks. Text between single backticks is shown as
+ * inline code. Line breaks are kept. Nothing is parsed as HTML: every piece is
+ * a React text node, and code blocks use <code> so they stay valid inside a
+ * heading.
+ */
+function InlineCode({ text }: { text: string }) {
+  const parts = text.split("`");
+  // An unmatched backtick leaves an even number of parts; show it as text.
+  if (parts.length % 2 === 0) return <>{text}</>;
+  return (
+    <>
+      {parts.map((part, index) =>
+        index % 2 === 1 ? (
+          <code key={index} className="whitespace-pre-wrap break-words rounded bg-surface-container px-1.5 py-0.5 font-mono text-[0.85em] font-normal">
+            {part}
+          </code>
+        ) : (
+          part
+        ),
+      )}
+    </>
+  );
+}
+
+function TaskText({ text }: { text: string }) {
+  const blocks = text.split("```");
+  if (blocks.length % 2 === 0) return <InlineCode text={text} />;
+  return (
+    <>
+      {blocks.map((block, index) =>
+        index % 2 === 1 ? (
+          <code key={index} className="my-2 block max-w-full overflow-x-auto whitespace-pre rounded border border-hairline bg-surface-container p-3 font-mono text-[14px] font-normal leading-relaxed">
+            {block.replace(/^\n/, "").replace(/\n$/, "")}
+          </code>
+        ) : (
+          <InlineCode key={index} text={block} />
+        ),
+      )}
+    </>
+  );
 }
 
 export function Workspace({ course }: { course: Course }) {
@@ -329,7 +375,7 @@ export function Workspace({ course }: { course: Course }) {
 
     let graded: TestResult[];
     try {
-      graded = await gradeStep(step, files);
+      graded = await gradeStep(step, files, { courseId: course.id });
     } catch {
       // Grading must never strand the learner in a running state with no way
       // back. Fail visibly and leave Run pressable.
@@ -354,6 +400,22 @@ export function Workspace({ course }: { course: Course }) {
     }
 
     const allPassed = graded.every((g) => g.status === "passed");
+
+    if (step.kind === "local") {
+      // A pasted checker report is a result the learner reports from their own
+      // computer, not one this page verified. It shows pass or fail as practice
+      // feedback and never becomes XP, completion, review, a recorded mistake,
+      // evidence, or certificate credit. V2_RUNNER_DESIGN.md, contract item 6.
+      setGain({ fire: 0, amount: 0 });
+      setPhase(allPassed ? "passed" : "failed");
+      const firstFail = graded.find((g) => g.status === "failed");
+      announce(
+        allPassed
+          ? "Your checker reported every check as passed. Local results are practice only: they add no XP and do not count toward a certificate."
+          : firstFail?.message ?? "Some checks did not pass.",
+      );
+      return;
+    }
 
     if (allPassed) {
       const firstClear = !session.completedSteps.includes(step.id);
@@ -775,13 +837,13 @@ export function Workspace({ course }: { course: Course }) {
           </div>
 
           <div className="mb-4 flex items-start gap-3">
-            <div className="flex-1">
+            <div className="min-w-0 flex-1">
               <p className="inline-block rounded bg-tertiary-container px-2 py-1 text-label-caps uppercase text-on-tertiary">Current Task</p>
-              <h1 className="mt-2 text-[20px] font-semibold leading-snug text-chalk">{step.task}</h1>
+              <h1 className="mt-2 whitespace-pre-line text-[20px] font-semibold leading-snug text-chalk"><TaskText text={step.task} /></h1>
             </div>
             <button
               type="button"
-              onClick={() => speak(step.task)}
+              onClick={() => speak(step.task.replaceAll("`", ""))}
               aria-label="Read this out loud"
               className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded border border-primary/60 text-primary transition-transform active:scale-95"
             >
@@ -911,8 +973,13 @@ export function Workspace({ course }: { course: Course }) {
           {phase === "passed" ? (
             <div className="mb-4">
               <div className="font-display text-[26px] font-bold tracking-tight text-acid">
-                STEP CLEAR
+                {step.kind === "local" ? "REPORTED CLEAR" : "STEP CLEAR"}
               </div>
+              {step.kind === "local" ? (
+                <p className="mt-1 text-[15px] text-ash">
+                  Your own checker reported every check as passed. This is practice: it adds no XP and does not count toward a certificate.
+                </p>
+              ) : null}
               <p className="mt-1 text-[15px] text-ash">
                 {isLast
                   ? "Course complete. You built the whole thing."
@@ -931,9 +998,9 @@ export function Workspace({ course }: { course: Course }) {
                 {step.hints.slice(0, hintLevel).map((h) => (
                   <p
                     key={h.level}
-                    className="rounded border border-hairline bg-panel p-2.5 text-[14px] text-ash"
+                    className="whitespace-pre-line rounded border border-hairline bg-panel p-2.5 text-[14px] text-ash"
                   >
-                    {h.text}
+                    <TaskText text={h.text} />
                   </p>
                 ))}
               </div>
@@ -1057,7 +1124,9 @@ export function Workspace({ course }: { course: Course }) {
               <Preview
                 files={files}
                 kind={step.kind}
+                localStep={step.kind === "local" ? { id: step.id, projectId: localProjectKey(course.id, step.projectId), firstInProject: course.steps[stepIdx - 1]?.projectId !== step.projectId } : undefined}
                 sqlSeed={step.sqlSeed}
+                nosqlSeed={step.nosqlSeed}
                 flash={phase === "passed" ? "pass" : phase === "failed" ? "fail" : "none"}
               />
             </div>
@@ -1121,7 +1190,7 @@ export function Workspace({ course }: { course: Course }) {
             </div>
             {phase === "passed" ? (
               <span className="hidden shrink-0 rounded border border-acid/40 bg-acid/10 px-2 py-1 font-mono text-[11px] font-bold text-acid md:inline-flex">
-                {gain.amount > 0 ? `+${gain.amount} XP` : "Reward already earned"}
+                {step.kind === "local" ? "Practice only" : gain.amount > 0 ? `+${gain.amount} XP` : "Reward already earned"}
               </span>
             ) : null}
             <div className="relative shrink-0">

@@ -1,0 +1,213 @@
+<#
+  ASCII ONLY. Resumable SQL/NoSQL authoring campaign for Windows PowerShell 5.1.
+  Each child pass has exact rollback, static gates, and a human checkpoint.
+  It targets SQL, NoSQL, Command Line and Git, and Node.js Fundamentals (local
+  checker, PLAN.md decisions 43 and 45). It never targets the computer courses
+  that still lack a plan.
+#>
+param(
+  [ValidateRange(0, 190)][int]$MaxAcceptedBatches = 0,
+  [ValidateRange(1, 8)][int]$AttemptsPerBatch = 4,
+  [ValidateRange(1, 50)][int]$PushEvery = 10,
+  [ValidateRange(0, 60)][int]$PauseSeconds = 5,
+  [ValidateRange(30, 3600)][int]$RetryPauseSeconds = 300,
+  [ValidateRange(1, 100)][int]$StuckResetEvery = 10,
+  [string]$Model = "qwen/qwen3-vl-8b"
+)
+
+$ErrorActionPreference = "Stop"
+$repo = $PSScriptRoot
+. (Join-Path $PSScriptRoot "qwen-v2-process.ps1")
+$webDir = Join-Path $repo "apps\web"
+$runtimeDir = Join-Path $repo ".qwen-v2-campaign"
+$campaignLog = Join-Path $runtimeDir "campaign.log"
+$stateFile = Join-Path $runtimeDir "state.json"
+$stopFile = Join-Path $repo "STOP_LOOP"
+$lms = Join-Path $env:USERPROFILE ".lmstudio\bin\lms.exe"
+$accepted = 0
+$sincePush = 0
+# Batches that used up their attempts this run. A stuck batch is skipped rather
+# than fatal, so the campaign keeps making progress on the other course instead
+# of stopping the whole run on one bad batch.
+$stuck = @{}
+$sinceStuckReset = 0
+$failed = $false
+$serverStarted = $false
+$modelLoaded = $false
+
+function Write-Campaign([string]$Message) {
+  $line = "{0} {1}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $Message
+  Write-Host $line
+  Write-QwenLine $campaignLog $line
+}
+
+function Read-Progress {
+  $json = & node --no-warnings (Join-Path $webDir "tools\qwen-v2-campaign.mjs") 2>&1
+  if ($LASTEXITCODE -ne 0) { throw "Could not read campaign progress: $json" }
+  return ($json | ConvertFrom-Json)
+}
+
+function Save-State($Progress, [string]$Status, [string]$Detail) {
+  [ordered]@{
+    updatedAt = (Get-Date).ToString("o")
+    status = $Status
+    detail = $Detail
+    pid = $PID
+    acceptedThisRun = $accepted
+    sql = $Progress.sql
+    nosql = $Progress.nosql
+    cligit = $Progress.cligit
+    nodebasics = $Progress.nodebasics
+    apibasics = $Progress.apibasics
+    authsecurity = $Progress.authsecurity
+    fullstack = $Progress.fullstack
+  } | ConvertTo-Json -Depth 8 | ForEach-Object { Write-QwenFile $stateFile $_ }
+}
+
+function Get-JobKey($Job) { "{0}|{1}|{2}" -f $Job.courseId, $Job.projectId, $Job.batch }
+
+# git loses a race with the child driver often enough to matter. A checkpoint
+# lands right after a rejected batch is rolled back, .git/index.lock can still
+# be held, and then `branch --show-current` answers with nothing at all. A
+# blank answer is not the wrong branch, but it read as one, and the campaign
+# ended on it twice: 2026-09-17 06:55 and 2026-09-18 07:15, roughly 37 idle
+# hours between the two. Ask again before believing it.
+function Read-GitValue([string[]]$Arguments) {
+  for ($attempt = 1; $attempt -le 5; $attempt++) {
+    # Capture first and read the exit code before anything else touches the
+    # pipeline: piping straight into Select-Object -First stops git early and
+    # leaves $LASTEXITCODE at -1 even on a clean read, which would quietly
+    # turn every push into a skipped one.
+    $output = & git -c "safe.directory=$repo" @Arguments 2>$null
+    $code = $LASTEXITCODE
+    if ($code -eq 0) {
+      $value = @($output) | Select-Object -First 1
+      if ($value) { return ([string]$value).Trim() }
+    }
+    Start-Sleep -Seconds 2
+  }
+  return $null
+}
+
+# Both refusals below still stop the run, because a genuinely wrong branch or
+# origin means something is badly off and pushing anyway would be worse. What
+# no longer stops the run is not knowing, or the push itself failing: the
+# commits are already safe locally, so the campaign says so and keeps
+# authoring rather than idling until someone notices.
+function Push-Checkpoint {
+  $branch = Read-GitValue @("branch", "--show-current")
+  if (-not $branch) { Write-Campaign "Could not read the current branch; leaving the checkpoint unpushed and carrying on."; return }
+  if ($branch -ne "codex/v2-backbone") { throw "Refusing to push outside codex/v2-backbone." }
+  $origin = Read-GitValue @("remote", "get-url", "origin")
+  if (-not $origin) { Write-Campaign "Could not read the origin URL; leaving the checkpoint unpushed and carrying on."; return }
+  if ($origin -ne "https://github.com/TsuTsu03/interactive-career-academy.git") { throw "Unexpected origin; refusing to push." }
+  & git -c "safe.directory=$repo" push origin codex/v2-backbone
+  if ($LASTEXITCODE -ne 0) { Write-Campaign "Checkpoint push failed; the commits stay local and the next checkpoint retries."; return }
+  $script:sincePush = 0
+  Write-Campaign "Pushed validated checkpoints to origin/codex/v2-backbone."
+}
+
+New-Item -ItemType Directory -Path $runtimeDir -Force | Out-Null
+try {
+  Push-Location $repo
+  $pidFile = Join-Path $runtimeDir "supervisor.pid"
+  if (Test-Path -LiteralPath $pidFile) {
+    $previousPid = Get-Content -LiteralPath $pidFile -ErrorAction SilentlyContinue
+    $livePid = Read-QwenPid $pidFile "run-qwen-v2-campaign.ps1"
+    if ($livePid -and $livePid -ne $PID) { throw "Another campaign supervisor is already running as PID $livePid." }
+  }
+  $PID | Set-Content -LiteralPath $pidFile -Encoding ascii
+  if ((& git -c "safe.directory=$repo" branch --show-current) -ne "codex/v2-backbone") { throw "Campaign requires codex/v2-backbone." }
+  if (& git -c "safe.directory=$repo" status --porcelain --untracked-files=all) { throw "Campaign requires a clean working tree." }
+  if (-not (Test-Path -LiteralPath $lms)) { throw "LM Studio CLI not found at $lms" }
+  try { [void](Invoke-RestMethod -Uri "http://localhost:1234/v1/models" -TimeoutSec 3) } catch {
+    & $lms server start | Out-Null
+    if ($LASTEXITCODE -ne 0) { throw "Could not start the LM Studio server." }
+    $serverStarted = $true
+  }
+  $loaded = @(& $lms ps --json | ConvertFrom-Json | ForEach-Object { $_.identifier })
+  if ($loaded -notcontains $Model) {
+    & $lms load $Model --context-length 16384 --ttl 1800 | Out-Null
+    if ($LASTEXITCODE -ne 0) { throw "Could not load $Model." }
+    $modelLoaded = $true
+  }
+  Write-Campaign "Campaign started with $Model. PID $PID."
+  while ($true) {
+    $progress = Read-Progress
+    Save-State $progress "running" "Selecting the next bounded batch."
+    if ($progress.complete) {
+      if ($sincePush -gt 0) { Push-Checkpoint }
+      Save-State $progress "complete" "SQL, NoSQL, Command Line and Git, and Node.js Fundamentals reached their targets with green gates."
+      Write-Campaign "Campaign complete: CLI/Git $($progress.cligit.current)/$($progress.cligit.target); Node $($progress.nodebasics.current)/$($progress.nodebasics.target); APIs $($progress.apibasics.current)/$($progress.apibasics.target); Auth $($progress.authsecurity.current)/$($progress.authsecurity.target); Full-Stack $($progress.fullstack.current)/$($progress.fullstack.target)."
+      break
+    }
+    if (Test-Path -LiteralPath $stopFile) {
+      Save-State $progress "stopped" "STOP_LOOP was present."
+      Write-Campaign "STOP_LOOP found. Stopped before another batch."
+      break
+    }
+    if ($MaxAcceptedBatches -gt 0 -and $accepted -ge $MaxAcceptedBatches) {
+      if ($sincePush -gt 0) { Push-Checkpoint }
+      Save-State $progress "stability-check-complete" "Requested accepted-batch limit reached."
+      Write-Campaign "Stopped after $accepted accepted batches for stability review."
+      break
+    }
+    $available = @()
+    foreach ($candidate in @($progress.sql, $progress.nosql, $progress.cligit, $progress.nodebasics, $progress.apibasics, $progress.authsecurity, $progress.fullstack)) {
+      if ($candidate -and -not $candidate.complete) { $available += $candidate }
+    }
+    $job = $null
+    foreach ($candidate in $available) {
+      if (-not $stuck.ContainsKey((Get-JobKey $candidate))) { $job = $candidate; break }
+    }
+    if (-not $job) {
+      Write-Campaign "Every available batch failed this run. Clearing the skip list and retrying after $RetryPauseSeconds seconds."
+      Save-State $progress "running" "All available batches were skipped; waiting before another pass."
+      $stuck = @{}
+      Start-Sleep -Seconds $RetryPauseSeconds
+      continue
+    }
+    $briefFile = Join-Path $runtimeDir "current-brief.txt"
+    $job.brief | Set-Content -LiteralPath $briefFile -Encoding utf8
+    $jobAccepted = $false
+    for ($campaignAttempt = 1; $campaignAttempt -le $AttemptsPerBatch; $campaignAttempt++) {
+      Write-Campaign "Starting $($job.courseId)/$($job.projectId) batch $($job.batch), campaign attempt $campaignAttempt."
+      & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $repo "run-qwen-v2-loop.ps1") -MaxIterations 1 -CommitEvery 1 -PauseSeconds 0 -Model $Model -CourseId $job.courseId -ProjectId $job.projectId -BatchSize 5 -BatchBriefFile $briefFile
+      if ($LASTEXITCODE -eq 0) { $jobAccepted = $true; break }
+      if (Test-Path -LiteralPath $stopFile) { break }
+      Write-Campaign "Rejected $($job.courseId)/$($job.projectId) batch $($job.batch); exact rollback confirmed by child driver."
+    }
+    if (-not $jobAccepted) {
+      if (Test-Path -LiteralPath $stopFile) { continue }
+      $stuck[(Get-JobKey $job)] = $true
+      Write-Campaign "Skipped $($job.courseId)/$($job.projectId) batch $($job.batch) after $AttemptsPerBatch attempts; moving to other available work."
+      Save-State $progress "running" "Skipped $($job.courseId)/$($job.projectId) batch $($job.batch) after $AttemptsPerBatch attempts."
+      if ($sincePush -gt 0) { Push-Checkpoint }
+      continue
+    }
+    $accepted++
+    $sincePush++
+    $sinceStuckReset++
+    # A skip is stochastic, not a verdict. Give every skipped batch another turn.
+    if ($sinceStuckReset -ge $StuckResetEvery) { $stuck = @{}; $sinceStuckReset = 0 }
+    $progress = Read-Progress
+    Save-State $progress "running" "Accepted $($job.courseId)/$($job.projectId) batch $($job.batch)."
+    Write-Campaign "Accepted batch $accepted this run. SQL $($progress.sql.current)/750; NoSQL $($progress.nosql.current)/250; CLI/Git $($progress.cligit.current)/$($progress.cligit.target); Node $($progress.nodebasics.current)/$($progress.nodebasics.target)."
+    if ($sincePush -ge $PushEvery) { Push-Checkpoint }
+    if ($PauseSeconds -gt 0) { Start-Sleep -Seconds $PauseSeconds }
+  }
+} catch {
+  $failed = $true
+  $progress = try { Read-Progress } catch { $null }
+  if ($sincePush -gt 0) {
+    try { Push-Checkpoint } catch { Write-Campaign "Validated local checkpoints could not be pushed: $($_.Exception.Message)" }
+  }
+  Save-State $progress "blocked" $_.Exception.Message
+  Write-Campaign "BLOCKED: $($_.Exception.Message)"
+} finally {
+  Pop-Location
+  if ($modelLoaded) { & $lms unload $Model 2>$null | Out-Null }
+  if ($serverStarted) { & $lms server stop 2>$null | Out-Null }
+  Write-Campaign "Campaign process ended."
+}
+if ($failed) { exit 1 }

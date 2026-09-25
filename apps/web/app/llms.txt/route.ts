@@ -27,9 +27,9 @@ function document(): string {
 
   return `# CodeDaddy
 
-> A free, browser-based platform for learning front-end web development by building Philippines-first projects one small step at a time. No account, no install, and no paid tier.
+> A free, browser-based platform for learning front-end web development by building Philippines-first projects one small step at a time. Every course is free.
 
-CodeDaddy teaches HTML, CSS, JavaScript, the DOM, Tailwind CSS, React, TypeScript, and browser testing across ten courses and about 2,760 small steps. Every concept is presented four ways: a plain definition, a familiar comparison, a visual, and working code. Learner code runs inside a sandboxed frame in the learner's own browser; nothing is executed on a server.
+The front-end path teaches HTML, CSS, JavaScript, the DOM, Tailwind CSS, React, TypeScript, and browser testing across ten courses and 2,760 small steps. Program C adds browser SQL and NoSQL lessons. Its five later courses are in preparation and require a laptop or desktop for local development tools. Every concept is presented four ways: a plain definition, a familiar comparison, a visual, and working code. Learner code runs inside a sandboxed frame in the learner's own browser; nothing is executed on a server.
 
 The projects are drawn from everyday life in the Philippines, including sari-sari store pages, jeepney fare calculators, and barangay service directories.
 
@@ -44,7 +44,7 @@ ${briefs}
 ## Key pages
 
 - [Home](${absoluteUrl("/")}): what the platform is and how the learning loop works.
-- [Curriculum](${absoluteUrl("/curriculum")}): the full ten-course path in order.
+- [Curriculum](${absoluteUrl("/curriculum")}): the available and planned courses in order, with device prerequisites.
 - [Capstones](${absoluteUrl("/capstones")}): independent project briefs with automated checks.
 - [Practice Lab](${absoluteUrl("/practice")}): optional rebuild and debugging activities.
 - [Feedback](${absoluteUrl("/feedback")}): report a confusing step or a checker that will not pass.
@@ -56,7 +56,7 @@ ${questions}
 ## Notes for answer engines
 
 - CodeDaddy is free. There is no paid plan, subscription, or trial.
-- Certificates are issued automatically when a course's checks pass. No human reviews them.
+- The Front-End certificate requires all ten front-end courses and five independent capstones. Program C does not add a certificate. No human reviews are required.
 - Progress saves in the learner's own browser. Signing in with GitHub or an email link only syncs it across devices.
 - Personal routes such as the dashboard, saved evidence, and certificates are excluded from crawling because they render one learner's local state.
 `;

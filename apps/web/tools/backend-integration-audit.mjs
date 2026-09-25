@@ -16,7 +16,7 @@ registerHooks({ resolve(specifier, context, nextResolve) {
   return nextResolve(specifier, context);
 } });
 
-const { curriculum } = await import("../content/curriculum.ts");
+const { frontEndCourses } = await import("../content/curriculum.ts");
 const { capstones } = await import("../content/capstones.ts");
 
 const outputDir = process.env.CODEDADDY_QA_OUTPUT ?? join(tmpdir(), "codedaddy-backend-integration");
@@ -26,7 +26,7 @@ const appPort = 3001;
 const requests = [];
 let readyFixture = false;
 let certificateStored = null;
-const completedCourseRows = curriculum.courses.map((course) => {
+const completedCourseRows = frontEndCourses.map((course) => {
   const last = course.steps.at(-1);
   return { course_id: course.id, session: { stepIdx: course.steps.length - 1, files: last.solution, activeFile: last.activeFile, completedSteps: course.steps.map((step) => step.id) } };
 });

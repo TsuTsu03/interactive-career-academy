@@ -3260,3 +3260,674 @@ audit checked all 2,760 steps with zero errors and 28 reviewed legacy
 granularity warnings. The TSX runtime diagnostic, console check, and 1440px and
 375px workspace checks passed for all four new courses. TypeScript, ESLint,
 production build, and `git diff --check` are clean.
+
+## 2026-09-08 - Program C database backbone exemplars
+
+SQL now contains 30 cumulative steps across five projects. NoSQL contains 20
+steps across three projects, backed by a bounded JSON interpreter in an opaque
+sandbox. Five later computer courses are registered with project outlines and
+zero authored steps. Existing saved-progress keys and v1 certificate scope are
+preserved.
+
+The shared Node content gate executed all 50 database steps with zero errors.
+The real Chrome SQL and NoSQL harnesses checked all 50 with zero errors and
+zero warnings. Desktop and phone preview, grading, refresh preservation, and
+computer prerequisite surfaces passed. TypeScript, zero-warning ESLint, and
+the production build passed. The 28 existing structural warnings belong to
+older content; its complete browser harness was not repeated in this session.
+
+- 2026-09-08: Local Qwen authored sql-basics/sari-sari-inventory-report, steps 31-35; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-08: Local Qwen authored sql-basics/sari-sari-inventory-report, steps 36-40; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-08: Local Qwen authored sql-basics/sari-sari-daily-record, steps 41-45; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-08: Local Qwen authored sql-basics/sari-sari-daily-record, steps 46-50; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-08: Local Qwen authored sql-basics/sari-sari-service-queue, steps 51-55; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-08: Local Qwen authored sql-basics/sari-sari-service-queue, steps 56-60; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-08: Local Qwen authored sql-basics/sari-sari-supplier-list, steps 61-65; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-08: Local Qwen authored nosql-basics/sari-sari-stock, steps 21-25; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-08: Local Qwen authored sql-basics/sari-sari-supplier-list, steps 66-70; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-08: Local Qwen authored sql-basics/sari-sari-community-schedule, steps 71-75; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-08: Local Qwen authored sql-basics/sari-sari-community-schedule, steps 76-80; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-08: Local Qwen authored sql-basics/sari-sari-delivery-log, steps 81-85; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-08: Local Qwen authored sql-basics/sari-sari-delivery-log, steps 86-90; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-11: Local Qwen authored sql-basics/palengke-inventory-report, steps 91-95; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-11: Local Qwen authored sql-basics/palengke-inventory-report, steps 96-100; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-11: Local Qwen authored sql-basics/palengke-daily-record, steps 101-105; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-11: Local Qwen authored sql-basics/palengke-daily-record, steps 106-110; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-11: Local Qwen authored sql-basics/palengke-service-queue, steps 111-115; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-11: Local Qwen authored sql-basics/palengke-service-queue, steps 116-120; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-11: Local Qwen authored sql-basics/palengke-supplier-list, steps 121-125; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-11: Local Qwen authored sql-basics/palengke-supplier-list, steps 126-130; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-11: Local Qwen authored sql-basics/palengke-community-schedule, steps 131-135; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-11: Local Qwen authored sql-basics/palengke-community-schedule, steps 136-140; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-11: Local Qwen authored sql-basics/palengke-delivery-log, steps 141-145; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-11: Local Qwen authored sql-basics/palengke-delivery-log, steps 146-150; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-11: Local Qwen authored sql-basics/jeepney-inventory-report, steps 151-155; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-11: Local Qwen authored nosql-basics/sari-sari-stock, steps 26-30; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/jeepney-inventory-report, steps 156-160; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/jeepney-daily-record, steps 161-165; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/jeepney-daily-record, steps 166-170; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/jeepney-service-queue, steps 171-175; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/jeepney-service-queue, steps 176-180; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/jeepney-supplier-list, steps 181-185; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/jeepney-supplier-list, steps 186-190; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/jeepney-community-schedule, steps 191-195; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/jeepney-community-schedule, steps 196-200; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/jeepney-delivery-log, steps 201-205; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/jeepney-delivery-log, steps 206-210; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/barangay-clinic-inventory-report, steps 211-215; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/barangay-clinic-inventory-report, steps 216-220; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/barangay-clinic-daily-record, steps 221-225; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/barangay-clinic-daily-record, steps 226-230; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-12: Local Qwen authored sql-basics/barangay-clinic-service-queue, steps 231-235; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-13: Local Qwen authored sql-basics/barangay-clinic-service-queue, steps 236-240; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-13: Local Qwen authored sql-basics/barangay-clinic-supplier-list, steps 241-245; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-13: Local Qwen authored nosql-basics/palengke-document-orders, steps 31-35; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-14: Local Qwen authored nosql-basics/palengke-document-orders, steps 36-40; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-14: Local Qwen authored sql-basics/barangay-clinic-supplier-list, steps 246-250; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-14: Local Qwen authored sql-basics/barangay-clinic-community-schedule, steps 251-255; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-14: Local Qwen authored sql-basics/barangay-clinic-community-schedule, steps 256-260; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-14: Local Qwen authored sql-basics/barangay-clinic-delivery-log, steps 261-265; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-14: Local Qwen authored sql-basics/barangay-clinic-delivery-log, steps 266-270; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-14: Local Qwen authored sql-basics/public-school-inventory-report, steps 271-275; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-14: Local Qwen authored sql-basics/public-school-inventory-report, steps 276-280; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-14: Local Qwen authored sql-basics/public-school-daily-record, steps 281-285; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-14: Local Qwen authored sql-basics/public-school-daily-record, steps 286-290; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-14: Local Qwen authored sql-basics/public-school-service-queue, steps 291-295; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-14: Local Qwen authored nosql-basics/cebu-route-deliveries, steps 41-45; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/public-school-service-queue, steps 296-300; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/public-school-supplier-list, steps 301-305; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/public-school-supplier-list, steps 306-310; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/public-school-community-schedule, steps 311-315; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/public-school-community-schedule, steps 316-320; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/public-school-delivery-log, steps 321-325; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/public-school-delivery-log, steps 326-330; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/cooperative-inventory-report, steps 331-335; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/cooperative-inventory-report, steps 336-340; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/cooperative-daily-record, steps 341-345; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/cooperative-daily-record, steps 346-350; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/cooperative-service-queue, steps 351-355; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/cooperative-service-queue, steps 356-360; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/cooperative-supplier-list, steps 361-365; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/cooperative-supplier-list, steps 366-370; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/cooperative-community-schedule, steps 371-375; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/cooperative-community-schedule, steps 376-380; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/cooperative-delivery-log, steps 381-385; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/cooperative-delivery-log, steps 386-390; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/carinderia-inventory-report, steps 391-395; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/carinderia-inventory-report, steps 396-400; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/carinderia-daily-record, steps 401-405; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/carinderia-daily-record, steps 406-410; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/carinderia-service-queue, steps 411-415; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/carinderia-service-queue, steps 416-420; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/carinderia-supplier-list, steps 421-425; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/carinderia-supplier-list, steps 426-430; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/carinderia-community-schedule, steps 431-435; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/carinderia-community-schedule, steps 436-440; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/carinderia-delivery-log, steps 441-445; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/carinderia-delivery-log, steps 446-450; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/bakery-inventory-report, steps 451-455; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/bakery-inventory-report, steps 456-460; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/bakery-daily-record, steps 461-465; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/bakery-daily-record, steps 466-470; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/bakery-service-queue, steps 471-475; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/bakery-service-queue, steps 476-480; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/bakery-supplier-list, steps 481-485; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/bakery-supplier-list, steps 486-490; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/bakery-community-schedule, steps 491-495; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/bakery-community-schedule, steps 496-500; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/bakery-delivery-log, steps 501-505; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/bakery-delivery-log, steps 506-510; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/rice-mill-inventory-report, steps 511-515; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/rice-mill-inventory-report, steps 516-520; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/rice-mill-daily-record, steps 521-525; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/rice-mill-daily-record, steps 526-530; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/rice-mill-service-queue, steps 531-535; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/rice-mill-service-queue, steps 536-540; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/rice-mill-supplier-list, steps 541-545; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/rice-mill-supplier-list, steps 546-550; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/rice-mill-community-schedule, steps 551-555; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/rice-mill-community-schedule, steps 556-560; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/rice-mill-delivery-log, steps 561-565; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/rice-mill-delivery-log, steps 566-570; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/fishing-harbor-inventory-report, steps 571-575; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/fishing-harbor-inventory-report, steps 576-580; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/fishing-harbor-daily-record, steps 581-585; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/fishing-harbor-daily-record, steps 586-590; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/fishing-harbor-service-queue, steps 591-595; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/fishing-harbor-service-queue, steps 596-600; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/fishing-harbor-supplier-list, steps 601-605; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/fishing-harbor-supplier-list, steps 606-610; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/fishing-harbor-community-schedule, steps 611-615; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/fishing-harbor-community-schedule, steps 616-620; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/fishing-harbor-delivery-log, steps 621-625; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/fishing-harbor-delivery-log, steps 626-630; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/water-station-inventory-report, steps 631-635; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/water-station-inventory-report, steps 636-640; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/water-station-daily-record, steps 641-645; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/water-station-daily-record, steps 646-650; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/water-station-service-queue, steps 651-655; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/water-station-service-queue, steps 656-660; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/water-station-supplier-list, steps 661-665; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-16: Local Qwen authored sql-basics/water-station-supplier-list, steps 666-670; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/water-station-community-schedule, steps 671-675; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/water-station-community-schedule, steps 676-680; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/water-station-delivery-log, steps 681-685; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/water-station-delivery-log, steps 686-690; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/ukay-ukay-inventory-report, steps 691-695; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/ukay-ukay-inventory-report, steps 696-700; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/ukay-ukay-daily-record, steps 701-705; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/ukay-ukay-daily-record, steps 706-710; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/ukay-ukay-service-queue, steps 711-715; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/ukay-ukay-service-queue, steps 716-720; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/ukay-ukay-supplier-list, steps 721-725; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/ukay-ukay-supplier-list, steps 726-730; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/ukay-ukay-community-schedule, steps 731-735; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/ukay-ukay-community-schedule, steps 736-740; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/ukay-ukay-delivery-log, steps 741-745; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored sql-basics/ukay-ukay-delivery-log, steps 746-750; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/cebu-route-deliveries, steps 46-50; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/barangay-services, steps 51-55; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/barangay-services, steps 56-60; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/school-supplies, steps 61-65; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/school-supplies, steps 66-70; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/cooperative-records, steps 71-75; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/cooperative-records, steps 76-80; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/carinderia-menu, steps 81-85; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/carinderia-menu, steps 86-90; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/bakery-orders, steps 91-95; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/bakery-orders, steps 96-100; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/rice-mill-batches, steps 101-105; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/rice-mill-batches, steps 106-110; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/fishing-catch, steps 111-115; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/fishing-catch, steps 116-120; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/water-refills, steps 121-125; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/water-refills, steps 126-130; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/ukay-listings, steps 131-135; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/ukay-listings, steps 136-140; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/tricycle-queue, steps 141-145; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/tricycle-queue, steps 146-150; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/farm-harvest, steps 151-155; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/farm-harvest, steps 156-160; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/community-library, steps 161-165; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/community-library, steps 166-170; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/medicine-stock, steps 171-175; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/medicine-stock, steps 176-180; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/relief-packs, steps 181-185; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/relief-packs, steps 186-190; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-17: Local Qwen authored nosql-basics/laundry-jobs, steps 191-195; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-18: Local Qwen authored nosql-basics/laundry-jobs, steps 196-200; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-18: Local Qwen authored nosql-basics/repair-tickets, steps 201-205; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-18: Local Qwen authored nosql-basics/repair-tickets, steps 206-210; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-18: Local Qwen authored nosql-basics/tour-bookings, steps 211-215; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-18: Local Qwen authored nosql-basics/tour-bookings, steps 216-220; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-18: Local Qwen authored nosql-basics/garden-plants, steps 221-225; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-18: Local Qwen authored nosql-basics/garden-plants, steps 226-230; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-18: Local Qwen authored nosql-basics/recycling-pickups, steps 231-235; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-18: Local Qwen authored nosql-basics/recycling-pickups, steps 236-240; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-18: Local Qwen authored nosql-basics/food-pantry, steps 241-245; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-18: Local Qwen authored nosql-basics/food-pantry, steps 246-250; accepted only after tsc, zero-warning eslint, and check:content; browser harness remains a delivery check.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/files-sari-sari, steps 1-5; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/files-sari-sari, steps 6-10; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/first-commit-sari-sari, steps 11-15; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/first-commit-sari-sari, steps 16-20; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/undo-sari-sari, steps 21-25; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/undo-sari-sari, steps 26-30; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/branches-sari-sari, steps 31-35; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/branches-sari-sari, steps 36-40; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/merging-sari-sari, steps 41-45; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/merging-sari-sari, steps 46-50; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/tidy-sari-sari, steps 51-55; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/tidy-sari-sari, steps 56-60; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/files-barangay, steps 61-65; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/files-barangay, steps 66-70; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/first-commit-barangay, steps 71-75; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/first-commit-barangay, steps 76-80; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/undo-barangay, steps 81-85; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/undo-barangay, steps 86-90; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/branches-barangay, steps 91-95; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/branches-barangay, steps 96-100; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/merging-barangay, steps 101-105; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/merging-barangay, steps 106-110; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/tidy-barangay, steps 111-115; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/tidy-barangay, steps 116-120; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/files-school-club, steps 121-125; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/files-school-club, steps 126-130; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/first-commit-school-club, steps 131-135; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/first-commit-school-club, steps 136-140; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/undo-school-club, steps 141-145; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/undo-school-club, steps 146-150; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/branches-school-club, steps 151-155; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/branches-school-club, steps 156-160; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/merging-school-club, steps 161-165; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/merging-school-club, steps 166-170; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/tidy-school-club, steps 171-175; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for cli-git/tidy-school-club, steps 176-180; commands and checks come from tools/cli-git-plan.mjs and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/scripts-sari-sari, steps 1-5; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/scripts-sari-sari, steps 6-10; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/modules-sari-sari, steps 11-15; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/modules-sari-sari, steps 16-20; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/files-sari-sari, steps 21-25; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/files-sari-sari, steps 26-30; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/async-sari-sari, steps 31-35; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/async-sari-sari, steps 36-40; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/cli-sari-sari, steps 41-45; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/cli-sari-sari, steps 46-50; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/config-sari-sari, steps 51-55; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/config-sari-sari, steps 56-60; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/folders-sari-sari, steps 61-65; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/folders-sari-sari, steps 66-70; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/scripts-carinderia, steps 71-75; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/scripts-carinderia, steps 76-80; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/modules-carinderia, steps 81-85; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/modules-carinderia, steps 86-90; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/files-carinderia, steps 91-95; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/files-carinderia, steps 96-100; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/async-carinderia, steps 101-105; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/async-carinderia, steps 106-110; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/cli-carinderia, steps 111-115; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/cli-carinderia, steps 116-120; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/config-carinderia, steps 121-125; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/config-carinderia, steps 126-130; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/folders-carinderia, steps 131-135; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/folders-carinderia, steps 136-140; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/scripts-barangay, steps 141-145; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/scripts-barangay, steps 146-150; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/modules-barangay, steps 151-155; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/modules-barangay, steps 156-160; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/files-barangay, steps 161-165; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/files-barangay, steps 166-170; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/async-barangay, steps 171-175; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/async-barangay, steps 176-180; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/cli-barangay, steps 181-185; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/cli-barangay, steps 186-190; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/config-barangay, steps 191-195; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/config-barangay, steps 196-200; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/folders-barangay, steps 201-205; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/folders-barangay, steps 206-210; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/scripts-school-club, steps 211-215; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/scripts-school-club, steps 216-220; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/modules-school-club, steps 221-225; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/modules-school-club, steps 226-230; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/files-school-club, steps 231-235; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/files-school-club, steps 236-240; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/async-school-club, steps 241-245; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/async-school-club, steps 246-250; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/cli-school-club, steps 251-255; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/cli-school-club, steps 256-260; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/config-school-club, steps 261-265; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/config-school-club, steps 266-270; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/folders-school-club, steps 271-275; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/folders-school-club, steps 276-280; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/scripts-tricycle, steps 281-285; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/scripts-tricycle, steps 286-290; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/modules-tricycle, steps 291-295; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/modules-tricycle, steps 296-300; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/files-tricycle, steps 301-305; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/files-tricycle, steps 306-310; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/async-tricycle, steps 311-315; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/async-tricycle, steps 316-320; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/cli-tricycle, steps 321-325; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/cli-tricycle, steps 326-330; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/config-tricycle, steps 331-335; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/config-tricycle, steps 336-340; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/folders-tricycle, steps 341-345; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for node-basics/folders-tricycle, steps 346-350; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/first-server-sari-sari, steps 1-5; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/first-server-sari-sari, steps 6-10; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/json-routes-sari-sari, steps 11-15; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/json-routes-sari-sari, steps 16-20; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/request-bodies-sari-sari, steps 21-25; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/request-bodies-sari-sari, steps 26-30; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/one-item-sari-sari, steps 31-35; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/one-item-sari-sari, steps 36-40; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/query-strings-sari-sari, steps 41-45; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/query-strings-sari-sari, steps 46-50; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/middleware-sari-sari, steps 51-55; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/middleware-sari-sari, steps 56-60; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/sqlite-storage-sari-sari, steps 61-65; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/sqlite-storage-sari-sari, steps 66-70; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/sqlite-changes-sari-sari, steps 71-75; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/sqlite-changes-sari-sari, steps 76-80; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/errors-sari-sari, steps 81-85; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/errors-sari-sari, steps 86-90; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/api-design-sari-sari, steps 91-95; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/api-design-sari-sari, steps 96-100; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/first-server-carinderia, steps 101-105; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/first-server-carinderia, steps 106-110; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/json-routes-carinderia, steps 111-115; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/json-routes-carinderia, steps 116-120; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/request-bodies-carinderia, steps 121-125; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/request-bodies-carinderia, steps 126-130; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/one-item-carinderia, steps 131-135; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/one-item-carinderia, steps 136-140; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/query-strings-carinderia, steps 141-145; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/query-strings-carinderia, steps 146-150; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/middleware-carinderia, steps 151-155; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-24: Local Qwen wrote the lesson text for api-basics/middleware-carinderia, steps 156-160; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.

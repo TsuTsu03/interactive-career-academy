@@ -113,8 +113,12 @@ export interface RuntimeFixtures {
  * and checks the DOM snapshot inside that frame through typed messages.
  * `sql` runs the learner's query against an in-memory SQLite database, built
  * fresh from the step's `sqlSeed`, and asserts against the rows it returned.
+ * `local` runs on the learner's own computer. The learner types real commands
+ * in their terminal, runs the downloadable checker, and pastes its report into
+ * `report.txt`. The report is learner-reported practice evidence only: it
+ * never awards XP, completion, evidence, or certificate credit.
  */
-export type StepKind = "web" | "js" | "react" | "sql";
+export type StepKind = "web" | "js" | "react" | "sql" | "nosql" | "local";
 
 /**
  * Deterministic assertions. Each kind is a closed variant so a lesson can
@@ -323,6 +327,108 @@ export type TestSpec =
     }
   /** The named table exists after the statement ran. For CREATE TABLE steps. */
   | { id: string; label: Copy; kind: "sql-table-exists"; table: string }
+  /**
+   * The named table has these columns, in this order, after the statement ran.
+   *
+   * This reads the schema, not a result set, so it is the only way to check a
+   * step whose whole job is shaping a table: a CREATE TABLE or an ALTER TABLE
+   * returns no rows, and a SELECT over an empty table returns no result set
+   * either, so every result-based assertion is unsatisfiable there.
+   */
+  | { id: string; label: Copy; kind: "sql-table-columns"; table: string; columns: string[] }
+
+  // --- Document-store assertions: JSON data, never executable expressions. ---
+  | { id: string; label: Copy; kind: "nosql-runs" }
+  | { id: string; label: Copy; kind: "nosql-doc-count"; count: number }
+  | { id: string; label: Copy; kind: "nosql-docs-equal"; documents: Record<string, unknown>[]; ignoreOrder?: boolean }
+  | { id: string; label: Copy; kind: "nosql-doc-contains"; document: Record<string, unknown> }
+  | { id: string; label: Copy; kind: "nosql-field-equals"; document: number; field: string; value: unknown }
+  | { id: string; label: Copy; kind: "nosql-collection-exists"; collection: string }
+
+  // --- Local-computer assertions (V2_RUNNER_DESIGN.md option B). ---
+  /*
+   * These describe the learner's own project folder. They run only inside the
+   * downloadable checker (`tools/local-checker.mjs`) on the learner's machine,
+   * and inside the Node authoring gate. The website never executes them: it
+   * reads a pasted report, which is a result the learner reports, not one the
+   * platform verified. Paths are relative to the project folder.
+   */
+  | { id: string; label: Copy; kind: "local-dir-exists"; path: string }
+  | { id: string; label: Copy; kind: "local-file-exists"; path: string }
+  | { id: string; label: Copy; kind: "local-path-missing"; path: string }
+  | { id: string; label: Copy; kind: "local-file-contains"; path: string; value: string }
+  | { id: string; label: Copy; kind: "local-file-lacks"; path: string; value: string }
+  | { id: string; label: Copy; kind: "local-git-repo" }
+  | { id: string; label: Copy; kind: "local-git-config"; key: string; value: string }
+  | { id: string; label: Copy; kind: "local-git-staged"; path: string }
+  | { id: string; label: Copy; kind: "local-git-unstaged"; path: string }
+  | { id: string; label: Copy; kind: "local-git-untracked"; path: string }
+  | { id: string; label: Copy; kind: "local-git-clean" }
+  | { id: string; label: Copy; kind: "local-git-commit-count"; count: number }
+  | { id: string; label: Copy; kind: "local-git-head-message"; value: string }
+  | { id: string; label: Copy; kind: "local-git-head-has-file"; path: string }
+  | { id: string; label: Copy; kind: "local-git-branch"; value: string }
+  | { id: string; label: Copy; kind: "local-git-branch-exists"; branch: string }
+  | { id: string; label: Copy; kind: "local-git-branch-missing"; branch: string }
+  | { id: string; label: Copy; kind: "local-git-merged"; branch: string }
+  /*
+   * Run `node <file> [args]` in the project folder with a short time limit and
+   * a minimal environment plus `env`, feeding `stdin` if given. The checker
+   * runs the learner's own code on the learner's own computer; the website
+   * never does. `value` is matched as a substring of standard output, of
+   * standard error, or the exit code is compared.
+   */
+  | { id: string; label: Copy; kind: "local-node-prints"; file: string; value: string; args?: string[]; env?: Record<string, string>; stdin?: string }
+  | { id: string; label: Copy; kind: "local-node-stderr"; file: string; value: string; args?: string[]; env?: Record<string, string>; stdin?: string }
+  | { id: string; label: Copy; kind: "local-node-exit-code"; file: string; code: number; args?: string[]; env?: Record<string, string>; stdin?: string }
+  /*
+   * Start `node <file>` with PORT set to a free port, send `requests` in order
+   * to 127.0.0.1 only, then compare the last answer's status, body text, or
+   * one header. The server is stopped after every check.
+   */
+  | {
+      id: string;
+      label: Copy;
+      kind: "local-http";
+      file: string;
+      requests: {
+        method: string;
+        path: string;
+        body?: string;
+        headers?: Record<string, string>;
+        /** Send a string field from an earlier JSON answer, such as a token, as this header. */
+        fromPrevious?: { header: string; field: string; prefix?: string };
+      }[];
+      env?: Record<string, string>;
+      /** Keep cookies between the requests, but never let the server clear one. */
+      cookies?: boolean;
+      status?: number;
+      bodyContains?: string;
+      /** Text the last answer must never contain, such as a fake secret. */
+      bodyLacks?: string;
+      header?: { name: string; value: string };
+    }
+  /*
+   * Run `npm run <script>` in the project (pinned packages from the step's
+   * package.json) and pass when it succeeds. Used to prove a React app builds.
+   */
+  | { id: string; label: Copy; kind: "local-npm-script"; script: string; env?: Record<string, string> }
+  /*
+   * Build one component with the learner's own Vite for Node, render it with
+   * the learner's own react-dom/server using plain-data `props`, and look for
+   * `contains` or `lacks` in the HTML. No browser runs, so clicks are not
+   * checked; only what a component shows for the given props.
+   */
+  | {
+      id: string;
+      label: Copy;
+      kind: "local-react-render";
+      file: string;
+      exportName?: string;
+      props?: Record<string, unknown>;
+      contains?: string;
+      lacks?: string;
+    }
 
   // --- Source assertions (any kind) ---
   /**
@@ -367,6 +473,23 @@ export interface Step {
    * field of its own rather than another entry in `files`.
    */
   sqlSeed?: string;
+  /** Fresh collections for a JSON document-store command. Never persisted. */
+  nosqlSeed?: Record<string, Record<string, unknown>[]>;
+  /**
+   * `local` steps only. Plain-text files, keyed by relative path, that the
+   * checker's `start` command writes into an empty project folder. Identical
+   * on every step of one project. A local step's `solution` is
+   * `{ "commands.txt": "..." }`: one terminal command per line, replayed only
+   * by the authoring gate, never by the website or the learner's checker.
+   */
+  localSeed?: Record<string, string>;
+  /**
+   * `local` steps only. The files, keyed by relative path, exactly as they
+   * stand after this step. Authoring data like `solution`: the content gate
+   * writes them before replaying `commands.txt`, and they are never shipped
+   * to the learner's checker.
+   */
+  localFiles?: Record<string, string>;
   /** tap-to-build only: the tray contents and which one is correct. */
   blocks?: string[];
   correctBlock?: string;
@@ -431,6 +554,8 @@ export interface Project {
  */
 export interface Course {
   id: string;
+  /** Informational device prerequisite, independent of progress gating. */
+  requiresComputer?: true;
   /** "Learn HTML by Building a Sari-Sari Store Page" */
   title: string;
   /** The first project's name, for the map: "Sari-Sari Store Page" */

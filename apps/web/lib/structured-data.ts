@@ -103,15 +103,15 @@ export function courseSchema(course: Course): Record<string, unknown> {
     about: SUBJECTS,
     educationalLevel: "Beginner",
     learningResourceType: "Interactive project course",
-    timeRequired: `PT${hours}H`,
-    educationalCredentialAwarded: "CodeDaddy certificate of completion",
+    ...(course.steps.length > 0 ? { timeRequired: `PT${hours}H` } : {}),
+    ...(course.order < 11 ? { educationalCredentialAwarded: "CodeDaddy certificate of completion" } : {}),
     provider: { "@id": ORGANIZATION_ID },
     offers: { "@type": "Offer", price: 0, priceCurrency: "PHP", category: "Free" },
-    hasCourseInstance: {
+    ...(course.steps.length > 0 ? { hasCourseInstance: {
       "@type": "CourseInstance",
       courseMode: "online",
       courseWorkload: `PT${hours}H`,
-    },
+    } } : {}),
   };
 }
 
@@ -122,7 +122,7 @@ export function curriculumSchema(): Record<string, unknown> {
     "@type": "ItemList",
     name: curriculum.title,
     description:
-      "Ten courses that move from page structure and design judgment to styling, JavaScript, the DOM, Tailwind, React, TypeScript, and testing.",
+      "Web design and front-end courses, followed by browser database lessons and planned courses for development on your own computer.",
     numberOfItems: curriculum.courses.length,
     itemListElement: curriculum.courses.map((course, index) => ({
       "@type": "ListItem",

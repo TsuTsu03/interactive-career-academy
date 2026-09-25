@@ -137,7 +137,8 @@ export function LearnerHome() {
 
     return (
       curriculum.courses.find((course) =>
-        course.requires.every((requiredId) => progress[requiredId]?.isComplete),
+        // Courses never lock (PLAN.md decision 44); suggest the first unfinished one.
+        course.steps.length > 0 && !progress[course.id]?.isComplete,
       ) ?? curriculum.courses[0]
     );
   }, [progress]);
@@ -146,7 +147,7 @@ export function LearnerHome() {
   const stepIndex = dashboard.stepByCourse[currentCourse.id] ?? courseProgress.completedCount;
   const activeStep = currentCourse.steps[Math.min(stepIndex, currentCourse.steps.length - 1)];
   const activeProject = currentCourse.projects.find((project) => project.id === activeStep.projectId);
-  const completion = Math.round((courseProgress.completedCount / courseProgress.total) * 100);
+  const completion = Math.round((courseProgress.completedCount / Math.max(1, courseProgress.total)) * 100);
   const projectCards = currentCourse.projects.slice(0, 2);
   const nextCourses = curriculum.courses.filter((course) => course.id !== currentCourse.id).slice(0, 2);
   const level = Math.floor(dashboard.xp / 500) + 1;

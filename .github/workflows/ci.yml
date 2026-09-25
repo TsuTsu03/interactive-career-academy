@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, 'codex/v2-*']
   pull_request:
     branches: [main]
 
@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   verify:
-    name: Types, lint, and build
+    name: Types, lint, content, and build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -33,13 +33,15 @@ jobs:
       - name: Install
         run: npm ci
 
-      # The same three gates AGENTS.md section 6 requires before any task is
-      # called finished. Warnings fail the lint step on purpose.
+      # Verify code and database authoring before building. Warnings fail lint.
       - name: Typecheck
         run: npx tsc --noEmit
 
       - name: Lint
         run: npx eslint . --max-warnings 0
+
+      - name: Content
+        run: npm run check:content
 
       - name: Build
         run: npm run build

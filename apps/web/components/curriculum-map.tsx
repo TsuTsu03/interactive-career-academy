@@ -1,6 +1,7 @@
 "use client";
 
 import { SiteFooter } from "@/components/site-footer";
+import { ComputerPrerequisite } from "@/components/computer-prerequisite";
 import { Icon, type IconName } from "@/components/icon";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -25,7 +26,6 @@ const MAP_COPY = {
   start: "Start this course",
   continue: "Continue this course",
   completed: "Course completed",
-  locked: "Finish the earlier course first",
   reviewTitle: "Review what you learned",
   reviewSummary:
     "Short review sessions help the ideas you have already used stay familiar while you keep building.",
@@ -81,8 +81,9 @@ function progressCopy(progress: CourseProgress): Copy {
   return `${progress.completedCount} of ${progress.total} steps completed`;
 }
 
-function requirementCopy(requiredCourseTitle: string): Copy {
-  return `Finish ${requiredCourseTitle} before starting this course.`;
+// Courses never lock (PLAN.md decision 44). `requires` only suggests an order.
+function suggestedOrderCopy(requiredCourseTitle: string): Copy {
+  return `Best after ${requiredCourseTitle}`;
 }
 
 function dueReviewCopy(count: number): Copy {
@@ -93,7 +94,13 @@ function technology(courseId: string, kind: StepKind): string {
   if (courseId === "design-foundations") return "Design";
   if (courseId === "typescript-react") return "TypeScript + React";
   if (courseId === "testing-devtools") return "Testing + DevTools";
-  if (kind === "sql") return courseId.includes("nosql") ? "NoSQL" : "SQL";
+  if (kind === "nosql") return "NoSQL";
+  if (kind === "sql") return "SQL";
+  if (courseId === "cli-git") return "Terminal + Git";
+  if (courseId === "node-basics") return "Node.js";
+  if (courseId === "api-basics") return "APIs";
+  if (courseId === "auth-security") return "Security";
+  if (courseId === "fullstack-integration") return "Full Stack";
   if (kind === "react") return "React";
   if (kind === "js") return "JavaScript";
   if (courseId.startsWith("tailwind")) return "Tailwind CSS";
@@ -102,20 +109,13 @@ function technology(courseId: string, kind: StepKind): string {
 
 function CourseStatus({
   progress,
-  locked,
   ready,
   active
 }: {
   progress: CourseProgress;
-  locked: boolean;
   ready: boolean;
   active: boolean;
 }) {
-  // A locked course says nothing here. The meta row already carries the whole
-  // sentence, with its own lock icon, naming the course to finish first; a
-  // second shorter copy of the same fact only crowded the title.
-  if (ready && locked) return null;
-
   let icon: IconName = "radio_button_unchecked";
   let label = MAP_COPY.loading;
 
@@ -181,16 +181,12 @@ export function CurriculumMap() {
   const { ready, progress, dueReviews, hasReviewConcepts, openPrograms } =
     state;
 
-  // One row at a time wears the primary colour: the first course the learner
-  // can open and has not finished.
+  // One row at a time wears the primary colour: the first course with lessons
+  // that the learner has not finished. Every course is open.
   const activeCourseId = ready
-    ? curriculum.courses.find((course) => {
-        const unmet = course.requires.some(
-          (requiredId) => !progress[requiredId]?.isComplete
-        );
-        const openable = !unmet || progress[course.id].hasSession;
-        return openable && !progress[course.id].isComplete;
-      })?.id ?? null
+    ? curriculum.courses.find(
+        (course) => course.steps.length > 0 && !progress[course.id].isComplete
+      )?.id ?? null
     : null;
 
   const setProgramOpen = (programId: string, open: boolean) => {
@@ -212,14 +208,13 @@ export function CurriculumMap() {
     const unmetRequirement = course.requires.find(
       (requiredId) => !progress[requiredId]?.isComplete
     );
-    const locked =
-      course.requires.length > 0 &&
-      (!ready || (Boolean(unmetRequirement) && !courseProgress.hasSession));
+    const suggestOrder =
+      ready && Boolean(unmetRequirement) && !courseProgress.hasSession;
     const requiredCourse = curriculum.courses.find(
       (candidate) => candidate.id === unmetRequirement
     );
     const percent = Math.round(
-      (courseProgress.completedCount / courseProgress.total) * 100
+      (courseProgress.completedCount / Math.max(1, courseProgress.total)) * 100
     );
 
     const content = (
@@ -253,32 +248,32 @@ export function CurriculumMap() {
             <p className="mb-6 max-w-[62ch] text-[15px] leading-relaxed text-on-surface-variant">
               {copy(course.summary)}
             </p>
+            {course.requiresComputer && <div className="mb-5 max-w-[62ch]"><ComputerPrerequisite /></div>}
 
             <div
               className={`mb-3 flex flex-wrap items-center gap-4 font-mono text-sm ${
                 active ? "text-primary" : "text-on-surface-variant"
               }`}
             >
-              <span>{copy(progressCopy(courseProgress))}</span>
+              <span>{course.steps.length ? copy(progressCopy(courseProgress)) : "Lessons are being prepared"}</span>
               <span>{totalXp(course)} XP</span>
-              {locked && requiredCourse ? (
+              {suggestOrder && requiredCourse ? (
                 <span className="flex items-start gap-1.5">
                   <span className="mt-0.5 shrink-0">
-                    <Icon name="lock" size={14} />
+                    <Icon name="map" size={14} />
                   </span>
-                  <span>{copy(requirementCopy(requiredCourse.title))}</span>
+                  <span>{copy(suggestedOrderCopy(requiredCourse.title))}</span>
                 </span>
               ) : null}
             </div>
           </div>
 
           <div className="mt-4 md:mt-0 md:w-48 md:shrink-0 md:text-right">
-            <CourseStatus
+            {course.steps.length === 0 ? <span className="inline-flex items-center gap-2 text-on-surface-variant"><Icon name="schedule" size={16} />In preparation</span> : <CourseStatus
               progress={courseProgress}
-              locked={locked}
               ready={ready}
               active={active}
-            />
+            />}
           </div>
         </div>
 
@@ -288,7 +283,7 @@ export function CurriculumMap() {
           aria-label={`${course.title}: ${copy(progressCopy(courseProgress))}`}
           aria-valuenow={courseProgress.completedCount}
           aria-valuemin={0}
-          aria-valuemax={courseProgress.total}
+          aria-valuemax={Math.max(1, courseProgress.total)}
         >
           <div
             className={`h-full rounded-full transition-[width] duration-500 ${
@@ -306,20 +301,12 @@ export function CurriculumMap() {
 
     return (
       <li key={course.id}>
-        {locked ? (
-          <article
-            className={`relative flex flex-col gap-4 rounded-xl p-6 opacity-75 ${shell}`}
-          >
-            {content}
-          </article>
-        ) : (
-          <Link
-            href={`/learn/${course.id}`}
-            className={`relative flex flex-col gap-4 rounded-xl p-6 transition-colors hover:border-outline hover:bg-surface-container ${shell}`}
-          >
-            {content}
-          </Link>
-        )}
+        <Link
+          href={`/learn/${course.id}`}
+          className={`relative flex flex-col gap-4 rounded-xl p-6 transition-colors hover:border-outline hover:bg-surface-container ${shell}`}
+        >
+          {content}
+        </Link>
       </li>
     );
   };

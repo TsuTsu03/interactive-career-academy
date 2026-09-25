@@ -99,11 +99,11 @@ export function ProjectsScreen() {
                   aria-label={`${course.project}: ${progressCopy(item)}`}
                   aria-valuenow={item.completedCount}
                   aria-valuemin={0}
-                  aria-valuemax={item.total}
+                  aria-valuemax={Math.max(1, item.total)}
                 >
                   <div
                     className="h-full rounded-full bg-acid transition-[width] duration-500"
-                    style={{ width: `${(item.completedCount / item.total) * 100}%` }}
+                    style={{ width: `${(item.completedCount / Math.max(1, item.total)) * 100}%` }}
                   />
                 </div>
                 <Link
