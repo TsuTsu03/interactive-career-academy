@@ -26934,3 +26934,258 @@ apiBasicsCourse.steps.push(...([
     "projectId": "errors-tricycle"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: api-design-tricycle.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-api-design-tricycle-1",
+    "index": 491,
+    "task": "Add this route after the url line. It lets clients get the list at /v1/items. This makes the API ready for changes later. The code below does that. Run the checker to test it.\n\nIn server.js:\n```\n  if (url.pathname === \"/v1/items\") return send(res, 200, items);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "v1",
+        "label": "GET /v1/items answers the list",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "\"name\":\"Market 1\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The route checks if the URL is /v1/items. If yes, it sends the list."
+      },
+      {
+        "level": 2,
+        "text": "Add it after the url line in server.js.\n\nIn server.js:\n```\n  if (url.pathname === \"/v1/items\") return send(res, 200, items);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/v1/items\") return send(res, 200, items);\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "api-design-tricycle"
+  },
+  {
+    "id": "api-api-design-tricycle-2",
+    "index": 492,
+    "task": "Add a page line to get the page number from the URL. Change the /v1/items route to use it. This lets clients pick which page to see. The code below does that. Run the checker to test it.\n\nIn server.js:\n```\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  if (url.pathname === \"/v1/items\") return send(res, 200, items.slice((page - 1) * 5, page * 5));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "page2",
+        "label": "GET /v1/items?page=2 answers items 6 to 10",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items?page=2"
+          }
+        ],
+        "bodyContains": "[{\"id\":6,\"name\":\"Clinic 6\",\"price\":30},{\"id\":7,\"name\":\"Market 7\",\"price\":35},{\"id\":8,\"name\":\"School 8\",\"price\":40},{\"id\":9,\"name\":\"Clinic 9\",\"price\":45},{\"id\":10,\"name\":\"Market 10\",\"price\":50}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the searchParams to get the page number. If none, use 1."
+      },
+      {
+        "level": 2,
+        "text": "Change the route to slice the items by page number.\n\nIn server.js:\n```\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  if (url.pathname === \"/v1/items\") return send(res, 200, items.slice((page - 1) * 5, page * 5));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  if (url.pathname === \"/v1/items\") return send(res, 200, items.slice((page - 1) * 5, page * 5));\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "api-design-tricycle"
+  },
+  {
+    "id": "api-api-design-tricycle-3",
+    "index": 493,
+    "task": "Add a perPage line to get how many items per page. Change the route to use it. This lets clients choose the size of each page. The code below does that. Run the checker to test it.\n\nIn server.js:\n```\n  const perPage = Number(url.searchParams.get(\"perPage\") ?? 5);\n  if (url.pathname === \"/v1/items\") return send(res, 200, items.slice((page - 1) * perPage, page * perPage));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "per",
+        "label": "GET /v1/items?perPage=3 answers three items",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items?perPage=3"
+          }
+        ],
+        "bodyContains": "[{\"id\":1,\"name\":\"Market 1\",\"price\":5},{\"id\":2,\"name\":\"School 2\",\"price\":10},{\"id\":3,\"name\":\"Clinic 3\",\"price\":15}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Get perPage from the URL. If none, use 5."
+      },
+      {
+        "level": 2,
+        "text": "Update the slice to use perPage instead of 5.\n\nIn server.js:\n```\n  const perPage = Number(url.searchParams.get(\"perPage\") ?? 5);\n  if (url.pathname === \"/v1/items\") return send(res, 200, items.slice((page - 1) * perPage, page * perPage));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  const perPage = Number(url.searchParams.get(\"perPage\") ?? 5);\n  if (url.pathname === \"/v1/items\") return send(res, 200, items.slice((page - 1) * perPage, page * perPage));\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "api-design-tricycle"
+  },
+  {
+    "id": "api-api-design-tricycle-4",
+    "index": 494,
+    "task": "Add a data line to store the sliced items. Change the route to send an object with data, page, and perPage. This helps clients know what they got. The code below does that. Run the checker to test it.\n\nIn server.js:\n```\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "envelope",
+        "label": "The answer says page 2 and perPage 5",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items?page=2"
+          }
+        ],
+        "bodyContains": "\"page\":2,\"perPage\":5"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Store the sliced items in a variable called data."
+      },
+      {
+        "level": 2,
+        "text": "Send the object with data, page, and perPage in the route.\n\nIn server.js:\n```\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  const perPage = Number(url.searchParams.get(\"perPage\") ?? 5);\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage });\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "api-design-tricycle"
+  },
+  {
+    "id": "api-api-design-tricycle-5",
+    "index": 495,
+    "task": "Change the /v1/items route to add total: items.length. This tells clients how many items exist. The code below does that. Run the checker to test it.\n\nIn server.js:\n```\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "total",
+        "label": "The answer says total 12",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items"
+          }
+        ],
+        "bodyContains": "\"total\":12"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add total to the object with the length of items."
+      },
+      {
+        "level": 2,
+        "text": "Update the route to send the object with total.\n\nIn server.js:\n```\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Market\",\"School\",\"Clinic\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  const perPage = Number(url.searchParams.get(\"perPage\") ?? 5);\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length });\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "api-design-tricycle"
+  }
+] satisfies typeof apiBasicsCourse.steps));
