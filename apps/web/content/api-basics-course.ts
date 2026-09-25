@@ -17454,3 +17454,259 @@ apiBasicsCourse.steps.push(...([
     "projectId": "json-routes-school-club"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: json-routes-school-club.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-json-routes-school-club-6",
+    "index": 316,
+    "task": "You will fix how the server answers when someone asks for a path that does not exist. This is important so users get a clear error message. The code below replaces the last line of the handler. Run the checker to test it.\n\nIn server.js:\n```\n  send(res, 404, { error: \"Not found\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "missing",
+        "label": "GET /nope answers 404 with a JSON error",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/nope"
+          }
+        ],
+        "status": 404,
+        "bodyContains": "{\"error\":\"Not found\"}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are making the server say 'Not found' for any unknown path."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the end of the handler, right before the 404 line.\n\nIn server.js:\n```\n  send(res, 404, { error: \"Not found\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "json-routes-school-club"
+  },
+  {
+    "id": "api-json-routes-school-club-7",
+    "index": 317,
+    "task": "You will add a special rule for the root path. When someone visits /, the server will show the API's name and its routes. The code below goes at the top of the handler. Run the checker to test it.\n\nIn server.js:\n```\n  if (req.url === \"/\") return send(res, 200, { name: \"School Club\", routes: [\"/items\"] });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "root",
+        "label": "GET / lists the routes",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "\"routes\":[\"/items\"]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are telling the server to show its name and routes when someone visits the main page."
+      },
+      {
+        "level": 2,
+        "text": "Put the code at the top of the handler, before any other checks.\n\nIn server.js:\n```\n  if (req.url === \"/\") return send(res, 200, { name: \"School Club\", routes: [\"/items\"] });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") return send(res, 200, { name: \"School Club\", routes: [\"/items\"] });\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "json-routes-school-club"
+  },
+  {
+    "id": "api-json-routes-school-club-8",
+    "index": 318,
+    "task": "You will add a new route to find the cheapest item. The server will sort all items by price and return the lowest one. The code below goes before the 404 line. Run the checker to test it.\n\nIn server.js:\n```\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "cheapest",
+        "label": "GET /items/cheapest answers Pin",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/cheapest"
+          }
+        ],
+        "bodyContains": "\"name\":\"Pin\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are letting the server find the item with the lowest price."
+      },
+      {
+        "level": 2,
+        "text": "Put the code before the 404 line, after the / route check.\n\nIn server.js:\n```\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") return send(res, 200, { name: \"School Club\", routes: [\"/items\"] });\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "json-routes-school-club"
+  },
+  {
+    "id": "api-json-routes-school-club-9",
+    "index": 319,
+    "task": "You will add a route to show items in a readable format. The server will send JSON with extra spaces for easier reading. The code below goes before the 404 line. Run the checker to test it.\n\nIn server.js:\n```\n  if (req.url === \"/items/pretty\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify(items, null, 2)); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "pretty",
+        "label": "GET /items/pretty answers indented JSON",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/pretty"
+          }
+        ],
+        "bodyContains": "[\n  {\n    \"id\": 1"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are formatting the JSON so it's easier for people to read."
+      },
+      {
+        "level": 2,
+        "text": "Put the code before the 404 line, after the / route check.\n\nIn server.js:\n```\n  if (req.url === \"/items/pretty\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify(items, null, 2)); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") return send(res, 200, { name: \"School Club\", routes: [\"/items\"] });\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n  if (req.url === \"/items/pretty\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify(items, null, 2)); return; }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "json-routes-school-club"
+  },
+  {
+    "id": "api-json-routes-school-club-10",
+    "index": 320,
+    "task": "You will add a route to show only expensive items. The server will filter items that cost more than 40. The code below goes before the 404 line. Run the checker to test it.\n\nIn server.js:\n```\n  if (req.url === \"/items/expensive\") return send(res, 200, items.filter((item) => item.price > 40));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Items API\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "expensive",
+        "label": "GET /items/expensive answers Shirt and Badge",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/expensive"
+          }
+        ],
+        "bodyContains": "\"name\":\"Shirt\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You are letting the server show only items that cost more than 40."
+      },
+      {
+        "level": 2,
+        "text": "Put the code before the 404 line, after the / route check.\n\nIn server.js:\n```\n  if (req.url === \"/items/expensive\") return send(res, 200, items.filter((item) => item.price > 40));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") return send(res, 200, { name: \"School Club\", routes: [\"/items\"] });\n  if (req.url === \"/items\") return send(res, 200, items);\n  if (req.url === \"/items/count\") return send(res, 200, { count: items.length });\n  if (req.url === \"/items/first\") return send(res, 200, items[0]);\n  if (req.url === \"/items/names\") return send(res, 200, items.map((item) => item.name));\n  if (req.url === \"/items/total\") return send(res, 200, { total: items.reduce((sum, item) => sum + item.price, 0) });\n  if (req.url === \"/items/cheapest\") return send(res, 200, [...items].sort((a, b) => a.price - b.price)[0]);\n  if (req.url === \"/items/pretty\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify(items, null, 2)); return; }\n  if (req.url === \"/items/expensive\") return send(res, 200, items.filter((item) => item.price > 40));\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "json-routes-school-club"
+  }
+] satisfies typeof apiBasicsCourse.steps));
