@@ -20142,3 +20142,272 @@ apiBasicsCourse.steps.push(...([
     "projectId": "sqlite-storage-school-club"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: sqlite-storage-school-club.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-sqlite-storage-school-club-6",
+    "index": 366,
+    "task": "You change one line in server.js. This line checks if an item exists. If not, it sends a 404 error. This matters because users must know when an item is missing. The code below does this. Run the checker to confirm.\n\nIn server.js:\n```\n  if (match) { const row = db.prepare(\"SELECT * FROM items WHERE id = ?\").get(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "none",
+        "label": "GET /items/99 answers 404",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/99"
+          }
+        ],
+        "status": 404
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If the database has no row with that id, return 404. Don't send the row."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in server.js, inside the if (match) block.\n\nIn server.js:\n```\n  if (match) { const row = db.prepare(\"SELECT * FROM items WHERE id = ?\").get(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Shirt\",250],[\"Pin\",30],[\"Badge\",45]]) insert.run(name, price);\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items ORDER BY price\").all());\n  if (req.url === \"/items/count\") return send(res, 200, db.prepare(\"SELECT COUNT(*) AS count FROM items\").get());\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match) { const row = db.prepare(\"SELECT * FROM items WHERE id = ?\").get(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "sqlite-storage-school-club"
+  },
+  {
+    "id": "api-sqlite-storage-school-club-7",
+    "index": 367,
+    "task": "You replace one line with three lines. These lines read the posted item, insert it into the database, and send back the id the database gave. This matters because users need to know the id of their new item. The code below does this. Run the checker to confirm.\n\nIn server.js:\n```\n  const data = JSON.parse(await readBody(req));\n  const result = insert.run(data.name, data.price);\n  return send(res, 201, { id: Number(result.lastInsertRowid), ...data });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "insert",
+        "label": "POST /items answers 201 with id 4",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/items",
+            "body": "{\"name\":\"Tea\",\"price\":12}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 201,
+        "bodyContains": "\"id\":4"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Read the JSON, insert the data, then send back the new id."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in server.js, inside the createItem function.\n\nIn server.js:\n```\n  const data = JSON.parse(await readBody(req));\n  const result = insert.run(data.name, data.price);\n  return send(res, 201, { id: Number(result.lastInsertRowid), ...data });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Shirt\",250],[\"Pin\",30],[\"Badge\",45]]) insert.run(name, price);\nasync function createItem(req, res) {\n  const data = JSON.parse(await readBody(req));\n  const result = insert.run(data.name, data.price);\n  return send(res, 201, { id: Number(result.lastInsertRowid), ...data });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items ORDER BY price\").all());\n  if (req.url === \"/items/count\") return send(res, 200, db.prepare(\"SELECT COUNT(*) AS count FROM items\").get());\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match) { const row = db.prepare(\"SELECT * FROM items WHERE id = ?\").get(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sqlite-storage-school-club"
+  },
+  {
+    "id": "api-sqlite-storage-school-club-8",
+    "index": 368,
+    "task": "You add one route after the count route. This route adds up all prices in the database. This matters because users may want to know the total. The code below does this. Run the checker to confirm.\n\nIn server.js:\n```\n  if (req.url === \"/items/total\") return send(res, 200, db.prepare(\"SELECT SUM(price) AS total FROM items\").get());\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "sum",
+        "label": "GET /items/total answers the sum of prices",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/total"
+          }
+        ],
+        "bodyContains": "{\"total\":325}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use SUM to add all prices. Return the result as a single row."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in server.js, after the count route.\n\nIn server.js:\n```\n  if (req.url === \"/items/total\") return send(res, 200, db.prepare(\"SELECT SUM(price) AS total FROM items\").get());\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Shirt\",250],[\"Pin\",30],[\"Badge\",45]]) insert.run(name, price);\nasync function createItem(req, res) {\n  const data = JSON.parse(await readBody(req));\n  const result = insert.run(data.name, data.price);\n  return send(res, 201, { id: Number(result.lastInsertRowid), ...data });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items ORDER BY price\").all());\n  if (req.url === \"/items/count\") return send(res, 200, db.prepare(\"SELECT COUNT(*) AS count FROM items\").get());\n  if (req.url === \"/items/total\") return send(res, 200, db.prepare(\"SELECT SUM(price) AS total FROM items\").get());\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match) { const row = db.prepare(\"SELECT * FROM items WHERE id = ?\").get(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "sqlite-storage-school-club"
+  },
+  {
+    "id": "api-sqlite-storage-school-club-9",
+    "index": 369,
+    "task": "You add two lines after the total route. These lines let users search for items by name. This matters because users may want to find items quickly. The code below does this. Run the checker to confirm.\n\nIn server.js:\n```\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items/search\") return send(res, 200, db.prepare(\"SELECT * FROM items WHERE name LIKE ?\").all(`%${url.searchParams.get(\"q\") ?? \"\"}%`));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "like",
+        "label": "GET /items/search?q=adg finds Badge",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/search?q=adg"
+          }
+        ],
+        "bodyContains": "\"name\":\"Badge\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use LIKE to match names. Get the search text from the URL."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in server.js, after the total route.\n\nIn server.js:\n```\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items/search\") return send(res, 200, db.prepare(\"SELECT * FROM items WHERE name LIKE ?\").all(`%${url.searchParams.get(\"q\") ?? \"\"}%`));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Shirt\",250],[\"Pin\",30],[\"Badge\",45]]) insert.run(name, price);\nasync function createItem(req, res) {\n  const data = JSON.parse(await readBody(req));\n  const result = insert.run(data.name, data.price);\n  return send(res, 201, { id: Number(result.lastInsertRowid), ...data });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items ORDER BY price\").all());\n  if (req.url === \"/items/count\") return send(res, 200, db.prepare(\"SELECT COUNT(*) AS count FROM items\").get());\n  if (req.url === \"/items/total\") return send(res, 200, db.prepare(\"SELECT SUM(price) AS total FROM items\").get());\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items/search\") return send(res, 200, db.prepare(\"SELECT * FROM items WHERE name LIKE ?\").all(`%${url.searchParams.get(\"q\") ?? \"\"}%`));\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match) { const row = db.prepare(\"SELECT * FROM items WHERE id = ?\").get(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sqlite-storage-school-club"
+  },
+  {
+    "id": "api-sqlite-storage-school-club-10",
+    "index": 370,
+    "task": "You change three lines in server.js. These lines open the database file, create the table if it doesn't exist, and add starting rows if the table is empty. This matters because the data must be saved to a file. The code below does this. Run the checker to confirm.\n\nIn server.js:\n```\nconst db = new DatabaseSync(process.env.DB_FILE ?? \":memory:\");\ndb.exec(\"CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nif (db.prepare(\"SELECT COUNT(*) AS count FROM items\").get().count === 0) for (const [name, price] of [[\"Shirt\",250],[\"Pin\",30],[\"Badge\",45]]) insert.run(name, price);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "file",
+        "label": "With DB_FILE=shop.db the server answers from a file",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "env": {
+          "DB_FILE": "shop.db"
+        },
+        "status": 200,
+        "bodyContains": "\"name\":\"Shirt\""
+      },
+      {
+        "id": "saved",
+        "label": "shop.db exists on disk",
+        "kind": "local-file-exists",
+        "path": "shop.db"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use DB_FILE to name the file. Create the table only if it doesn't exist."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in server.js, at the top where the db variable is defined.\n\nIn server.js:\n```\nconst db = new DatabaseSync(process.env.DB_FILE ?? \":memory:\");\ndb.exec(\"CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nif (db.prepare(\"SELECT COUNT(*) AS count FROM items\").get().count === 0) for (const [name, price] of [[\"Shirt\",250],[\"Pin\",30],[\"Badge\",45]]) insert.run(name, price);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(process.env.DB_FILE ?? \":memory:\");\ndb.exec(\"CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nif (db.prepare(\"SELECT COUNT(*) AS count FROM items\").get().count === 0) for (const [name, price] of [[\"Shirt\",250],[\"Pin\",30],[\"Badge\",45]]) insert.run(name, price);\nasync function createItem(req, res) {\n  const data = JSON.parse(await readBody(req));\n  const result = insert.run(data.name, data.price);\n  return send(res, 201, { id: Number(result.lastInsertRowid), ...data });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items ORDER BY price\").all());\n  if (req.url === \"/items/count\") return send(res, 200, db.prepare(\"SELECT COUNT(*) AS count FROM items\").get());\n  if (req.url === \"/items/total\") return send(res, 200, db.prepare(\"SELECT SUM(price) AS total FROM items\").get());\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items/search\") return send(res, 200, db.prepare(\"SELECT * FROM items WHERE name LIKE ?\").all(`%${url.searchParams.get(\"q\") ?? \"\"}%`));\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match) { const row = db.prepare(\"SELECT * FROM items WHERE id = ?\").get(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sqlite-storage-school-club"
+  }
+] satisfies typeof apiBasicsCourse.steps));
