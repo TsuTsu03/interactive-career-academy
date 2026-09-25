@@ -16635,3 +16635,278 @@ apiBasicsCourse.steps.push(...([
     "projectId": "api-design-barangay"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: first-server-school-club.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-first-server-school-club-1",
+    "index": 301,
+    "task": "Your server must answer every request with the text 'School Club API'.\nChange the line in server.js that says res.end(\"School Club API\");.\nThis tells the server what to send back to anyone who visits it.\nRun the checker to confirm your server answers correctly.\n\nIn server.js:\n```\n  res.end(\"School Club API\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "root",
+        "label": "GET / answers School Club API",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "School Club API"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The server must send the same message for every request."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in server.js where it says res.end(\"School Club API\");\n\nIn server.js:\n```\n  res.end(\"School Club API\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"School Club API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-server-school-club"
+  },
+  {
+    "id": "api-first-server-school-club-2",
+    "index": 302,
+    "task": "Your server must say the answer is plain text.\nAdd one line above res.end in server.js to set the header.\nThis tells the browser or tool how to read the answer.\nRun the checker to confirm your server sends plain text.\n\nIn server.js:\n```\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "type",
+        "label": "GET / says its body is plain text",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "header": {
+          "name": "content-type",
+          "value": "text/plain"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Set the header to tell the receiver the type of answer."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in server.js right above the res.end line.\n\nIn server.js:\n```\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.end(\"School Club API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-server-school-club"
+  },
+  {
+    "id": "api-first-server-school-club-3",
+    "index": 303,
+    "task": "Your server must add a custom header named X-Place.\nAdd one line above res.end in server.js to set it to 'school-club'.\nThis helps tools know where the server is located.\nRun the checker to confirm your server sends the X-Place header.\n\nIn server.js:\n```\n  res.setHeader(\"X-Place\", \"school-club\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "custom",
+        "label": "GET / sends X-Place: school-club",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "header": {
+          "name": "x-place",
+          "value": "school-club"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the header to help tools identify your server's location."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in server.js right above the res.end line.\n\nIn server.js:\n```\n  res.setHeader(\"X-Place\", \"school-club\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"school-club\");\n  res.end(\"School Club API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-server-school-club"
+  },
+  {
+    "id": "api-first-server-school-club-4",
+    "index": 304,
+    "task": "Your server must answer /health with the word 'healthy'.\nAdd one line at the top of the handler to check if the request is for /health.\nThis lets a monitor know the server is running.\nRun the checker to confirm your server answers /health correctly.\n\nIn server.js:\n```\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "health",
+        "label": "GET /health answers healthy",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/health"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "healthy"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check the URL to see if it is /health, then send 'healthy'."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in server.js right at the top of the handler.\n\nIn server.js:\n```\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"school-club\");\n  res.end(\"School Club API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "first-server-school-club"
+  },
+  {
+    "id": "api-first-server-school-club-5",
+    "index": 305,
+    "task": "Your server must answer any other path with status 404 Not found.\nAdd one line right after the /health check to handle unknown paths.\nThis tells users the path does not exist.\nRun the checker to confirm your server sends 404 for unknown paths.\n\nIn server.js:\n```\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "missing",
+        "label": "GET /missing answers 404",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/missing"
+          }
+        ],
+        "status": 404
+      },
+      {
+        "id": "root",
+        "label": "GET / still answers 200",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "status": 200
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the URL is not /, then send 404 and 'Not found'."
+      },
+      {
+        "level": 2,
+        "text": "Put the code in server.js right after the /health check.\n\nIn server.js:\n```\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"school-club\");\n  res.end(\"School Club API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "first-server-school-club"
+  }
+] satisfies typeof apiBasicsCourse.steps));
