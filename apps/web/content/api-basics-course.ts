@@ -13394,3 +13394,257 @@ apiBasicsCourse.steps.push(...([
     "projectId": "one-item-barangay"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: query-strings-barangay.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-query-strings-barangay-1",
+    "index": 241,
+    "task": "You add two lines after the url line. You change the /items line to send the list. This lets you filter items by price. The code below does that. Run the checker to test it.\n\nIn server.js:\n```\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "max",
+        "label": "GET /items?max=50 answers only the items up to 50",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?max=50"
+          }
+        ],
+        "bodyContains": "[{\"id\":1,\"name\":\"Clearance\",\"price\":50},{\"id\":3,\"name\":\"ID\",\"price\":20}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You filter items by checking if their price is less than or equal to the max value."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the url line and before the /items line.\n\nIn server.js:\n```\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-barangay"
+  },
+  {
+    "id": "api-query-strings-barangay-2",
+    "index": 242,
+    "task": "You add one line after the max line. This lets you filter items by minimum price. The code below does that. Run the checker to test it.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "min",
+        "label": "GET /items?min=50 answers only the items from 50",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?min=50"
+          }
+        ],
+        "bodyContains": "[{\"id\":1,\"name\":\"Clearance\",\"price\":50},{\"id\":2,\"name\":\"Permit\",\"price\":300}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You check if the item's price is greater than or equal to the min value."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the max line and before the q line.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "query-strings-barangay"
+  },
+  {
+    "id": "api-query-strings-barangay-3",
+    "index": 243,
+    "task": "You add one line after the min line. This lets you search for items by name, ignoring case. The code below does that. Run the checker to test it.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "q",
+        "label": "GET /items?q=erm finds Permit",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?q=erm"
+          }
+        ],
+        "bodyContains": "[{\"id\":2,\"name\":\"Permit\",\"price\":300}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You convert both the item name and search term to lowercase before comparing."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the min line and before the sort line.\n\nIn server.js:\n```\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-barangay"
+  },
+  {
+    "id": "api-query-strings-barangay-4",
+    "index": 244,
+    "task": "You add one line after the q line. This sorts items from cheapest to most expensive. The code below does that. Run the checker to test it.\n\nIn server.js:\n```\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "asc",
+        "label": "GET /items?sort=price answers cheapest first",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?sort=price"
+          }
+        ],
+        "bodyContains": "[{\"id\":3,\"name\":\"ID\",\"price\":20},{\"id\":1,\"name\":\"Clearance\",\"price\":50},{\"id\":2,\"name\":\"Permit\",\"price\":300}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You sort the list using the price property, from lowest to highest."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the q line and before the -price line.\n\nIn server.js:\n```\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-barangay"
+  },
+  {
+    "id": "api-query-strings-barangay-5",
+    "index": 245,
+    "task": "You add one line after the sort line. This sorts items from most expensive to cheapest. The code below does that. Run the checker to test it.\n\nIn server.js:\n```\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "desc",
+        "label": "GET /items?sort=-price answers most expensive first",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items?sort=-price"
+          }
+        ],
+        "bodyContains": "[{\"id\":2,\"name\":\"Permit\",\"price\":300},{\"id\":1,\"name\":\"Clearance\",\"price\":50},{\"id\":3,\"name\":\"ID\",\"price\":20}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You sort the list using the price property, from highest to lowest."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the sort line and before the end of the code.\n\nIn server.js:\n```\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  let list = items;\n  if (url.searchParams.has(\"max\")) list = list.filter((item) => item.price <= Number(url.searchParams.get(\"max\")));\n  if (url.searchParams.has(\"min\")) list = list.filter((item) => item.price >= Number(url.searchParams.get(\"min\")));\n  if (url.searchParams.has(\"q\")) list = list.filter((item) => item.name.toLowerCase().includes(url.searchParams.get(\"q\").toLowerCase()));\n  if (url.searchParams.get(\"sort\") === \"price\") list = [...list].sort((a, b) => a.price - b.price);\n  if (url.searchParams.get(\"sort\") === \"-price\") list = [...list].sort((a, b) => b.price - a.price);\n  if (url.pathname === \"/items\") return send(res, 200, list);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "query-strings-barangay"
+  }
+] satisfies typeof apiBasicsCourse.steps));
