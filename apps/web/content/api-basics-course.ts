@@ -16910,3 +16910,289 @@ apiBasicsCourse.steps.push(...([
     "projectId": "first-server-school-club"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: first-server-school-club.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-first-server-school-club-6",
+    "index": 306,
+    "task": "Your server must refuse any method other than GET. Add this line at the very top of the handler. This stops bad requests. The code below does that. Run the checker to confirm.\n\nIn server.js:\n```\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "post",
+        "label": "POST / answers 405",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/",
+            "body": "{}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 405
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a check for the request method before any other code."
+      },
+      {
+        "level": 2,
+        "text": "Place this line at the very top of the handler function in server.js.\n\nIn server.js:\n```\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"school-club\");\n  res.end(\"School Club API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-server-school-club"
+  },
+  {
+    "id": "api-first-server-school-club-7",
+    "index": 307,
+    "task": "Your server must answer /info with JSON. Add this line right after the /health line. This tells the browser it's sending data. The code below does that. Run the checker to confirm.\n\nIn server.js:\n```\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"School Club\" })); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "info",
+        "label": "GET /info answers JSON with the name",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/info"
+          }
+        ],
+        "bodyContains": "\"name\":\"School Club\"",
+        "header": {
+          "name": "content-type",
+          "value": "application/json"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a new route for /info that sends a JSON object."
+      },
+      {
+        "level": 2,
+        "text": "Place this line right after the /health route in server.js.\n\nIn server.js:\n```\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"School Club\" })); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"School Club\" })); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"school-club\");\n  res.end(\"School Club API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "first-server-school-club"
+  },
+  {
+    "id": "api-first-server-school-club-8",
+    "index": 308,
+    "task": "Your server must count requests and show the count at /visits. Add a counter above the server. Add a route for /visits before the 404 line. This tracks how many people visit. The code below does that. Run the checker to confirm.\n\nIn server.js:\n```\nlet visits = 0;\n  visits += 1;\n  if (req.url === \"/visits\") { res.end(String(visits)); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "visits",
+        "label": "After two requests, GET /visits answers 3",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          },
+          {
+            "method": "GET",
+            "path": "/"
+          },
+          {
+            "method": "GET",
+            "path": "/visits"
+          }
+        ],
+        "bodyContains": "3"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Declare a counter variable above the server and increment it each time a request comes in."
+      },
+      {
+        "level": 2,
+        "text": "Add the /visits route before the 404 line in server.js.\n\nIn server.js:\n```\nlet visits = 0;\n  visits += 1;\n  if (req.url === \"/visits\") { res.end(String(visits)); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nlet visits = 0;\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n  visits += 1;\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"School Club\" })); return; }\n  if (req.url === \"/visits\") { res.end(String(visits)); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"school-club\");\n  res.end(\"School Club API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "first-server-school-club"
+  },
+  {
+    "id": "api-first-server-school-club-9",
+    "index": 309,
+    "task": "Your server must tell browsers not to store any answer. Add this line at the very top of the handler. This stops browsers from saving your answers. The code below does that. Run the checker to confirm.\n\nIn server.js:\n```\n  res.setHeader(\"Cache-Control\", \"no-store\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "cache",
+        "label": "GET / sends Cache-Control: no-store",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "header": {
+          "name": "cache-control",
+          "value": "no-store"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Set the Cache-Control header to no-store at the start of the handler."
+      },
+      {
+        "level": 2,
+        "text": "Place this line at the very top of the handler function in server.js.\n\nIn server.js:\n```\n  res.setHeader(\"Cache-Control\", \"no-store\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nlet visits = 0;\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"Cache-Control\", \"no-store\");\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n  visits += 1;\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"School Club\" })); return; }\n  if (req.url === \"/visits\") { res.end(String(visits)); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"school-club\");\n  res.end(\"School Club API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "first-server-school-club"
+  },
+  {
+    "id": "api-first-server-school-club-10",
+    "index": 310,
+    "task": "Your server must read a name from the query string at /hello, with 'friend' as the default. Add these two lines right before the 404 line. This lets users say hello with their name. The code below does that. Run the checker to confirm.\n\nIn server.js:\n```\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/hello\") { res.end(`Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}`); return; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Hello\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "hello",
+        "label": "GET /hello?name=Ana answers Hello, Ana",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/hello?name=Ana"
+          }
+        ],
+        "bodyContains": "Hello, Ana"
+      },
+      {
+        "id": "default",
+        "label": "GET /hello answers Hello, friend",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/hello"
+          }
+        ],
+        "bodyContains": "Hello, friend"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use URL to parse the query string and get the name from it."
+      },
+      {
+        "level": 2,
+        "text": "Place these lines right before the 404 line in server.js.\n\nIn server.js:\n```\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/hello\") { res.end(`Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}`); return; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nlet visits = 0;\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"Cache-Control\", \"no-store\");\n  if (req.method !== \"GET\") { res.statusCode = 405; res.end(\"Method not allowed\"); return; }\n  visits += 1;\n  if (req.url === \"/health\") { res.end(\"healthy\"); return; }\n  if (req.url === \"/info\") { res.setHeader(\"Content-Type\", \"application/json\"); res.end(JSON.stringify({ name: \"School Club\" })); return; }\n  if (req.url === \"/visits\") { res.end(String(visits)); return; }\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/hello\") { res.end(`Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}`); return; }\n  if (req.url !== \"/\") { res.statusCode = 404; res.end(\"Not found\"); return; }\n  res.setHeader(\"Content-Type\", \"text/plain; charset=utf-8\");\n  res.setHeader(\"X-Place\", \"school-club\");\n  res.end(\"School Club API\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "first-server-school-club"
+  }
+] satisfies typeof apiBasicsCourse.steps));
