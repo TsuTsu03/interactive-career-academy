@@ -10698,3 +10698,258 @@ apiBasicsCourse.steps.push(...([
     "projectId": "errors-carinderia"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: api-design-carinderia.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-api-design-carinderia-1",
+    "index": 191,
+    "task": "You add a route for the API. This route answers requests to /v1/items. It sends the list of items. This lets clients get the menu. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  if (url.pathname === \"/v1/items\") return send(res, 200, items);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "v1",
+        "label": "GET /v1/items answers the list",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "\"name\":\"Adobo 1\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The route checks the URL path. If it matches /v1/items, it sends the items."
+      },
+      {
+        "level": 2,
+        "text": "Add this code after the url line in server.js.\n\nIn server.js:\n```\n  if (url.pathname === \"/v1/items\") return send(res, 200, items);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/v1/items\") return send(res, 200, items);\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "api-design-carinderia"
+  },
+  {
+    "id": "api-api-design-carinderia-2",
+    "index": 192,
+    "task": "You add a page number. This lets clients choose which page to see. You change the route to slice the items. This shows five items per page. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  if (url.pathname === \"/v1/items\") return send(res, 200, items.slice((page - 1) * 5, page * 5));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "page2",
+        "label": "GET /v1/items?page=2 answers items 6 to 10",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items?page=2"
+          }
+        ],
+        "bodyContains": "[{\"id\":6,\"name\":\"Lumpia 6\",\"price\":30},{\"id\":7,\"name\":\"Adobo 7\",\"price\":35},{\"id\":8,\"name\":\"Pancit 8\",\"price\":40},{\"id\":9,\"name\":\"Lumpia 9\",\"price\":45},{\"id\":10,\"name\":\"Adobo 10\",\"price\":50}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The page number comes from the URL's ?page query. Use it to pick items."
+      },
+      {
+        "level": 2,
+        "text": "Add this code after the url line in server.js. Then change the route.\n\nIn server.js:\n```\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  if (url.pathname === \"/v1/items\") return send(res, 200, items.slice((page - 1) * 5, page * 5));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  if (url.pathname === \"/v1/items\") return send(res, 200, items.slice((page - 1) * 5, page * 5));\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "api-design-carinderia"
+  },
+  {
+    "id": "api-api-design-carinderia-3",
+    "index": 193,
+    "task": "You add a perPage number. This lets clients choose how many items to show. You change the route to use it. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  const perPage = Number(url.searchParams.get(\"perPage\") ?? 5);\n  if (url.pathname === \"/v1/items\") return send(res, 200, items.slice((page - 1) * perPage, page * perPage));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "per",
+        "label": "GET /v1/items?perPage=3 answers three items",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items?perPage=3"
+          }
+        ],
+        "bodyContains": "[{\"id\":1,\"name\":\"Adobo 1\",\"price\":5},{\"id\":2,\"name\":\"Pancit 2\",\"price\":10},{\"id\":3,\"name\":\"Lumpia 3\",\"price\":15}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The perPage number comes from ?perPage. Use it to slice the items."
+      },
+      {
+        "level": 2,
+        "text": "Add this code after the url line in server.js. Then change the route.\n\nIn server.js:\n```\n  const perPage = Number(url.searchParams.get(\"perPage\") ?? 5);\n  if (url.pathname === \"/v1/items\") return send(res, 200, items.slice((page - 1) * perPage, page * perPage));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  const perPage = Number(url.searchParams.get(\"perPage\") ?? 5);\n  if (url.pathname === \"/v1/items\") return send(res, 200, items.slice((page - 1) * perPage, page * perPage));\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "api-design-carinderia"
+  },
+  {
+    "id": "api-api-design-carinderia-4",
+    "index": 194,
+    "task": "You add a data object. This wraps the sliced items. You also add page and perPage. The route now sends this object. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "envelope",
+        "label": "The answer says page 2 and perPage 5",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items?page=2"
+          }
+        ],
+        "bodyContains": "\"page\":2,\"perPage\":5"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Wrap the sliced items in an object with data, page, and perPage."
+      },
+      {
+        "level": 2,
+        "text": "Add this code after the url line in server.js. Then change the route.\n\nIn server.js:\n```\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  const perPage = Number(url.searchParams.get(\"perPage\") ?? 5);\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage });\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "api-design-carinderia"
+  },
+  {
+    "id": "api-api-design-carinderia-5",
+    "index": 195,
+    "task": "You add a total number. This shows how many items are in the menu. You change the route to include it. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "total",
+        "label": "The answer says total 12",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items"
+          }
+        ],
+        "bodyContains": "\"total\":12"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add total: items.length to the answer object. This tells clients how many items there are."
+      },
+      {
+        "level": 2,
+        "text": "Change the route to send this object.\n\nIn server.js:\n```\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  const perPage = Number(url.searchParams.get(\"perPage\") ?? 5);\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length });\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "api-design-carinderia"
+  }
+] satisfies typeof apiBasicsCourse.steps));
