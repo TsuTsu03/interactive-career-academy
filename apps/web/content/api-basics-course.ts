@@ -10953,3 +10953,273 @@ apiBasicsCourse.steps.push(...([
     "projectId": "api-design-carinderia"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: api-design-carinderia.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-api-design-carinderia-6",
+    "index": 196,
+    "task": "Add a line for next. This line tells the browser where to go if the user clicks next. The code below does this. Run the checker to test it. The checker will test if page 1 links to page 2 and if the last page has no next link.\n\nIn server.js:\n```\n  const next = page * perPage < items.length ? `/v1/items?page=${page + 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "next",
+        "label": "Page 1 links to page 2",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items"
+          }
+        ],
+        "bodyContains": "\"next\":\"/v1/items?page=2&perPage=5\""
+      },
+      {
+        "id": "last",
+        "label": "The last page has no next link",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items?page=3"
+          }
+        ],
+        "bodyContains": "\"next\":null"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The next link should point to the next page only if there is one."
+      },
+      {
+        "level": 2,
+        "text": "Add this line after the data line in server.js.\n\nIn server.js:\n```\n  const next = page * perPage < items.length ? `/v1/items?page=${page + 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  const perPage = Number(url.searchParams.get(\"perPage\") ?? 5);\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  const next = page * perPage < items.length ? `/v1/items?page=${page + 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next });\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "api-design-carinderia"
+  },
+  {
+    "id": "api-api-design-carinderia-7",
+    "index": 197,
+    "task": "Add a line for previous. This line tells the browser where to go if the user clicks back. The code below does this. Run the checker to test it. The checker will test if page 2 links back to page 1.\n\nIn server.js:\n```\n  const previous = page > 1 ? `/v1/items?page=${page - 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next, previous });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "previous",
+        "label": "Page 2 links back to page 1",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items?page=2"
+          }
+        ],
+        "bodyContains": "\"previous\":\"/v1/items?page=1&perPage=5\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The previous link should point to the previous page only if there is one."
+      },
+      {
+        "level": 2,
+        "text": "Add this line after the next line in server.js.\n\nIn server.js:\n```\n  const previous = page > 1 ? `/v1/items?page=${page - 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next, previous });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  const perPage = Number(url.searchParams.get(\"perPage\") ?? 5);\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  const next = page * perPage < items.length ? `/v1/items?page=${page + 1}&perPage=${perPage}` : null;\n  const previous = page > 1 ? `/v1/items?page=${page - 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next, previous });\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "api-design-carinderia"
+  },
+  {
+    "id": "api-api-design-carinderia-8",
+    "index": 198,
+    "task": "Add a line to check if the page number is a whole number 1 or more. If not, send a 400 error. The code below does this. Run the checker to test it. The checker will test if GET /v1/items?page=0 answers 400.\n\nIn server.js:\n```\n  if (!Number.isInteger(page) || page < 1) return send(res, 400, { error: \"page must be a whole number 1 or more\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "bad",
+        "label": "GET /v1/items?page=0 answers 400",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items?page=0"
+          }
+        ],
+        "status": 400
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the page is a whole number and at least 1 before sending data."
+      },
+      {
+        "level": 2,
+        "text": "Add this line after the page line in server.js.\n\nIn server.js:\n```\n  if (!Number.isInteger(page) || page < 1) return send(res, 400, { error: \"page must be a whole number 1 or more\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  if (!Number.isInteger(page) || page < 1) return send(res, 400, { error: \"page must be a whole number 1 or more\" });\n  const perPage = Number(url.searchParams.get(\"perPage\") ?? 5);\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  const next = page * perPage < items.length ? `/v1/items?page=${page + 1}&perPage=${perPage}` : null;\n  const previous = page > 1 ? `/v1/items?page=${page - 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next, previous });\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "api-design-carinderia"
+  },
+  {
+    "id": "api-api-design-carinderia-9",
+    "index": 199,
+    "task": "Change the perPage line to limit the number of items per page to 10. The code below does this. Run the checker to test it. The checker will test if GET /v1/items?perPage=100 answers perPage 10.\n\nIn server.js:\n```\n  const perPage = Math.min(Number(url.searchParams.get(\"perPage\") ?? 5), 10);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "cap",
+        "label": "GET /v1/items?perPage=100 answers perPage 10",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/v1/items?perPage=100"
+          }
+        ],
+        "bodyContains": "\"perPage\":10,\"total\":12"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use Math.min to cap the perPage value at 10."
+      },
+      {
+        "level": 2,
+        "text": "Change the perPage line in server.js to use the new code.\n\nIn server.js:\n```\n  const perPage = Math.min(Number(url.searchParams.get(\"perPage\") ?? 5), 10);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  if (!Number.isInteger(page) || page < 1) return send(res, 400, { error: \"page must be a whole number 1 or more\" });\n  const perPage = Math.min(Number(url.searchParams.get(\"perPage\") ?? 5), 10);\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  const next = page * perPage < items.length ? `/v1/items?page=${page + 1}&perPage=${perPage}` : null;\n  const previous = page > 1 ? `/v1/items?page=${page - 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next, previous });\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "api-design-carinderia"
+  },
+  {
+    "id": "api-api-design-carinderia-10",
+    "index": 200,
+    "task": "Change the old /items route to add a Deprecation header. This tells users the route is old and should not be used. The code below does this. Run the checker to test it. The checker will test if GET /items sends Deprecation: true.\n\nIn server.js:\n```\n  if (url.pathname === \"/items\") { res.setHeader(\"Deprecation\", \"true\"); return send(res, 200, items); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "deprecated",
+        "label": "GET /items sends Deprecation: true",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "header": {
+          "name": "deprecation",
+          "value": "true"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the header before sending the data for the old route."
+      },
+      {
+        "level": 2,
+        "text": "Change the old /items route in server.js to use the new code.\n\nIn server.js:\n```\n  if (url.pathname === \"/items\") { res.setHeader(\"Deprecation\", \"true\"); return send(res, 200, items); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst names = [\"Adobo\",\"Pancit\",\"Lumpia\"];\nconst items = Array.from({ length: 12 }, (_, n) => ({ id: n + 1, name: `${names[n % 3]} ${n + 1}`, price: (n + 1) * 5 }));\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  const page = Number(url.searchParams.get(\"page\") ?? 1);\n  if (!Number.isInteger(page) || page < 1) return send(res, 400, { error: \"page must be a whole number 1 or more\" });\n  const perPage = Math.min(Number(url.searchParams.get(\"perPage\") ?? 5), 10);\n  const data = items.slice((page - 1) * perPage, page * perPage);\n  const next = page * perPage < items.length ? `/v1/items?page=${page + 1}&perPage=${perPage}` : null;\n  const previous = page > 1 ? `/v1/items?page=${page - 1}&perPage=${perPage}` : null;\n  if (url.pathname === \"/v1/items\") return send(res, 200, { data, page, perPage, total: items.length, next, previous });\n  if (url.pathname === \"/items\") { res.setHeader(\"Deprecation\", \"true\"); return send(res, 200, items); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "api-design-carinderia"
+  }
+] satisfies typeof apiBasicsCourse.steps));
