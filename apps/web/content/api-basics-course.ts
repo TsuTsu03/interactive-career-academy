@@ -26089,3 +26089,286 @@ apiBasicsCourse.steps.push(...([
     "projectId": "sqlite-changes-tricycle"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: sqlite-changes-tricycle.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-sqlite-changes-tricycle-6",
+    "index": 476,
+    "task": "You change the price check to let 0 or any whole number. This lets the user send a price that is not negative. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  if (data.price !== undefined && (!Number.isInteger(data.price) || data.price < 0)) return send(res, 422, { error: \"price must be a whole number 0 or more\" });\n  const result = db.prepare(\"UPDATE items SET name = COALESCE(?, name), price = COALESCE(?, price) WHERE id = ?\").run(data.name ?? null, data.price ?? null, id);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Market\",20],[\"School\",30],[\"Clinic\",25]]) insert.run(name, price);\nconst one = (id) => db.prepare(\"SELECT * FROM items WHERE id = ?\").get(id);\nfunction deleteItem(res, id) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nasync function updateItem(req, res, id) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match && req.method === \"GET\") { const row = one(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n  if (match && req.method === \"DELETE\") return deleteItem(res, Number(match[1]));\n  if (match && req.method === \"PUT\") return updateItem(req, res, Number(match[1]));\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items\").all());\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "PUT /items/1 with only a name keeps the price",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "PUT",
+            "path": "/items/1",
+            "body": "{\"name\":\"Tea\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "bodyContains": "\"name\":\"Tea\",\"price\":20"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Let the price be any whole number, including zero, to make it safe."
+      },
+      {
+        "level": 2,
+        "text": "Put the new code in the price check section, right before the UPDATE line.\n\nIn server.js:\n```\n  if (data.price !== undefined && (!Number.isInteger(data.price) || data.price < 0)) return send(res, 422, { error: \"price must be a whole number 0 or more\" });\n  const result = db.prepare(\"UPDATE items SET name = COALESCE(?, name), price = COALESCE(?, price) WHERE id = ?\").run(data.name ?? null, data.price ?? null, id);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Market\",20],[\"School\",30],[\"Clinic\",25]]) insert.run(name, price);\nconst one = (id) => db.prepare(\"SELECT * FROM items WHERE id = ?\").get(id);\nfunction deleteItem(res, id) {\n  const result = db.prepare(\"DELETE FROM items WHERE id = ?\").run(id);\n  if (result.changes === 0) return send(res, 404, { error: \"Item not found\" });\n  res.statusCode = 204;\n  return res.end();\n}\nasync function updateItem(req, res, id) {\n  const data = JSON.parse(await readBody(req));\n  if (data.price !== undefined && (!Number.isInteger(data.price) || data.price < 0)) return send(res, 422, { error: \"price must be a whole number 0 or more\" });\n  const result = db.prepare(\"UPDATE items SET name = COALESCE(?, name), price = COALESCE(?, price) WHERE id = ?\").run(data.name ?? null, data.price ?? null, id);\n  if (result.changes === 0) return send(res, 404, { error: \"Item not found\" });\n  return send(res, 200, one(id));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match && req.method === \"GET\") { const row = one(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n  if (match && req.method === \"DELETE\") return deleteItem(res, Number(match[1]));\n  if (match && req.method === \"PUT\") return updateItem(req, res, Number(match[1]));\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items\").all());\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "sqlite-changes-tricycle"
+  },
+  {
+    "id": "api-sqlite-changes-tricycle-7",
+    "index": 477,
+    "task": "You add a new route to raise every price by 1. This route uses a transaction to make sure the change is safe. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  if (req.url === \"/items/raise\" && req.method === \"POST\") { db.exec(\"BEGIN\"); db.prepare(\"UPDATE items SET price = price + 1\").run(); db.exec(\"COMMIT\"); return send(res, 200, db.prepare(\"SELECT * FROM items\").all()); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Market\",20],[\"School\",30],[\"Clinic\",25]]) insert.run(name, price);\nconst one = (id) => db.prepare(\"SELECT * FROM items WHERE id = ?\").get(id);\nfunction deleteItem(res, id) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nasync function updateItem(req, res, id) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match && req.method === \"GET\") { const row = one(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n  if (match && req.method === \"DELETE\") return deleteItem(res, Number(match[1]));\n  if (match && req.method === \"PUT\") return updateItem(req, res, Number(match[1]));\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items\").all());\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "raise",
+        "label": "POST /items/raise answers the raised prices",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/items/raise",
+            "body": "{}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "bodyContains": "\"price\":21"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use a transaction to make sure the price change is done safely, even if something goes wrong."
+      },
+      {
+        "level": 2,
+        "text": "Put the new route at the top of the handler, right after the PUT route.\n\nIn server.js:\n```\n  if (req.url === \"/items/raise\" && req.method === \"POST\") { db.exec(\"BEGIN\"); db.prepare(\"UPDATE items SET price = price + 1\").run(); db.exec(\"COMMIT\"); return send(res, 200, db.prepare(\"SELECT * FROM items\").all()); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Market\",20],[\"School\",30],[\"Clinic\",25]]) insert.run(name, price);\nconst one = (id) => db.prepare(\"SELECT * FROM items WHERE id = ?\").get(id);\nfunction deleteItem(res, id) {\n  const result = db.prepare(\"DELETE FROM items WHERE id = ?\").run(id);\n  if (result.changes === 0) return send(res, 404, { error: \"Item not found\" });\n  res.statusCode = 204;\n  return res.end();\n}\nasync function updateItem(req, res, id) {\n  const data = JSON.parse(await readBody(req));\n  if (data.price !== undefined && (!Number.isInteger(data.price) || data.price < 0)) return send(res, 422, { error: \"price must be a whole number 0 or more\" });\n  const result = db.prepare(\"UPDATE items SET name = COALESCE(?, name), price = COALESCE(?, price) WHERE id = ?\").run(data.name ?? null, data.price ?? null, id);\n  if (result.changes === 0) return send(res, 404, { error: \"Item not found\" });\n  return send(res, 200, one(id));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items/raise\" && req.method === \"POST\") { db.exec(\"BEGIN\"); db.prepare(\"UPDATE items SET price = price + 1\").run(); db.exec(\"COMMIT\"); return send(res, 200, db.prepare(\"SELECT * FROM items\").all()); }\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match && req.method === \"GET\") { const row = one(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n  if (match && req.method === \"DELETE\") return deleteItem(res, Number(match[1]));\n  if (match && req.method === \"PUT\") return updateItem(req, res, Number(match[1]));\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items\").all());\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sqlite-changes-tricycle"
+  },
+  {
+    "id": "api-sqlite-changes-tricycle-8",
+    "index": 478,
+    "task": "You add a route to count the rows. This helps you see how many items are left after deleting. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  if (req.url === \"/items/count\") return send(res, 200, db.prepare(\"SELECT COUNT(*) AS count FROM items\").get());\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Market\",20],[\"School\",30],[\"Clinic\",25]]) insert.run(name, price);\nconst one = (id) => db.prepare(\"SELECT * FROM items WHERE id = ?\").get(id);\nfunction deleteItem(res, id) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nasync function updateItem(req, res, id) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match && req.method === \"GET\") { const row = one(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n  if (match && req.method === \"DELETE\") return deleteItem(res, Number(match[1]));\n  if (match && req.method === \"PUT\") return updateItem(req, res, Number(match[1]));\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items\").all());\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "After DELETE /items/1, GET /items/count answers 2",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "DELETE",
+            "path": "/items/1"
+          },
+          {
+            "method": "GET",
+            "path": "/items/count"
+          }
+        ],
+        "bodyContains": "{\"count\":2}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Count the rows so you can see how many are left after deleting one."
+      },
+      {
+        "level": 2,
+        "text": "Put the new route after the raise route, right before the DELETE route.\n\nIn server.js:\n```\n  if (req.url === \"/items/count\") return send(res, 200, db.prepare(\"SELECT COUNT(*) AS count FROM items\").get());\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Market\",20],[\"School\",30],[\"Clinic\",25]]) insert.run(name, price);\nconst one = (id) => db.prepare(\"SELECT * FROM items WHERE id = ?\").get(id);\nfunction deleteItem(res, id) {\n  const result = db.prepare(\"DELETE FROM items WHERE id = ?\").run(id);\n  if (result.changes === 0) return send(res, 404, { error: \"Item not found\" });\n  res.statusCode = 204;\n  return res.end();\n}\nasync function updateItem(req, res, id) {\n  const data = JSON.parse(await readBody(req));\n  if (data.price !== undefined && (!Number.isInteger(data.price) || data.price < 0)) return send(res, 422, { error: \"price must be a whole number 0 or more\" });\n  const result = db.prepare(\"UPDATE items SET name = COALESCE(?, name), price = COALESCE(?, price) WHERE id = ?\").run(data.name ?? null, data.price ?? null, id);\n  if (result.changes === 0) return send(res, 404, { error: \"Item not found\" });\n  return send(res, 200, one(id));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items/raise\" && req.method === \"POST\") { db.exec(\"BEGIN\"); db.prepare(\"UPDATE items SET price = price + 1\").run(); db.exec(\"COMMIT\"); return send(res, 200, db.prepare(\"SELECT * FROM items\").all()); }\n  if (req.url === \"/items/count\") return send(res, 200, db.prepare(\"SELECT COUNT(*) AS count FROM items\").get());\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match && req.method === \"GET\") { const row = one(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n  if (match && req.method === \"DELETE\") return deleteItem(res, Number(match[1]));\n  if (match && req.method === \"PUT\") return updateItem(req, res, Number(match[1]));\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items\").all());\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "sqlite-changes-tricycle"
+  },
+  {
+    "id": "api-sqlite-changes-tricycle-9",
+    "index": 479,
+    "task": "You change the GET /items route to send the row count in a header. This helps the client know how many rows are there. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  if (req.url === \"/items\") { const rows = db.prepare(\"SELECT * FROM items\").all(); res.setHeader(\"X-Total-Count\", String(rows.length)); return send(res, 200, rows); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Market\",20],[\"School\",30],[\"Clinic\",25]]) insert.run(name, price);\nconst one = (id) => db.prepare(\"SELECT * FROM items WHERE id = ?\").get(id);\nfunction deleteItem(res, id) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nasync function updateItem(req, res, id) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match && req.method === \"GET\") { const row = one(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n  if (match && req.method === \"DELETE\") return deleteItem(res, Number(match[1]));\n  if (match && req.method === \"PUT\") return updateItem(req, res, Number(match[1]));\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items\").all());\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "header",
+        "label": "GET /items sends X-Total-Count: 3",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "header": {
+          "name": "x-total-count",
+          "value": "3"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a header called X-Total-Count to show the number of rows."
+      },
+      {
+        "level": 2,
+        "text": "Put the new code in the GET /items section, right after the count route.\n\nIn server.js:\n```\n  if (req.url === \"/items\") { const rows = db.prepare(\"SELECT * FROM items\").all(); res.setHeader(\"X-Total-Count\", String(rows.length)); return send(res, 200, rows); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Market\",20],[\"School\",30],[\"Clinic\",25]]) insert.run(name, price);\nconst one = (id) => db.prepare(\"SELECT * FROM items WHERE id = ?\").get(id);\nfunction deleteItem(res, id) {\n  const result = db.prepare(\"DELETE FROM items WHERE id = ?\").run(id);\n  if (result.changes === 0) return send(res, 404, { error: \"Item not found\" });\n  res.statusCode = 204;\n  return res.end();\n}\nasync function updateItem(req, res, id) {\n  const data = JSON.parse(await readBody(req));\n  if (data.price !== undefined && (!Number.isInteger(data.price) || data.price < 0)) return send(res, 422, { error: \"price must be a whole number 0 or more\" });\n  const result = db.prepare(\"UPDATE items SET name = COALESCE(?, name), price = COALESCE(?, price) WHERE id = ?\").run(data.name ?? null, data.price ?? null, id);\n  if (result.changes === 0) return send(res, 404, { error: \"Item not found\" });\n  return send(res, 200, one(id));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items/raise\" && req.method === \"POST\") { db.exec(\"BEGIN\"); db.prepare(\"UPDATE items SET price = price + 1\").run(); db.exec(\"COMMIT\"); return send(res, 200, db.prepare(\"SELECT * FROM items\").all()); }\n  if (req.url === \"/items/count\") return send(res, 200, db.prepare(\"SELECT COUNT(*) AS count FROM items\").get());\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match && req.method === \"GET\") { const row = one(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n  if (match && req.method === \"DELETE\") return deleteItem(res, Number(match[1]));\n  if (match && req.method === \"PUT\") return updateItem(req, res, Number(match[1]));\n  if (req.url === \"/items\") { const rows = db.prepare(\"SELECT * FROM items\").all(); res.setHeader(\"X-Total-Count\", String(rows.length)); return send(res, 200, rows); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sqlite-changes-tricycle"
+  },
+  {
+    "id": "api-sqlite-changes-tricycle-10",
+    "index": 480,
+    "task": "You add a search route that uses a ?name= parameter. This stops bad text from changing the SQL. The code below does this. Run the checker to test it.\n\nIn server.js:\n```\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items/search\") return send(res, 200, db.prepare(\"SELECT * FROM items WHERE name = ?\").all(url.searchParams.get(\"name\") ?? \"\"));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Market\",20],[\"School\",30],[\"Clinic\",25]]) insert.run(name, price);\nconst one = (id) => db.prepare(\"SELECT * FROM items WHERE id = ?\").get(id);\nfunction deleteItem(res, id) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nasync function updateItem(req, res, id) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match && req.method === \"GET\") { const row = one(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n  if (match && req.method === \"DELETE\") return deleteItem(res, Number(match[1]));\n  if (match && req.method === \"PUT\") return updateItem(req, res, Number(match[1]));\n  if (req.url === \"/items\") return send(res, 200, db.prepare(\"SELECT * FROM items\").all());\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "found",
+        "label": "GET /items/search?name=School finds it",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/search?name=School"
+          }
+        ],
+        "bodyContains": "\"name\":\"School\""
+      },
+      {
+        "id": "safe",
+        "label": "A search for ' OR '1'='1 finds nothing",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/items/search?name=%27%20OR%20%271%27%3D%271"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "[]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use a ?name= parameter to search for exact names, so bad text can't break the SQL."
+      },
+      {
+        "level": 2,
+        "text": "Put the new code after the count route, right before the DELETE route.\n\nIn server.js:\n```\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items/search\") return send(res, 200, db.prepare(\"SELECT * FROM items WHERE name = ?\").all(url.searchParams.get(\"name\") ?? \"\"));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { DatabaseSync } from \"node:sqlite\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst db = new DatabaseSync(\":memory:\");\ndb.exec(\"CREATE TABLE items (id INTEGER PRIMARY KEY, name TEXT NOT NULL, price INTEGER NOT NULL)\");\nconst insert = db.prepare(\"INSERT INTO items (name, price) VALUES (?, ?)\");\nfor (const [name, price] of [[\"Market\",20],[\"School\",30],[\"Clinic\",25]]) insert.run(name, price);\nconst one = (id) => db.prepare(\"SELECT * FROM items WHERE id = ?\").get(id);\nfunction deleteItem(res, id) {\n  const result = db.prepare(\"DELETE FROM items WHERE id = ?\").run(id);\n  if (result.changes === 0) return send(res, 404, { error: \"Item not found\" });\n  res.statusCode = 204;\n  return res.end();\n}\nasync function updateItem(req, res, id) {\n  const data = JSON.parse(await readBody(req));\n  if (data.price !== undefined && (!Number.isInteger(data.price) || data.price < 0)) return send(res, 422, { error: \"price must be a whole number 0 or more\" });\n  const result = db.prepare(\"UPDATE items SET name = COALESCE(?, name), price = COALESCE(?, price) WHERE id = ?\").run(data.name ?? null, data.price ?? null, id);\n  if (result.changes === 0) return send(res, 404, { error: \"Item not found\" });\n  return send(res, 200, one(id));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items/raise\" && req.method === \"POST\") { db.exec(\"BEGIN\"); db.prepare(\"UPDATE items SET price = price + 1\").run(); db.exec(\"COMMIT\"); return send(res, 200, db.prepare(\"SELECT * FROM items\").all()); }\n  if (req.url === \"/items/count\") return send(res, 200, db.prepare(\"SELECT COUNT(*) AS count FROM items\").get());\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/items/search\") return send(res, 200, db.prepare(\"SELECT * FROM items WHERE name = ?\").all(url.searchParams.get(\"name\") ?? \"\"));\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  if (match && req.method === \"GET\") { const row = one(Number(match[1])); return row ? send(res, 200, row) : send(res, 404, { error: \"Item not found\" }); }\n  if (match && req.method === \"DELETE\") return deleteItem(res, Number(match[1]));\n  if (match && req.method === \"PUT\") return updateItem(req, res, Number(match[1]));\n  if (req.url === \"/items\") { const rows = db.prepare(\"SELECT * FROM items\").all(); res.setHeader(\"X-Total-Count\", String(rows.length)); return send(res, 200, rows); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sqlite-changes-tricycle"
+  }
+] satisfies typeof apiBasicsCourse.steps));
