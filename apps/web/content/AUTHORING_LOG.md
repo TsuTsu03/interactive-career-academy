@@ -3933,3 +3933,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-24: Local Qwen wrote the lesson text for api-basics/middleware-carinderia, steps 156-160; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
 
 - 2026-09-25: Local Qwen wrote the lesson text for api-basics/sqlite-storage-carinderia, steps 161-165; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-25: Local Qwen wrote the lesson text for api-basics/sqlite-storage-carinderia, steps 166-170; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
