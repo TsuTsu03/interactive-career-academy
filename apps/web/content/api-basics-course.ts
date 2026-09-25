@@ -13117,3 +13117,280 @@ apiBasicsCourse.steps.push(...([
     "projectId": "one-item-barangay"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: one-item-barangay.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-one-item-barangay-6",
+    "index": 236,
+    "task": "You will change the PUT line in server.js. The client may send a different id, but your server must keep the original id. This keeps the item's identity safe. The code below shows the change. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (found && req.method === \"PUT\") { Object.assign(found, JSON.parse(await readBody(req)), { id: found.id }); return send(res, 200, found); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "keep",
+        "label": "After PUT with id 50, GET /items/1 still works",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "PUT",
+            "path": "/items/1",
+            "body": "{\"id\":50,\"price\":1}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "GET",
+            "path": "/items/1"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "\"id\":1"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The client may send a new id, but your server must not change the item's original id."
+      },
+      {
+        "level": 2,
+        "text": "Add this change before the PUT line in server.js.\n\nIn server.js:\n```\n  if (found && req.method === \"PUT\") { Object.assign(found, JSON.parse(await readBody(req)), { id: found.id }); return send(res, 200, found); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  const found = match && items.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return found ? send(res, 200, found) : send(res, 404, { error: \"Item not found\" });\n  if (found && req.method === \"DELETE\") { items.splice(items.indexOf(found), 1); res.statusCode = 204; return res.end(); }\n  if (match && req.method === \"DELETE\") return send(res, 404, { error: \"Item not found\" });\n  if (found && req.method === \"PUT\") { Object.assign(found, JSON.parse(await readBody(req)), { id: found.id }); return send(res, 200, found); }\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "one-item-barangay"
+  },
+  {
+    "id": "api-one-item-barangay-7",
+    "index": 237,
+    "task": "You will add one line before the PUT line. This line checks if the client sends a body that is not JSON. If so, the server answers 415. This stops bad data from breaking your server. The code below shows the change. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (found && req.method === \"PUT\" && !req.headers[\"content-type\"]?.includes(\"application/json\")) return send(res, 415, { error: \"Send JSON\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "type",
+        "label": "PUT with a text/plain body answers 415",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "PUT",
+            "path": "/items/1",
+            "body": "price=99",
+            "headers": {
+              "Content-Type": "text/plain"
+            }
+          }
+        ],
+        "status": 415
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If the client sends a body that is not JSON, your server must answer 415."
+      },
+      {
+        "level": 2,
+        "text": "Add this line before the PUT line in server.js.\n\nIn server.js:\n```\n  if (found && req.method === \"PUT\" && !req.headers[\"content-type\"]?.includes(\"application/json\")) return send(res, 415, { error: \"Send JSON\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  const found = match && items.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return found ? send(res, 200, found) : send(res, 404, { error: \"Item not found\" });\n  if (found && req.method === \"DELETE\") { items.splice(items.indexOf(found), 1); res.statusCode = 204; return res.end(); }\n  if (match && req.method === \"DELETE\") return send(res, 404, { error: \"Item not found\" });\n  if (found && req.method === \"PUT\" && !req.headers[\"content-type\"]?.includes(\"application/json\")) return send(res, 415, { error: \"Send JSON\" });\n  if (found && req.method === \"PUT\") { Object.assign(found, JSON.parse(await readBody(req)), { id: found.id }); return send(res, 200, found); }\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "one-item-barangay"
+  },
+  {
+    "id": "api-one-item-barangay-8",
+    "index": 238,
+    "task": "You will add one line before the 404 line. This line handles HEAD requests to /items. It sends only the X-Total-Count header and no body. This lets clients know how many items exist. The code below shows the change. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (req.url === \"/items\" && req.method === \"HEAD\") { res.setHeader(\"X-Total-Count\", String(items.length)); return res.end(); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "head",
+        "label": "HEAD /items sends X-Total-Count: 3",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "HEAD",
+            "path": "/items"
+          }
+        ],
+        "header": {
+          "name": "x-total-count",
+          "value": "3"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "HEAD requests ask for headers only. Your server must send X-Total-Count and no body."
+      },
+      {
+        "level": 2,
+        "text": "Add this line before the 404 line in server.js.\n\nIn server.js:\n```\n  if (req.url === \"/items\" && req.method === \"HEAD\") { res.setHeader(\"X-Total-Count\", String(items.length)); return res.end(); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  const found = match && items.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return found ? send(res, 200, found) : send(res, 404, { error: \"Item not found\" });\n  if (found && req.method === \"DELETE\") { items.splice(items.indexOf(found), 1); res.statusCode = 204; return res.end(); }\n  if (match && req.method === \"DELETE\") return send(res, 404, { error: \"Item not found\" });\n  if (found && req.method === \"PUT\" && !req.headers[\"content-type\"]?.includes(\"application/json\")) return send(res, 415, { error: \"Send JSON\" });\n  if (found && req.method === \"PUT\") { Object.assign(found, JSON.parse(await readBody(req)), { id: found.id }); return send(res, 200, found); }\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"HEAD\") { res.setHeader(\"X-Total-Count\", String(items.length)); return res.end(); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "one-item-barangay"
+  },
+  {
+    "id": "api-one-item-barangay-9",
+    "index": 239,
+    "task": "You will add one line after the PUT line. This line handles OPTIONS requests. It sends an Allow header listing the allowed methods: GET, PUT, DELETE. This tells clients what they can do. The code below shows the change. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (match && req.method === \"OPTIONS\") { res.setHeader(\"Allow\", \"GET, PUT, DELETE\"); res.statusCode = 204; return res.end(); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "options",
+        "label": "OPTIONS /items/1 lists GET, PUT, DELETE",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "OPTIONS",
+            "path": "/items/1"
+          }
+        ],
+        "header": {
+          "name": "allow",
+          "value": "GET, PUT, DELETE"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "OPTIONS requests ask what methods are allowed. Your server must list GET, PUT, DELETE."
+      },
+      {
+        "level": 2,
+        "text": "Add this line after the PUT line in server.js.\n\nIn server.js:\n```\n  if (match && req.method === \"OPTIONS\") { res.setHeader(\"Allow\", \"GET, PUT, DELETE\"); res.statusCode = 204; return res.end(); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  const found = match && items.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return found ? send(res, 200, found) : send(res, 404, { error: \"Item not found\" });\n  if (found && req.method === \"DELETE\") { items.splice(items.indexOf(found), 1); res.statusCode = 204; return res.end(); }\n  if (match && req.method === \"DELETE\") return send(res, 404, { error: \"Item not found\" });\n  if (found && req.method === \"PUT\" && !req.headers[\"content-type\"]?.includes(\"application/json\")) return send(res, 415, { error: \"Send JSON\" });\n  if (found && req.method === \"PUT\") { Object.assign(found, JSON.parse(await readBody(req)), { id: found.id }); return send(res, 200, found); }\n  if (match && req.method === \"OPTIONS\") { res.setHeader(\"Allow\", \"GET, PUT, DELETE\"); res.statusCode = 204; return res.end(); }\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"HEAD\") { res.setHeader(\"X-Total-Count\", String(items.length)); return res.end(); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "one-item-barangay"
+  },
+  {
+    "id": "api-one-item-barangay-10",
+    "index": 240,
+    "task": "You will add one line after the OPTIONS line. This line handles any other method on a single item. It answers 405 with an error message. This stops clients from using forbidden methods. The code below shows the change. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (match) return send(res, 405, { error: \"Method not allowed\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "post",
+        "label": "POST /items/1 answers 405",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/items/1",
+            "body": "{}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 405
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If the client uses a method not allowed, your server must answer 405."
+      },
+      {
+        "level": 2,
+        "text": "Add this line after the OPTIONS line in server.js.\n\nIn server.js:\n```\n  if (match) return send(res, 405, { error: \"Method not allowed\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const match = req.url.match(/^\\/items\\/(\\d+)$/);\n  const found = match && items.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return found ? send(res, 200, found) : send(res, 404, { error: \"Item not found\" });\n  if (found && req.method === \"DELETE\") { items.splice(items.indexOf(found), 1); res.statusCode = 204; return res.end(); }\n  if (match && req.method === \"DELETE\") return send(res, 404, { error: \"Item not found\" });\n  if (found && req.method === \"PUT\" && !req.headers[\"content-type\"]?.includes(\"application/json\")) return send(res, 415, { error: \"Send JSON\" });\n  if (found && req.method === \"PUT\") { Object.assign(found, JSON.parse(await readBody(req)), { id: found.id }); return send(res, 200, found); }\n  if (match && req.method === \"OPTIONS\") { res.setHeader(\"Allow\", \"GET, PUT, DELETE\"); res.statusCode = 204; return res.end(); }\n  if (match) return send(res, 405, { error: \"Method not allowed\" });\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"HEAD\") { res.setHeader(\"X-Total-Count\", String(items.length)); return res.end(); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "one-item-barangay"
+  }
+] satisfies typeof apiBasicsCourse.steps));
