@@ -4015,3 +4015,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-25: Local Qwen wrote the lesson text for api-basics/sqlite-storage-school-club, steps 361-365; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
 
 - 2026-09-25: Local Qwen wrote the lesson text for api-basics/sqlite-storage-school-club, steps 366-370; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-25: Local Qwen wrote the lesson text for api-basics/sqlite-changes-school-club, steps 371-375; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
