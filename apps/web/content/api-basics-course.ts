@@ -17710,3 +17710,282 @@ apiBasicsCourse.steps.push(...([
     "projectId": "json-routes-school-club"
   }
 ] satisfies typeof apiBasicsCourse.steps));
+
+// Validated local authoring batch: request-bodies-school-club.
+apiBasicsCourse.steps.push(...([
+  {
+    "id": "api-request-bodies-school-club-1",
+    "index": 321,
+    "task": "You will read what the client sends. The code below reads each chunk of text. It joins them into one string. Then it returns that string. This helps you echo back what the client sends. Add this code above the server. Then add the /echo route at the top of the handler. Run the checker to confirm it works.\n\nIn server.js:\n```\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\n  if (req.url === \"/echo\" && req.method === \"POST\") return send(res, 200, { received: await readBody(req) });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "echo",
+        "label": "POST /echo with hello answers it back",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/echo",
+            "body": "hello",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "bodyContains": "\"received\":\"hello\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Read each chunk from the request and join them into one string."
+      },
+      {
+        "level": 2,
+        "text": "Add the code above the server and the route at the top of the handler.\n\nIn server.js:\n```\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\n  if (req.url === \"/echo\" && req.method === \"POST\") return send(res, 200, { received: await readBody(req) });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/echo\" && req.method === \"POST\") return send(res, 200, { received: await readBody(req) });\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "request-bodies-school-club"
+  },
+  {
+    "id": "api-request-bodies-school-club-2",
+    "index": 322,
+    "task": "You will turn the text into a JSON object. Use JSON.parse to do this. Add one line after the /echo route. This line parses the text into an object. Then it sends that object back. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (req.url === \"/echo-json\" && req.method === \"POST\") return send(res, 200, JSON.parse(await readBody(req)));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "json",
+        "label": "POST /echo-json answers the object it received",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/echo-json",
+            "body": "{\"name\":\"Ana\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "bodyContains": "\"name\":\"Ana\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use JSON.parse to turn the text into an object."
+      },
+      {
+        "level": 2,
+        "text": "Add the line after the /echo route.\n\nIn server.js:\n```\n  if (req.url === \"/echo-json\" && req.method === \"POST\") return send(res, 200, JSON.parse(await readBody(req)));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/echo\" && req.method === \"POST\") return send(res, 200, { received: await readBody(req) });\n  if (req.url === \"/echo-json\" && req.method === \"POST\") return send(res, 200, JSON.parse(await readBody(req)));\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "request-bodies-school-club"
+  },
+  {
+    "id": "api-request-bodies-school-club-3",
+    "index": 323,
+    "task": "You will answer POST /items with status 201. This means created. Add two lines inside createItem. First, parse the text into an object. Then send that object back with status 201. Run the checker to confirm it works.\n\nIn server.js:\n```\n  const data = JSON.parse(await readBody(req));\n  return send(res, 201, data);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "created",
+        "label": "POST /items answers 201 with the item",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/items",
+            "body": "{\"name\":\"Tea\",\"price\":12}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 201,
+        "bodyContains": "\"name\":\"Tea\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Parse the text into an object and send it back with status 201."
+      },
+      {
+        "level": 2,
+        "text": "Replace the line inside createItem with these two lines.\n\nIn server.js:\n```\n  const data = JSON.parse(await readBody(req));\n  return send(res, 201, data);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  const data = JSON.parse(await readBody(req));\n  return send(res, 201, data);\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/echo\" && req.method === \"POST\") return send(res, 200, { received: await readBody(req) });\n  if (req.url === \"/echo-json\" && req.method === \"POST\") return send(res, 200, JSON.parse(await readBody(req)));\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "request-bodies-school-club"
+  },
+  {
+    "id": "api-request-bodies-school-club-4",
+    "index": 324,
+    "task": "You will store the new item so it shows up in the list. Add one line inside createItem. This line adds the item to the items array. Then the GET /items route will show it. Run the checker to confirm it works.\n\nIn server.js:\n```\n  items.push(data);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "stored",
+        "label": "After POST /items, GET /items includes Tea",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/items",
+            "body": "{\"name\":\"Tea\",\"price\":12}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "GET",
+            "path": "/items"
+          }
+        ],
+        "bodyContains": "\"name\":\"Tea\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the item to the items array so it appears in the list."
+      },
+      {
+        "level": 2,
+        "text": "Add the line before the return inside createItem.\n\nIn server.js:\n```\n  items.push(data);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  const data = JSON.parse(await readBody(req));\n  items.push(data);\n  return send(res, 201, data);\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/echo\" && req.method === \"POST\") return send(res, 200, { received: await readBody(req) });\n  if (req.url === \"/echo-json\" && req.method === \"POST\") return send(res, 200, JSON.parse(await readBody(req)));\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "request-bodies-school-club"
+  },
+  {
+    "id": "api-request-bodies-school-club-5",
+    "index": 325,
+    "task": "You will give each new item an id one higher than the last. Change createItem. First, make a new item with id: items.length + 1. Then add it to the array. Finally, send it back with status 201. Run the checker to confirm it works.\n\nIn server.js:\n```\n  const item = { id: items.length + 1, ...data };\n  items.push(item);\n  return send(res, 201, item);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club API project.\nStart the server with node server.js, then follow the CodeDaddy steps.\n",
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "id",
+        "label": "The new item answers with id 4",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/items",
+            "body": "{\"name\":\"Tea\",\"price\":12}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "bodyContains": "\"id\":4"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Give each new item an id one higher than the last."
+      },
+      {
+        "level": 2,
+        "text": "Change createItem to assign the next id and add it to the array.\n\nIn server.js:\n```\n  const item = { id: items.length + 1, ...data };\n  items.push(item);\n  return send(res, 201, item);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nconst items = [{ id: 1, name: \"Shirt\", price: 250 }, { id: 2, name: \"Pin\", price: 30 }, { id: 3, name: \"Badge\", price: 45 }];\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function createItem(req, res) {\n  const data = JSON.parse(await readBody(req));\n  const item = { id: items.length + 1, ...data };\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/echo\" && req.method === \"POST\") return send(res, 200, { received: await readBody(req) });\n  if (req.url === \"/echo-json\" && req.method === \"POST\") return send(res, 200, JSON.parse(await readBody(req)));\n  if (req.url === \"/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/items\" && req.method === \"POST\") return createItem(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "request-bodies-school-club"
+  }
+] satisfies typeof apiBasicsCourse.steps));
