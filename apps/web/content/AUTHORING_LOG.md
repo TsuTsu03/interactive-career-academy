@@ -3999,3 +3999,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-25: Local Qwen wrote the lesson text for api-basics/request-bodies-school-club, steps 321-325; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
 
 - 2026-09-25: Local Qwen wrote the lesson text for api-basics/request-bodies-school-club, steps 326-330; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-25: Local Qwen wrote the lesson text for api-basics/one-item-school-club, steps 331-335; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
