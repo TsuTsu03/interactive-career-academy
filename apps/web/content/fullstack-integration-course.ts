@@ -3149,3 +3149,284 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "states-sari-sari"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: forms-sari-sari.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-forms-sari-sari-1",
+    "index": 51,
+    "task": "Add a label and an input inside the form in src/ItemForm.jsx. This label tells users what to type. The input lets them type the item's name. Run `npm install` to get the needed tools. The checker renders your component to check if the name field is there. Paste the checker's report.\n\nIn src/ItemForm.jsx:\n```\n      <label htmlFor=\"name\">Name</label>\n      <input id=\"name\" name=\"name\" required />\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Sari-Sari Store</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n    </main>\n  );\n}\n",
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit }) {\n  return (\n    <form>\n    </form>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "The form has a labelled name field",
+        "kind": "local-react-render",
+        "file": "src/ItemForm.jsx",
+        "props": {},
+        "contains": "<label for=\"name\">Name</label><input id=\"name\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The label must match the input's id so screen readers can understand it."
+      },
+      {
+        "level": 2,
+        "text": "Put the label and input inside the form, right after the opening <form> tag.\n\nIn src/ItemForm.jsx:\n```\n      <label htmlFor=\"name\">Name</label>\n      <input id=\"name\" name=\"name\" required />\n``` The command is: `npm install`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "npm install"
+    },
+    "localFiles": {
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit }) {\n  return (\n    <form>\n      <label htmlFor=\"name\">Name</label>\n      <input id=\"name\" name=\"name\" required />\n    </form>\n  );\n}\n"
+    },
+    "conceptIds": [
+      "fs-form-label"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "forms-sari-sari"
+  },
+  {
+    "id": "fs-forms-sari-sari-2",
+    "index": 52,
+    "task": "Add a label and an input after the name field. The label says 'Price'. The input lets users type a number. Set type to 'number' and min to '0' so only prices of 0 or more are allowed. The checker renders your component to check if the price field is there. Paste the checker's report.\n\nIn src/ItemForm.jsx:\n```\n      <label htmlFor=\"price\">Price</label>\n      <input id=\"price\" name=\"price\" type=\"number\" min=\"0\" required />\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Sari-Sari Store</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n    </main>\n  );\n}\n",
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit }) {\n  return (\n    <form>\n    </form>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "price",
+        "label": "The price field is a number input",
+        "kind": "local-react-render",
+        "file": "src/ItemForm.jsx",
+        "props": {},
+        "contains": "type=\"number\" min=\"0\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Set type to 'number' and min to '0' to limit what users can type."
+      },
+      {
+        "level": 2,
+        "text": "Put the label and input right after the name field, inside the form.\n\nIn src/ItemForm.jsx:\n```\n      <label htmlFor=\"price\">Price</label>\n      <input id=\"price\" name=\"price\" type=\"number\" min=\"0\" required />\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit }) {\n  return (\n    <form>\n      <label htmlFor=\"name\">Name</label>\n      <input id=\"name\" name=\"name\" required />\n      <label htmlFor=\"price\">Price</label>\n      <input id=\"price\" name=\"price\" type=\"number\" min=\"0\" required />\n    </form>\n  );\n}\n"
+    },
+    "conceptIds": [
+      "fs-number-input"
+    ],
+    "estimatedMinutes": 5,
+    "projectId": "forms-sari-sari"
+  },
+  {
+    "id": "fs-forms-sari-sari-3",
+    "index": 53,
+    "task": "Add a button after the price field. Set its type to 'submit'. The text should say 'Add item'. This button sends the form data when clicked. The checker renders your component to check if the button is there. Paste the checker's report.\n\nIn src/ItemForm.jsx:\n```\n      <button type=\"submit\">Add item</button>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Sari-Sari Store</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n    </main>\n  );\n}\n",
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit }) {\n  return (\n    <form>\n    </form>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "button",
+        "label": "The form has an Add item button",
+        "kind": "local-react-render",
+        "file": "src/ItemForm.jsx",
+        "props": {},
+        "contains": "<button type=\"submit\">Add item</button>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Set type to 'submit' so the browser knows this button sends the form."
+      },
+      {
+        "level": 2,
+        "text": "Put the button right after the price input, inside the form.\n\nIn src/ItemForm.jsx:\n```\n      <button type=\"submit\">Add item</button>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit }) {\n  return (\n    <form>\n      <label htmlFor=\"name\">Name</label>\n      <input id=\"name\" name=\"name\" required />\n      <label htmlFor=\"price\">Price</label>\n      <input id=\"price\" name=\"price\" type=\"number\" min=\"0\" required />\n      <button type=\"submit\">Add item</button>\n    </form>\n  );\n}\n"
+    },
+    "conceptIds": [
+      "fs-submit-button"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "forms-sari-sari"
+  },
+  {
+    "id": "fs-forms-sari-sari-4",
+    "index": 54,
+    "task": "Add initialName to the props in src/ItemForm.jsx. Use it as the starting value for the name input with defaultValue. This lets the parent pass a starting name, like 'Tea'. The checker renders your component to check if the name field has 'Tea'. Paste the checker's report.\n\nIn src/ItemForm.jsx:\n```\nexport default function ItemForm({ onSubmit, initialName = \"\" }) {\n      <input id=\"name\" name=\"name\" defaultValue={initialName} required />\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Sari-Sari Store</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n    </main>\n  );\n}\n",
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit }) {\n  return (\n    <form>\n    </form>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "initial",
+        "label": "initialName Tea fills the name field",
+        "kind": "local-react-render",
+        "file": "src/ItemForm.jsx",
+        "props": {
+          "initialName": "Tea"
+        },
+        "contains": "value=\"Tea\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use defaultValue to set the input's starting text without changing it later."
+      },
+      {
+        "level": 2,
+        "text": "Put defaultValue={initialName} inside the input tag, right after the id.\n\nIn src/ItemForm.jsx:\n```\nexport default function ItemForm({ onSubmit, initialName = \"\" }) {\n      <input id=\"name\" name=\"name\" defaultValue={initialName} required />\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit, initialName = \"\" }) {\n  return (\n    <form>\n      <label htmlFor=\"name\">Name</label>\n      <input id=\"name\" name=\"name\" defaultValue={initialName} required />\n      <label htmlFor=\"price\">Price</label>\n      <input id=\"price\" name=\"price\" type=\"number\" min=\"0\" required />\n      <button type=\"submit\">Add item</button>\n    </form>\n  );\n}\n"
+    },
+    "conceptIds": [
+      "fs-default-value"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "forms-sari-sari"
+  },
+  {
+    "id": "fs-forms-sari-sari-5",
+    "index": 55,
+    "task": "Add a handleSubmit function before return in src/ItemForm.jsx. This function stops the page from reloading with event.preventDefault(). It collects the form data and sends it to onSubmit. Connect it to the form with onSubmit={handleSubmit}. The checker renders your component to check if the form sends data. Paste the checker's report.\n\nIn src/ItemForm.jsx:\n```\n  function handleSubmit(event) { event.preventDefault(); const data = new FormData(event.target); onSubmit?.({ name: data.get(\"name\"), price: Number(data.get(\"price\")) }); }\n    <form onSubmit={handleSubmit}>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Sari-Sari Store</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n    </main>\n  );\n}\n",
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit }) {\n  return (\n    <form>\n    </form>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "prevent",
+        "label": "handleSubmit stops the page reload",
+        "kind": "local-file-contains",
+        "path": "src/ItemForm.jsx",
+        "value": "event.preventDefault()"
+      },
+      {
+        "id": "build",
+        "label": "The app still builds",
+        "kind": "local-npm-script",
+        "script": "build"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use event.preventDefault() to stop the browser from reloading the page."
+      },
+      {
+        "level": 2,
+        "text": "Put onSubmit={handleSubmit} on the form tag, right after the opening <form> tag.\n\nIn src/ItemForm.jsx:\n```\n  function handleSubmit(event) { event.preventDefault(); const data = new FormData(event.target); onSubmit?.({ name: data.get(\"name\"), price: Number(data.get(\"price\")) }); }\n    <form onSubmit={handleSubmit}>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit, initialName = \"\" }) {\n  function handleSubmit(event) { event.preventDefault(); const data = new FormData(event.target); onSubmit?.({ name: data.get(\"name\"), price: Number(data.get(\"price\")) }); }\n  return (\n    <form onSubmit={handleSubmit}>\n      <label htmlFor=\"name\">Name</label>\n      <input id=\"name\" name=\"name\" defaultValue={initialName} required />\n      <label htmlFor=\"price\">Price</label>\n      <input id=\"price\" name=\"price\" type=\"number\" min=\"0\" required />\n      <button type=\"submit\">Add item</button>\n    </form>\n  );\n}\n"
+    },
+    "conceptIds": [
+      "fs-prevent-default"
+    ],
+    "estimatedMinutes": 6,
+    "projectId": "forms-sari-sari"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
