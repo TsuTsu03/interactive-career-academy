@@ -4339,3 +4339,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-26: Local Qwen wrote the lesson text for fullstack-integration/forms-tricycle, steps 371-375; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
 
 - 2026-09-26: Local Qwen wrote the lesson text for fullstack-integration/forms-tricycle, steps 376-380; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-26: Local Qwen wrote the lesson text for fullstack-integration/config-tricycle, steps 381-385; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
