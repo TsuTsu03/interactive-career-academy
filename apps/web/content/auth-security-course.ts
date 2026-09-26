@@ -12190,3 +12190,242 @@ authSecurityCourse.steps.push(...([
     "projectId": "checklist-barangay"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: hashing-school-club.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-hashing-school-club-1",
+    "index": 181,
+    "task": "You will read a password from the command line. The code below does that. It prints how many characters the password has. This helps you see if the user typed something. The checker runs this code and shows you the length.\n\nIn hash.js:\n```\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "length",
+        "label": "node hash.js eskwela2026 prints Length: 11",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "eskwela2026"
+        ],
+        "value": "Length: 11"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The password comes from the command line, not from a file or form."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the end of hash.js.\n\nIn hash.js:\n```\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "hashing-school-club"
+  },
+  {
+    "id": "sec-hashing-school-club-2",
+    "index": 182,
+    "task": "You will turn the password into a scrypt hash using a fixed salt. The code below does that. It prints the hash. This is how you store passwords safely. The checker runs this code and shows you the hash.\n\nIn hash.js:\n```\nconst salt = \"fixedsalt\";\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "hash",
+        "label": "The script prints the scrypt hash",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "eskwela2026"
+        ],
+        "value": "Hash: cb60aed5851098fc87a55b7a86cb11d873b2f25c3d62ca28ed30da08e87feb64"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The salt is fixed so you can test the same password every time."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the end of hash.js.\n\nIn hash.js:\n```\nconst salt = \"fixedsalt\";\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = \"fixedsalt\";\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "hashing-school-club"
+  },
+  {
+    "id": "sec-hashing-school-club-3",
+    "index": 183,
+    "task": "You will use a new random salt each time. The code below replaces the fixed salt with a random one. It prints the salt's length. This makes sure two users with the same password get different hashes. The checker runs this code and shows you the salt's length.\n\nIn hash.js:\n```\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "salt",
+        "label": "The script prints Salt length: 32",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "eskwela2026"
+        ],
+        "value": "Salt length: 32"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The salt is random so no two users get the same hash."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the end of hash.js.\n\nIn hash.js:\n```\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "hashing-school-club"
+  },
+  {
+    "id": "sec-hashing-school-club-4",
+    "index": 184,
+    "task": "You will store the salt and hash together as salt:hash. The code below does that. It prints how many parts are in the stored value. This helps you check if the password matches later. The checker runs this code and shows you the number of parts.\n\nIn hash.js:\n```\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "parts",
+        "label": "The script prints Stored parts: 2",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "eskwela2026"
+        ],
+        "value": "Stored parts: 2"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The stored value has two parts: salt and hash, separated by a colon."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the end of hash.js.\n\nIn hash.js:\n```\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "hashing-school-club"
+  },
+  {
+    "id": "sec-hashing-school-club-5",
+    "index": 185,
+    "task": "You will check if a password matches the stored value. The code below does that. It uses timingSafeEqual to compare the password and the stored hash. This stops attackers from guessing passwords. The checker runs this code and shows you if it's correct.\n\nIn hash.js:\n```\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "correct",
+        "label": "The right password checks as true",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "eskwela2026"
+        ],
+        "value": "Correct: true"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "timingSafeEqual stops attackers from guessing passwords by timing attacks."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the end of hash.js.\n\nIn hash.js:\n```\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "hashing-school-club"
+  }
+] satisfies typeof authSecurityCourse.steps));
