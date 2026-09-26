@@ -19791,3 +19791,328 @@ authSecurityCourse.steps.push(...([
     "projectId": "checklist-tricycle"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: checklist-tricycle.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-checklist-tricycle-6",
+    "index": 296,
+    "task": "You change the /files route to check file names. If a name has .. or / or \\, it answers 400. This stops bad users from reading files outside the public folder. The code below does this. Run the checker and paste its report.\n\nIn server.js:\n```\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; if (name.includes(\"..\") || name.includes(\"/\") || name.includes(\"\\\\\")) return send(res, 400, { error: \"Bad file name\" }); try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Tricycle Terminal\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Tricycle Terminal menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "climb",
+        "label": "GET /files?name=../secret.txt answers 400",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/files?name=..%2Fsecret.txt"
+          }
+        ],
+        "status": 400,
+        "bodyLacks": "FAKE-SECRET"
+      },
+      {
+        "id": "menu",
+        "label": "Normal files still load",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/files?name=menu.txt"
+          }
+        ],
+        "bodyContains": "menu"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the file name has bad characters before reading it."
+      },
+      {
+        "level": 2,
+        "text": "Put the check right after you get the file name from the URL.\n\nIn server.js:\n```\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; if (name.includes(\"..\") || name.includes(\"/\") || name.includes(\"\\\\\")) return send(res, 400, { error: \"Bad file name\" }); try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Tricycle Terminal\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst escapeHtml = (text) => text.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\").replace(/\"/g, \"&quot;\");\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${escapeHtml(url.searchParams.get(\"name\") ?? \"friend\")}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; if (name.includes(\"..\") || name.includes(\"/\") || name.includes(\"\\\\\")) return send(res, 400, { error: \"Bad file name\" }); try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "checklist-tricycle"
+  },
+  {
+    "id": "sec-checklist-tricycle-7",
+    "index": 297,
+    "task": "You change the /go route to only let redirects to paths that start with /. If a path starts with //, it answers 400. This stops bad users from redirecting to other websites. The code below does this. Run the checker and paste its report.\n\nIn server.js:\n```\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; if (!to.startsWith(\"/\") || to.startsWith(\"//\")) return send(res, 400, { error: \"Only local redirects\" }); res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Tricycle Terminal\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Tricycle Terminal menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "evil",
+        "label": "A redirect to another site answers 400",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/go?to=https%3A%2F%2Fevil.example"
+          }
+        ],
+        "status": 400
+      },
+      {
+        "id": "local",
+        "label": "A redirect to /config still works",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/go?to=%2Fconfig"
+          }
+        ],
+        "status": 302,
+        "header": {
+          "name": "location",
+          "value": "/config"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the path starts with / and does not start with //."
+      },
+      {
+        "level": 2,
+        "text": "Put the check right after you get the path from the URL.\n\nIn server.js:\n```\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; if (!to.startsWith(\"/\") || to.startsWith(\"//\")) return send(res, 400, { error: \"Only local redirects\" }); res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Tricycle Terminal\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst escapeHtml = (text) => text.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\").replace(/\"/g, \"&quot;\");\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${escapeHtml(url.searchParams.get(\"name\") ?? \"friend\")}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; if (name.includes(\"..\") || name.includes(\"/\") || name.includes(\"\\\\\")) return send(res, 400, { error: \"Bad file name\" }); try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; if (!to.startsWith(\"/\") || to.startsWith(\"//\")) return send(res, 400, { error: \"Only local redirects\" }); res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "checklist-tricycle"
+  },
+  {
+    "id": "sec-checklist-tricycle-8",
+    "index": 298,
+    "task": "You change the readBody helper to stop reading after 1,000 characters. If it reads more, it throws an error and answers 413. This stops bad users from sending too much data. The code below does this. Run the checker and paste its report.\n\nIn server.js:\n```\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new Error(\"too large\"); } return text; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Tricycle Terminal\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Tricycle Terminal menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "big",
+        "label": "A 2,000-character body answers 413",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/echo",
+            "body": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "headers": {
+              "Content-Type": "text/plain"
+            }
+          }
+        ],
+        "status": 413
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a check after each chunk to see if the total is over 1,000."
+      },
+      {
+        "level": 2,
+        "text": "Throw an error if it is over 1,000, then answer 413.\n\nIn server.js:\n```\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new Error(\"too large\"); } return text; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new Error(\"too large\"); } return text; }\nconst config = { currency: \"PHP\", place: \"Tricycle Terminal\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst escapeHtml = (text) => text.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\").replace(/\"/g, \"&quot;\");\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${escapeHtml(url.searchParams.get(\"name\") ?? \"friend\")}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; if (name.includes(\"..\") || name.includes(\"/\") || name.includes(\"\\\\\")) return send(res, 400, { error: \"Bad file name\" }); try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; if (!to.startsWith(\"/\") || to.startsWith(\"//\")) return send(res, 400, { error: \"Only local redirects\" }); res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "checklist-tricycle"
+  },
+  {
+    "id": "sec-checklist-tricycle-9",
+    "index": 299,
+    "task": "You add one line after the CORS line to tell browsers to use HTTPS only in production. This stops bad users from accessing the site over HTTP. The code below does this. Run the checker and paste its report.\n\nIn server.js:\n```\n  if (process.env.NODE_ENV === \"production\") res.setHeader(\"Strict-Transport-Security\", \"max-age=31536000\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Tricycle Terminal\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Tricycle Terminal menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "hsts",
+        "label": "In production answers send Strict-Transport-Security",
+        "kind": "local-http",
+        "file": "server.js",
+        "env": {
+          "NODE_ENV": "production"
+        },
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/config"
+          }
+        ],
+        "header": {
+          "name": "strict-transport-security",
+          "value": "max-age=31536000"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the line only if the environment is production."
+      },
+      {
+        "level": 2,
+        "text": "Put the line right after the CORS line.\n\nIn server.js:\n```\n  if (process.env.NODE_ENV === \"production\") res.setHeader(\"Strict-Transport-Security\", \"max-age=31536000\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new Error(\"too large\"); } return text; }\nconst config = { currency: \"PHP\", place: \"Tricycle Terminal\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst escapeHtml = (text) => text.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\").replace(/\"/g, \"&quot;\");\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n  if (process.env.NODE_ENV === \"production\") res.setHeader(\"Strict-Transport-Security\", \"max-age=31536000\");\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${escapeHtml(url.searchParams.get(\"name\") ?? \"friend\")}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; if (name.includes(\"..\") || name.includes(\"/\") || name.includes(\"\\\\\")) return send(res, 400, { error: \"Bad file name\" }); try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; if (!to.startsWith(\"/\") || to.startsWith(\"//\")) return send(res, 400, { error: \"Only local redirects\" }); res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "checklist-tricycle"
+  },
+  {
+    "id": "sec-checklist-tricycle-10",
+    "index": 300,
+    "task": "You add a hits map to count requests from each IP. You add one line at the top of the handler to count and check if an IP has sent more than five requests. If it has, answer 429. This stops bad users from sending too many requests. The code below does this. Run the checker and paste its report.\n\nIn server.js:\n```\nconst hits = new Map();\n  const ip = req.socket.remoteAddress; hits.set(ip, (hits.get(ip) ?? 0) + 1); if (hits.get(ip) > 5) return send(res, 429, { error: \"Slow down\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Tricycle Terminal\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Tricycle Terminal menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "slow",
+        "label": "The sixth request answers 429",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/config"
+          },
+          {
+            "method": "GET",
+            "path": "/config"
+          },
+          {
+            "method": "GET",
+            "path": "/config"
+          },
+          {
+            "method": "GET",
+            "path": "/config"
+          },
+          {
+            "method": "GET",
+            "path": "/config"
+          },
+          {
+            "method": "GET",
+            "path": "/config"
+          }
+        ],
+        "status": 429
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use a Map to count requests from each IP address."
+      },
+      {
+        "level": 2,
+        "text": "Put the count line at the top of the handler, before any other code.\n\nIn server.js:\n```\nconst hits = new Map();\n  const ip = req.socket.remoteAddress; hits.set(ip, (hits.get(ip) ?? 0) + 1); if (hits.get(ip) > 5) return send(res, 429, { error: \"Slow down\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new Error(\"too large\"); } return text; }\nconst config = { currency: \"PHP\", place: \"Tricycle Terminal\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst escapeHtml = (text) => text.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\").replace(/\"/g, \"&quot;\");\nconst hits = new Map();\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const ip = req.socket.remoteAddress; hits.set(ip, (hits.get(ip) ?? 0) + 1); if (hits.get(ip) > 5) return send(res, 429, { error: \"Slow down\" });\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n  if (process.env.NODE_ENV === \"production\") res.setHeader(\"Strict-Transport-Security\", \"max-age=31536000\");\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${escapeHtml(url.searchParams.get(\"name\") ?? \"friend\")}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; if (name.includes(\"..\") || name.includes(\"/\") || name.includes(\"\\\\\")) return send(res, 400, { error: \"Bad file name\" }); try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; if (!to.startsWith(\"/\") || to.startsWith(\"//\")) return send(res, 400, { error: \"Only local redirects\" }); res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 6,
+    "projectId": "checklist-tricycle"
+  }
+] satisfies typeof authSecurityCourse.steps));
