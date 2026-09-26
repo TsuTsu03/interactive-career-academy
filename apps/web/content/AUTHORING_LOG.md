@@ -4141,3 +4141,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-26: Local Qwen wrote the lesson text for auth-security/signup-login-carinderia, steps 76-80; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
 
 - 2026-09-26: Local Qwen wrote the lesson text for auth-security/sessions-carinderia, steps 81-85; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-26: Local Qwen wrote the lesson text for auth-security/sessions-carinderia, steps 86-90; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
