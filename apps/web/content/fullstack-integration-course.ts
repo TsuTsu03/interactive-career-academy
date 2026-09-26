@@ -14114,3 +14114,249 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "setup-school-club"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: setup-school-club.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-setup-school-club-6",
+    "index": 246,
+    "task": "Add a names array above return. This holds the product names. Then add a list after the hours. This list shows each product. Use map and a key to make it work. The code below does that.\n\nIn src/App.jsx:\n```\n  const names = [\"Shirt\",\"Pin\",\"Badge\"];\n      <ul>{names.map((name) => <li key={name}>{name}</li>)}</ul>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "School Club full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "list",
+        "label": "App lists Shirt",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "<li>Shirt</li>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You need to loop over the names to show each one."
+      },
+      {
+        "level": 2,
+        "text": "Put the list right after the hours line in App.jsx.\n\nIn src/App.jsx:\n```\n  const names = [\"Shirt\",\"Pin\",\"Badge\"];\n      <ul>{names.map((name) => <li key={name}>{name}</li>)}</ul>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "export default function App() {\n  const names = [\"Shirt\",\"Pin\",\"Badge\"];\n  return (\n    <main>\n      <h1>School Club</h1>\n      <p>Open 7 AM to 7 PM</p>\n      <ul>{names.map((name) => <li key={name}>{name}</li>)}</ul>\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "setup-school-club"
+  },
+  {
+    "id": "fs-setup-school-club-7",
+    "index": 247,
+    "task": "Change the h1 line to add a class. This class helps style the heading. The code below does that.\n\nIn src/App.jsx:\n```\n      <h1 className=\"title\">School Club</h1>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "School Club full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "class",
+        "label": "The heading has class title",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "class=\"title\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the class name to the h1 tag using className."
+      },
+      {
+        "level": 2,
+        "text": "Put it right after the h1 tag in App.jsx.\n\nIn src/App.jsx:\n```\n      <h1 className=\"title\">School Club</h1>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "export default function App() {\n  const names = [\"Shirt\",\"Pin\",\"Badge\"];\n  return (\n    <main>\n      <h1 className=\"title\">School Club</h1>\n      <p>Open 7 AM to 7 PM</p>\n      <ul>{names.map((name) => <li key={name}>{name}</li>)}</ul>\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "setup-school-club"
+  },
+  {
+    "id": "fs-setup-school-club-8",
+    "index": 248,
+    "task": "In the terminal, run the build command. This rebuilds the project. It puts the new title in the HTML file. The checker confirms this.\n\nType this command in your terminal:\n`npm run build`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "School Club full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "rebuilt",
+        "label": "dist/index.html has the new title",
+        "kind": "local-file-contains",
+        "path": "dist/index.html",
+        "value": "<title>School Club</title>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Run the build command to update the HTML file."
+      },
+      {
+        "level": 2,
+        "text": "The command is npm run build. Type it exactly."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "npm run build"
+    },
+    "localFiles": {},
+    "estimatedMinutes": 4,
+    "projectId": "setup-school-club"
+  },
+  {
+    "id": "fs-setup-school-club-9",
+    "index": 249,
+    "task": "Make a new file called Footer.jsx. This file holds the footer component. Write three lines inside it. The code below does that.\n\nIn src/Footer.jsx:\n```\nexport default function Footer() {\n  return <footer>School Club, serving since 2026</footer>;\n}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "School Club full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "footer",
+        "label": "Footer shows its text",
+        "kind": "local-react-render",
+        "file": "src/Footer.jsx",
+        "props": {},
+        "contains": "serving since 2026"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Create a new file named Footer.jsx in the src folder."
+      },
+      {
+        "level": 2,
+        "text": "Copy the three lines into that file.\n\nIn src/Footer.jsx:\n```\nexport default function Footer() {\n  return <footer>School Club, serving since 2026</footer>;\n}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/Footer.jsx": "export default function Footer() {\n  return <footer>School Club, serving since 2026</footer>;\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "setup-school-club"
+  },
+  {
+    "id": "fs-setup-school-club-10",
+    "index": 250,
+    "task": "Import the Footer component at the top of App.jsx. Then use it after the list. The code below does that.\n\nIn src/App.jsx:\n```\nimport Footer from \"./Footer.jsx\";\n      <Footer />\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "School Club full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "used",
+        "label": "App shows the footer",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "<footer>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Import Footer from the file you made."
+      },
+      {
+        "level": 2,
+        "text": "Put the <Footer /> line right after the list in App.jsx.\n\nIn src/App.jsx:\n```\nimport Footer from \"./Footer.jsx\";\n      <Footer />\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "import Footer from \"./Footer.jsx\";\nexport default function App() {\n  const names = [\"Shirt\",\"Pin\",\"Badge\"];\n  return (\n    <main>\n      <h1 className=\"title\">School Club</h1>\n      <p>Open 7 AM to 7 PM</p>\n      <ul>{names.map((name) => <li key={name}>{name}</li>)}</ul>\n      <Footer />\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "setup-school-club"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
