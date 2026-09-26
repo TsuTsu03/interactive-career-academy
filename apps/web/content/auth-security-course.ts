@@ -16153,3 +16153,242 @@ authSecurityCourse.steps.push(...([
     "projectId": "checklist-school-club"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: hashing-tricycle.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-hashing-tricycle-1",
+    "index": 241,
+    "task": "You add two lines to hash.js. The first line gets the password from the command line. The second prints its length. This helps you see how long each password is before hashing. The code below does this. Run the checker and paste its report.\n\nIn hash.js:\n```\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "length",
+        "label": "node hash.js biyahe-ko-2026 prints Length: 14",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "biyahe-ko-2026"
+        ],
+        "value": "Length: 14"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think of the password as a string you type after the command."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of hash.js.\n\nIn hash.js:\n```\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "hashing-tricycle"
+  },
+  {
+    "id": "sec-hashing-tricycle-2",
+    "index": 242,
+    "task": "You add three lines to hash.js. The first sets a fixed salt. The second turns the password into a scrypt hash. The third prints the hash. This turns passwords into unreadable codes. The code below does this. Run the checker and paste its report.\n\nIn hash.js:\n```\nconst salt = \"fixedsalt\";\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "hash",
+        "label": "The script prints the scrypt hash",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "biyahe-ko-2026"
+        ],
+        "value": "Hash: 80af55d7e8ee7251770d511d9eac2135b97653cdaed1050fbe056d0f8e9f62d5"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The salt is like a secret spice that changes the hash."
+      },
+      {
+        "level": 2,
+        "text": "Add the three lines at the end of hash.js.\n\nIn hash.js:\n```\nconst salt = \"fixedsalt\";\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = \"fixedsalt\";\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "hashing-tricycle"
+  },
+  {
+    "id": "sec-hashing-tricycle-3",
+    "index": 243,
+    "task": "You replace the fixed salt with a random salt. This salt is 16 bytes long, so it prints 32 characters. This means two users with the same password get different hashes. The code below does this. Run the checker and paste its report.\n\nIn hash.js:\n```\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "salt",
+        "label": "The script prints Salt length: 32",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "biyahe-ko-2026"
+        ],
+        "value": "Salt length: 32"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use randomBytes to make a new salt every time."
+      },
+      {
+        "level": 2,
+        "text": "Replace the fixed salt line with the random salt line.\n\nIn hash.js:\n```\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "hashing-tricycle"
+  },
+  {
+    "id": "sec-hashing-tricycle-4",
+    "index": 244,
+    "task": "You add two lines to hash.js. The first joins the salt and hash with a colon. The second counts how many parts it made. This lets you store both values together. The code below does this. Run the checker and paste its report.\n\nIn hash.js:\n```\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "parts",
+        "label": "The script prints Stored parts: 2",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "biyahe-ko-2026"
+        ],
+        "value": "Stored parts: 2"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Join the salt and hash with a colon to store them together."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of hash.js.\n\nIn hash.js:\n```\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "hashing-tricycle"
+  },
+  {
+    "id": "sec-hashing-tricycle-5",
+    "index": 245,
+    "task": "You add two lines to hash.js. The first defines a function to check a password. The second uses it to test the original password. This ensures only correct passwords match. The code below does this. Run the checker and paste its report.\n\nIn hash.js:\n```\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "correct",
+        "label": "The right password checks as true",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "biyahe-ko-2026"
+        ],
+        "value": "Correct: true"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The function splits the stored value and compares the hash."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines at the end of hash.js.\n\nIn hash.js:\n```\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "hashing-tricycle"
+  }
+] satisfies typeof authSecurityCourse.steps));
