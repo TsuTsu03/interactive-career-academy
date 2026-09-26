@@ -7146,3 +7146,286 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "api-carinderia"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: states-carinderia.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-states-carinderia-1",
+    "index": 121,
+    "task": "When the app is loading, show a message. Add the code below before the return line in src/ItemsView.jsx. This tells the app what to show while waiting for data. Run `npm install` to get the needed tools. Then run the checker to see if it shows 'Loading items…'.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  return <section>{status}</section>;\n}\n"
+    },
+    "tests": [
+      {
+        "id": "loading",
+        "label": "status loading shows Loading items…",
+        "kind": "local-react-render",
+        "file": "src/ItemsView.jsx",
+        "props": {
+          "status": "loading"
+        },
+        "contains": "Loading items…"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Show a message when the app is still getting data."
+      },
+      {
+        "level": 2,
+        "text": "Put the code before the return line in src/ItemsView.jsx.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n``` The command is: `npm install`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "npm install"
+    },
+    "localFiles": {
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n  return <section>{status}</section>;\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "states-carinderia"
+  },
+  {
+    "id": "fs-states-carinderia-2",
+    "index": 122,
+    "task": "When there is an error, show a message. Add the code below after the loading message. This lets the user know something went wrong. Run the checker to see if it shows the error message.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"}</p>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  return <section>{status}</section>;\n}\n"
+    },
+    "tests": [
+      {
+        "id": "error",
+        "label": "status error shows the error message",
+        "kind": "local-react-render",
+        "file": "src/ItemsView.jsx",
+        "props": {
+          "status": "error",
+          "error": "Server is down"
+        },
+        "contains": "<p role=\"alert\">Server is down</p>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Show a message when the app encounters an error."
+      },
+      {
+        "level": 2,
+        "text": "Put the code after the loading message in src/ItemsView.jsx.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"}</p>;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"}</p>;\n  return <section>{status}</section>;\n}\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "states-carinderia"
+  },
+  {
+    "id": "fs-states-carinderia-3",
+    "index": 123,
+    "task": "When the list is empty, show a message. Add the code below after the error message. This invites the user to add the first item. Run the checker to see if it shows 'No items yet. Add the first one.'\n\nIn src/ItemsView.jsx:\n```\n  if (items.length === 0) return <p>No items yet. Add the first one.</p>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  return <section>{status}</section>;\n}\n"
+    },
+    "tests": [
+      {
+        "id": "empty",
+        "label": "An empty list shows an inviting message",
+        "kind": "local-react-render",
+        "file": "src/ItemsView.jsx",
+        "props": {
+          "status": "ready",
+          "items": []
+        },
+        "contains": "No items yet. Add the first one."
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Show a message when there are no items in the list."
+      },
+      {
+        "level": 2,
+        "text": "Put the code after the error message in src/ItemsView.jsx.\n\nIn src/ItemsView.jsx:\n```\n  if (items.length === 0) return <p>No items yet. Add the first one.</p>;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"}</p>;\n  if (items.length === 0) return <p>No items yet. Add the first one.</p>;\n  return <section>{status}</section>;\n}\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "states-carinderia"
+  },
+  {
+    "id": "fs-states-carinderia-4",
+    "index": 124,
+    "task": "When everything is ready, show the items as a list. Change the return line to the code below. This displays the items properly. Run the checker to see if it shows 'Adobo'.\n\nIn src/ItemsView.jsx:\n```\n  return <ul>{items.map((item) => <li key={item.id}>{item.name}</li>)}</ul>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  return <section>{status}</section>;\n}\n"
+    },
+    "tests": [
+      {
+        "id": "list",
+        "label": "A ready list shows Adobo",
+        "kind": "local-react-render",
+        "file": "src/ItemsView.jsx",
+        "props": {
+          "status": "ready",
+          "items": [
+            {
+              "id": 1,
+              "name": "Adobo",
+              "price": 80
+            },
+            {
+              "id": 2,
+              "name": "Pancit",
+              "price": 60
+            },
+            {
+              "id": 3,
+              "name": "Lumpia",
+              "price": 15
+            }
+          ]
+        },
+        "contains": "<li>Adobo</li>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Display the items as a list when data is ready."
+      },
+      {
+        "level": 2,
+        "text": "Replace the return line in src/ItemsView.jsx with the new code.\n\nIn src/ItemsView.jsx:\n```\n  return <ul>{items.map((item) => <li key={item.id}>{item.name}</li>)}</ul>;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"}</p>;\n  if (items.length === 0) return <p>No items yet. Add the first one.</p>;\n  return <ul>{items.map((item) => <li key={item.id}>{item.name}</li>)}</ul>;\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "states-carinderia"
+  },
+  {
+    "id": "fs-states-carinderia-5",
+    "index": 125,
+    "task": "When there is an error, add a 'Try again' button. Change the error line to the code below. This lets the user retry. Run the checker to see if it shows the button.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"} <button type=\"button\">Try again</button></p>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  return <section>{status}</section>;\n}\n"
+    },
+    "tests": [
+      {
+        "id": "retry",
+        "label": "The error state has a Try again button",
+        "kind": "local-react-render",
+        "file": "src/ItemsView.jsx",
+        "props": {
+          "status": "error"
+        },
+        "contains": "Try again</button>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a button to let the user retry when there is an error."
+      },
+      {
+        "level": 2,
+        "text": "Replace the error line in src/ItemsView.jsx with the new code.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"} <button type=\"button\">Try again</button></p>;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"} <button type=\"button\">Try again</button></p>;\n  if (items.length === 0) return <p>No items yet. Add the first one.</p>;\n  return <ul>{items.map((item) => <li key={item.id}>{item.name}</li>)}</ul>;\n}\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "states-carinderia"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
