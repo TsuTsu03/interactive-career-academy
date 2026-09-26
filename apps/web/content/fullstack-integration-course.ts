@@ -9861,3 +9861,315 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "setup-barangay"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: props-barangay.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-props-barangay-1",
+    "index": 171,
+    "task": "Open src/App.jsx. Add the import for ItemList at the top. Then add the items array. Use ItemList after the h1. The code below shows what to type. Run the checker. Paste its report.\n\nIn src/App.jsx:\n```\nimport ItemList from \"./ItemList.jsx\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\n      <ItemList items={items} />\n```\n\nType this command in your terminal:\n`npm install`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Barangay Office</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Barangay Office full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Barangay Office</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "list",
+        "label": "App lists Clearance through ItemList",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "<li>Clearance</li>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the import and array before the JSX code."
+      },
+      {
+        "level": 2,
+        "text": "Put the ItemList component right after the h1 tag.\n\nIn src/App.jsx:\n```\nimport ItemList from \"./ItemList.jsx\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\n      <ItemList items={items} />\n``` The command is: `npm install`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "npm install"
+    },
+    "localFiles": {
+      "src/App.jsx": "import ItemList from \"./ItemList.jsx\";\nconst items = [{ id: 1, name: \"Clearance\", price: 50 }, { id: 2, name: \"Permit\", price: 300 }, { id: 3, name: \"ID\", price: 20 }];\nexport default function App() {\n  return (\n    <main>\n      <h1>Barangay Office</h1>\n      <ItemList items={items} />\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "props-barangay"
+  },
+  {
+    "id": "fs-props-barangay-2",
+    "index": 172,
+    "task": "Open src/ItemList.jsx. Change the list line to show the price. The code below shows what to type. Run the checker. Paste its report.\n\nIn src/ItemList.jsx:\n```\n        {items.map((item) => <li key={item.id}>{item.name}: {item.price}</li>)}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Barangay Office</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Barangay Office full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Barangay Office</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "price",
+        "label": "ItemList shows Clearance: 50",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Clearance",
+              "price": 50
+            },
+            {
+              "id": 2,
+              "name": "Permit",
+              "price": 300
+            },
+            {
+              "id": 3,
+              "name": "ID",
+              "price": 20
+            }
+          ]
+        },
+        "contains": "Clearance: 50"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the item's name and price together in the list item."
+      },
+      {
+        "level": 2,
+        "text": "Put the price right after the name, like this: name: price\n\nIn src/ItemList.jsx:\n```\n        {items.map((item) => <li key={item.id}>{item.name}: {item.price}</li>)}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}: {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "props-barangay"
+  },
+  {
+    "id": "fs-props-barangay-3",
+    "index": 173,
+    "task": "Open src/ItemList.jsx. Add a currency prop with a default value. Show it in the list. The code below shows what to type. Run the checker. Paste its report.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\" }) {\n        {items.map((item) => <li key={item.id}>{item.name}: {currency} {item.price}</li>)}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Barangay Office</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Barangay Office full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Barangay Office</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "currency",
+        "label": "With currency USD the list shows USD",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Clearance",
+              "price": 50
+            },
+            {
+              "id": 2,
+              "name": "Permit",
+              "price": 300
+            },
+            {
+              "id": 3,
+              "name": "ID",
+              "price": 20
+            }
+          ],
+          "currency": "USD"
+        },
+        "contains": "Clearance: USD 50"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the currency prop with a default value like PHP."
+      },
+      {
+        "level": 2,
+        "text": "Put the currency symbol before the price in the list item.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\" }) {\n        {items.map((item) => <li key={item.id}>{item.name}: {currency} {item.price}</li>)}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\" }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "props-barangay"
+  },
+  {
+    "id": "fs-props-barangay-4",
+    "index": 174,
+    "task": "Open src/ItemList.jsx. Add one line before return. If there are no items, show a message. The code below shows what to type. Run the checker. Paste its report.\n\nIn src/ItemList.jsx:\n```\n  if (items.length === 0) return <p>No items yet</p>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Barangay Office</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Barangay Office full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Barangay Office</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "empty",
+        "label": "An empty list shows No items yet",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": []
+        },
+        "contains": "No items yet"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the items array is empty. If yes, return a message."
+      },
+      {
+        "level": 2,
+        "text": "Put the message before the return statement.\n\nIn src/ItemList.jsx:\n```\n  if (items.length === 0) return <p>No items yet</p>;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\" }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "props-barangay"
+  },
+  {
+    "id": "fs-props-barangay-5",
+    "index": 175,
+    "task": "Open src/ItemList.jsx. Add title to the props. Show it as an h2 inside the section. The code below shows what to type. Run the checker. Paste its report.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title }) {\n      <h2>{title}</h2>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Barangay Office</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Barangay Office full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Barangay Office</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "title",
+        "label": "The title prop appears as a heading",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Clearance",
+              "price": 50
+            },
+            {
+              "id": 2,
+              "name": "Permit",
+              "price": 300
+            },
+            {
+              "id": 3,
+              "name": "ID",
+              "price": 20
+            }
+          ],
+          "title": "Today"
+        },
+        "contains": "<h2>Today</h2>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add title as a prop in the function signature."
+      },
+      {
+        "level": 2,
+        "text": "Put the title inside an h2 tag inside the section.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title }) {\n      <h2>{title}</h2>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\", title }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  return (\n    <section>\n      <h2>{title}</h2>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "props-barangay"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
