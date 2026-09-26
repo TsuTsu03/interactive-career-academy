@@ -2914,7 +2914,7 @@ apiBasicsCourse.steps.push(...([
     "hints": [
       {
         "level": 1,
-        "text": "X-Total-Count is a header that tells the client how many items matched, not in the body."
+        "text": "X-Total-Count is a header that tells the client how many items matched. The count goes in a header, not in the body."
       },
       {
         "level": 2,

@@ -2,6 +2,38 @@
 
 No frontend browser-QA items remain as of 2026-08-29.
 
+## Program C delivery QA - 2026-09-27
+
+**Node.js Fundamentals (350 steps, QA on 2026-09-25).**
+- Copy scan: no banned words, no long dashes, every code step shows its code
+  block, no level 1 hint contains the code, no command differs from the plan.
+- Learner run with the built checker in a real shell: 350 steps, each fails
+  before and passes after, 0 problems.
+- Real-Chrome `/harness?course=node-basics`: 350 steps, 0 errors, 0 warnings.
+- Workspace: a real report for step 1 showed "REPORTED CLEAR" and "Practice
+  only"; XP stayed 0 and `completedSteps` stayed empty; no overflow.
+
+**Building APIs (500), Auth and Security (300), Full-Stack Integration (400).**
+- `check:content --course=<id>`: 500, 300, and 400 local steps replayed,
+  0 errors, 0 structural warnings.
+- Copy scan: no banned words, no long dashes, every step with file edits shows
+  a code block, every step has level 1 and level 2 hints, no level 1 hint
+  contains a code block or a solution command, and every solution command
+  appears verbatim in its task.
+- Learner run: the checker was downloaded from a local production build at
+  `/downloads/codedaddy-check.mjs` (873 KB raw, 70 KB gzip; it now carries
+  every local course). Each of the 120 projects started in a fresh empty
+  folder with `start`, file edits were written as shown, and each command ran
+  in real Git Bash. All 1,200 steps failed `check` before the learner's work
+  and passed after it. 0 problems.
+- Real-Chrome `/harness`: 500, 300, and 400 steps, 0 errors, 0 warnings.
+- Workspace: a real step 1 report for each course showed "REPORTED CLEAR" and
+  "Practice only"; no XP was added and `completedSteps` stayed empty. A report
+  for another course's step was refused ("That report is for a different
+  step"). 360px width had no horizontal overflow and the console stayed clean.
+- Copy fix: the level 1 hint about `X-Total-Count` now says the count goes in
+  a header, not in the body.
+
 ## Program C delivery QA - 2026-09-24
 
 **SQL and NoSQL (all Qwen batches).** Real-Chrome `/harness`: all 750 SQL
