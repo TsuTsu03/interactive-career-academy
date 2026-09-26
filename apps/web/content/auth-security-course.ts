@@ -3615,3 +3615,315 @@ authSecurityCourse.steps.push(...([
     "projectId": "access-sari-sari"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: checklist-sari-sari.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-checklist-sari-sari-1",
+    "index": 51,
+    "task": "Add three safety headers to every answer. These headers help the browser behave safely. The code below adds them at the top of the handler. Run the checker to confirm the headers are sent.\n\nIn server.js:\n```\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Sari-Sari Store\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Sari-Sari Store menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "nosniff",
+        "label": "Answers send X-Content-Type-Options: nosniff",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/config"
+          }
+        ],
+        "header": {
+          "name": "x-content-type-options",
+          "value": "nosniff"
+        }
+      },
+      {
+        "id": "frame",
+        "label": "Answers send X-Frame-Options: DENY",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/config"
+          }
+        ],
+        "header": {
+          "name": "x-frame-options",
+          "value": "DENY"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "These headers stop browsers from guessing wrong file types or loading frames from other sites."
+      },
+      {
+        "level": 2,
+        "text": "Add them right after the `res` object is created, before any other headers.\n\nIn server.js:\n```\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Sari-Sari Store\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "sec-nosniff"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "checklist-sari-sari"
+  },
+  {
+    "id": "sec-checklist-sari-sari-2",
+    "index": 52,
+    "task": "Add a Content-Security-Policy header to trust only this site. This header tells the browser which scripts and styles to allow. The code below adds it after the other headers. Run the checker to confirm it's sent.\n\nIn server.js:\n```\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Sari-Sari Store\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Sari-Sari Store menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "csp",
+        "label": "Answers send a Content-Security-Policy",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/config"
+          }
+        ],
+        "header": {
+          "name": "content-security-policy",
+          "value": "default-src 'self'"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This policy stops scripts from other sites from running in your page."
+      },
+      {
+        "level": 2,
+        "text": "Add it after the safety headers, before any other headers.\n\nIn server.js:\n```\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Sari-Sari Store\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "sec-csp"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "checklist-sari-sari"
+  },
+  {
+    "id": "sec-checklist-sari-sari-3",
+    "index": 53,
+    "task": "Change the /config route to hide the API key. This stops leaking secrets. The code below splits the config into public and secret parts. Run the checker to confirm the key is hidden.\n\nIn server.js:\n```\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Sari-Sari Store\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Sari-Sari Store menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "public",
+        "label": "GET /config answers the currency without the key",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/config"
+          }
+        ],
+        "bodyContains": "\"currency\":\"PHP\"",
+        "bodyLacks": "sk-live"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Only send the public fields, not the whole config."
+      },
+      {
+        "level": 2,
+        "text": "Change the /config route to use the new code.\n\nIn server.js:\n```\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Sari-Sari Store\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "sec-secret-leak"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "checklist-sari-sari"
+  },
+  {
+    "id": "sec-checklist-sari-sari-4",
+    "index": 54,
+    "task": "Add a CORS allowlist to let only one site call your API. This stops bad sites from using your API. The code below checks the origin and adds the header if it matches. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Sari-Sari Store\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Sari-Sari Store menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "allowed",
+        "label": "A request from the allowed site gets the CORS header",
+        "kind": "local-http",
+        "file": "server.js",
+        "env": {
+          "ALLOWED_ORIGIN": "https://shop.example"
+        },
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/config",
+            "headers": {
+              "Origin": "https://shop.example"
+            }
+          }
+        ],
+        "header": {
+          "name": "access-control-allow-origin",
+          "value": "https://shop.example"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Only allow the site you named in the environment variable."
+      },
+      {
+        "level": 2,
+        "text": "Add this code after the safety headers, before any other headers.\n\nIn server.js:\n```\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Sari-Sari Store\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "sec-cors-allowlist"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "checklist-sari-sari"
+  },
+  {
+    "id": "sec-checklist-sari-sari-5",
+    "index": 55,
+    "task": "Add an escapeHtml helper to stop cross-site scripting. This turns dangerous characters into harmless ones. The code below adds the helper and uses it in the /hello route. Run the checker to confirm it works.\n\nIn server.js:\n```\nconst escapeHtml = (text) => text.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\").replace(/\"/g, \"&quot;\");\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${escapeHtml(url.searchParams.get(\"name\") ?? \"friend\")}</p>`); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Sari-Sari Store\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Sari-Sari Store menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "escaped",
+        "label": "A name with a script tag is shown as harmless text",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/hello?name=%3Cscript%3Ealert(1)%3C%2Fscript%3E"
+          }
+        ],
+        "bodyContains": "&lt;script&gt;",
+        "bodyLacks": "<script>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Replace <, >, &, and \" with safe versions."
+      },
+      {
+        "level": 2,
+        "text": "Use the helper in the /hello route to escape the name.\n\nIn server.js:\n```\nconst escapeHtml = (text) => text.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\").replace(/\"/g, \"&quot;\");\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${escapeHtml(url.searchParams.get(\"name\") ?? \"friend\")}</p>`); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Sari-Sari Store\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst escapeHtml = (text) => text.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\").replace(/\"/g, \"&quot;\");\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${escapeHtml(url.searchParams.get(\"name\") ?? \"friend\")}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "sec-xss"
+    ],
+    "estimatedMinutes": 5,
+    "projectId": "checklist-sari-sari"
+  }
+] satisfies typeof authSecurityCourse.steps));
