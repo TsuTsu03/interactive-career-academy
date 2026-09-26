@@ -18859,3 +18859,315 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "setup-tricycle"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: props-tricycle.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-props-tricycle-1",
+    "index": 331,
+    "task": "You add an import for ItemList at the top of src/App.jsx. Then you add an items array with three objects. Finally, you use ItemList after the h1 tag. This passes the items to the child component. The code below does this. Run the checker and paste its report.\n\nIn src/App.jsx:\n```\nimport ItemList from \"./ItemList.jsx\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\n      <ItemList items={items} />\n```\n\nType this command in your terminal:\n`npm install`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Tricycle Terminal</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Tricycle Terminal full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Tricycle Terminal</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "list",
+        "label": "App lists Market through ItemList",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "<li>Market</li>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The parent component gives data to the child component using props. You pass the array as a prop called items."
+      },
+      {
+        "level": 2,
+        "text": "Add the import, array, and ItemList call right after the h1 tag in src/App.jsx.\n\nIn src/App.jsx:\n```\nimport ItemList from \"./ItemList.jsx\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\n      <ItemList items={items} />\n``` The command is: `npm install`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "npm install"
+    },
+    "localFiles": {
+      "src/App.jsx": "import ItemList from \"./ItemList.jsx\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nexport default function App() {\n  return (\n    <main>\n      <h1>Tricycle Terminal</h1>\n      <ItemList items={items} />\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "props-tricycle"
+  },
+  {
+    "id": "fs-props-tricycle-2",
+    "index": 332,
+    "task": "You change the list line in src/ItemList.jsx. You add the price next to each item's name. This shows the cost clearly. The code below does this. Run the checker and paste its report.\n\nIn src/ItemList.jsx:\n```\n        {items.map((item) => <li key={item.id}>{item.name}: {item.price}</li>)}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Tricycle Terminal</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Tricycle Terminal full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Tricycle Terminal</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "price",
+        "label": "ItemList shows Market: 20",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Market",
+              "price": 20
+            },
+            {
+              "id": 2,
+              "name": "School",
+              "price": 30
+            },
+            {
+              "id": 3,
+              "name": "Clinic",
+              "price": 25
+            }
+          ]
+        },
+        "contains": "Market: 20"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Inside the map function, you show the item's name and its price together. Use the item's price value."
+      },
+      {
+        "level": 2,
+        "text": "Change the list line in src/ItemList.jsx to show item.name and item.price together.\n\nIn src/ItemList.jsx:\n```\n        {items.map((item) => <li key={item.id}>{item.name}: {item.price}</li>)}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}: {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "props-tricycle"
+  },
+  {
+    "id": "fs-props-tricycle-3",
+    "index": 333,
+    "task": "You add a currency prop to the ItemList function. You set a default value of \"PHP\". You show the currency before the price. This lets the user choose a currency. The code below does this. Run the checker and paste its report.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\" }) {\n        {items.map((item) => <li key={item.id}>{item.name}: {currency} {item.price}</li>)}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Tricycle Terminal</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Tricycle Terminal full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Tricycle Terminal</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "currency",
+        "label": "With currency USD the list shows USD",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Market",
+              "price": 20
+            },
+            {
+              "id": 2,
+              "name": "School",
+              "price": 30
+            },
+            {
+              "id": 3,
+              "name": "Clinic",
+              "price": 25
+            }
+          ],
+          "currency": "USD"
+        },
+        "contains": "Market: USD 20"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You add a new prop called currency with a default value. You use it in the list to show the currency before the price."
+      },
+      {
+        "level": 2,
+        "text": "Add the currency prop to the function signature and show it in the list line in src/ItemList.jsx.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\" }) {\n        {items.map((item) => <li key={item.id}>{item.name}: {currency} {item.price}</li>)}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\" }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "props-tricycle"
+  },
+  {
+    "id": "fs-props-tricycle-4",
+    "index": 334,
+    "task": "You add one line before return in src/ItemList.jsx. You check if items is empty. If so, you show a message. This helps users know when there are no items. The code below does this. Run the checker and paste its report.\n\nIn src/ItemList.jsx:\n```\n  if (items.length === 0) return <p>No items yet</p>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Tricycle Terminal</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Tricycle Terminal full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Tricycle Terminal</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "empty",
+        "label": "An empty list shows No items yet",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": []
+        },
+        "contains": "No items yet"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If the items array has no items, you return a paragraph with the message. This stops the list from rendering."
+      },
+      {
+        "level": 2,
+        "text": "Add the if condition before return in src/ItemList.jsx. Use items.length === 0 to check.\n\nIn src/ItemList.jsx:\n```\n  if (items.length === 0) return <p>No items yet</p>;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\" }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "props-tricycle"
+  },
+  {
+    "id": "fs-props-tricycle-5",
+    "index": 335,
+    "task": "You add a title prop to the ItemList function. You show it as an h2 inside the section. This lets the parent pass a heading. The code below does this. Run the checker and paste its report.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title }) {\n      <h2>{title}</h2>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Tricycle Terminal</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Tricycle Terminal full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Tricycle Terminal</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "title",
+        "label": "The title prop appears as a heading",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Market",
+              "price": 20
+            },
+            {
+              "id": 2,
+              "name": "School",
+              "price": 30
+            },
+            {
+              "id": 3,
+              "name": "Clinic",
+              "price": 25
+            }
+          ],
+          "title": "Today"
+        },
+        "contains": "<h2>Today</h2>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "You add title to the props list. You show it in the JSX as an h2 tag. This makes the heading appear."
+      },
+      {
+        "level": 2,
+        "text": "Add title to the function signature and add <h2>{title}</h2> inside the section in src/ItemList.jsx.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title }) {\n      <h2>{title}</h2>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\", title }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  return (\n    <section>\n      <h2>{title}</h2>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "props-tricycle"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
