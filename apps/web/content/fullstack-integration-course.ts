@@ -11645,3 +11645,286 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "api-barangay"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: states-barangay.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-states-barangay-1",
+    "index": 201,
+    "task": "Add this line before the return in src/ItemsView.jsx. This shows a message while the app loads. Run `npm install` to get the needed tools. The checker will confirm that the loading message appears.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Barangay Office</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Barangay Office full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Barangay Office</h1>\n    </main>\n  );\n}\n",
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  return <section>{status}</section>;\n}\n"
+    },
+    "tests": [
+      {
+        "id": "loading",
+        "label": "status loading shows Loading items…",
+        "kind": "local-react-render",
+        "file": "src/ItemsView.jsx",
+        "props": {
+          "status": "loading"
+        },
+        "contains": "Loading items…"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The message must appear when the app is still getting data."
+      },
+      {
+        "level": 2,
+        "text": "Put this line right before the return in src/ItemsView.jsx.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n``` The command is: `npm install`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "npm install"
+    },
+    "localFiles": {
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n  return <section>{status}</section>;\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "states-barangay"
+  },
+  {
+    "id": "fs-states-barangay-2",
+    "index": 202,
+    "task": "Add this line after the loading message. It shows an error or a general message if something goes wrong. The checker will confirm that the error message appears.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"}</p>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Barangay Office</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Barangay Office full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Barangay Office</h1>\n    </main>\n  );\n}\n",
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  return <section>{status}</section>;\n}\n"
+    },
+    "tests": [
+      {
+        "id": "error",
+        "label": "status error shows the error message",
+        "kind": "local-react-render",
+        "file": "src/ItemsView.jsx",
+        "props": {
+          "status": "error",
+          "error": "Server is down"
+        },
+        "contains": "<p role=\"alert\">Server is down</p>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This line handles when the app fails to load data."
+      },
+      {
+        "level": 2,
+        "text": "Put this line right after the loading message in src/ItemsView.jsx.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"}</p>;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"}</p>;\n  return <section>{status}</section>;\n}\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "states-barangay"
+  },
+  {
+    "id": "fs-states-barangay-3",
+    "index": 203,
+    "task": "Add this line after the error message. It shows a message when there are no items. The checker will confirm that the empty message appears.\n\nIn src/ItemsView.jsx:\n```\n  if (items.length === 0) return <p>No items yet. Add the first one.</p>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Barangay Office</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Barangay Office full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Barangay Office</h1>\n    </main>\n  );\n}\n",
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  return <section>{status}</section>;\n}\n"
+    },
+    "tests": [
+      {
+        "id": "empty",
+        "label": "An empty list shows an inviting message",
+        "kind": "local-react-render",
+        "file": "src/ItemsView.jsx",
+        "props": {
+          "status": "ready",
+          "items": []
+        },
+        "contains": "No items yet. Add the first one."
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This message invites the user to add the first item."
+      },
+      {
+        "level": 2,
+        "text": "Put this line right after the error message in src/ItemsView.jsx.\n\nIn src/ItemsView.jsx:\n```\n  if (items.length === 0) return <p>No items yet. Add the first one.</p>;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"}</p>;\n  if (items.length === 0) return <p>No items yet. Add the first one.</p>;\n  return <section>{status}</section>;\n}\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "states-barangay"
+  },
+  {
+    "id": "fs-states-barangay-4",
+    "index": 204,
+    "task": "Change the return line to show the items as a list. The checker will confirm that the list appears with the item name.\n\nIn src/ItemsView.jsx:\n```\n  return <ul>{items.map((item) => <li key={item.id}>{item.name}</li>)}</ul>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Barangay Office</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Barangay Office full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Barangay Office</h1>\n    </main>\n  );\n}\n",
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  return <section>{status}</section>;\n}\n"
+    },
+    "tests": [
+      {
+        "id": "list",
+        "label": "A ready list shows Clearance",
+        "kind": "local-react-render",
+        "file": "src/ItemsView.jsx",
+        "props": {
+          "status": "ready",
+          "items": [
+            {
+              "id": 1,
+              "name": "Clearance",
+              "price": 50
+            },
+            {
+              "id": 2,
+              "name": "Permit",
+              "price": 300
+            },
+            {
+              "id": 3,
+              "name": "ID",
+              "price": 20
+            }
+          ]
+        },
+        "contains": "<li>Clearance</li>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This line shows the items only when everything is ready."
+      },
+      {
+        "level": 2,
+        "text": "Replace the return line with the code below in src/ItemsView.jsx.\n\nIn src/ItemsView.jsx:\n```\n  return <ul>{items.map((item) => <li key={item.id}>{item.name}</li>)}</ul>;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"}</p>;\n  if (items.length === 0) return <p>No items yet. Add the first one.</p>;\n  return <ul>{items.map((item) => <li key={item.id}>{item.name}</li>)}</ul>;\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "states-barangay"
+  },
+  {
+    "id": "fs-states-barangay-5",
+    "index": 205,
+    "task": "Change the error line to add a button. The checker will confirm that the button appears with the error message.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"} <button type=\"button\">Try again</button></p>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Barangay Office</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Barangay Office full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Barangay Office</h1>\n    </main>\n  );\n}\n",
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  return <section>{status}</section>;\n}\n"
+    },
+    "tests": [
+      {
+        "id": "retry",
+        "label": "The error state has a Try again button",
+        "kind": "local-react-render",
+        "file": "src/ItemsView.jsx",
+        "props": {
+          "status": "error"
+        },
+        "contains": "Try again</button>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the button to the error message line."
+      },
+      {
+        "level": 2,
+        "text": "Replace the error line with the code below in src/ItemsView.jsx.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"} <button type=\"button\">Try again</button></p>;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"} <button type=\"button\">Try again</button></p>;\n  if (items.length === 0) return <p>No items yet. Add the first one.</p>;\n  return <ul>{items.map((item) => <li key={item.id}>{item.name}</li>)}</ul>;\n}\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "states-barangay"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
