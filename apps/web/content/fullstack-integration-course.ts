@@ -15297,3 +15297,292 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "serving-school-club"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: serving-school-club.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-serving-school-club-6",
+    "index": 266,
+    "task": "You change the /assets/ line in server.js. This line sends built files to browsers. You add a header to tell browsers to keep these files for a year. This helps speed up loading when files don't change. The code below shows what to change. Run the checker and paste its report.\n\nIn server.js:\n```\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>School Club</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "School Club full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>School Club</h1>\n    </main>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Server is running\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "cache",
+        "label": "Built files are sent with a long cache",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/assets/app.js"
+          }
+        ],
+        "header": {
+          "name": "cache-control",
+          "value": "immutable"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The cache header tells browsers how long to keep files. Set it to one year."
+      },
+      {
+        "level": 2,
+        "text": "Put the header inside the if block for /assets/.\n\nIn server.js:\n```\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "serving-school-club"
+  },
+  {
+    "id": "fs-serving-school-club-7",
+    "index": 267,
+    "task": "You add one line before the 404 line in server.js. This line answers any path that doesn't start with /api/ with index.html. This lets React handle all page requests. The code below shows what to add. Run the checker and paste its report.\n\nIn server.js:\n```\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>School Club</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "School Club full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>School Club</h1>\n    </main>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Server is running\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "spa",
+        "label": "GET /about answers the app page",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/about"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "<div id=\"root\"></div>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "React needs to handle all non-API paths. Send index.html for those."
+      },
+      {
+        "level": 2,
+        "text": "Put the new line before the 404 response in the server.js file.\n\nIn server.js:\n```\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "serving-school-club"
+  },
+  {
+    "id": "fs-serving-school-club-8",
+    "index": 268,
+    "task": "You change the / line in server.js. This line now adds a header that tells browsers not to cache the index.html. This lets React update the page if the app changes. The code below shows what to change. Run the checker and paste its report.\n\nIn server.js:\n```\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>School Club</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "School Club full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>School Club</h1>\n    </main>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Server is running\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "nocache",
+        "label": "GET / sends Cache-Control: no-cache",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "header": {
+          "name": "cache-control",
+          "value": "no-cache"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The no-cache header tells browsers to check for new files every time."
+      },
+      {
+        "level": 2,
+        "text": "Put the header inside the if block for /.\n\nIn server.js:\n```\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "serving-school-club"
+  },
+  {
+    "id": "fs-serving-school-club-9",
+    "index": 269,
+    "task": "You add one line at the top of the server.js handler. This line adds a safety header called X-Content-Type-Options. It stops browsers from guessing wrong file types. The code below shows what to add. Run the checker and paste its report.\n\nIn server.js:\n```\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>School Club</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "School Club full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>School Club</h1>\n    </main>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Server is running\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "nosniff",
+        "label": "Answers send X-Content-Type-Options: nosniff",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/"
+          }
+        ],
+        "header": {
+          "name": "x-content-type-options",
+          "value": "nosniff"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This header protects against browser errors. Add it before any response."
+      },
+      {
+        "level": 2,
+        "text": "Put the line at the top of the server.js handler, before res.end().\n\nIn server.js:\n```\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "serving-school-club"
+  },
+  {
+    "id": "fs-serving-school-club-10",
+    "index": 270,
+    "task": "You add one line after the nosniff line in server.js. This line answers /health with a JSON object. This lets hosting services check if the server works. The code below shows what to add. Run the checker and paste its report.\n\nIn server.js:\n```\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>School Club</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "School Club full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>School Club</h1>\n    </main>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.end(\"Server is running\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "health",
+        "label": "GET /health answers ok",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/health"
+          }
+        ],
+        "bodyContains": "\"ok\":true"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Hosting services check the /health path. Answer it with { ok: true }."
+      },
+      {
+        "level": 2,
+        "text": "Put the line after the nosniff header, inside the server.js handler.\n\nIn server.js:\n```\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "serving-school-club"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
