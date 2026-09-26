@@ -7726,3 +7726,269 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "states-carinderia"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: forms-carinderia.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-forms-carinderia-1",
+    "index": 131,
+    "task": "Add a label and an input inside the form in src/ItemForm.jsx. This label tells the user what to type. The input lets them type the name. Run the command below to install needed tools. Then run the checker to see if the label and input appear.\n\nIn src/ItemForm.jsx:\n```\n      <label htmlFor=\"name\">Name</label>\n      <input id=\"name\" name=\"name\" required />\n```\n\nType this command in your terminal:\n`npm install`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit }) {\n  return (\n    <form>\n    </form>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "name",
+        "label": "The form has a labelled name field",
+        "kind": "local-react-render",
+        "file": "src/ItemForm.jsx",
+        "props": {},
+        "contains": "<label for=\"name\">Name</label><input id=\"name\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The label must match the input's id so the browser knows they go together."
+      },
+      {
+        "level": 2,
+        "text": "Put the code inside the <form> tag in src/ItemForm.jsx.\n\nIn src/ItemForm.jsx:\n```\n      <label htmlFor=\"name\">Name</label>\n      <input id=\"name\" name=\"name\" required />\n``` The command is: `npm install`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "npm install"
+    },
+    "localFiles": {
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit }) {\n  return (\n    <form>\n      <label htmlFor=\"name\">Name</label>\n      <input id=\"name\" name=\"name\" required />\n    </form>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "forms-carinderia"
+  },
+  {
+    "id": "fs-forms-carinderia-2",
+    "index": 132,
+    "task": "Add a label and an input after the name field. This input only lets the user type numbers. The min=\"0\" means they can't type a negative price. Run the checker to confirm the input is a number field.\n\nIn src/ItemForm.jsx:\n```\n      <label htmlFor=\"price\">Price</label>\n      <input id=\"price\" name=\"price\" type=\"number\" min=\"0\" required />\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit }) {\n  return (\n    <form>\n    </form>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "price",
+        "label": "The price field is a number input",
+        "kind": "local-react-render",
+        "file": "src/ItemForm.jsx",
+        "props": {},
+        "contains": "type=\"number\" min=\"0\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use type=\"number\" so the browser shows a number keyboard."
+      },
+      {
+        "level": 2,
+        "text": "Put the code after the name input in src/ItemForm.jsx.\n\nIn src/ItemForm.jsx:\n```\n      <label htmlFor=\"price\">Price</label>\n      <input id=\"price\" name=\"price\" type=\"number\" min=\"0\" required />\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit }) {\n  return (\n    <form>\n      <label htmlFor=\"name\">Name</label>\n      <input id=\"name\" name=\"name\" required />\n      <label htmlFor=\"price\">Price</label>\n      <input id=\"price\" name=\"price\" type=\"number\" min=\"0\" required />\n    </form>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "forms-carinderia"
+  },
+  {
+    "id": "fs-forms-carinderia-3",
+    "index": 133,
+    "task": "Add one line after the price field. This line adds a button that says 'Add item'. When clicked, it submits the form. Run the checker to confirm the button appears.\n\nIn src/ItemForm.jsx:\n```\n      <button type=\"submit\">Add item</button>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit }) {\n  return (\n    <form>\n    </form>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "button",
+        "label": "The form has an Add item button",
+        "kind": "local-react-render",
+        "file": "src/ItemForm.jsx",
+        "props": {},
+        "contains": "<button type=\"submit\">Add item</button>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The button must have type=\"submit\" so it sends the form data."
+      },
+      {
+        "level": 2,
+        "text": "Put the code after the price input in src/ItemForm.jsx.\n\nIn src/ItemForm.jsx:\n```\n      <button type=\"submit\">Add item</button>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit }) {\n  return (\n    <form>\n      <label htmlFor=\"name\">Name</label>\n      <input id=\"name\" name=\"name\" required />\n      <label htmlFor=\"price\">Price</label>\n      <input id=\"price\" name=\"price\" type=\"number\" min=\"0\" required />\n      <button type=\"submit\">Add item</button>\n    </form>\n  );\n}\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "forms-carinderia"
+  },
+  {
+    "id": "fs-forms-carinderia-4",
+    "index": 134,
+    "task": "Add initialName to the props and use it as the name field's starting value. This lets the parent pass a default name. Run the checker to see if the default name appears.\n\nIn src/ItemForm.jsx:\n```\nexport default function ItemForm({ onSubmit, initialName = \"\" }) {\n      <input id=\"name\" name=\"name\" defaultValue={initialName} required />\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit }) {\n  return (\n    <form>\n    </form>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "initial",
+        "label": "initialName Tea fills the name field",
+        "kind": "local-react-render",
+        "file": "src/ItemForm.jsx",
+        "props": {
+          "initialName": "Tea"
+        },
+        "contains": "value=\"Tea\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The initialName is passed from the parent component. Use it to set the input's value."
+      },
+      {
+        "level": 2,
+        "text": "Put the code inside the function definition in src/ItemForm.jsx.\n\nIn src/ItemForm.jsx:\n```\nexport default function ItemForm({ onSubmit, initialName = \"\" }) {\n      <input id=\"name\" name=\"name\" defaultValue={initialName} required />\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit, initialName = \"\" }) {\n  return (\n    <form>\n      <label htmlFor=\"name\">Name</label>\n      <input id=\"name\" name=\"name\" defaultValue={initialName} required />\n      <label htmlFor=\"price\">Price</label>\n      <input id=\"price\" name=\"price\" type=\"number\" min=\"0\" required />\n      <button type=\"submit\">Add item</button>\n    </form>\n  );\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "forms-carinderia"
+  },
+  {
+    "id": "fs-forms-carinderia-5",
+    "index": 135,
+    "task": "Add a handleSubmit function before return. This function stops the page from reloading and sends the form data to onSubmit. Connect it to the form. Run the checker to confirm the form works without reloading.\n\nIn src/ItemForm.jsx:\n```\n  function handleSubmit(event) { event.preventDefault(); const data = new FormData(event.target); onSubmit?.({ name: data.get(\"name\"), price: Number(data.get(\"price\")) }); }\n    <form onSubmit={handleSubmit}>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit }) {\n  return (\n    <form>\n    </form>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "prevent",
+        "label": "handleSubmit stops the page reload",
+        "kind": "local-file-contains",
+        "path": "src/ItemForm.jsx",
+        "value": "event.preventDefault()"
+      },
+      {
+        "id": "build",
+        "label": "The app still builds",
+        "kind": "local-npm-script",
+        "script": "build"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use event.preventDefault() to stop the page from reloading."
+      },
+      {
+        "level": 2,
+        "text": "Put the function before the return statement in src/ItemForm.jsx.\n\nIn src/ItemForm.jsx:\n```\n  function handleSubmit(event) { event.preventDefault(); const data = new FormData(event.target); onSubmit?.({ name: data.get(\"name\"), price: Number(data.get(\"price\")) }); }\n    <form onSubmit={handleSubmit}>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemForm.jsx": "export default function ItemForm({ onSubmit, initialName = \"\" }) {\n  function handleSubmit(event) { event.preventDefault(); const data = new FormData(event.target); onSubmit?.({ name: data.get(\"name\"), price: Number(data.get(\"price\")) }); }\n  return (\n    <form onSubmit={handleSubmit}>\n      <label htmlFor=\"name\">Name</label>\n      <input id=\"name\" name=\"name\" defaultValue={initialName} required />\n      <label htmlFor=\"price\">Price</label>\n      <input id=\"price\" name=\"price\" type=\"number\" min=\"0\" required />\n      <button type=\"submit\">Add item</button>\n    </form>\n  );\n}\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "forms-carinderia"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
