@@ -11568,3 +11568,300 @@ authSecurityCourse.steps.push(...([
     "projectId": "access-barangay"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: checklist-barangay.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-checklist-barangay-1",
+    "index": 171,
+    "task": "Add three lines at the top of the handler. These headers protect your app from common attacks. The code below sets them. Run the checker and paste its report.\n\nIn server.js:\n```\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Barangay Office\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Barangay Office menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "nosniff",
+        "label": "Answers send X-Content-Type-Options: nosniff",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/config"
+          }
+        ],
+        "header": {
+          "name": "x-content-type-options",
+          "value": "nosniff"
+        }
+      },
+      {
+        "id": "frame",
+        "label": "Answers send X-Frame-Options: DENY",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/config"
+          }
+        ],
+        "header": {
+          "name": "x-frame-options",
+          "value": "DENY"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "These headers stop browsers from guessing wrong file types or loading your site in a frame."
+      },
+      {
+        "level": 2,
+        "text": "Add them right after the `res` object is created, before any other headers.\n\nIn server.js:\n```\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Barangay Office\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "checklist-barangay"
+  },
+  {
+    "id": "sec-checklist-barangay-2",
+    "index": 172,
+    "task": "Add one line after the other headers. This header tells browsers to only load content from your own site. The code below sets it. Run the checker and paste its report.\n\nIn server.js:\n```\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Barangay Office\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Barangay Office menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "csp",
+        "label": "Answers send a Content-Security-Policy",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/config"
+          }
+        ],
+        "header": {
+          "name": "content-security-policy",
+          "value": "default-src 'self'"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "This stops bad scripts from other sites from running in your app."
+      },
+      {
+        "level": 2,
+        "text": "Add it right after the previous headers, before checking the origin.\n\nIn server.js:\n```\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Barangay Office\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "checklist-barangay"
+  },
+  {
+    "id": "sec-checklist-barangay-3",
+    "index": 173,
+    "task": "Change the /config route to hide the API key. The code below splits the config into public and private parts. Run the checker and paste its report.\n\nIn server.js:\n```\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Barangay Office\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Barangay Office menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "public",
+        "label": "GET /config answers the currency without the key",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/config"
+          }
+        ],
+        "bodyContains": "\"currency\":\"PHP\"",
+        "bodyLacks": "sk-live"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The API key is secret. Never show it to users or browsers."
+      },
+      {
+        "level": 2,
+        "text": "Change the /config route to return only the public part, not the full config.\n\nIn server.js:\n```\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Barangay Office\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "checklist-barangay"
+  },
+  {
+    "id": "sec-checklist-barangay-4",
+    "index": 174,
+    "task": "Add one line after the headers. This lets only the allowed site call your API. The code below checks the origin and sets the CORS header. Run the checker and paste its report.\n\nIn server.js:\n```\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Barangay Office\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Barangay Office menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "allowed",
+        "label": "A request from the allowed site gets the CORS header",
+        "kind": "local-http",
+        "file": "server.js",
+        "env": {
+          "ALLOWED_ORIGIN": "https://shop.example"
+        },
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/config",
+            "headers": {
+              "Origin": "https://shop.example"
+            }
+          }
+        ],
+        "header": {
+          "name": "access-control-allow-origin",
+          "value": "https://shop.example"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "CORS means Cross-Origin Resource Sharing. It lets only trusted sites use your API."
+      },
+      {
+        "level": 2,
+        "text": "Add this check after the safety headers, before sending any response.\n\nIn server.js:\n```\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Barangay Office\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "checklist-barangay"
+  },
+  {
+    "id": "sec-checklist-barangay-5",
+    "index": 175,
+    "task": "Add an escapeHtml helper and use it in /hello. This stops bad names from running scripts. The code below escapes HTML characters. Run the checker and paste its report.\n\nIn server.js:\n```\nconst escapeHtml = (text) => text.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\").replace(/\"/g, \"&quot;\");\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${escapeHtml(url.searchParams.get(\"name\") ?? \"friend\")}</p>`); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Barangay Office\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Barangay Office menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "escaped",
+        "label": "A name with a script tag is shown as harmless text",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/hello?name=%3Cscript%3Ealert(1)%3C%2Fscript%3E"
+          }
+        ],
+        "bodyContains": "&lt;script&gt;",
+        "bodyLacks": "<script>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "HTML tags like <script> can run code. Escape them to make them harmless."
+      },
+      {
+        "level": 2,
+        "text": "Add the helper at the top, then use it in the /hello route to clean the name.\n\nIn server.js:\n```\nconst escapeHtml = (text) => text.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\").replace(/\"/g, \"&quot;\");\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${escapeHtml(url.searchParams.get(\"name\") ?? \"friend\")}</p>`); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Barangay Office\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst escapeHtml = (text) => text.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\").replace(/\"/g, \"&quot;\");\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${escapeHtml(url.searchParams.get(\"name\") ?? \"friend\")}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 6,
+    "projectId": "checklist-barangay"
+  }
+] satisfies typeof authSecurityCourse.steps));
