@@ -4227,3 +4227,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-26: Local Qwen wrote the lesson text for auth-security/checklist-tricycle, steps 291-295; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
 
 - 2026-09-26: Local Qwen wrote the lesson text for auth-security/checklist-tricycle, steps 296-300; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-26: Local Qwen wrote the lesson text for fullstack-integration/serving-carinderia, steps 101-105; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
