@@ -18613,3 +18613,249 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "setup-tricycle"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: setup-tricycle.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-setup-tricycle-6",
+    "index": 326,
+    "task": "Add an array called names with three items: Market, School, and Clinic. This list will show where tricycles go. Then, use map to show each name in a list. The key helps React know which item is which. The code below does this. Run the checker and paste its report.\n\nIn src/App.jsx:\n```\n  const names = [\"Market\",\"School\",\"Clinic\"];\n      <ul>{names.map((name) => <li key={name}>{name}</li>)}</ul>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Tricycle Terminal full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "list",
+        "label": "App lists Market",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "<li>Market</li>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use map to loop over the names array and create list items for each one."
+      },
+      {
+        "level": 2,
+        "text": "Put the map code inside the return of App.jsx, after the hours section.\n\nIn src/App.jsx:\n```\n  const names = [\"Market\",\"School\",\"Clinic\"];\n      <ul>{names.map((name) => <li key={name}>{name}</li>)}</ul>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "export default function App() {\n  const names = [\"Market\",\"School\",\"Clinic\"];\n  return (\n    <main>\n      <h1>Tricycle Terminal</h1>\n      <p>Open 7 AM to 7 PM</p>\n      <ul>{names.map((name) => <li key={name}>{name}</li>)}</ul>\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "setup-tricycle"
+  },
+  {
+    "id": "fs-setup-tricycle-7",
+    "index": 327,
+    "task": "Change the h1 tag to include a class called title. This class will style the heading. The code below does this. Run the checker and paste its report.\n\nIn src/App.jsx:\n```\n      <h1 className=\"title\">Tricycle Terminal</h1>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Tricycle Terminal full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "class",
+        "label": "The heading has class title",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "class=\"title\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the className attribute to the h1 tag with the value 'title'."
+      },
+      {
+        "level": 2,
+        "text": "Put this line right after the opening <h1> tag in App.jsx.\n\nIn src/App.jsx:\n```\n      <h1 className=\"title\">Tricycle Terminal</h1>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "export default function App() {\n  const names = [\"Market\",\"School\",\"Clinic\"];\n  return (\n    <main>\n      <h1 className=\"title\">Tricycle Terminal</h1>\n      <p>Open 7 AM to 7 PM</p>\n      <ul>{names.map((name) => <li key={name}>{name}</li>)}</ul>\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "setup-tricycle"
+  },
+  {
+    "id": "fs-setup-tricycle-8",
+    "index": 328,
+    "task": "Run the build command to make a new version of your app. This creates a folder called dist with the updated HTML. The code below does this. Run the checker and paste its report.\n\nType this command in your terminal:\n`npm run build`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Tricycle Terminal full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "rebuilt",
+        "label": "dist/index.html has the new title",
+        "kind": "local-file-contains",
+        "path": "dist/index.html",
+        "value": "<title>Tricycle Terminal</title>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The build command creates files that the server will use. Run it now."
+      },
+      {
+        "level": 2,
+        "text": "Type exactly: npm run build in the terminal, then press Enter."
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "npm run build"
+    },
+    "localFiles": {},
+    "estimatedMinutes": 2,
+    "projectId": "setup-tricycle"
+  },
+  {
+    "id": "fs-setup-tricycle-9",
+    "index": 329,
+    "task": "Create a new file called src/Footer.jsx. Inside, write a function called Footer that returns a footer tag with the text 'Tricycle Terminal, serving since 2026'. The code below does this. Run the checker and paste its report.\n\nIn src/Footer.jsx:\n```\nexport default function Footer() {\n  return <footer>Tricycle Terminal, serving since 2026</footer>;\n}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Tricycle Terminal full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "footer",
+        "label": "Footer shows its text",
+        "kind": "local-react-render",
+        "file": "src/Footer.jsx",
+        "props": {},
+        "contains": "serving since 2026"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Create a new file named Footer.jsx in the src folder. Write the function inside it."
+      },
+      {
+        "level": 2,
+        "text": "The function should return a <footer> tag with the text inside.\n\nIn src/Footer.jsx:\n```\nexport default function Footer() {\n  return <footer>Tricycle Terminal, serving since 2026</footer>;\n}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/Footer.jsx": "export default function Footer() {\n  return <footer>Tricycle Terminal, serving since 2026</footer>;\n}\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "setup-tricycle"
+  },
+  {
+    "id": "fs-setup-tricycle-10",
+    "index": 330,
+    "task": "Import the Footer component at the top of App.jsx. Then, add <Footer /> after the list. This adds the footer to your app. The code below does this. Run the checker and paste its report.\n\nIn src/App.jsx:\n```\nimport Footer from \"./Footer.jsx\";\n      <Footer />\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Tricycle Terminal full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "used",
+        "label": "App shows the footer",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "<footer>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Import Footer from './Footer.jsx' at the top of App.jsx."
+      },
+      {
+        "level": 2,
+        "text": "Put <Footer /> right after the list, before the closing </App> tag.\n\nIn src/App.jsx:\n```\nimport Footer from \"./Footer.jsx\";\n      <Footer />\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "import Footer from \"./Footer.jsx\";\nexport default function App() {\n  const names = [\"Market\",\"School\",\"Clinic\"];\n  return (\n    <main>\n      <h1 className=\"title\">Tricycle Terminal</h1>\n      <p>Open 7 AM to 7 PM</p>\n      <ul>{names.map((name) => <li key={name}>{name}</li>)}</ul>\n      <Footer />\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "setup-tricycle"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
