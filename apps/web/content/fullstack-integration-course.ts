@@ -5362,3 +5362,315 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "setup-carinderia"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: props-carinderia.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-props-carinderia-1",
+    "index": 91,
+    "task": "You will add an import for the ItemList component. This lets your app use that component. Then you add an array called items with three dishes. This array will be passed to ItemList. Finally, you use ItemList after the h1 tag. The code below shows what to add. Run the checker to see if your app lists Adobo through ItemList.\n\nIn src/App.jsx:\n```\nimport ItemList from \"./ItemList.jsx\";\nconst items = [{ id: 1, name: \"Adobo\", price: 80 }, { id: 2, name: \"Pancit\", price: 60 }, { id: 3, name: \"Lumpia\", price: 15 }];\n      <ItemList items={items} />\n```\n\nType this command in your terminal:\n`npm install`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "list",
+        "label": "App lists Adobo through ItemList",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "<li>Adobo</li>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The ItemList component needs the items array to show the dishes. Make sure you pass it correctly."
+      },
+      {
+        "level": 2,
+        "text": "Add the import and the items array at the top of src/App.jsx, then use <ItemList items={items} /> after the h1.\n\nIn src/App.jsx:\n```\nimport ItemList from \"./ItemList.jsx\";\nconst items = [{ id: 1, name: \"Adobo\", price: 80 }, { id: 2, name: \"Pancit\", price: 60 }, { id: 3, name: \"Lumpia\", price: 15 }];\n      <ItemList items={items} />\n``` The command is: `npm install`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "npm install"
+    },
+    "localFiles": {
+      "src/App.jsx": "import ItemList from \"./ItemList.jsx\";\nconst items = [{ id: 1, name: \"Adobo\", price: 80 }, { id: 2, name: \"Pancit\", price: 60 }, { id: 3, name: \"Lumpia\", price: 15 }];\nexport default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n      <ItemList items={items} />\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "props-carinderia"
+  },
+  {
+    "id": "fs-props-carinderia-2",
+    "index": 92,
+    "task": "You will change the list line in src/ItemList.jsx. You will show each item's name and price together. The code below shows how to do this. Run the checker to see if ItemList shows Adobo: 80.\n\nIn src/ItemList.jsx:\n```\n        {items.map((item) => <li key={item.id}>{item.name}: {item.price}</li>)}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "price",
+        "label": "ItemList shows Adobo: 80",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Adobo",
+              "price": 80
+            },
+            {
+              "id": 2,
+              "name": "Pancit",
+              "price": 60
+            },
+            {
+              "id": 3,
+              "name": "Lumpia",
+              "price": 15
+            }
+          ]
+        },
+        "contains": "Adobo: 80"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Inside the map function, add the price next to the name using the item's price value."
+      },
+      {
+        "level": 2,
+        "text": "Change the list line in src/ItemList.jsx to show the name and price like this: {item.name}: {item.price}.\n\nIn src/ItemList.jsx:\n```\n        {items.map((item) => <li key={item.id}>{item.name}: {item.price}</li>)}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}: {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "props-carinderia"
+  },
+  {
+    "id": "fs-props-carinderia-3",
+    "index": 93,
+    "task": "You will add a currency prop to ItemList. This lets you change the currency shown. It defaults to PHP. You will show the currency before the price. The code below shows how to add it. Run the checker to see if the list shows USD when you use that currency.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\" }) {\n        {items.map((item) => <li key={item.id}>{item.name}: {currency} {item.price}</li>)}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "currency",
+        "label": "With currency USD the list shows USD",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Adobo",
+              "price": 80
+            },
+            {
+              "id": 2,
+              "name": "Pancit",
+              "price": 60
+            },
+            {
+              "id": 3,
+              "name": "Lumpia",
+              "price": 15
+            }
+          ],
+          "currency": "USD"
+        },
+        "contains": "Adobo: USD 80"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add currency to the props with a default value of \"PHP\". Then use it in the list like this: {currency} {item.price}."
+      },
+      {
+        "level": 2,
+        "text": "Add the currency prop to the function signature and show it inside the map function.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\" }) {\n        {items.map((item) => <li key={item.id}>{item.name}: {currency} {item.price}</li>)}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\" }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "props-carinderia"
+  },
+  {
+    "id": "fs-props-carinderia-4",
+    "index": 94,
+    "task": "You will add a check before the return line in src/ItemList.jsx. If there are no items, you will show a message. The code below shows how to do this. Run the checker to see if an empty list shows No items yet.\n\nIn src/ItemList.jsx:\n```\n  if (items.length === 0) return <p>No items yet</p>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "empty",
+        "label": "An empty list shows No items yet",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": []
+        },
+        "contains": "No items yet"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a condition before return that checks if items.length is 0. If true, return a paragraph with the message."
+      },
+      {
+        "level": 2,
+        "text": "Add this line before return: if (items.length === 0) return <p>No items yet</p>;.\n\nIn src/ItemList.jsx:\n```\n  if (items.length === 0) return <p>No items yet</p>;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\" }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "props-carinderia"
+  },
+  {
+    "id": "fs-props-carinderia-5",
+    "index": 95,
+    "task": "You will add a title prop to ItemList. This lets the parent pass a heading. You will show it as an h2 inside the section. The code below shows how to add it. Run the checker to see if the title appears as a heading.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title }) {\n      <h2>{title}</h2>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "title",
+        "label": "The title prop appears as a heading",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Adobo",
+              "price": 80
+            },
+            {
+              "id": 2,
+              "name": "Pancit",
+              "price": 60
+            },
+            {
+              "id": 3,
+              "name": "Lumpia",
+              "price": 15
+            }
+          ],
+          "title": "Today"
+        },
+        "contains": "<h2>Today</h2>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add title to the props list. Then add an h2 tag inside the component to show it."
+      },
+      {
+        "level": 2,
+        "text": "Add the title prop to the function signature and put <h2>{title}</h2> inside the section.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title }) {\n      <h2>{title}</h2>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\", title }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  return (\n    <section>\n      <h2>{title}</h2>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "props-carinderia"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
