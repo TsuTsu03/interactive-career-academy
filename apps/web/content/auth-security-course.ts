@@ -390,3 +390,274 @@ authSecurityCourse.steps.push(...([
     "projectId": "hashing-sari-sari"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: hashing-sari-sari.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-hashing-sari-sari-6",
+    "index": 6,
+    "task": "You add one line at the end of hash.js. This line checks if a wrong password matches. It helps the store know that a wrong guess is not correct. The code below shows this check. Run the checker to confirm it works.\n\nIn hash.js:\n```\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "wrong",
+        "label": "A wrong password checks as false",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "tindahan2026"
+        ],
+        "value": "Wrong: false"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The checker sends a wrong password to test if the script says it's wrong."
+      },
+      {
+        "level": 2,
+        "text": "Add the line at the end of the file, after the verify function.\n\nIn hash.js:\n```\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "hashing-sari-sari"
+  },
+  {
+    "id": "sec-hashing-sari-sari-7",
+    "index": 7,
+    "task": "You add one line right after where the password is read. This line checks if the password is at least 8 characters long. If not, the script stops and says the password is too short. The code below shows this check. Run the checker to confirm it works.\n\nIn hash.js:\n```\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "short",
+        "label": "node hash.js abc ends with exit code 1",
+        "kind": "local-node-exit-code",
+        "file": "hash.js",
+        "args": [
+          "abc"
+        ],
+        "code": 1
+      },
+      {
+        "id": "fine",
+        "label": "node hash.js tindahan2026 still works",
+        "kind": "local-node-exit-code",
+        "file": "hash.js",
+        "args": [
+          "tindahan2026"
+        ],
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The checker uses a short password to test if the script refuses it."
+      },
+      {
+        "level": 2,
+        "text": "Add the line right after the password line, before the hash part.\n\nIn hash.js:\n```\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "conceptIds": [
+      "sec-password-length"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "hashing-sari-sari"
+  },
+  {
+    "id": "sec-hashing-sari-sari-8",
+    "index": 8,
+    "task": "You add two lines after the length check. The first line lists common passwords. The second line checks if the password is in that list. If it is, the script stops and says to choose a less common password. The code below shows this check. Run the checker to confirm it works.\n\nIn hash.js:\n```\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "common",
+        "label": "node hash.js Password ends with exit code 2",
+        "kind": "local-node-exit-code",
+        "file": "hash.js",
+        "args": [
+          "Password"
+        ],
+        "code": 2
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The checker tries a common password to test if the script blocks it."
+      },
+      {
+        "level": 2,
+        "text": "Add the two lines after the length check, before the hash part.\n\nIn hash.js:\n```\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "conceptIds": [
+      "sec-common-password"
+    ],
+    "estimatedMinutes": 5,
+    "projectId": "hashing-sari-sari"
+  },
+  {
+    "id": "sec-hashing-sari-sari-9",
+    "index": 9,
+    "task": "You replace the line that prints the password with one that prints stars. This hides the password from anyone who sees the output. The code below shows this change. Run the checker to confirm it works.\n\nIn hash.js:\n```\nconsole.log(`Checking ${\"*\".repeat(password.length)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "masked",
+        "label": "The script prints stars instead of the password",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "tindahan2026"
+        ],
+        "value": "Checking ************"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The checker runs the script to see if it prints stars instead of letters."
+      },
+      {
+        "level": 2,
+        "text": "Replace the line that prints the password with the new one.\n\nIn hash.js:\n```\nconsole.log(`Checking ${\"*\".repeat(password.length)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\nconsole.log(`Checking ${\"*\".repeat(password.length)}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "conceptIds": [
+      "sec-no-logging-secrets"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "hashing-sari-sari"
+  },
+  {
+    "id": "sec-hashing-sari-sari-10",
+    "index": 10,
+    "task": "You change two lines in hash.js. First, you make the hash 64 bytes long. Second, you print only the length of the hash, not the whole thing. The code below shows these changes. Run the checker to confirm it works.\n\nIn hash.js:\n```\nconst hash = scryptSync(password, salt, 64).toString(\"hex\");\nconsole.log(`Hash length: ${hash.length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 64)); };\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "long",
+        "label": "The script prints Hash length: 128",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "tindahan2026"
+        ],
+        "value": "Hash length: 128"
+      },
+      {
+        "id": "still",
+        "label": "The right password still checks as true",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "tindahan2026"
+        ],
+        "value": "Correct: true"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The checker tests if the script prints the correct hash length."
+      },
+      {
+        "level": 2,
+        "text": "Change the scrypt and print lines as shown in the code below.\n\nIn hash.js:\n```\nconst hash = scryptSync(password, salt, 64).toString(\"hex\");\nconsole.log(`Hash length: ${hash.length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 64)); };\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\nconsole.log(`Checking ${\"*\".repeat(password.length)}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 64).toString(\"hex\");\nconsole.log(`Hash length: ${hash.length}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 64)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "conceptIds": [
+      "sec-hash-length"
+    ],
+    "estimatedMinutes": 6,
+    "projectId": "hashing-sari-sari"
+  }
+] satisfies typeof authSecurityCourse.steps));
