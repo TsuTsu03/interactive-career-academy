@@ -13390,3 +13390,323 @@ authSecurityCourse.steps.push(...([
     "projectId": "signup-login-school-club"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: sessions-school-club.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-sessions-school-club-1",
+    "index": 201,
+    "task": "You add three lines to the login route. The first line makes a random ID. The second line saves that ID with the user's name. The third line sends a cookie with that ID. This cookie is HttpOnly so it can't be read by a script. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  const sid = randomBytes(16).toString(\"hex\");\n  sessions.set(sid, username);\n  res.setHeader(\"Set-Cookie\", `sid=${sid}; HttpOnly; Path=/`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nfunction cookie(req, name) { return (req.headers.cookie ?? \"\").split(/; */).map((part) => part.split(\"=\")).find(([key]) => key === name)?.[1]; }\nconst users = new Map([[\"ana\", hashPassword(\"eskwela2026\")]]);\nconst sessions = new Map();\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { username });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "cookie",
+        "label": "Logging in sets an HttpOnly sid cookie",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"eskwela2026\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "header": {
+          "name": "set-cookie",
+          "value": "HttpOnly"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The cookie must be HttpOnly to keep it safe from JavaScript."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines right before the last line in the login route.\n\nIn server.js:\n```\n  const sid = randomBytes(16).toString(\"hex\");\n  sessions.set(sid, username);\n  res.setHeader(\"Set-Cookie\", `sid=${sid}; HttpOnly; Path=/`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nfunction cookie(req, name) { return (req.headers.cookie ?? \"\").split(/; */).map((part) => part.split(\"=\")).find(([key]) => key === name)?.[1]; }\nconst users = new Map([[\"ana\", hashPassword(\"eskwela2026\")]]);\nconst sessions = new Map();\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) return send(res, 401, { error: \"Wrong username or password\" });\n  const sid = randomBytes(16).toString(\"hex\");\n  sessions.set(sid, username);\n  res.setHeader(\"Set-Cookie\", `sid=${sid}; HttpOnly; Path=/`);\n  return send(res, 200, { username });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "sessions-school-club"
+  },
+  {
+    "id": "sec-sessions-school-club-2",
+    "index": 202,
+    "task": "You add a route to handle /me. This route checks if the user is logged in by looking up the cookie. If the user is logged in, it sends back their name. If not, it sends a 401 error. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (req.url === \"/me\") { const username = sessions.get(cookie(req, \"sid\")); return username ? send(res, 200, { username }) : send(res, 401, { error: \"Log in first\" }); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nfunction cookie(req, name) { return (req.headers.cookie ?? \"\").split(/; */).map((part) => part.split(\"=\")).find(([key]) => key === name)?.[1]; }\nconst users = new Map([[\"ana\", hashPassword(\"eskwela2026\")]]);\nconst sessions = new Map();\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { username });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "me",
+        "label": "After logging in, GET /me answers ana",
+        "kind": "local-http",
+        "file": "server.js",
+        "cookies": true,
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"eskwela2026\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "GET",
+            "path": "/me"
+          }
+        ],
+        "status": 200,
+        "bodyContains": "\"username\":\"ana\""
+      },
+      {
+        "id": "anon",
+        "label": "Without logging in, GET /me answers 401",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/me"
+          }
+        ],
+        "status": 401
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check the cookie first, then look up the user's name in the sessions store."
+      },
+      {
+        "level": 2,
+        "text": "Add this route after the login route.\n\nIn server.js:\n```\n  if (req.url === \"/me\") { const username = sessions.get(cookie(req, \"sid\")); return username ? send(res, 200, { username }) : send(res, 401, { error: \"Log in first\" }); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nfunction cookie(req, name) { return (req.headers.cookie ?? \"\").split(/; */).map((part) => part.split(\"=\")).find(([key]) => key === name)?.[1]; }\nconst users = new Map([[\"ana\", hashPassword(\"eskwela2026\")]]);\nconst sessions = new Map();\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) return send(res, 401, { error: \"Wrong username or password\" });\n  const sid = randomBytes(16).toString(\"hex\");\n  sessions.set(sid, username);\n  res.setHeader(\"Set-Cookie\", `sid=${sid}; HttpOnly; Path=/`);\n  return send(res, 200, { username });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  if (req.url === \"/me\") { const username = sessions.get(cookie(req, \"sid\")); return username ? send(res, 200, { username }) : send(res, 401, { error: \"Log in first\" }); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sessions-school-club"
+  },
+  {
+    "id": "sec-sessions-school-club-3",
+    "index": 203,
+    "task": "You change the Set-Cookie line to include SameSite=Lax. This helps prevent cookies from being sent to other websites. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  res.setHeader(\"Set-Cookie\", `sid=${sid}; HttpOnly; SameSite=Lax; Path=/`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nfunction cookie(req, name) { return (req.headers.cookie ?? \"\").split(/; */).map((part) => part.split(\"=\")).find(([key]) => key === name)?.[1]; }\nconst users = new Map([[\"ana\", hashPassword(\"eskwela2026\")]]);\nconst sessions = new Map();\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { username });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "samesite",
+        "label": "The cookie says SameSite=Lax",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"eskwela2026\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "header": {
+          "name": "set-cookie",
+          "value": "SameSite=Lax"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "SameSite=Lax stops cookies from being sent on cross-site requests."
+      },
+      {
+        "level": 2,
+        "text": "Change only the Set-Cookie line in the login route.\n\nIn server.js:\n```\n  res.setHeader(\"Set-Cookie\", `sid=${sid}; HttpOnly; SameSite=Lax; Path=/`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nfunction cookie(req, name) { return (req.headers.cookie ?? \"\").split(/; */).map((part) => part.split(\"=\")).find(([key]) => key === name)?.[1]; }\nconst users = new Map([[\"ana\", hashPassword(\"eskwela2026\")]]);\nconst sessions = new Map();\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) return send(res, 401, { error: \"Wrong username or password\" });\n  const sid = randomBytes(16).toString(\"hex\");\n  sessions.set(sid, username);\n  res.setHeader(\"Set-Cookie\", `sid=${sid}; HttpOnly; SameSite=Lax; Path=/`);\n  return send(res, 200, { username });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  if (req.url === \"/me\") { const username = sessions.get(cookie(req, \"sid\")); return username ? send(res, 200, { username }) : send(res, 401, { error: \"Log in first\" }); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "sessions-school-club"
+  },
+  {
+    "id": "sec-sessions-school-club-4",
+    "index": 204,
+    "task": "You add a logout route. When a user posts to /logout, you delete the session from the server and send a cookie that expires immediately. This removes the session from the browser. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (req.url === \"/logout\" && req.method === \"POST\") { sessions.delete(cookie(req, \"sid\")); res.setHeader(\"Set-Cookie\", \"sid=; Max-Age=0; Path=/\"); return send(res, 200, { ok: true }); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nfunction cookie(req, name) { return (req.headers.cookie ?? \"\").split(/; */).map((part) => part.split(\"=\")).find(([key]) => key === name)?.[1]; }\nconst users = new Map([[\"ana\", hashPassword(\"eskwela2026\")]]);\nconst sessions = new Map();\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { username });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "logout",
+        "label": "After logout, the old cookie no longer works",
+        "kind": "local-http",
+        "file": "server.js",
+        "cookies": true,
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"eskwela2026\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/logout",
+            "body": "{}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "GET",
+            "path": "/me"
+          }
+        ],
+        "status": 401
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Delete the session from the server and send an expired cookie."
+      },
+      {
+        "level": 2,
+        "text": "Add this route after the /me route.\n\nIn server.js:\n```\n  if (req.url === \"/logout\" && req.method === \"POST\") { sessions.delete(cookie(req, \"sid\")); res.setHeader(\"Set-Cookie\", \"sid=; Max-Age=0; Path=/\"); return send(res, 200, { ok: true }); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nfunction cookie(req, name) { return (req.headers.cookie ?? \"\").split(/; */).map((part) => part.split(\"=\")).find(([key]) => key === name)?.[1]; }\nconst users = new Map([[\"ana\", hashPassword(\"eskwela2026\")]]);\nconst sessions = new Map();\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) return send(res, 401, { error: \"Wrong username or password\" });\n  const sid = randomBytes(16).toString(\"hex\");\n  sessions.set(sid, username);\n  res.setHeader(\"Set-Cookie\", `sid=${sid}; HttpOnly; SameSite=Lax; Path=/`);\n  return send(res, 200, { username });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  if (req.url === \"/me\") { const username = sessions.get(cookie(req, \"sid\")); return username ? send(res, 200, { username }) : send(res, 401, { error: \"Log in first\" }); }\n  if (req.url === \"/logout\" && req.method === \"POST\") { sessions.delete(cookie(req, \"sid\")); res.setHeader(\"Set-Cookie\", \"sid=; Max-Age=0; Path=/\"); return send(res, 200, { ok: true }); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "sessions-school-club"
+  },
+  {
+    "id": "sec-sessions-school-club-5",
+    "index": 205,
+    "task": "You add a setting for SESSION_MINUTES. You store an expiry time with each session. When a user asks for /me, you check if the session is still valid. If not, you send a 401. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\nconst minutes = Number(process.env.SESSION_MINUTES ?? 30);\n  sessions.set(sid, { username, expires: Date.now() + minutes * 60 * 1000 });\n  if (req.url === \"/me\") { const session = sessions.get(cookie(req, \"sid\")); return session && session.expires > Date.now() ? send(res, 200, { username: session.username }) : send(res, 401, { error: \"Log in first\" }); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nfunction cookie(req, name) { return (req.headers.cookie ?? \"\").split(/; */).map((part) => part.split(\"=\")).find(([key]) => key === name)?.[1]; }\nconst users = new Map([[\"ana\", hashPassword(\"eskwela2026\")]]);\nconst sessions = new Map();\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { username });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "expired",
+        "label": "With SESSION_MINUTES=0, the session has already expired",
+        "kind": "local-http",
+        "file": "server.js",
+        "cookies": true,
+        "env": {
+          "SESSION_MINUTES": "0"
+        },
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"eskwela2026\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "GET",
+            "path": "/me"
+          }
+        ],
+        "status": 401
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Store an expiry time when you create a session, then check it when someone asks for /me."
+      },
+      {
+        "level": 2,
+        "text": "Add the minutes setting and update the session creation and /me checks.\n\nIn server.js:\n```\nconst minutes = Number(process.env.SESSION_MINUTES ?? 30);\n  sessions.set(sid, { username, expires: Date.now() + minutes * 60 * 1000 });\n  if (req.url === \"/me\") { const session = sessions.get(cookie(req, \"sid\")); return session && session.expires > Date.now() ? send(res, 200, { username: session.username }) : send(res, 401, { error: \"Log in first\" }); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nfunction cookie(req, name) { return (req.headers.cookie ?? \"\").split(/; */).map((part) => part.split(\"=\")).find(([key]) => key === name)?.[1]; }\nconst users = new Map([[\"ana\", hashPassword(\"eskwela2026\")]]);\nconst sessions = new Map();\nconst minutes = Number(process.env.SESSION_MINUTES ?? 30);\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) return send(res, 401, { error: \"Wrong username or password\" });\n  const sid = randomBytes(16).toString(\"hex\");\n  sessions.set(sid, { username, expires: Date.now() + minutes * 60 * 1000 });\n  res.setHeader(\"Set-Cookie\", `sid=${sid}; HttpOnly; SameSite=Lax; Path=/`);\n  return send(res, 200, { username });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  if (req.url === \"/me\") { const session = sessions.get(cookie(req, \"sid\")); return session && session.expires > Date.now() ? send(res, 200, { username: session.username }) : send(res, 401, { error: \"Log in first\" }); }\n  if (req.url === \"/logout\" && req.method === \"POST\") { sessions.delete(cookie(req, \"sid\")); res.setHeader(\"Set-Cookie\", \"sid=; Max-Age=0; Path=/\"); return send(res, 200, { ok: true }); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 7,
+    "projectId": "sessions-school-club"
+  }
+] satisfies typeof authSecurityCourse.steps));
