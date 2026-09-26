@@ -19171,3 +19171,331 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "props-tricycle"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: props-tricycle.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-props-tricycle-6",
+    "index": 336,
+    "task": "You change the list line in ItemList.jsx. This line shows each item with its price. You add a class called 'cheap' if the price is under 40 pesos. This helps the checker find cheap items. The code below does this. Run the checker and paste its report.\n\nIn src/ItemList.jsx:\n```\n        {items.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Tricycle Terminal</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Tricycle Terminal full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Tricycle Terminal</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "cheap",
+        "label": "Market is marked cheap",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Market",
+              "price": 20
+            },
+            {
+              "id": 2,
+              "name": "School",
+              "price": 30
+            },
+            {
+              "id": 3,
+              "name": "Clinic",
+              "price": 25
+            }
+          ]
+        },
+        "contains": "<li class=\"cheap\">Market"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a condition to check if the price is less than 40."
+      },
+      {
+        "level": 2,
+        "text": "Put the class name 'cheap' only if the item is under 40 pesos.\n\nIn src/ItemList.jsx:\n```\n        {items.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\", title }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  return (\n    <section>\n      <h2>{title}</h2>\n      <ul>\n        {items.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "props-tricycle"
+  },
+  {
+    "id": "fs-props-tricycle-7",
+    "index": 337,
+    "task": "You add one line after the h2 tag in ItemList.jsx. This line shows how many items are in the list. The checker will confirm if it says '3 items'. The code below does this. Run the checker and paste its report.\n\nIn src/ItemList.jsx:\n```\n      <p>{items.length} items</p>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Tricycle Terminal</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Tricycle Terminal full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Tricycle Terminal</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The list says 3 items",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Market",
+              "price": 20
+            },
+            {
+              "id": 2,
+              "name": "School",
+              "price": 30
+            },
+            {
+              "id": 3,
+              "name": "Clinic",
+              "price": 25
+            }
+          ]
+        },
+        "contains": "<p>3 items</p>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a paragraph tag with the length of the items array."
+      },
+      {
+        "level": 2,
+        "text": "Place this line right after the h2 tag.\n\nIn src/ItemList.jsx:\n```\n      <p>{items.length} items</p>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\", title }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  return (\n    <section>\n      <h2>{title}</h2>\n      <p>{items.length} items</p>\n      <ul>\n        {items.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "props-tricycle"
+  },
+  {
+    "id": "fs-props-tricycle-8",
+    "index": 338,
+    "task": "You add a new prop called sortByPrice to ItemList.jsx. You make a copy of the items array and sort it by price if sortByPrice is true. This lets the checker see the list sorted. The code below does this. Run the checker and paste its report.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false }) {\n  const shown = sortByPrice ? [...items].sort((a, b) => a.price - b.price) : items;\n        {shown.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Tricycle Terminal</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Tricycle Terminal full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Tricycle Terminal</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "sorted",
+        "label": "With sortByPrice the list starts with Market",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Market",
+              "price": 20
+            },
+            {
+              "id": 2,
+              "name": "School",
+              "price": 30
+            },
+            {
+              "id": 3,
+              "name": "Clinic",
+              "price": 25
+            }
+          ],
+          "sortByPrice": true
+        },
+        "contains": "<ul><li class=\"cheap\">Market: PHP 20</li><li class=\"cheap\">Clinic: PHP 25</li><li class=\"cheap\">School: PHP 30</li></ul>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Create a new variable called 'shown' to hold the sorted or original array."
+      },
+      {
+        "level": 2,
+        "text": "Place the sorting code right after the props definition.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false }) {\n  const shown = sortByPrice ? [...items].sort((a, b) => a.price - b.price) : items;\n        {shown.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  const shown = sortByPrice ? [...items].sort((a, b) => a.price - b.price) : items;\n  return (\n    <section>\n      <h2>{title}</h2>\n      <p>{items.length} items</p>\n      <ul>\n        {shown.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "props-tricycle"
+  },
+  {
+    "id": "fs-props-tricycle-9",
+    "index": 339,
+    "task": "You add a new prop called children to ItemList.jsx. You show this content at the end of the list. This lets the parent pass extra text. The code below does this. Run the checker and paste its report.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false, children }) {\n      {children}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Tricycle Terminal</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Tricycle Terminal full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Tricycle Terminal</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "children",
+        "label": "Text passed as children appears at the end",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Market",
+              "price": 20
+            },
+            {
+              "id": 2,
+              "name": "School",
+              "price": 30
+            },
+            {
+              "id": 3,
+              "name": "Clinic",
+              "price": 25
+            }
+          ],
+          "children": "Prices updated today"
+        },
+        "contains": "Prices updated today</section>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add children to the function's props list."
+      },
+      {
+        "level": 2,
+        "text": "Place the {children} line right before the closing curly brace of the return statement.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false, children }) {\n      {children}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false, children }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  const shown = sortByPrice ? [...items].sort((a, b) => a.price - b.price) : items;\n  return (\n    <section>\n      <h2>{title}</h2>\n      <p>{items.length} items</p>\n      <ul>\n        {shown.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n      {children}\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "props-tricycle"
+  },
+  {
+    "id": "fs-props-tricycle-10",
+    "index": 340,
+    "task": "You change the ItemList line in App.jsx. You pass a title, currency, and sortByPrice to ItemList. This tells the component what to show. The code below does this. Run the checker and paste its report.\n\nIn src/App.jsx:\n```\n      <ItemList items={items} title=\"Tricycle Terminal price list\" currency=\"PHP\" sortByPrice />\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Tricycle Terminal</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Tricycle Terminal full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Tricycle Terminal</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "app",
+        "label": "App passes a title to ItemList",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "<h2>Tricycle Terminal price list</h2>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the props: title, currency, and sortByPrice to the ItemList call."
+      },
+      {
+        "level": 2,
+        "text": "Place the new props right after items and before the closing parenthesis.\n\nIn src/App.jsx:\n```\n      <ItemList items={items} title=\"Tricycle Terminal price list\" currency=\"PHP\" sortByPrice />\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "import ItemList from \"./ItemList.jsx\";\nconst items = [{ id: 1, name: \"Market\", price: 20 }, { id: 2, name: \"School\", price: 30 }, { id: 3, name: \"Clinic\", price: 25 }];\nexport default function App() {\n  return (\n    <main>\n      <h1>Tricycle Terminal</h1>\n      <ItemList items={items} title=\"Tricycle Terminal price list\" currency=\"PHP\" sortByPrice />\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "props-tricycle"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
