@@ -4008,3 +4008,275 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "config-sari-sari"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: config-sari-sari.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-config-sari-sari-6",
+    "index": 66,
+    "task": "You change the /api/config route. This route sends settings to the front end. You must hide the API key. The code below removes the API key from the response. Run the checker to confirm the API key is not sent.\n\nIn server.js:\n```\n  if (req.url === \"/api/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Sari-Sari Store</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n    </main>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "safe",
+        "label": "/api/config never sends the API key",
+        "kind": "local-http",
+        "file": "server.js",
+        "env": {
+          "API_KEY": "sk-test-FAKE"
+        },
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/api/config"
+          }
+        ],
+        "bodyLacks": "sk-test"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The front end only needs public settings, not secrets."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the if (req.url === \"/api/config\") block.\n\nIn server.js:\n```\n  if (req.url === \"/api/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nconst config = { place: process.env.PLACE ?? \"Our store\", currency: process.env.CURRENCY ?? \"PHP\", apiKey: process.env.API_KEY ?? \"\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "fs-public-config"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "config-sari-sari"
+  },
+  {
+    "id": "fs-config-sari-sari-7",
+    "index": 67,
+    "task": "You add a line after the config line. This line checks if the server runs in production. If it does, and no API key is set, the server stops. This is a required secret for production. Run the checker to confirm the server stops without an API key.\n\nIn server.js:\n```\nif (process.env.NODE_ENV === \"production\" && !process.env.API_KEY) { console.error(\"API_KEY is required in production\"); process.exit(1); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Sari-Sari Store</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n    </main>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "stop",
+        "label": "In production without API_KEY the server exits with code 1",
+        "kind": "local-node-exit-code",
+        "file": "server.js",
+        "env": {
+          "NODE_ENV": "production"
+        },
+        "code": 1
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The server must stop if it starts without a required secret."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the config line, before the route handler.\n\nIn server.js:\n```\nif (process.env.NODE_ENV === \"production\" && !process.env.API_KEY) { console.error(\"API_KEY is required in production\"); process.exit(1); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nconst config = { place: process.env.PLACE ?? \"Our store\", currency: process.env.CURRENCY ?? \"PHP\", apiKey: process.env.API_KEY ?? \"\" };\nif (process.env.NODE_ENV === \"production\" && !process.env.API_KEY) { console.error(\"API_KEY is required in production\"); process.exit(1); }\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "fs-required-secret"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "config-sari-sari"
+  },
+  {
+    "id": "fs-config-sari-sari-8",
+    "index": 68,
+    "task": "You add a line after the h1 in src/App.jsx. This line shows the price currency. It uses VITE_CURRENCY, with PHP as default. The checker confirms the app shows Prices in PHP. Run the checker to confirm the text appears.\n\nIn src/App.jsx:\n```\n      <p>Prices in {import.meta.env.VITE_CURRENCY ?? \"PHP\"}</p>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Sari-Sari Store</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n    </main>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "currency",
+        "label": "App shows Prices in PHP",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "Prices in PHP"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The currency is set by a Vite environment variable, which you can read in the app."
+      },
+      {
+        "level": 2,
+        "text": "Add the line after the <h1> tag, inside the <div> element.\n\nIn src/App.jsx:\n```\n      <p>Prices in {import.meta.env.VITE_CURRENCY ?? \"PHP\"}</p>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "export default function App() {\n  const place = import.meta.env.VITE_PLACE ?? \"Our store\";\n  return (\n    <main>\n      <h1>{place}</h1>\n      <p>Prices in {import.meta.env.VITE_CURRENCY ?? \"PHP\"}</p>\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "config-sari-sari"
+  },
+  {
+    "id": "fs-config-sari-sari-9",
+    "index": 69,
+    "task": "You run npm run build. This builds the app into a folder called dist. The built JavaScript includes VITE_CURRENCY. The checker confirms the built file contains the store name. Run the checker to confirm the text appears in the built file.",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Sari-Sari Store</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n    </main>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "baked",
+        "label": "dist/assets/app.js contains Sari-Sari Store",
+        "kind": "local-file-contains",
+        "path": "dist/assets/app.js",
+        "value": "Sari-Sari Store"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Build-time settings are baked into the JavaScript, so anyone can read them."
+      },
+      {
+        "level": 2,
+        "text": "Run the command in the terminal, then check the dist folder. The command is: `npm run build`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "npm run build"
+    },
+    "localFiles": {},
+    "conceptIds": [
+      "fs-build-time-env"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "config-sari-sari"
+  },
+  {
+    "id": "fs-config-sari-sari-10",
+    "index": 70,
+    "task": "You make a new file named .env.production. This file sets VITE_PLACE to Sari-Sari Store Online. You run npm run build again. The checker confirms the production build uses this new name. Run the checker to confirm the text appears in the built file.\n\nIn .env.production:\n```\nVITE_PLACE=Sari-Sari Store Online\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Sari-Sari Store</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n    </main>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "prod",
+        "label": "The production build says Sari-Sari Store Online",
+        "kind": "local-file-contains",
+        "path": "dist/assets/app.js",
+        "value": "Sari-Sari Store Online"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Mode files like .env.production are used only for production builds."
+      },
+      {
+        "level": 2,
+        "text": "Create the file in the root folder, then run the build command.\n\nIn .env.production:\n```\nVITE_PLACE=Sari-Sari Store Online\n``` The command is: `npm run build`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "npm run build"
+    },
+    "localFiles": {
+      ".env.production": "VITE_PLACE=Sari-Sari Store Online\n"
+    },
+    "conceptIds": [
+      "fs-mode-env"
+    ],
+    "estimatedMinutes": 5,
+    "projectId": "config-sari-sari"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
