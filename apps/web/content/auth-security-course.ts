@@ -16392,3 +16392,262 @@ authSecurityCourse.steps.push(...([
     "projectId": "hashing-tricycle"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: hashing-tricycle.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-hashing-tricycle-6",
+    "index": 246,
+    "task": "Add this line at the end of hash.js. It checks if a wrong password matches. This helps users know their guess was wrong. The code below does this. Run the checker to confirm it works.\n\nIn hash.js:\n```\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "wrong",
+        "label": "A wrong password checks as false",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "biyahe-ko-2026"
+        ],
+        "value": "Wrong: false"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Test with a password that's not in the stored hash."
+      },
+      {
+        "level": 2,
+        "text": "Add it right after the verify function call.\n\nIn hash.js:\n```\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "hashing-tricycle"
+  },
+  {
+    "id": "sec-hashing-tricycle-7",
+    "index": 247,
+    "task": "Add this code right after the password line. It stops the script if the password is too short. This keeps passwords strong. The code below does this. Run the checker to confirm it works.\n\nIn hash.js:\n```\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "short",
+        "label": "node hash.js abc ends with exit code 1",
+        "kind": "local-node-exit-code",
+        "file": "hash.js",
+        "args": [
+          "abc"
+        ],
+        "code": 1
+      },
+      {
+        "id": "fine",
+        "label": "node hash.js biyahe-ko-2026 still works",
+        "kind": "local-node-exit-code",
+        "file": "hash.js",
+        "args": [
+          "biyahe-ko-2026"
+        ],
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The script must exit with code 1 if the password is too short."
+      },
+      {
+        "level": 2,
+        "text": "Add it after the password line, before any other checks.\n\nIn hash.js:\n```\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "hashing-tricycle"
+  },
+  {
+    "id": "sec-hashing-tricycle-8",
+    "index": 248,
+    "task": "Add these two lines after the length check. They stop the script if the password is too common. This stops weak passwords. The code below does this. Run the checker to confirm it works.\n\nIn hash.js:\n```\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "common",
+        "label": "node hash.js Password ends with exit code 2",
+        "kind": "local-node-exit-code",
+        "file": "hash.js",
+        "args": [
+          "Password"
+        ],
+        "code": 2
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The script must exit with code 2 if the password is in the common list."
+      },
+      {
+        "level": 2,
+        "text": "Add it after the length check, before the hash calculation.\n\nIn hash.js:\n```\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "hashing-tricycle"
+  },
+  {
+    "id": "sec-hashing-tricycle-9",
+    "index": 249,
+    "task": "Replace the password print line with this. It hides the password with stars. This protects the user's password. The code below does this. Run the checker to confirm it works.\n\nIn hash.js:\n```\nconsole.log(`Checking ${\"*\".repeat(password.length)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "masked",
+        "label": "The script prints stars instead of the password",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "biyahe-ko-2026"
+        ],
+        "value": "Checking **************"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use stars to hide the password, not the real letters."
+      },
+      {
+        "level": 2,
+        "text": "Replace the line that prints the password with this new one.\n\nIn hash.js:\n```\nconsole.log(`Checking ${\"*\".repeat(password.length)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\nconsole.log(`Checking ${\"*\".repeat(password.length)}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "hashing-tricycle"
+  },
+  {
+    "id": "sec-hashing-tricycle-10",
+    "index": 250,
+    "task": "Change the scrypt lines and the hash print line. This makes the hash longer and prints only its length. This makes the hash harder to guess. The code below does this. Run the checker to confirm it works.\n\nIn hash.js:\n```\nconst hash = scryptSync(password, salt, 64).toString(\"hex\");\nconsole.log(`Hash length: ${hash.length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 64)); };\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Tricycle Terminal security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "long",
+        "label": "The script prints Hash length: 128",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "biyahe-ko-2026"
+        ],
+        "value": "Hash length: 128"
+      },
+      {
+        "id": "still",
+        "label": "The right password still checks as true",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "biyahe-ko-2026"
+        ],
+        "value": "Correct: true"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change the salt and hash length to 64 bytes."
+      },
+      {
+        "level": 2,
+        "text": "Replace the old lines with the new ones in hash.js.\n\nIn hash.js:\n```\nconst hash = scryptSync(password, salt, 64).toString(\"hex\");\nconsole.log(`Hash length: ${hash.length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 64)); };\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\nconsole.log(`Checking ${\"*\".repeat(password.length)}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 64).toString(\"hex\");\nconsole.log(`Hash length: ${hash.length}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 64)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "estimatedMinutes": 7,
+    "projectId": "hashing-tricycle"
+  }
+] satisfies typeof authSecurityCourse.steps));
