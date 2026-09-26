@@ -5674,3 +5674,331 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "props-carinderia"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: props-carinderia.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-props-carinderia-6",
+    "index": 96,
+    "task": "You will mark items under 40 pesos with a class called 'cheap'.\nGo to the list line in ItemList.jsx.\nAdd a condition: if the price is less than 40, give it the 'cheap' class.\nThis helps the style sheet highlight cheap items later.\nRun the checker to see if Lumpia is marked cheap.\n\nIn src/ItemList.jsx:\n```\n        {items.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "cheap",
+        "label": "Lumpia is marked cheap",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Adobo",
+              "price": 80
+            },
+            {
+              "id": 2,
+              "name": "Pancit",
+              "price": 60
+            },
+            {
+              "id": 3,
+              "name": "Lumpia",
+              "price": 15
+            }
+          ]
+        },
+        "contains": "<li class=\"cheap\">Lumpia"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add a condition that checks if the price is less than 40."
+      },
+      {
+        "level": 2,
+        "text": "Put the class 'cheap' inside the className attribute.\n\nIn src/ItemList.jsx:\n```\n        {items.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\", title }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  return (\n    <section>\n      <h2>{title}</h2>\n      <ul>\n        {items.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "props-carinderia"
+  },
+  {
+    "id": "fs-props-carinderia-7",
+    "index": 97,
+    "task": "You will show how many items are in the list.\nAdd one line after the h2 tag.\nWrite a paragraph that says the number of items.\nThis helps the user know how many dishes are available.\nRun the checker to see if it says 3 items.\n\nIn src/ItemList.jsx:\n```\n      <p>{items.length} items</p>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The list says 3 items",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Adobo",
+              "price": 80
+            },
+            {
+              "id": 2,
+              "name": "Pancit",
+              "price": 60
+            },
+            {
+              "id": 3,
+              "name": "Lumpia",
+              "price": 15
+            }
+          ]
+        },
+        "contains": "<p>3 items</p>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the items.length to count how many items there are."
+      },
+      {
+        "level": 2,
+        "text": "Put the paragraph right after the h2 tag.\n\nIn src/ItemList.jsx:\n```\n      <p>{items.length} items</p>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\", title }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  return (\n    <section>\n      <h2>{title}</h2>\n      <p>{items.length} items</p>\n      <ul>\n        {items.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "props-carinderia"
+  },
+  {
+    "id": "fs-props-carinderia-8",
+    "index": 98,
+    "task": "You will sort items by price when sortByPrice is true.\nAdd a new prop called sortByPrice to the function.\nMake a copy of the items array and sort it if sortByPrice is true.\nUse this sorted list in the map function.\nRun the checker to see if Lumpia appears first when sortByPrice is true.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false }) {\n  const shown = sortByPrice ? [...items].sort((a, b) => a.price - b.price) : items;\n        {shown.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "sorted",
+        "label": "With sortByPrice the list starts with Lumpia",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Adobo",
+              "price": 80
+            },
+            {
+              "id": 2,
+              "name": "Pancit",
+              "price": 60
+            },
+            {
+              "id": 3,
+              "name": "Lumpia",
+              "price": 15
+            }
+          ],
+          "sortByPrice": true
+        },
+        "contains": "<ul><li class=\"cheap\">Lumpia: PHP 15</li><li>Pancit: PHP 60</li><li>Adobo: PHP 80</li></ul>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Make a copy of the items array and sort it if sortByPrice is true."
+      },
+      {
+        "level": 2,
+        "text": "Put the sorted array in the map function.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false }) {\n  const shown = sortByPrice ? [...items].sort((a, b) => a.price - b.price) : items;\n        {shown.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  const shown = sortByPrice ? [...items].sort((a, b) => a.price - b.price) : items;\n  return (\n    <section>\n      <h2>{title}</h2>\n      <p>{items.length} items</p>\n      <ul>\n        {shown.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 6,
+    "projectId": "props-carinderia"
+  },
+  {
+    "id": "fs-props-carinderia-9",
+    "index": 99,
+    "task": "You will let the parent pass extra content inside the list.\nAdd a new prop called children to the function.\nShow the children at the end of the section.\nThis lets the parent add custom text or elements inside the list.\nRun the checker to see if the passed text appears at the end.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false, children }) {\n      {children}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "children",
+        "label": "Text passed as children appears at the end",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Adobo",
+              "price": 80
+            },
+            {
+              "id": 2,
+              "name": "Pancit",
+              "price": 60
+            },
+            {
+              "id": 3,
+              "name": "Lumpia",
+              "price": 15
+            }
+          ],
+          "children": "Prices updated today"
+        },
+        "contains": "Prices updated today</section>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add children as a prop to the function."
+      },
+      {
+        "level": 2,
+        "text": "Put the children after the list in the JSX.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false, children }) {\n      {children}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false, children }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  const shown = sortByPrice ? [...items].sort((a, b) => a.price - b.price) : items;\n  return (\n    <section>\n      <h2>{title}</h2>\n      <p>{items.length} items</p>\n      <ul>\n        {shown.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n      {children}\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "props-carinderia"
+  },
+  {
+    "id": "fs-props-carinderia-10",
+    "index": 100,
+    "task": "You will pass a title, currency, and sortByPrice from App to ItemList.\nChange the ItemList line in App.jsx.\nAdd the title, currency, and sortByPrice props.\nThis lets the parent control how the list looks and behaves.\nRun the checker to see if the title is passed correctly.\n\nIn src/App.jsx:\n```\n      <ItemList items={items} title=\"Carinderia price list\" currency=\"PHP\" sortByPrice />\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "app",
+        "label": "App passes a title to ItemList",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "<h2>Carinderia price list</h2>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the props title, currency, and sortByPrice to the ItemList call."
+      },
+      {
+        "level": 2,
+        "text": "Put the props in the correct order as shown in the code box.\n\nIn src/App.jsx:\n```\n      <ItemList items={items} title=\"Carinderia price list\" currency=\"PHP\" sortByPrice />\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "import ItemList from \"./ItemList.jsx\";\nconst items = [{ id: 1, name: \"Adobo\", price: 80 }, { id: 2, name: \"Pancit\", price: 60 }, { id: 3, name: \"Lumpia\", price: 15 }];\nexport default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n      <ItemList items={items} title=\"Carinderia price list\" currency=\"PHP\" sortByPrice />\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "props-carinderia"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
