@@ -8466,3 +8466,262 @@ authSecurityCourse.steps.push(...([
     "projectId": "hashing-barangay"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: hashing-barangay.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-hashing-barangay-6",
+    "index": 126,
+    "task": "Add this line at the end of hash.js. It checks if a wrong password matches. This shows the system doesn't accept fake guesses. The code below does that. Run the checker to confirm it works.\n\nIn hash.js:\n```\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "wrong",
+        "label": "A wrong password checks as false",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "barangay-hall-9"
+        ],
+        "value": "Wrong: false"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Test with a wrong password to see if it fails."
+      },
+      {
+        "level": 2,
+        "text": "Add this line at the end of hash.js.\n\nIn hash.js:\n```\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "hashing-barangay"
+  },
+  {
+    "id": "sec-hashing-barangay-7",
+    "index": 127,
+    "task": "Add this code right after the password line in hash.js. It stops the script if the password is too short. This protects the barangay's data. The code below does that. Run the checker to confirm it works.\n\nIn hash.js:\n```\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "short",
+        "label": "node hash.js abc ends with exit code 1",
+        "kind": "local-node-exit-code",
+        "file": "hash.js",
+        "args": [
+          "abc"
+        ],
+        "code": 1
+      },
+      {
+        "id": "fine",
+        "label": "node hash.js barangay-hall-9 still works",
+        "kind": "local-node-exit-code",
+        "file": "hash.js",
+        "args": [
+          "barangay-hall-9"
+        ],
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The script must stop if the password is less than 8 letters."
+      },
+      {
+        "level": 2,
+        "text": "Add this code right after the password line in hash.js.\n\nIn hash.js:\n```\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "hashing-barangay"
+  },
+  {
+    "id": "sec-hashing-barangay-8",
+    "index": 128,
+    "task": "Add these two lines after the length check in hash.js. They stop the script if the password is too common. This stops weak passwords from being used. The code below does that. Run the checker to confirm it works.\n\nIn hash.js:\n```\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "common",
+        "label": "node hash.js Password ends with exit code 2",
+        "kind": "local-node-exit-code",
+        "file": "hash.js",
+        "args": [
+          "Password"
+        ],
+        "code": 2
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the password is in a list of common ones."
+      },
+      {
+        "level": 2,
+        "text": "Add these two lines after the length check in hash.js.\n\nIn hash.js:\n```\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "hashing-barangay"
+  },
+  {
+    "id": "sec-hashing-barangay-9",
+    "index": 129,
+    "task": "Replace the password length line in hash.js with this. It hides the password with stars. This protects the user's secret. The code below does that. Run the checker to confirm it works.\n\nIn hash.js:\n```\nconsole.log(`Checking ${\"*\".repeat(password.length)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "masked",
+        "label": "The script prints stars instead of the password",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "barangay-hall-9"
+        ],
+        "value": "Checking ***************"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change the line that prints the password to print stars instead."
+      },
+      {
+        "level": 2,
+        "text": "Replace the password length line in hash.js with this.\n\nIn hash.js:\n```\nconsole.log(`Checking ${\"*\".repeat(password.length)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\nconsole.log(`Checking ${\"*\".repeat(password.length)}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "hashing-barangay"
+  },
+  {
+    "id": "sec-hashing-barangay-10",
+    "index": 130,
+    "task": "Change the two scrypt lines and the hash print line in hash.js. Make the hash longer and print only its length. This makes it harder to guess. The code below does that. Run the checker to confirm it works.\n\nIn hash.js:\n```\nconst hash = scryptSync(password, salt, 64).toString(\"hex\");\nconsole.log(`Hash length: ${hash.length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 64)); };\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "long",
+        "label": "The script prints Hash length: 128",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "barangay-hall-9"
+        ],
+        "value": "Hash length: 128"
+      },
+      {
+        "id": "still",
+        "label": "The right password still checks as true",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "barangay-hall-9"
+        ],
+        "value": "Correct: true"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change the scrypt settings to make the hash 64 bytes long."
+      },
+      {
+        "level": 2,
+        "text": "Change the hash print line to show only its length.\n\nIn hash.js:\n```\nconst hash = scryptSync(password, salt, 64).toString(\"hex\");\nconsole.log(`Hash length: ${hash.length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 64)); };\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\nconsole.log(`Checking ${\"*\".repeat(password.length)}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 64).toString(\"hex\");\nconsole.log(`Hash length: ${hash.length}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 64)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "estimatedMinutes": 6,
+    "projectId": "hashing-barangay"
+  }
+] satisfies typeof authSecurityCourse.steps));
