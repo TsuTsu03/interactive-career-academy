@@ -7902,3 +7902,328 @@ authSecurityCourse.steps.push(...([
     "projectId": "checklist-carinderia"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: checklist-carinderia.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-checklist-carinderia-6",
+    "index": 116,
+    "task": "You change the /files route to stop bad file names. Bad names try to climb out of the public folder. This stops hackers from reading secret files. The code below does that. Run the checker to confirm.\n\nIn server.js:\n```\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; if (name.includes(\"..\") || name.includes(\"/\") || name.includes(\"\\\\\")) return send(res, 400, { error: \"Bad file name\" }); try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Carinderia\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Carinderia menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "climb",
+        "label": "GET /files?name=../secret.txt answers 400",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/files?name=..%2Fsecret.txt"
+          }
+        ],
+        "status": 400,
+        "bodyLacks": "FAKE-SECRET"
+      },
+      {
+        "id": "menu",
+        "label": "Normal files still load",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/files?name=menu.txt"
+          }
+        ],
+        "bodyContains": "menu"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the file name has .. or / or \\ to stop bad paths."
+      },
+      {
+        "level": 2,
+        "text": "Add this code inside the if (url.pathname === \"/files\") block.\n\nIn server.js:\n```\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; if (name.includes(\"..\") || name.includes(\"/\") || name.includes(\"\\\\\")) return send(res, 400, { error: \"Bad file name\" }); try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Carinderia\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst escapeHtml = (text) => text.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\").replace(/\"/g, \"&quot;\");\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${escapeHtml(url.searchParams.get(\"name\") ?? \"friend\")}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; if (name.includes(\"..\") || name.includes(\"/\") || name.includes(\"\\\\\")) return send(res, 400, { error: \"Bad file name\" }); try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "checklist-carinderia"
+  },
+  {
+    "id": "sec-checklist-carinderia-7",
+    "index": 117,
+    "task": "You change the /go route to stop redirects to other websites. This stops hackers from tricking users. The code below does that. Run the checker to confirm.\n\nIn server.js:\n```\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; if (!to.startsWith(\"/\") || to.startsWith(\"//\")) return send(res, 400, { error: \"Only local redirects\" }); res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Carinderia\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Carinderia menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "evil",
+        "label": "A redirect to another site answers 400",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/go?to=https%3A%2F%2Fevil.example"
+          }
+        ],
+        "status": 400
+      },
+      {
+        "id": "local",
+        "label": "A redirect to /config still works",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/go?to=%2Fconfig"
+          }
+        ],
+        "status": 302,
+        "header": {
+          "name": "location",
+          "value": "/config"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the to path starts with / and not // to avoid external sites."
+      },
+      {
+        "level": 2,
+        "text": "Add this code inside the if (url.pathname === \"/go\") block.\n\nIn server.js:\n```\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; if (!to.startsWith(\"/\") || to.startsWith(\"//\")) return send(res, 400, { error: \"Only local redirects\" }); res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Carinderia\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst escapeHtml = (text) => text.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\").replace(/\"/g, \"&quot;\");\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${escapeHtml(url.searchParams.get(\"name\") ?? \"friend\")}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; if (name.includes(\"..\") || name.includes(\"/\") || name.includes(\"\\\\\")) return send(res, 400, { error: \"Bad file name\" }); try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; if (!to.startsWith(\"/\") || to.startsWith(\"//\")) return send(res, 400, { error: \"Only local redirects\" }); res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "checklist-carinderia"
+  },
+  {
+    "id": "sec-checklist-carinderia-8",
+    "index": 118,
+    "task": "You change the readBody helper to stop reading after 1,000 characters. This stops hackers from sending huge data. The code below does that. Run the checker to confirm.\n\nIn server.js:\n```\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new Error(\"too large\"); } return text; }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Carinderia\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Carinderia menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "big",
+        "label": "A 2,000-character body answers 413",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/echo",
+            "body": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "headers": {
+              "Content-Type": "text/plain"
+            }
+          }
+        ],
+        "status": 413
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Set a limit of 1000 characters in the loop to stop big data."
+      },
+      {
+        "level": 2,
+        "text": "Add this code inside the async function readBody(req) block.\n\nIn server.js:\n```\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new Error(\"too large\"); } return text; }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new Error(\"too large\"); } return text; }\nconst config = { currency: \"PHP\", place: \"Carinderia\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst escapeHtml = (text) => text.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\").replace(/\"/g, \"&quot;\");\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${escapeHtml(url.searchParams.get(\"name\") ?? \"friend\")}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; if (name.includes(\"..\") || name.includes(\"/\") || name.includes(\"\\\\\")) return send(res, 400, { error: \"Bad file name\" }); try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; if (!to.startsWith(\"/\") || to.startsWith(\"//\")) return send(res, 400, { error: \"Only local redirects\" }); res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "checklist-carinderia"
+  },
+  {
+    "id": "sec-checklist-carinderia-9",
+    "index": 119,
+    "task": "You add a line to tell browsers to use HTTPS only in production. This stops hackers from using fake sites. The code below does that. Run the checker to confirm.\n\nIn server.js:\n```\n  if (process.env.NODE_ENV === \"production\") res.setHeader(\"Strict-Transport-Security\", \"max-age=31536000\");\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Carinderia\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Carinderia menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "hsts",
+        "label": "In production answers send Strict-Transport-Security",
+        "kind": "local-http",
+        "file": "server.js",
+        "env": {
+          "NODE_ENV": "production"
+        },
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/config"
+          }
+        ],
+        "header": {
+          "name": "strict-transport-security",
+          "value": "max-age=31536000"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add this line only if the environment is production."
+      },
+      {
+        "level": 2,
+        "text": "Add this line right after the CORS line in server.js.\n\nIn server.js:\n```\n  if (process.env.NODE_ENV === \"production\") res.setHeader(\"Strict-Transport-Security\", \"max-age=31536000\");\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new Error(\"too large\"); } return text; }\nconst config = { currency: \"PHP\", place: \"Carinderia\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst escapeHtml = (text) => text.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\").replace(/\"/g, \"&quot;\");\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n  if (process.env.NODE_ENV === \"production\") res.setHeader(\"Strict-Transport-Security\", \"max-age=31536000\");\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${escapeHtml(url.searchParams.get(\"name\") ?? \"friend\")}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; if (name.includes(\"..\") || name.includes(\"/\") || name.includes(\"\\\\\")) return send(res, 400, { error: \"Bad file name\" }); try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; if (!to.startsWith(\"/\") || to.startsWith(\"//\")) return send(res, 400, { error: \"Only local redirects\" }); res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "checklist-carinderia"
+  },
+  {
+    "id": "sec-checklist-carinderia-10",
+    "index": 120,
+    "task": "You add a hits map to count requests from each IP. Then you add a check to stop requests after five. This stops hackers from flooding the server. The code below does that. Run the checker to confirm.\n\nIn server.js:\n```\nconst hits = new Map();\n  const ip = req.socket.remoteAddress; hits.set(ip, (hits.get(ip) ?? 0) + 1); if (hits.get(ip) > 5) return send(res, 429, { error: \"Slow down\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst config = { currency: \"PHP\", place: \"Carinderia\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") return send(res, 200, config);\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${url.searchParams.get(\"name\") ?? \"friend\"}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n",
+      "public/menu.txt": "Carinderia menu\nOpen 7 AM to 7 PM\n",
+      "secret.txt": "FAKE-SECRET-DO-NOT-SERVE\n"
+    },
+    "tests": [
+      {
+        "id": "slow",
+        "label": "The sixth request answers 429",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/config"
+          },
+          {
+            "method": "GET",
+            "path": "/config"
+          },
+          {
+            "method": "GET",
+            "path": "/config"
+          },
+          {
+            "method": "GET",
+            "path": "/config"
+          },
+          {
+            "method": "GET",
+            "path": "/config"
+          },
+          {
+            "method": "GET",
+            "path": "/config"
+          }
+        ],
+        "status": 429
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Create a Map to count requests from each IP address."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the top of the server handler, right after the const hits = new Map(); line.\n\nIn server.js:\n```\nconst hits = new Map();\n  const ip = req.socket.remoteAddress; hits.set(ip, (hits.get(ip) ?? 0) + 1); if (hits.get(ip) > 5) return send(res, 429, { error: \"Slow down\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) { text += chunk; if (text.length > 1000) throw new Error(\"too large\"); } return text; }\nconst config = { currency: \"PHP\", place: \"Carinderia\", apiKey: \"sk-live-FAKE-DO-NOT-SHARE\" };\nconst escapeHtml = (text) => text.replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\").replace(/\"/g, \"&quot;\");\nconst hits = new Map();\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  const ip = req.socket.remoteAddress; hits.set(ip, (hits.get(ip) ?? 0) + 1); if (hits.get(ip) > 5) return send(res, 429, { error: \"Slow down\" });\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  res.setHeader(\"Referrer-Policy\", \"no-referrer\");\n  res.setHeader(\"X-Frame-Options\", \"DENY\");\n  res.setHeader(\"Content-Security-Policy\", \"default-src 'self'\");\n  if (req.headers.origin && req.headers.origin === process.env.ALLOWED_ORIGIN) res.setHeader(\"Access-Control-Allow-Origin\", req.headers.origin);\n  if (process.env.NODE_ENV === \"production\") res.setHeader(\"Strict-Transport-Security\", \"max-age=31536000\");\n  const url = new URL(req.url, \"http://localhost\");\n  if (url.pathname === \"/config\") { const { apiKey, ...publicConfig } = config; return send(res, 200, publicConfig); }\n  if (url.pathname === \"/hello\") { res.setHeader(\"Content-Type\", \"text/html\"); return res.end(`<p>Hello, ${escapeHtml(url.searchParams.get(\"name\") ?? \"friend\")}</p>`); }\n  if (url.pathname === \"/files\") { const name = url.searchParams.get(\"name\") ?? \"\"; if (name.includes(\"..\") || name.includes(\"/\") || name.includes(\"\\\\\")) return send(res, 400, { error: \"Bad file name\" }); try { return res.end(await readFile(path.join(\"public\", name), \"utf8\")); } catch { return send(res, 404, { error: \"No such file\" }); } }\n  if (url.pathname === \"/go\") { const to = url.searchParams.get(\"to\") ?? \"/\"; if (!to.startsWith(\"/\") || to.startsWith(\"//\")) return send(res, 400, { error: \"Only local redirects\" }); res.statusCode = 302; res.setHeader(\"Location\", to); return res.end(); }\n  if (url.pathname === \"/echo\" && req.method === \"POST\") { try { return send(res, 200, { length: (await readBody(req)).length }); } catch { return send(res, 413, { error: \"Body too large\" }); } }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "checklist-carinderia"
+  }
+] satisfies typeof authSecurityCourse.steps));
