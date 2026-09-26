@@ -12429,3 +12429,262 @@ authSecurityCourse.steps.push(...([
     "projectId": "hashing-school-club"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: hashing-school-club.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-hashing-school-club-6",
+    "index": 186,
+    "task": "Add this line at the end of hash.js. It shows that a wrong password does not match. This helps the app know when someone guesses wrong. The code below does this. Run the checker to confirm.\n\nIn hash.js:\n```\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "wrong",
+        "label": "A wrong password checks as false",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "eskwela2026"
+        ],
+        "value": "Wrong: false"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The code checks if the guess matches the stored hash. If not, it prints false."
+      },
+      {
+        "level": 2,
+        "text": "Add it right after the last line of code in hash.js.\n\nIn hash.js:\n```\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "hashing-school-club"
+  },
+  {
+    "id": "sec-hashing-school-club-7",
+    "index": 187,
+    "task": "Add this code right after the password line in hash.js. It stops the app if the password is too short. This stops weak passwords from being used. The code below does this. Run the checker to confirm.\n\nIn hash.js:\n```\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "short",
+        "label": "node hash.js abc ends with exit code 1",
+        "kind": "local-node-exit-code",
+        "file": "hash.js",
+        "args": [
+          "abc"
+        ],
+        "code": 1
+      },
+      {
+        "id": "fine",
+        "label": "node hash.js eskwela2026 still works",
+        "kind": "local-node-exit-code",
+        "file": "hash.js",
+        "args": [
+          "eskwela2026"
+        ],
+        "code": 0
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The code checks if the password has at least 8 characters. If not, it exits with error code 1."
+      },
+      {
+        "level": 2,
+        "text": "Add it right after the line that gets the password from the user.\n\nIn hash.js:\n```\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "hashing-school-club"
+  },
+  {
+    "id": "sec-hashing-school-club-8",
+    "index": 188,
+    "task": "Add these two lines after the length check in hash.js. They stop very common passwords. This helps keep passwords strong. The code below does this. Run the checker to confirm.\n\nIn hash.js:\n```\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "common",
+        "label": "node hash.js Password ends with exit code 2",
+        "kind": "local-node-exit-code",
+        "file": "hash.js",
+        "args": [
+          "Password"
+        ],
+        "code": 2
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The code checks if the password is in a list of common ones. If so, it exits with error code 2."
+      },
+      {
+        "level": 2,
+        "text": "Add them right after the password length check.\n\nIn hash.js:\n```\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "hashing-school-club"
+  },
+  {
+    "id": "sec-hashing-school-club-9",
+    "index": 189,
+    "task": "Replace the password length line in hash.js with this. It hides the password with stars. This protects the password from being seen. The code below does this. Run the checker to confirm.\n\nIn hash.js:\n```\nconsole.log(`Checking ${\"*\".repeat(password.length)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "masked",
+        "label": "The script prints stars instead of the password",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "eskwela2026"
+        ],
+        "value": "Checking ***********"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The code prints stars instead of the password letters. This hides the password."
+      },
+      {
+        "level": 2,
+        "text": "Replace the line that prints the password with this new line.\n\nIn hash.js:\n```\nconsole.log(`Checking ${\"*\".repeat(password.length)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\nconsole.log(`Checking ${\"*\".repeat(password.length)}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "hashing-school-club"
+  },
+  {
+    "id": "sec-hashing-school-club-10",
+    "index": 190,
+    "task": "Change the two scrypt lines and the hash print line in hash.js. Make the hash longer and print only its length. This makes the hash harder to guess. The code below does this. Run the checker to confirm.\n\nIn hash.js:\n```\nconst hash = scryptSync(password, salt, 64).toString(\"hex\");\nconsole.log(`Hash length: ${hash.length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 64)); };\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "long",
+        "label": "The script prints Hash length: 128",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "eskwela2026"
+        ],
+        "value": "Hash length: 128"
+      },
+      {
+        "id": "still",
+        "label": "The right password still checks as true",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "eskwela2026"
+        ],
+        "value": "Correct: true"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Change the scrypt settings to make a 64-byte hash. Print only its length, not the whole hash."
+      },
+      {
+        "level": 2,
+        "text": "Replace the two scrypt lines and the hash print line with the code below.\n\nIn hash.js:\n```\nconst hash = scryptSync(password, salt, 64).toString(\"hex\");\nconsole.log(`Hash length: ${hash.length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 64)); };\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nif (password.length < 8) { console.error(\"Password must be at least 8 characters\"); process.exit(1); }\nconst common = [\"password\", \"12345678\", \"qwerty123\"];\nif (common.includes(password.toLowerCase())) { console.error(\"Choose a less common password\"); process.exit(2); }\nconsole.log(`Checking ${\"*\".repeat(password.length)}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 64).toString(\"hex\");\nconsole.log(`Hash length: ${hash.length}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 64)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\nconsole.log(`Wrong: ${verify(\"wrong-guess\", stored)}`);\n"
+    },
+    "estimatedMinutes": 6,
+    "projectId": "hashing-school-club"
+  }
+] satisfies typeof authSecurityCourse.steps));
