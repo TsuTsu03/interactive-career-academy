@@ -14389,3 +14389,339 @@ authSecurityCourse.steps.push(...([
     "projectId": "tokens-school-club"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: tokens-school-club.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-tokens-school-club-6",
+    "index": 216,
+    "task": "You change the last line of login. The code below puts the user's role inside the token. This lets the app know who the user is, even after they log out. The token will expire after 10 minutes. This keeps the app from using old or fake tokens.\n\nIn server.js:\n```\n  return send(res, 200, { token: sign({ username, role: user.role, exp: Date.now() + minutes * 60 * 1000 }) });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"eskwela2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { message: `Welcome, ${username}` });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "role",
+        "label": "ana's token says role member",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"eskwela2026\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "GET",
+            "path": "/me",
+            "fromPrevious": {
+              "header": "Authorization",
+              "field": "token",
+              "prefix": "Bearer "
+            }
+          }
+        ],
+        "bodyContains": "\"role\":\"member\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The token must include the user's role so the app can check it later."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the login route, right after the user's data is fetched.\n\nIn server.js:\n```\n  return send(res, 200, { token: sign({ username, role: user.role, exp: Date.now() + minutes * 60 * 1000 }) });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"eskwela2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nconst secret = process.env.TOKEN_SECRET ?? \"dev-only-secret\";\nif (process.env.NODE_ENV === \"production\" && !process.env.TOKEN_SECRET) { console.error(\"TOKEN_SECRET is required in production\"); process.exit(1); }\nconst minutes = Number(process.env.TOKEN_MINUTES ?? 60);\nfunction sign(payload) { const body = Buffer.from(JSON.stringify(payload)).toString(\"base64url\"); return `${body}.${createHmac(\"sha256\", secret).update(body).digest(\"base64url\")}`; }\nfunction verifyToken(token) { const [body, signature] = String(token).split(\".\"); const expected = createHmac(\"sha256\", secret).update(body ?? \"\").digest(); const given = Buffer.from(signature ?? \"\", \"base64url\"); if (!body || given.length !== expected.length || !timingSafeEqual(given, expected)) return null; const payload = JSON.parse(Buffer.from(body, \"base64url\").toString()); return payload.exp > Date.now() ? payload : null; }\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { token: sign({ username, role: user.role, exp: Date.now() + minutes * 60 * 1000 }) });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  if (req.url === \"/me\") { const payload = verifyToken((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); return payload ? send(res, 200, payload) : send(res, 401, { error: \"Send a valid token\" }); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tokens-school-club"
+  },
+  {
+    "id": "sec-tokens-school-club-7",
+    "index": 217,
+    "task": "You add a helper function to read tokens and an /admin route. The helper checks if the token is valid. The /admin route checks if the user is an admin. If not, it sends a 403 error. This stops non-admins from seeing admin-only data.\n\nIn server.js:\n```\nfunction tokenUser(req) { return verifyToken((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); }\n  if (req.url === \"/admin\") { const user = tokenUser(req); if (!user) return send(res, 401, { error: \"Send a valid token\" }); if (user.role !== \"admin\") return send(res, 403, { error: \"Admins only\" }); return send(res, 200, { report: \"All good\" }); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"eskwela2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { message: `Welcome, ${username}` });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "member",
+        "label": "ana gets 403 at /admin",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"eskwela2026\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "GET",
+            "path": "/admin",
+            "fromPrevious": {
+              "header": "Authorization",
+              "field": "token",
+              "prefix": "Bearer "
+            }
+          }
+        ],
+        "status": 403
+      },
+      {
+        "id": "admin",
+        "label": "admin gets 200 at /admin",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"admin\",\"password\":\"admin-pass-2026\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "GET",
+            "path": "/admin",
+            "fromPrevious": {
+              "header": "Authorization",
+              "field": "token",
+              "prefix": "Bearer "
+            }
+          }
+        ],
+        "status": 200
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The helper function reads the token from the header and checks if it's valid."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the server.js file, right after the tokenUser helper is defined.\n\nIn server.js:\n```\nfunction tokenUser(req) { return verifyToken((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); }\n  if (req.url === \"/admin\") { const user = tokenUser(req); if (!user) return send(res, 401, { error: \"Send a valid token\" }); if (user.role !== \"admin\") return send(res, 403, { error: \"Admins only\" }); return send(res, 200, { report: \"All good\" }); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"eskwela2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nconst secret = process.env.TOKEN_SECRET ?? \"dev-only-secret\";\nif (process.env.NODE_ENV === \"production\" && !process.env.TOKEN_SECRET) { console.error(\"TOKEN_SECRET is required in production\"); process.exit(1); }\nconst minutes = Number(process.env.TOKEN_MINUTES ?? 60);\nfunction sign(payload) { const body = Buffer.from(JSON.stringify(payload)).toString(\"base64url\"); return `${body}.${createHmac(\"sha256\", secret).update(body).digest(\"base64url\")}`; }\nfunction verifyToken(token) { const [body, signature] = String(token).split(\".\"); const expected = createHmac(\"sha256\", secret).update(body ?? \"\").digest(); const given = Buffer.from(signature ?? \"\", \"base64url\"); if (!body || given.length !== expected.length || !timingSafeEqual(given, expected)) return null; const payload = JSON.parse(Buffer.from(body, \"base64url\").toString()); return payload.exp > Date.now() ? payload : null; }\nfunction tokenUser(req) { return verifyToken((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); }\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { token: sign({ username, role: user.role, exp: Date.now() + minutes * 60 * 1000 }) });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  if (req.url === \"/me\") { const payload = verifyToken((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); return payload ? send(res, 200, payload) : send(res, 401, { error: \"Send a valid token\" }); }\n  if (req.url === \"/admin\") { const user = tokenUser(req); if (!user) return send(res, 401, { error: \"Send a valid token\" }); if (user.role !== \"admin\") return send(res, 403, { error: \"Admins only\" }); return send(res, 200, { report: \"All good\" }); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "tokens-school-club"
+  },
+  {
+    "id": "sec-tokens-school-club-8",
+    "index": 218,
+    "task": "You change the /me route to send a WWW-Authenticate header when the token is missing. This tells the browser to ask for a token again. If the token is valid, it sends back the user's data. This helps browsers know how to fix a 401 error.\n\nIn server.js:\n```\n  if (req.url === \"/me\") { const payload = tokenUser(req); if (!payload) res.setHeader(\"WWW-Authenticate\", \"Bearer\"); return payload ? send(res, 200, payload) : send(res, 401, { error: \"Send a valid token\" }); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"eskwela2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { message: `Welcome, ${username}` });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "hint",
+        "label": "GET /me without a token sends WWW-Authenticate: Bearer",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/me"
+          }
+        ],
+        "status": 401,
+        "header": {
+          "name": "www-authenticate",
+          "value": "Bearer"
+        }
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The header tells the browser to send a token in the next request."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the /me route, right after the tokenUser check.\n\nIn server.js:\n```\n  if (req.url === \"/me\") { const payload = tokenUser(req); if (!payload) res.setHeader(\"WWW-Authenticate\", \"Bearer\"); return payload ? send(res, 200, payload) : send(res, 401, { error: \"Send a valid token\" }); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"eskwela2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nconst secret = process.env.TOKEN_SECRET ?? \"dev-only-secret\";\nif (process.env.NODE_ENV === \"production\" && !process.env.TOKEN_SECRET) { console.error(\"TOKEN_SECRET is required in production\"); process.exit(1); }\nconst minutes = Number(process.env.TOKEN_MINUTES ?? 60);\nfunction sign(payload) { const body = Buffer.from(JSON.stringify(payload)).toString(\"base64url\"); return `${body}.${createHmac(\"sha256\", secret).update(body).digest(\"base64url\")}`; }\nfunction verifyToken(token) { const [body, signature] = String(token).split(\".\"); const expected = createHmac(\"sha256\", secret).update(body ?? \"\").digest(); const given = Buffer.from(signature ?? \"\", \"base64url\"); if (!body || given.length !== expected.length || !timingSafeEqual(given, expected)) return null; const payload = JSON.parse(Buffer.from(body, \"base64url\").toString()); return payload.exp > Date.now() ? payload : null; }\nfunction tokenUser(req) { return verifyToken((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); }\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { token: sign({ username, role: user.role, exp: Date.now() + minutes * 60 * 1000 }) });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  if (req.url === \"/me\") { const payload = tokenUser(req); if (!payload) res.setHeader(\"WWW-Authenticate\", \"Bearer\"); return payload ? send(res, 200, payload) : send(res, 401, { error: \"Send a valid token\" }); }\n  if (req.url === \"/admin\") { const user = tokenUser(req); if (!user) return send(res, 401, { error: \"Send a valid token\" }); if (user.role !== \"admin\") return send(res, 403, { error: \"Admins only\" }); return send(res, 200, { report: \"All good\" }); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "tokens-school-club"
+  },
+  {
+    "id": "sec-tokens-school-club-9",
+    "index": 219,
+    "task": "You add a revoked set to track tokens that are no longer valid. You change the tokenUser helper to check if the token is in the revoked set. You add a /logout route that adds the token to the revoked set. This stops the app from using a token after logout.\n\nIn server.js:\n```\nconst revoked = new Set();\nfunction tokenUser(req) { const token = (req.headers.authorization ?? \"\").replace(\"Bearer \", \"\"); return revoked.has(token) ? null : verifyToken(token); }\n  if (req.url === \"/logout\" && req.method === \"POST\") { revoked.add((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); return send(res, 200, { ok: true }); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"eskwela2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { message: `Welcome, ${username}` });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "revoked",
+        "label": "After logout, the same token answers 401",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"eskwela2026\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/logout",
+            "body": "{}",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "fromPrevious": {
+              "header": "Authorization",
+              "field": "token",
+              "prefix": "Bearer "
+            }
+          },
+          {
+            "method": "GET",
+            "path": "/me",
+            "fromPrevious": {
+              "header": "Authorization",
+              "field": "token",
+              "prefix": "Bearer "
+            }
+          }
+        ],
+        "status": 401
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The revoked set keeps track of tokens that should no longer work."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the server.js file, right after the revoked set is declared.\n\nIn server.js:\n```\nconst revoked = new Set();\nfunction tokenUser(req) { const token = (req.headers.authorization ?? \"\").replace(\"Bearer \", \"\"); return revoked.has(token) ? null : verifyToken(token); }\n  if (req.url === \"/logout\" && req.method === \"POST\") { revoked.add((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); return send(res, 200, { ok: true }); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"eskwela2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nconst secret = process.env.TOKEN_SECRET ?? \"dev-only-secret\";\nif (process.env.NODE_ENV === \"production\" && !process.env.TOKEN_SECRET) { console.error(\"TOKEN_SECRET is required in production\"); process.exit(1); }\nconst minutes = Number(process.env.TOKEN_MINUTES ?? 60);\nfunction sign(payload) { const body = Buffer.from(JSON.stringify(payload)).toString(\"base64url\"); return `${body}.${createHmac(\"sha256\", secret).update(body).digest(\"base64url\")}`; }\nfunction verifyToken(token) { const [body, signature] = String(token).split(\".\"); const expected = createHmac(\"sha256\", secret).update(body ?? \"\").digest(); const given = Buffer.from(signature ?? \"\", \"base64url\"); if (!body || given.length !== expected.length || !timingSafeEqual(given, expected)) return null; const payload = JSON.parse(Buffer.from(body, \"base64url\").toString()); return payload.exp > Date.now() ? payload : null; }\nconst revoked = new Set();\nfunction tokenUser(req) { const token = (req.headers.authorization ?? \"\").replace(\"Bearer \", \"\"); return revoked.has(token) ? null : verifyToken(token); }\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { token: sign({ username, role: user.role, exp: Date.now() + minutes * 60 * 1000 }) });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  if (req.url === \"/me\") { const payload = tokenUser(req); if (!payload) res.setHeader(\"WWW-Authenticate\", \"Bearer\"); return payload ? send(res, 200, payload) : send(res, 401, { error: \"Send a valid token\" }); }\n  if (req.url === \"/admin\") { const user = tokenUser(req); if (!user) return send(res, 401, { error: \"Send a valid token\" }); if (user.role !== \"admin\") return send(res, 403, { error: \"Admins only\" }); return send(res, 200, { report: \"All good\" }); }\n  if (req.url === \"/logout\" && req.method === \"POST\") { revoked.add((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); return send(res, 200, { ok: true }); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "tokens-school-club"
+  },
+  {
+    "id": "sec-tokens-school-club-10",
+    "index": 220,
+    "task": "You add a check at the top of the handler to refuse tokens sent in the URL. This stops attackers from stealing tokens from logs or history. Tokens must be sent in the Authorization header. This keeps tokens private and safe.\n\nIn server.js:\n```\n  if (new URL(req.url, \"http://localhost\").searchParams.has(\"token\")) return send(res, 400, { error: \"Send tokens in the Authorization header, not the URL\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "School Club security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"eskwela2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { message: `Welcome, ${username}` });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "url",
+        "label": "GET /me?token=abc answers 400",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/me?token=abc"
+          }
+        ],
+        "status": 400
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Tokens in the URL can be copied by anyone who sees the page."
+      },
+      {
+        "level": 2,
+        "text": "Add the code to the top of the handler, right after the route check.\n\nIn server.js:\n```\n  if (new URL(req.url, \"http://localhost\").searchParams.has(\"token\")) return send(res, 400, { error: \"Send tokens in the Authorization header, not the URL\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"eskwela2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nconst secret = process.env.TOKEN_SECRET ?? \"dev-only-secret\";\nif (process.env.NODE_ENV === \"production\" && !process.env.TOKEN_SECRET) { console.error(\"TOKEN_SECRET is required in production\"); process.exit(1); }\nconst minutes = Number(process.env.TOKEN_MINUTES ?? 60);\nfunction sign(payload) { const body = Buffer.from(JSON.stringify(payload)).toString(\"base64url\"); return `${body}.${createHmac(\"sha256\", secret).update(body).digest(\"base64url\")}`; }\nfunction verifyToken(token) { const [body, signature] = String(token).split(\".\"); const expected = createHmac(\"sha256\", secret).update(body ?? \"\").digest(); const given = Buffer.from(signature ?? \"\", \"base64url\"); if (!body || given.length !== expected.length || !timingSafeEqual(given, expected)) return null; const payload = JSON.parse(Buffer.from(body, \"base64url\").toString()); return payload.exp > Date.now() ? payload : null; }\nconst revoked = new Set();\nfunction tokenUser(req) { const token = (req.headers.authorization ?? \"\").replace(\"Bearer \", \"\"); return revoked.has(token) ? null : verifyToken(token); }\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { token: sign({ username, role: user.role, exp: Date.now() + minutes * 60 * 1000 }) });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (new URL(req.url, \"http://localhost\").searchParams.has(\"token\")) return send(res, 400, { error: \"Send tokens in the Authorization header, not the URL\" });\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  if (req.url === \"/me\") { const payload = tokenUser(req); if (!payload) res.setHeader(\"WWW-Authenticate\", \"Bearer\"); return payload ? send(res, 200, payload) : send(res, 401, { error: \"Send a valid token\" }); }\n  if (req.url === \"/admin\") { const user = tokenUser(req); if (!user) return send(res, 401, { error: \"Send a valid token\" }); if (user.role !== \"admin\") return send(res, 403, { error: \"Admins only\" }); return send(res, 200, { report: \"All good\" }); }\n  if (req.url === \"/logout\" && req.method === \"POST\") { revoked.add((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); return send(res, 200, { ok: true }); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "tokens-school-club"
+  }
+] satisfies typeof authSecurityCourse.steps));
