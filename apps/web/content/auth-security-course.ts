@@ -4264,3 +4264,242 @@ authSecurityCourse.steps.push(...([
     "projectId": "checklist-sari-sari"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: hashing-carinderia.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-hashing-carinderia-1",
+    "index": 61,
+    "task": "You add two lines to hash.js. The first line gets the password from the command line. The second line prints how many characters it has. This helps you see if the user typed something. The code below does this. Run the checker to test it.\n\nIn hash.js:\n```\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "length",
+        "label": "node hash.js adobo4life prints Length: 10",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "adobo4life"
+        ],
+        "value": "Length: 10"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The password comes from the command line, so you need to get it from process.argv[2]."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines at the end of hash.js.\n\nIn hash.js:\n```\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "hashing-carinderia"
+  },
+  {
+    "id": "sec-hashing-carinderia-2",
+    "index": 62,
+    "task": "You add three lines to hash.js. The first line sets a fixed salt. The second line turns the password into a scrypt hash. The third line prints the hash. This makes the password safe to store. The code below does this. Run the checker to test it.\n\nIn hash.js:\n```\nconst salt = \"fixedsalt\";\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "hash",
+        "label": "The script prints the scrypt hash",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "adobo4life"
+        ],
+        "value": "Hash: f1207a9299b7c85c16eb66fcce077660add8dde16682c6caec7bf0741987d535"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use scryptSync with the password, salt, and 32 as the key length."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines at the end of hash.js.\n\nIn hash.js:\n```\nconst salt = \"fixedsalt\";\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = \"fixedsalt\";\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "hashing-carinderia"
+  },
+  {
+    "id": "sec-hashing-carinderia-3",
+    "index": 63,
+    "task": "You replace the fixed salt with a random salt. You also print the salt's length. This means each user gets a different salt, even if they use the same password. The code below does this. Run the checker to test it.\n\nIn hash.js:\n```\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "salt",
+        "label": "The script prints Salt length: 32",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "adobo4life"
+        ],
+        "value": "Salt length: 32"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use randomBytes(16) to make a new salt each time."
+      },
+      {
+        "level": 2,
+        "text": "Add this line at the end of hash.js, replacing the fixed salt line.\n\nIn hash.js:\n```\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "hashing-carinderia"
+  },
+  {
+    "id": "sec-hashing-carinderia-4",
+    "index": 64,
+    "task": "You add two lines to hash.js. The first line joins the salt and hash with a colon. The second line prints how many parts it has. This way, you can store both together. The code below does this. Run the checker to test it.\n\nIn hash.js:\n```\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "parts",
+        "label": "The script prints Stored parts: 2",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "adobo4life"
+        ],
+        "value": "Stored parts: 2"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use split(\":\") to check how many parts the stored value has."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines at the end of hash.js.\n\nIn hash.js:\n```\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "hashing-carinderia"
+  },
+  {
+    "id": "sec-hashing-carinderia-5",
+    "index": 65,
+    "task": "You add two lines to hash.js. The first line makes a function to check a password. The second line runs it with the stored value. This checks if the password is correct. The code below does this. Run the checker to test it.\n\nIn hash.js:\n```\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "correct",
+        "label": "The right password checks as true",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "adobo4life"
+        ],
+        "value": "Correct: true"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use timingSafeEqual to compare the hash without timing attacks."
+      },
+      {
+        "level": 2,
+        "text": "Add these lines at the end of hash.js.\n\nIn hash.js:\n```\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "hashing-carinderia"
+  }
+] satisfies typeof authSecurityCourse.steps));
