@@ -1013,3 +1013,340 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "props-sari-sari"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: props-sari-sari.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-props-sari-sari-6",
+    "index": 16,
+    "task": "You will mark items under 40 pesos with a class called 'cheap'.\nGo to the list line in ItemList.jsx.\nAdd a condition: if price is less than 40, add 'cheap' to className.\nThis helps the store show cheap items differently.\nRun the checker to see if soap is marked cheap.\n\nIn src/ItemList.jsx:\n```\n        {items.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Sari-Sari Store</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "cheap",
+        "label": "Soap is marked cheap",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Rice",
+              "price": 50
+            },
+            {
+              "id": 2,
+              "name": "Soap",
+              "price": 25
+            },
+            {
+              "id": 3,
+              "name": "Egg",
+              "price": 9
+            }
+          ]
+        },
+        "contains": "<li class=\"cheap\">Soap"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Think: if item price is less than 40, add 'cheap' to className."
+      },
+      {
+        "level": 2,
+        "text": "Add the condition right after the className={...} part.\n\nIn src/ItemList.jsx:\n```\n        {items.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\", title }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  return (\n    <section>\n      <h2>{title}</h2>\n      <ul>\n        {items.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "conceptIds": [
+      "fs-conditional-class"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "props-sari-sari"
+  },
+  {
+    "id": "fs-props-sari-sari-7",
+    "index": 17,
+    "task": "You will show how many items are in the list.\nGo to the line after the h2 tag.\nAdd a paragraph that says the number of items.\nThis helps the store owner know how many items they have.\nRun the checker to see if it says 3 items.\n\nIn src/ItemList.jsx:\n```\n      <p>{items.length} items</p>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Sari-Sari Store</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "count",
+        "label": "The list says 3 items",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Rice",
+              "price": 50
+            },
+            {
+              "id": 2,
+              "name": "Soap",
+              "price": 25
+            },
+            {
+              "id": 3,
+              "name": "Egg",
+              "price": 9
+            }
+          ]
+        },
+        "contains": "<p>3 items</p>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use items.length to count the items."
+      },
+      {
+        "level": 2,
+        "text": "Add the paragraph right after the h2 tag.\n\nIn src/ItemList.jsx:\n```\n      <p>{items.length} items</p>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\", title }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  return (\n    <section>\n      <h2>{title}</h2>\n      <p>{items.length} items</p>\n      <ul>\n        {items.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "props-sari-sari"
+  },
+  {
+    "id": "fs-props-sari-sari-8",
+    "index": 18,
+    "task": "You will let the store owner sort items by price.\nAdd a new prop called sortByPrice.\nIf true, make a copy of items and sort it by price.\nUse this sorted list in the map.\nThis helps the store owner see cheapest items first.\nRun the checker to see if egg is first when sortByPrice is true.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false }) {\n  const shown = sortByPrice ? [...items].sort((a, b) => a.price - b.price) : items;\n        {shown.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Sari-Sari Store</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "sorted",
+        "label": "With sortByPrice the list starts with Egg",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Rice",
+              "price": 50
+            },
+            {
+              "id": 2,
+              "name": "Soap",
+              "price": 25
+            },
+            {
+              "id": 3,
+              "name": "Egg",
+              "price": 9
+            }
+          ],
+          "sortByPrice": true
+        },
+        "contains": "<ul><li class=\"cheap\">Egg: PHP 9</li><li class=\"cheap\">Soap: PHP 25</li><li>Rice: PHP 50</li></ul>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Make a copy of items and sort it if sortByPrice is true."
+      },
+      {
+        "level": 2,
+        "text": "Use the sorted list in the map, not the original.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false }) {\n  const shown = sortByPrice ? [...items].sort((a, b) => a.price - b.price) : items;\n        {shown.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  const shown = sortByPrice ? [...items].sort((a, b) => a.price - b.price) : items;\n  return (\n    <section>\n      <h2>{title}</h2>\n      <p>{items.length} items</p>\n      <ul>\n        {shown.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "conceptIds": [
+      "react-derived-state"
+    ],
+    "estimatedMinutes": 6,
+    "projectId": "props-sari-sari"
+  },
+  {
+    "id": "fs-props-sari-sari-9",
+    "index": 19,
+    "task": "You will let the parent add extra content inside the list.\nAdd a new prop called children.\nShow this content at the end of the list.\nThis lets the store owner add notes or ads inside the list.\nRun the checker to see if extra text appears at the end.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false, children }) {\n      {children}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Sari-Sari Store</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "children",
+        "label": "Text passed as children appears at the end",
+        "kind": "local-react-render",
+        "file": "src/ItemList.jsx",
+        "props": {
+          "items": [
+            {
+              "id": 1,
+              "name": "Rice",
+              "price": 50
+            },
+            {
+              "id": 2,
+              "name": "Soap",
+              "price": 25
+            },
+            {
+              "id": 3,
+              "name": "Egg",
+              "price": 9
+            }
+          ],
+          "children": "Prices updated today"
+        },
+        "contains": "Prices updated today</section>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add children to the props and show it at the end of the section."
+      },
+      {
+        "level": 2,
+        "text": "Use {children} to show the content.\n\nIn src/ItemList.jsx:\n```\nexport default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false, children }) {\n      {children}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemList.jsx": "export default function ItemList({ items, currency = \"PHP\", title, sortByPrice = false, children }) {\n  if (items.length === 0) return <p>No items yet</p>;\n  const shown = sortByPrice ? [...items].sort((a, b) => a.price - b.price) : items;\n  return (\n    <section>\n      <h2>{title}</h2>\n      <p>{items.length} items</p>\n      <ul>\n        {shown.map((item) => <li key={item.id} className={item.price < 40 ? \"cheap\" : undefined}>{item.name}: {currency} {item.price}</li>)}\n      </ul>\n      {children}\n    </section>\n  );\n}\n"
+    },
+    "conceptIds": [
+      "react-children"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "props-sari-sari"
+  },
+  {
+    "id": "fs-props-sari-sari-10",
+    "index": 20,
+    "task": "You will pass a title, currency, and sortByPrice from App to ItemList.\nGo to the ItemList line in App.jsx.\nAdd the title, currency, and sortByPrice props.\nThis lets the store owner customize the list.\nRun the checker to see if the title is passed correctly.\n\nIn src/App.jsx:\n```\n      <ItemList items={items} title=\"Sari-Sari Store price list\" currency=\"PHP\" sortByPrice />\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Sari-Sari Store</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Sari-Sari Store full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n    </main>\n  );\n}\n",
+      "src/ItemList.jsx": "export default function ItemList({ items }) {\n  return (\n    <section>\n      <ul>\n        {items.map((item) => <li key={item.id}>{item.name}</li>)}\n      </ul>\n    </section>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "app",
+        "label": "App passes a title to ItemList",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "<h2>Sari-Sari Store price list</h2>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the props: title, currency, and sortByPrice."
+      },
+      {
+        "level": 2,
+        "text": "Use the exact prop names in the ItemList call.\n\nIn src/App.jsx:\n```\n      <ItemList items={items} title=\"Sari-Sari Store price list\" currency=\"PHP\" sortByPrice />\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "import ItemList from \"./ItemList.jsx\";\nconst items = [{ id: 1, name: \"Rice\", price: 50 }, { id: 2, name: \"Soap\", price: 25 }, { id: 3, name: \"Egg\", price: 9 }];\nexport default function App() {\n  return (\n    <main>\n      <h1>Sari-Sari Store</h1>\n      <ItemList items={items} title=\"Sari-Sari Store price list\" currency=\"PHP\" sortByPrice />\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "props-sari-sari"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
