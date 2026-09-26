@@ -5084,3 +5084,383 @@ authSecurityCourse.steps.push(...([
     "projectId": "signup-login-carinderia"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: signup-login-carinderia.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-signup-login-carinderia-6",
+    "index": 76,
+    "task": "Add a map to track failed login attempts. Check if a user has too many failed tries. If yes, answer 429. This stops bad users from guessing passwords. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\nconst failures = new Map();\n  if ((failures.get(username) ?? 0) >= 5) return send(res, 429, { error: \"Too many attempts. Try again later.\" });\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) { failures.set(username, (failures.get(username) ?? 0) + 1); return send(res, 401, { error: \"Wrong username or password\" }); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nasync function signup(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nasync function login(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "locked",
+        "label": "The sixth wrong try answers 429",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/signup",
+            "body": "{\"username\":\"ana\",\"password\":\"adobo4life\",\"confirm\":\"adobo4life\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"wrong-guess\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"wrong-guess\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"wrong-guess\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"wrong-guess\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"wrong-guess\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"wrong-guess\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 429
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Track how many times a user fails to log in."
+      },
+      {
+        "level": 2,
+        "text": "Add the check right after reading the username and password.\n\nIn server.js:\n```\nconst failures = new Map();\n  if ((failures.get(username) ?? 0) >= 5) return send(res, 429, { error: \"Too many attempts. Try again later.\" });\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) { failures.set(username, (failures.get(username) ?? 0) + 1); return send(res, 401, { error: \"Wrong username or password\" }); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nconst failures = new Map();\nasync function signup(req, res) {\n  const { username, password } = await readJson(req);\n  if (typeof username !== \"string\" || username.length < 3 || typeof password !== \"string\" || password.length < 8) return send(res, 422, { error: \"Username needs 3 or more characters and password 8 or more\" });\n  if (users.has(username)) return send(res, 409, { error: \"Username taken\" });\n  users.set(username, hashPassword(password));\n  return send(res, 201, { username });\n}\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if ((failures.get(username) ?? 0) >= 5) return send(res, 429, { error: \"Too many attempts. Try again later.\" });\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) { failures.set(username, (failures.get(username) ?? 0) + 1); return send(res, 401, { error: \"Wrong username or password\" }); }\n  return send(res, 200, { message: `Welcome, ${username}` });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  if (req.url === \"/users\") return send(res, 200, [...users.keys()]);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "signup-login-carinderia"
+  },
+  {
+    "id": "sec-signup-login-carinderia-7",
+    "index": 77,
+    "task": "After a user logs in successfully, clear their failure count. This lets them try again without being locked out. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  failures.delete(username);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nasync function signup(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nasync function login(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "reset",
+        "label": "After a good login, wrong tries start counting again from zero",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/signup",
+            "body": "{\"username\":\"ana\",\"password\":\"adobo4life\",\"confirm\":\"adobo4life\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"wrong-guess\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"wrong-guess\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"wrong-guess\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"wrong-guess\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"adobo4life\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"wrong-guess\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"wrong-guess\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 401
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Delete the failure count right after the user logs in."
+      },
+      {
+        "level": 2,
+        "text": "Add this line before sending the welcome message.\n\nIn server.js:\n```\n  failures.delete(username);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nconst failures = new Map();\nasync function signup(req, res) {\n  const { username, password } = await readJson(req);\n  if (typeof username !== \"string\" || username.length < 3 || typeof password !== \"string\" || password.length < 8) return send(res, 422, { error: \"Username needs 3 or more characters and password 8 or more\" });\n  if (users.has(username)) return send(res, 409, { error: \"Username taken\" });\n  users.set(username, hashPassword(password));\n  return send(res, 201, { username });\n}\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if ((failures.get(username) ?? 0) >= 5) return send(res, 429, { error: \"Too many attempts. Try again later.\" });\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) { failures.set(username, (failures.get(username) ?? 0) + 1); return send(res, 401, { error: \"Wrong username or password\" }); }\n  failures.delete(username);\n  return send(res, 200, { message: `Welcome, ${username}` });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  if (req.url === \"/users\") return send(res, 200, [...users.keys()]);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "signup-login-carinderia"
+  },
+  {
+    "id": "sec-signup-login-carinderia-8",
+    "index": 78,
+    "task": "Check if the password and confirm fields match. If not, answer 422. This stops users from signing up with mismatched passwords. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  const { username, password, confirm } = await readJson(req);\n  if (password !== confirm) return send(res, 422, { error: \"Passwords do not match\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nasync function signup(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nasync function login(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "mismatch",
+        "label": "Different passwords answer 422",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/signup",
+            "body": "{\"username\":\"ana\",\"password\":\"adobo4life\",\"confirm\":\"adobo4lifex\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 422,
+        "bodyContains": "Passwords do not match"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Compare the password and confirm fields before saving."
+      },
+      {
+        "level": 2,
+        "text": "Add this check right after reading the user's input.\n\nIn server.js:\n```\n  const { username, password, confirm } = await readJson(req);\n  if (password !== confirm) return send(res, 422, { error: \"Passwords do not match\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nconst failures = new Map();\nasync function signup(req, res) {\n  const { username, password, confirm } = await readJson(req);\n  if (typeof username !== \"string\" || username.length < 3 || typeof password !== \"string\" || password.length < 8) return send(res, 422, { error: \"Username needs 3 or more characters and password 8 or more\" });\n  if (password !== confirm) return send(res, 422, { error: \"Passwords do not match\" });\n  if (users.has(username)) return send(res, 409, { error: \"Username taken\" });\n  users.set(username, hashPassword(password));\n  return send(res, 201, { username });\n}\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if ((failures.get(username) ?? 0) >= 5) return send(res, 429, { error: \"Too many attempts. Try again later.\" });\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) { failures.set(username, (failures.get(username) ?? 0) + 1); return send(res, 401, { error: \"Wrong username or password\" }); }\n  failures.delete(username);\n  return send(res, 200, { message: `Welcome, ${username}` });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  if (req.url === \"/users\") return send(res, 200, [...users.keys()]);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "signup-login-carinderia"
+  },
+  {
+    "id": "sec-signup-login-carinderia-9",
+    "index": 79,
+    "task": "Check if the username only has letters, numbers, or underscores. If not, answer 422. This stops bad usernames from being used. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (!/^[a-z0-9_]+$/i.test(username)) return send(res, 422, { error: \"Use letters, numbers, and _ only\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nasync function signup(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nasync function login(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "format",
+        "label": "A username with a space answers 422",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/signup",
+            "body": "{\"username\":\"ana smith\",\"password\":\"adobo4life\",\"confirm\":\"adobo4life\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 422,
+        "bodyContains": "letters, numbers"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use a regular expression to check the username's characters."
+      },
+      {
+        "level": 2,
+        "text": "Add this check after the password check in signup.\n\nIn server.js:\n```\n  if (!/^[a-z0-9_]+$/i.test(username)) return send(res, 422, { error: \"Use letters, numbers, and _ only\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nconst failures = new Map();\nasync function signup(req, res) {\n  const { username, password, confirm } = await readJson(req);\n  if (typeof username !== \"string\" || username.length < 3 || typeof password !== \"string\" || password.length < 8) return send(res, 422, { error: \"Username needs 3 or more characters and password 8 or more\" });\n  if (password !== confirm) return send(res, 422, { error: \"Passwords do not match\" });\n  if (!/^[a-z0-9_]+$/i.test(username)) return send(res, 422, { error: \"Use letters, numbers, and _ only\" });\n  if (users.has(username)) return send(res, 409, { error: \"Username taken\" });\n  users.set(username, hashPassword(password));\n  return send(res, 201, { username });\n}\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if ((failures.get(username) ?? 0) >= 5) return send(res, 429, { error: \"Too many attempts. Try again later.\" });\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) { failures.set(username, (failures.get(username) ?? 0) + 1); return send(res, 401, { error: \"Wrong username or password\" }); }\n  failures.delete(username);\n  return send(res, 200, { message: `Welcome, ${username}` });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  if (req.url === \"/users\") return send(res, 200, [...users.keys()]);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "signup-login-carinderia"
+  },
+  {
+    "id": "sec-signup-login-carinderia-10",
+    "index": 80,
+    "task": "Check if the username and password are sent. If missing, answer 400. This stops users from sending incomplete data. The code below does this. Run the checker to confirm it works.\n\nIn server.js:\n```\n  if (!username || !password) return send(res, 400, { error: \"Send username and password\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Carinderia security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nasync function signup(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nasync function login(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "missing",
+        "label": "POST /login with an empty body answers 400",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 400
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if both fields exist before processing."
+      },
+      {
+        "level": 2,
+        "text": "Add this check right after reading the login body.\n\nIn server.js:\n```\n  if (!username || !password) return send(res, 400, { error: \"Send username and password\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nconst failures = new Map();\nasync function signup(req, res) {\n  const { username, password, confirm } = await readJson(req);\n  if (typeof username !== \"string\" || username.length < 3 || typeof password !== \"string\" || password.length < 8) return send(res, 422, { error: \"Username needs 3 or more characters and password 8 or more\" });\n  if (password !== confirm) return send(res, 422, { error: \"Passwords do not match\" });\n  if (!/^[a-z0-9_]+$/i.test(username)) return send(res, 422, { error: \"Use letters, numbers, and _ only\" });\n  if (users.has(username)) return send(res, 409, { error: \"Username taken\" });\n  users.set(username, hashPassword(password));\n  return send(res, 201, { username });\n}\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if (!username || !password) return send(res, 400, { error: \"Send username and password\" });\n  if ((failures.get(username) ?? 0) >= 5) return send(res, 429, { error: \"Too many attempts. Try again later.\" });\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) { failures.set(username, (failures.get(username) ?? 0) + 1); return send(res, 401, { error: \"Wrong username or password\" }); }\n  failures.delete(username);\n  return send(res, 200, { message: `Welcome, ${username}` });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  if (req.url === \"/users\") return send(res, 200, [...users.keys()]);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "signup-login-carinderia"
+  }
+] satisfies typeof authSecurityCourse.steps));
