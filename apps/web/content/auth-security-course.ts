@@ -661,3 +661,340 @@ authSecurityCourse.steps.push(...([
     "projectId": "hashing-sari-sari"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: signup-login-sari-sari.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-signup-login-sari-sari-1",
+    "index": 11,
+    "task": "You change the sign-up route to store a password hash. The code below does this. It stores the username and password hash in memory. This protects the password because the store never holds the plain password. The checker will test this.\n\nIn server.js:\n```\n  const { username, password } = await readJson(req);\n  users.set(username, hashPassword(password));\n  return send(res, 201, { username });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nasync function signup(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nasync function login(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "created",
+        "label": "POST /signup answers 201",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/signup",
+            "body": "{\"username\":\"ana\",\"password\":\"tindahan2026\",\"confirm\":\"tindahan2026\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 201,
+        "bodyContains": "\"username\":\"ana\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The code stores a password hash, not the plain password, so no one can steal it."
+      },
+      {
+        "level": 2,
+        "text": "Put the code inside the signup route in server.js, right after reading the body.\n\nIn server.js:\n```\n  const { username, password } = await readJson(req);\n  users.set(username, hashPassword(password));\n  return send(res, 201, { username });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nasync function signup(req, res) {\n  const { username, password } = await readJson(req);\n  users.set(username, hashPassword(password));\n  return send(res, 201, { username });\n}\nasync function login(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "sec-signup"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "signup-login-sari-sari"
+  },
+  {
+    "id": "sec-signup-login-sari-sari-2",
+    "index": 12,
+    "task": "You add a check to stop duplicate sign-ups. The code below checks if the username already exists. If it does, it answers 409. This protects the store from having two accounts with the same name. The checker will test this.\n\nIn server.js:\n```\n  if (users.has(username)) return send(res, 409, { error: \"Username taken\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nasync function signup(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nasync function login(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "taken",
+        "label": "Signing up twice as ana answers 409",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/signup",
+            "body": "{\"username\":\"ana\",\"password\":\"tindahan2026\",\"confirm\":\"tindahan2026\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/signup",
+            "body": "{\"username\":\"ana\",\"password\":\"tindahan2026\",\"confirm\":\"tindahan2026\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 409
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If the username is already taken, the server must say 409 so no one can create a duplicate."
+      },
+      {
+        "level": 2,
+        "text": "Put the code inside the signup route in server.js, right after reading the body.\n\nIn server.js:\n```\n  if (users.has(username)) return send(res, 409, { error: \"Username taken\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nasync function signup(req, res) {\n  const { username, password } = await readJson(req);\n  if (users.has(username)) return send(res, 409, { error: \"Username taken\" });\n  users.set(username, hashPassword(password));\n  return send(res, 201, { username });\n}\nasync function login(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "sec-unique-username"
+    ],
+    "estimatedMinutes": 2,
+    "projectId": "signup-login-sari-sari"
+  },
+  {
+    "id": "sec-signup-login-sari-sari-3",
+    "index": 13,
+    "task": "You add rules to check if the username or password is too short. The code below checks if the username is at least 3 characters and the password is at least 8. If not, it answers 422. This protects the store from bad data. The checker will test this.\n\nIn server.js:\n```\n  if (typeof username !== \"string\" || username.length < 3 || typeof password !== \"string\" || password.length < 8) return send(res, 422, { error: \"Username needs 3 or more characters and password 8 or more\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nasync function signup(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nasync function login(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "rules",
+        "label": "A too-short sign-up answers 422",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/signup",
+            "body": "{\"username\":\"al\",\"password\":\"x\",\"confirm\":\"x\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 422
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If the username or password is too short, the server must say 422 so no one can sign up with weak data."
+      },
+      {
+        "level": 2,
+        "text": "Put the code inside the signup route in server.js, right after reading the body.\n\nIn server.js:\n```\n  if (typeof username !== \"string\" || username.length < 3 || typeof password !== \"string\" || password.length < 8) return send(res, 422, { error: \"Username needs 3 or more characters and password 8 or more\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nasync function signup(req, res) {\n  const { username, password } = await readJson(req);\n  if (typeof username !== \"string\" || username.length < 3 || typeof password !== \"string\" || password.length < 8) return send(res, 422, { error: \"Username needs 3 or more characters and password 8 or more\" });\n  if (users.has(username)) return send(res, 409, { error: \"Username taken\" });\n  users.set(username, hashPassword(password));\n  return send(res, 201, { username });\n}\nasync function login(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "sec-input-rules"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "signup-login-sari-sari"
+  },
+  {
+    "id": "sec-signup-login-sari-sari-4",
+    "index": 14,
+    "task": "You change the login route to check the password against the stored hash. The code below checks if the username exists and if the password matches. If not, it answers 401. If yes, it says welcome. This protects the store from wrong logins. The checker will test this.\n\nIn server.js:\n```\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { message: `Welcome, ${username}` });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nasync function signup(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nasync function login(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "wrong",
+        "label": "A wrong password answers 401",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/signup",
+            "body": "{\"username\":\"ana\",\"password\":\"tindahan2026\",\"confirm\":\"tindahan2026\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"wrong-guess\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 401
+      },
+      {
+        "id": "right",
+        "label": "The right password answers Welcome, ana",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/signup",
+            "body": "{\"username\":\"ana\",\"password\":\"tindahan2026\",\"confirm\":\"tindahan2026\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"tindahan2026\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          }
+        ],
+        "status": 200,
+        "bodyContains": "Welcome, ana"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The code checks if the password matches the stored hash, so only the right user can log in."
+      },
+      {
+        "level": 2,
+        "text": "Replace the login route in server.js with the code below.\n\nIn server.js:\n```\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { message: `Welcome, ${username}` });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nasync function signup(req, res) {\n  const { username, password } = await readJson(req);\n  if (typeof username !== \"string\" || username.length < 3 || typeof password !== \"string\" || password.length < 8) return send(res, 422, { error: \"Username needs 3 or more characters and password 8 or more\" });\n  if (users.has(username)) return send(res, 409, { error: \"Username taken\" });\n  users.set(username, hashPassword(password));\n  return send(res, 201, { username });\n}\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { message: `Welcome, ${username}` });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "sec-login"
+    ],
+    "estimatedMinutes": 4,
+    "projectId": "signup-login-sari-sari"
+  },
+  {
+    "id": "sec-signup-login-sari-sari-5",
+    "index": 15,
+    "task": "You add a route to list usernames only. The code below answers with a list of usernames. This protects the store because it never sends password hashes. The checker will test this.\n\nIn server.js:\n```\n  if (req.url === \"/users\") return send(res, 200, [...users.keys()]);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Sari-Sari Store security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nasync function signup(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nasync function login(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "names",
+        "label": "GET /users answers only the names",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/signup",
+            "body": "{\"username\":\"ana\",\"password\":\"tindahan2026\",\"confirm\":\"tindahan2026\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "GET",
+            "path": "/users"
+          }
+        ],
+        "bodyContains": "[\"ana\"]",
+        "bodyLacks": ":"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The route should only list usernames, never password hashes, so no one can see the passwords."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the login route in server.js.\n\nIn server.js:\n```\n  if (req.url === \"/users\") return send(res, 200, [...users.keys()]);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map();\nasync function signup(req, res) {\n  const { username, password } = await readJson(req);\n  if (typeof username !== \"string\" || username.length < 3 || typeof password !== \"string\" || password.length < 8) return send(res, 422, { error: \"Username needs 3 or more characters and password 8 or more\" });\n  if (users.has(username)) return send(res, 409, { error: \"Username taken\" });\n  users.set(username, hashPassword(password));\n  return send(res, 201, { username });\n}\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  if (!users.has(username) || !verifyPassword(password, users.get(username))) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { message: `Welcome, ${username}` });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/signup\" && req.method === \"POST\") return signup(req, res);\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  if (req.url === \"/users\") return send(res, 200, [...users.keys()]);\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "conceptIds": [
+      "sec-safe-listing"
+    ],
+    "estimatedMinutes": 3,
+    "projectId": "signup-login-sari-sari"
+  }
+] satisfies typeof authSecurityCourse.steps));
