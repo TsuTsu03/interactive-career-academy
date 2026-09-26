@@ -10762,3 +10762,416 @@ authSecurityCourse.steps.push(...([
     "projectId": "tokens-barangay"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: access-barangay.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-access-barangay-1",
+    "index": 161,
+    "task": "Add this route after the login check. It lets only logged-in users see their own notes. The code below does that. Run the checker to confirm ana sees only her two notes.\n\nIn server.js:\n```\n  if (req.url === \"/notes\" && req.method === \"GET\") return send(res, 200, notes.filter((note) => note.owner === user.username));\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"barangay-hall-9\"), role: \"member\" }], [\"ben\", { hash: hashPassword(\"ben-pass-2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nconst notes = [{ id: 1, owner: \"ana\", text: \"Barangay Office supply list\", sharedWith: [\"ben\"] }, { id: 2, owner: \"ben\", text: \"Ben private plan\", sharedWith: [] }, { id: 3, owner: \"ana\", text: \"Ana budget\", sharedWith: [] }];\nconst secret = process.env.TOKEN_SECRET ?? \"dev-only-secret\";\nfunction sign(payload) { const body = Buffer.from(JSON.stringify(payload)).toString(\"base64url\"); return `${body}.${createHmac(\"sha256\", secret).update(body).digest(\"base64url\")}`; }\nfunction verifyToken(token) { const [body, signature] = String(token).split(\".\"); const expected = createHmac(\"sha256\", secret).update(body ?? \"\").digest(); const given = Buffer.from(signature ?? \"\", \"base64url\"); if (!body || given.length !== expected.length || !timingSafeEqual(given, expected)) return null; return JSON.parse(Buffer.from(body, \"base64url\").toString()); }\nfunction tokenUser(req) { return verifyToken((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); }\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { token: sign({ username, role: user.role }) });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  const user = tokenUser(req);\n  if (!user) return send(res, 401, { error: \"Log in first\" });\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "own",
+        "label": "ana sees only her two notes",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"barangay-hall-9\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "GET",
+            "path": "/notes",
+            "fromPrevious": {
+              "header": "Authorization",
+              "field": "token",
+              "prefix": "Bearer "
+            }
+          }
+        ],
+        "bodyContains": "[{\"id\":1,\"owner\":\"ana\",\"text\":\"Barangay Office supply list\",\"sharedWith\":[\"ben\"]},{\"id\":3,\"owner\":\"ana\",\"text\":\"Ana budget\",\"sharedWith\":[]}]"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Only let the user see notes where the owner matches their username."
+      },
+      {
+        "level": 2,
+        "text": "Put this code right after the login check in server.js.\n\nIn server.js:\n```\n  if (req.url === \"/notes\" && req.method === \"GET\") return send(res, 200, notes.filter((note) => note.owner === user.username));\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"barangay-hall-9\"), role: \"member\" }], [\"ben\", { hash: hashPassword(\"ben-pass-2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nconst notes = [{ id: 1, owner: \"ana\", text: \"Barangay Office supply list\", sharedWith: [\"ben\"] }, { id: 2, owner: \"ben\", text: \"Ben private plan\", sharedWith: [] }, { id: 3, owner: \"ana\", text: \"Ana budget\", sharedWith: [] }];\nconst secret = process.env.TOKEN_SECRET ?? \"dev-only-secret\";\nfunction sign(payload) { const body = Buffer.from(JSON.stringify(payload)).toString(\"base64url\"); return `${body}.${createHmac(\"sha256\", secret).update(body).digest(\"base64url\")}`; }\nfunction verifyToken(token) { const [body, signature] = String(token).split(\".\"); const expected = createHmac(\"sha256\", secret).update(body ?? \"\").digest(); const given = Buffer.from(signature ?? \"\", \"base64url\"); if (!body || given.length !== expected.length || !timingSafeEqual(given, expected)) return null; return JSON.parse(Buffer.from(body, \"base64url\").toString()); }\nfunction tokenUser(req) { return verifyToken((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); }\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { token: sign({ username, role: user.role }) });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  const user = tokenUser(req);\n  if (!user) return send(res, 401, { error: \"Log in first\" });\n  if (req.url === \"/notes\" && req.method === \"GET\") return send(res, 200, notes.filter((note) => note.owner === user.username));\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "access-barangay"
+  },
+  {
+    "id": "sec-access-barangay-2",
+    "index": 162,
+    "task": "Add two lines to find the note by ID, then add a GET route. This stops people from seeing others' notes. The code below does that. Run the checker to confirm ana asking for ben's note gets 404, and she can still read her own note.\n\nIn server.js:\n```\n  const match = req.url.match(/^\\/notes\\/(\\d+)$/);\n  const note = match && notes.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return note && note.owner === user.username ? send(res, 200, note) : send(res, 404, { error: \"Note not found\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"barangay-hall-9\"), role: \"member\" }], [\"ben\", { hash: hashPassword(\"ben-pass-2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nconst notes = [{ id: 1, owner: \"ana\", text: \"Barangay Office supply list\", sharedWith: [\"ben\"] }, { id: 2, owner: \"ben\", text: \"Ben private plan\", sharedWith: [] }, { id: 3, owner: \"ana\", text: \"Ana budget\", sharedWith: [] }];\nconst secret = process.env.TOKEN_SECRET ?? \"dev-only-secret\";\nfunction sign(payload) { const body = Buffer.from(JSON.stringify(payload)).toString(\"base64url\"); return `${body}.${createHmac(\"sha256\", secret).update(body).digest(\"base64url\")}`; }\nfunction verifyToken(token) { const [body, signature] = String(token).split(\".\"); const expected = createHmac(\"sha256\", secret).update(body ?? \"\").digest(); const given = Buffer.from(signature ?? \"\", \"base64url\"); if (!body || given.length !== expected.length || !timingSafeEqual(given, expected)) return null; return JSON.parse(Buffer.from(body, \"base64url\").toString()); }\nfunction tokenUser(req) { return verifyToken((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); }\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { token: sign({ username, role: user.role }) });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  const user = tokenUser(req);\n  if (!user) return send(res, 401, { error: \"Log in first\" });\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "other",
+        "label": "ana asking for ben's note gets 404",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"barangay-hall-9\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "GET",
+            "path": "/notes/2",
+            "fromPrevious": {
+              "header": "Authorization",
+              "field": "token",
+              "prefix": "Bearer "
+            }
+          }
+        ],
+        "status": 404,
+        "bodyContains": "Note not found"
+      },
+      {
+        "id": "mine",
+        "label": "ana can read her own note",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"barangay-hall-9\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "GET",
+            "path": "/notes/3",
+            "fromPrevious": {
+              "header": "Authorization",
+              "field": "token",
+              "prefix": "Bearer "
+            }
+          }
+        ],
+        "status": 200
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Check if the note's owner matches the user's username before sending it."
+      },
+      {
+        "level": 2,
+        "text": "Put this code after the login check and before the PUT route in server.js.\n\nIn server.js:\n```\n  const match = req.url.match(/^\\/notes\\/(\\d+)$/);\n  const note = match && notes.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return note && note.owner === user.username ? send(res, 200, note) : send(res, 404, { error: \"Note not found\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"barangay-hall-9\"), role: \"member\" }], [\"ben\", { hash: hashPassword(\"ben-pass-2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nconst notes = [{ id: 1, owner: \"ana\", text: \"Barangay Office supply list\", sharedWith: [\"ben\"] }, { id: 2, owner: \"ben\", text: \"Ben private plan\", sharedWith: [] }, { id: 3, owner: \"ana\", text: \"Ana budget\", sharedWith: [] }];\nconst secret = process.env.TOKEN_SECRET ?? \"dev-only-secret\";\nfunction sign(payload) { const body = Buffer.from(JSON.stringify(payload)).toString(\"base64url\"); return `${body}.${createHmac(\"sha256\", secret).update(body).digest(\"base64url\")}`; }\nfunction verifyToken(token) { const [body, signature] = String(token).split(\".\"); const expected = createHmac(\"sha256\", secret).update(body ?? \"\").digest(); const given = Buffer.from(signature ?? \"\", \"base64url\"); if (!body || given.length !== expected.length || !timingSafeEqual(given, expected)) return null; return JSON.parse(Buffer.from(body, \"base64url\").toString()); }\nfunction tokenUser(req) { return verifyToken((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); }\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { token: sign({ username, role: user.role }) });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  const user = tokenUser(req);\n  if (!user) return send(res, 401, { error: \"Log in first\" });\n  if (req.url === \"/notes\" && req.method === \"GET\") return send(res, 200, notes.filter((note) => note.owner === user.username));\n  const match = req.url.match(/^\\/notes\\/(\\d+)$/);\n  const note = match && notes.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return note && note.owner === user.username ? send(res, 200, note) : send(res, 404, { error: \"Note not found\" });\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "access-barangay"
+  },
+  {
+    "id": "sec-access-barangay-3",
+    "index": 163,
+    "task": "Add one PUT route after the GET route. This lets users change only their own notes. The code below does that. Run the checker to confirm ana cannot change ben's note, but she can change her own.\n\nIn server.js:\n```\n  if (match && req.method === \"PUT\") { if (!note || note.owner !== user.username) return send(res, 404, { error: \"Note not found\" }); Object.assign(note, await readJson(req)); return send(res, 200, note); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"barangay-hall-9\"), role: \"member\" }], [\"ben\", { hash: hashPassword(\"ben-pass-2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nconst notes = [{ id: 1, owner: \"ana\", text: \"Barangay Office supply list\", sharedWith: [\"ben\"] }, { id: 2, owner: \"ben\", text: \"Ben private plan\", sharedWith: [] }, { id: 3, owner: \"ana\", text: \"Ana budget\", sharedWith: [] }];\nconst secret = process.env.TOKEN_SECRET ?? \"dev-only-secret\";\nfunction sign(payload) { const body = Buffer.from(JSON.stringify(payload)).toString(\"base64url\"); return `${body}.${createHmac(\"sha256\", secret).update(body).digest(\"base64url\")}`; }\nfunction verifyToken(token) { const [body, signature] = String(token).split(\".\"); const expected = createHmac(\"sha256\", secret).update(body ?? \"\").digest(); const given = Buffer.from(signature ?? \"\", \"base64url\"); if (!body || given.length !== expected.length || !timingSafeEqual(given, expected)) return null; return JSON.parse(Buffer.from(body, \"base64url\").toString()); }\nfunction tokenUser(req) { return verifyToken((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); }\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { token: sign({ username, role: user.role }) });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  const user = tokenUser(req);\n  if (!user) return send(res, 401, { error: \"Log in first\" });\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "other",
+        "label": "ana cannot change ben's note",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"barangay-hall-9\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "PUT",
+            "path": "/notes/2",
+            "body": "{\"text\":\"hacked\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "fromPrevious": {
+              "header": "Authorization",
+              "field": "token",
+              "prefix": "Bearer "
+            }
+          }
+        ],
+        "status": 404,
+        "bodyContains": "Note not found"
+      },
+      {
+        "id": "mine",
+        "label": "ana can change her own note",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"barangay-hall-9\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "PUT",
+            "path": "/notes/3",
+            "body": "{\"text\":\"New budget\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "fromPrevious": {
+              "header": "Authorization",
+              "field": "token",
+              "prefix": "Bearer "
+            }
+          }
+        ],
+        "bodyContains": "New budget"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Only allow changes if the note's owner matches the user's username."
+      },
+      {
+        "level": 2,
+        "text": "Put this code after the GET route and before the DELETE route in server.js.\n\nIn server.js:\n```\n  if (match && req.method === \"PUT\") { if (!note || note.owner !== user.username) return send(res, 404, { error: \"Note not found\" }); Object.assign(note, await readJson(req)); return send(res, 200, note); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"barangay-hall-9\"), role: \"member\" }], [\"ben\", { hash: hashPassword(\"ben-pass-2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nconst notes = [{ id: 1, owner: \"ana\", text: \"Barangay Office supply list\", sharedWith: [\"ben\"] }, { id: 2, owner: \"ben\", text: \"Ben private plan\", sharedWith: [] }, { id: 3, owner: \"ana\", text: \"Ana budget\", sharedWith: [] }];\nconst secret = process.env.TOKEN_SECRET ?? \"dev-only-secret\";\nfunction sign(payload) { const body = Buffer.from(JSON.stringify(payload)).toString(\"base64url\"); return `${body}.${createHmac(\"sha256\", secret).update(body).digest(\"base64url\")}`; }\nfunction verifyToken(token) { const [body, signature] = String(token).split(\".\"); const expected = createHmac(\"sha256\", secret).update(body ?? \"\").digest(); const given = Buffer.from(signature ?? \"\", \"base64url\"); if (!body || given.length !== expected.length || !timingSafeEqual(given, expected)) return null; return JSON.parse(Buffer.from(body, \"base64url\").toString()); }\nfunction tokenUser(req) { return verifyToken((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); }\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { token: sign({ username, role: user.role }) });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  const user = tokenUser(req);\n  if (!user) return send(res, 401, { error: \"Log in first\" });\n  if (req.url === \"/notes\" && req.method === \"GET\") return send(res, 200, notes.filter((note) => note.owner === user.username));\n  const match = req.url.match(/^\\/notes\\/(\\d+)$/);\n  const note = match && notes.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return note && note.owner === user.username ? send(res, 200, note) : send(res, 404, { error: \"Note not found\" });\n  if (match && req.method === \"PUT\") { if (!note || note.owner !== user.username) return send(res, 404, { error: \"Note not found\" }); Object.assign(note, await readJson(req)); return send(res, 200, note); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "access-barangay"
+  },
+  {
+    "id": "sec-access-barangay-4",
+    "index": 164,
+    "task": "Add one DELETE route after the PUT route. This lets users delete only their own notes. The code below does that. Run the checker to confirm ana cannot delete ben's note, but she can delete her own.\n\nIn server.js:\n```\n  if (match && req.method === \"DELETE\") { if (!note || note.owner !== user.username) return send(res, 404, { error: \"Note not found\" }); notes.splice(notes.indexOf(note), 1); res.statusCode = 204; return res.end(); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"barangay-hall-9\"), role: \"member\" }], [\"ben\", { hash: hashPassword(\"ben-pass-2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nconst notes = [{ id: 1, owner: \"ana\", text: \"Barangay Office supply list\", sharedWith: [\"ben\"] }, { id: 2, owner: \"ben\", text: \"Ben private plan\", sharedWith: [] }, { id: 3, owner: \"ana\", text: \"Ana budget\", sharedWith: [] }];\nconst secret = process.env.TOKEN_SECRET ?? \"dev-only-secret\";\nfunction sign(payload) { const body = Buffer.from(JSON.stringify(payload)).toString(\"base64url\"); return `${body}.${createHmac(\"sha256\", secret).update(body).digest(\"base64url\")}`; }\nfunction verifyToken(token) { const [body, signature] = String(token).split(\".\"); const expected = createHmac(\"sha256\", secret).update(body ?? \"\").digest(); const given = Buffer.from(signature ?? \"\", \"base64url\"); if (!body || given.length !== expected.length || !timingSafeEqual(given, expected)) return null; return JSON.parse(Buffer.from(body, \"base64url\").toString()); }\nfunction tokenUser(req) { return verifyToken((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); }\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { token: sign({ username, role: user.role }) });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  const user = tokenUser(req);\n  if (!user) return send(res, 401, { error: \"Log in first\" });\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "other",
+        "label": "ana cannot delete ben's note",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"barangay-hall-9\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "DELETE",
+            "path": "/notes/2",
+            "fromPrevious": {
+              "header": "Authorization",
+              "field": "token",
+              "prefix": "Bearer "
+            }
+          }
+        ],
+        "status": 404,
+        "bodyContains": "Note not found"
+      },
+      {
+        "id": "mine",
+        "label": "ana can delete her own note",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"barangay-hall-9\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "DELETE",
+            "path": "/notes/3",
+            "fromPrevious": {
+              "header": "Authorization",
+              "field": "token",
+              "prefix": "Bearer "
+            }
+          }
+        ],
+        "status": 204
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Only allow deletion if the note's owner matches the user's username."
+      },
+      {
+        "level": 2,
+        "text": "Put this code after the PUT route and before the POST route in server.js.\n\nIn server.js:\n```\n  if (match && req.method === \"DELETE\") { if (!note || note.owner !== user.username) return send(res, 404, { error: \"Note not found\" }); notes.splice(notes.indexOf(note), 1); res.statusCode = 204; return res.end(); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"barangay-hall-9\"), role: \"member\" }], [\"ben\", { hash: hashPassword(\"ben-pass-2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nconst notes = [{ id: 1, owner: \"ana\", text: \"Barangay Office supply list\", sharedWith: [\"ben\"] }, { id: 2, owner: \"ben\", text: \"Ben private plan\", sharedWith: [] }, { id: 3, owner: \"ana\", text: \"Ana budget\", sharedWith: [] }];\nconst secret = process.env.TOKEN_SECRET ?? \"dev-only-secret\";\nfunction sign(payload) { const body = Buffer.from(JSON.stringify(payload)).toString(\"base64url\"); return `${body}.${createHmac(\"sha256\", secret).update(body).digest(\"base64url\")}`; }\nfunction verifyToken(token) { const [body, signature] = String(token).split(\".\"); const expected = createHmac(\"sha256\", secret).update(body ?? \"\").digest(); const given = Buffer.from(signature ?? \"\", \"base64url\"); if (!body || given.length !== expected.length || !timingSafeEqual(given, expected)) return null; return JSON.parse(Buffer.from(body, \"base64url\").toString()); }\nfunction tokenUser(req) { return verifyToken((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); }\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { token: sign({ username, role: user.role }) });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  const user = tokenUser(req);\n  if (!user) return send(res, 401, { error: \"Log in first\" });\n  if (req.url === \"/notes\" && req.method === \"GET\") return send(res, 200, notes.filter((note) => note.owner === user.username));\n  const match = req.url.match(/^\\/notes\\/(\\d+)$/);\n  const note = match && notes.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return note && note.owner === user.username ? send(res, 200, note) : send(res, 404, { error: \"Note not found\" });\n  if (match && req.method === \"PUT\") { if (!note || note.owner !== user.username) return send(res, 404, { error: \"Note not found\" }); Object.assign(note, await readJson(req)); return send(res, 200, note); }\n  if (match && req.method === \"DELETE\") { if (!note || note.owner !== user.username) return send(res, 404, { error: \"Note not found\" }); notes.splice(notes.indexOf(note), 1); res.statusCode = 204; return res.end(); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "access-barangay"
+  },
+  {
+    "id": "sec-access-barangay-5",
+    "index": 165,
+    "task": "Add one POST route after the list route. This takes the owner from the login, not from the request body. The code below does that. Run the checker to confirm a note posted by ana belongs to ana even if the body says ben.\n\nIn server.js:\n```\n  if (req.url === \"/notes\" && req.method === \"POST\") { const data = await readJson(req); const created = { id: notes.length + 1, owner: user.username, text: String(data.text ?? \"\"), sharedWith: [] }; notes.push(created); return send(res, 201, created); }\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"barangay-hall-9\"), role: \"member\" }], [\"ben\", { hash: hashPassword(\"ben-pass-2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nconst notes = [{ id: 1, owner: \"ana\", text: \"Barangay Office supply list\", sharedWith: [\"ben\"] }, { id: 2, owner: \"ben\", text: \"Ben private plan\", sharedWith: [] }, { id: 3, owner: \"ana\", text: \"Ana budget\", sharedWith: [] }];\nconst secret = process.env.TOKEN_SECRET ?? \"dev-only-secret\";\nfunction sign(payload) { const body = Buffer.from(JSON.stringify(payload)).toString(\"base64url\"); return `${body}.${createHmac(\"sha256\", secret).update(body).digest(\"base64url\")}`; }\nfunction verifyToken(token) { const [body, signature] = String(token).split(\".\"); const expected = createHmac(\"sha256\", secret).update(body ?? \"\").digest(); const given = Buffer.from(signature ?? \"\", \"base64url\"); if (!body || given.length !== expected.length || !timingSafeEqual(given, expected)) return null; return JSON.parse(Buffer.from(body, \"base64url\").toString()); }\nfunction tokenUser(req) { return verifyToken((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); }\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { token: sign({ username, role: user.role }) });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  const user = tokenUser(req);\n  if (!user) return send(res, 401, { error: \"Log in first\" });\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "owner",
+        "label": "A note posted by ana belongs to ana even if the body says ben",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/login",
+            "body": "{\"username\":\"ana\",\"password\":\"barangay-hall-9\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            }
+          },
+          {
+            "method": "POST",
+            "path": "/notes",
+            "body": "{\"owner\":\"ben\",\"text\":\"Posted by Ana\"}",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "fromPrevious": {
+              "header": "Authorization",
+              "field": "token",
+              "prefix": "Bearer "
+            }
+          }
+        ],
+        "status": 201,
+        "bodyContains": "\"owner\":\"ana\""
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Use the user's username from the login, not from the request body."
+      },
+      {
+        "level": 2,
+        "text": "Put this code after the list route and before the GET route in server.js.\n\nIn server.js:\n```\n  if (req.url === \"/notes\" && req.method === \"POST\") { const data = await readJson(req); const created = { id: notes.length + 1, owner: user.username, text: String(data.text ?? \"\"), sharedWith: [] }; notes.push(created); return send(res, 201, created); }\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { createHmac, randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nasync function readJson(req) { try { return JSON.parse(await readBody(req)); } catch { return {}; } }\nfunction hashPassword(password) { const salt = randomBytes(16).toString(\"hex\"); return `${salt}:${scryptSync(password, salt, 32).toString(\"hex\")}`; }\nfunction verifyPassword(password, stored) { const [salt, hash] = stored.split(\":\"); return timingSafeEqual(Buffer.from(hash, \"hex\"), scryptSync(password, salt, 32)); }\nconst users = new Map([[\"ana\", { hash: hashPassword(\"barangay-hall-9\"), role: \"member\" }], [\"ben\", { hash: hashPassword(\"ben-pass-2026\"), role: \"member\" }], [\"admin\", { hash: hashPassword(\"admin-pass-2026\"), role: \"admin\" }]]);\nconst notes = [{ id: 1, owner: \"ana\", text: \"Barangay Office supply list\", sharedWith: [\"ben\"] }, { id: 2, owner: \"ben\", text: \"Ben private plan\", sharedWith: [] }, { id: 3, owner: \"ana\", text: \"Ana budget\", sharedWith: [] }];\nconst secret = process.env.TOKEN_SECRET ?? \"dev-only-secret\";\nfunction sign(payload) { const body = Buffer.from(JSON.stringify(payload)).toString(\"base64url\"); return `${body}.${createHmac(\"sha256\", secret).update(body).digest(\"base64url\")}`; }\nfunction verifyToken(token) { const [body, signature] = String(token).split(\".\"); const expected = createHmac(\"sha256\", secret).update(body ?? \"\").digest(); const given = Buffer.from(signature ?? \"\", \"base64url\"); if (!body || given.length !== expected.length || !timingSafeEqual(given, expected)) return null; return JSON.parse(Buffer.from(body, \"base64url\").toString()); }\nfunction tokenUser(req) { return verifyToken((req.headers.authorization ?? \"\").replace(\"Bearer \", \"\")); }\nasync function login(req, res) {\n  const { username, password } = await readJson(req);\n  const user = users.get(username);\n  if (!user || !verifyPassword(password, user.hash)) return send(res, 401, { error: \"Wrong username or password\" });\n  return send(res, 200, { token: sign({ username, role: user.role }) });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  if (req.url === \"/login\" && req.method === \"POST\") return login(req, res);\n  const user = tokenUser(req);\n  if (!user) return send(res, 401, { error: \"Log in first\" });\n  if (req.url === \"/notes\" && req.method === \"GET\") return send(res, 200, notes.filter((note) => note.owner === user.username));\n  if (req.url === \"/notes\" && req.method === \"POST\") { const data = await readJson(req); const created = { id: notes.length + 1, owner: user.username, text: String(data.text ?? \"\"), sharedWith: [] }; notes.push(created); return send(res, 201, created); }\n  const match = req.url.match(/^\\/notes\\/(\\d+)$/);\n  const note = match && notes.find((item) => item.id === Number(match[1]));\n  if (match && req.method === \"GET\") return note && note.owner === user.username ? send(res, 200, note) : send(res, 404, { error: \"Note not found\" });\n  if (match && req.method === \"PUT\") { if (!note || note.owner !== user.username) return send(res, 404, { error: \"Note not found\" }); Object.assign(note, await readJson(req)); return send(res, 200, note); }\n  if (match && req.method === \"DELETE\") { if (!note || note.owner !== user.username) return send(res, 404, { error: \"Note not found\" }); notes.splice(notes.indexOf(note), 1); res.statusCode = 204; return res.end(); }\n  send(res, 404, { error: \"Not found\" });\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "access-barangay"
+  }
+] satisfies typeof authSecurityCourse.steps));
