@@ -8227,3 +8227,242 @@ authSecurityCourse.steps.push(...([
     "projectId": "checklist-carinderia"
   }
 ] satisfies typeof authSecurityCourse.steps));
+
+// Validated local authoring batch: hashing-barangay.
+authSecurityCourse.steps.push(...([
+  {
+    "id": "sec-hashing-barangay-1",
+    "index": 121,
+    "task": "You type a password after the command. The script prints how many characters it has. This helps you check if the password is long enough. The code below does this. Run the checker and paste its report.\n\nIn hash.js:\n```\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "length",
+        "label": "node hash.js barangay-hall-9 prints Length: 15",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "barangay-hall-9"
+        ],
+        "value": "Length: 15"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The script reads the password from the command line. You can test with any password."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of hash.js.\n\nIn hash.js:\n```\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "hashing-barangay"
+  },
+  {
+    "id": "sec-hashing-barangay-2",
+    "index": 122,
+    "task": "You turn the password into a scrypt hash using a fixed salt. This hash is unique to the password and salt. The code below does this. Run the checker and paste its report.\n\nIn hash.js:\n```\nconst salt = \"fixedsalt\";\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "hash",
+        "label": "The script prints the scrypt hash",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "barangay-hall-9"
+        ],
+        "value": "Hash: 004a4b08ab34110f1ae816cbee79d30502feaf2a317a33e4eea659af1122a304"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The scrypt hash is a secure way to store passwords. It's not readable like the original password."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of hash.js.\n\nIn hash.js:\n```\nconst salt = \"fixedsalt\";\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = \"fixedsalt\";\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "hashing-barangay"
+  },
+  {
+    "id": "sec-hashing-barangay-3",
+    "index": 123,
+    "task": "You use a random salt each time, so even if two users have the same password, their hashes are different. This stops attackers from using precomputed lists. The code below does this. Run the checker and paste its report.\n\nIn hash.js:\n```\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "salt",
+        "label": "The script prints Salt length: 32",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "barangay-hall-9"
+        ],
+        "value": "Salt length: 32"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "A random salt is like a secret number that changes every time. It makes hashes unique."
+      },
+      {
+        "level": 2,
+        "text": "Replace the fixed salt line with the random salt code at the end of hash.js.\n\nIn hash.js:\n```\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "hashing-barangay"
+  },
+  {
+    "id": "sec-hashing-barangay-4",
+    "index": 124,
+    "task": "You store the salt and hash together as salt:hash. This way, you can check passwords later without losing the salt. The code below does this. Run the checker and paste its report.\n\nIn hash.js:\n```\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "parts",
+        "label": "The script prints Stored parts: 2",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "barangay-hall-9"
+        ],
+        "value": "Stored parts: 2"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Storing salt and hash together is like keeping a key and lock together. You need both to verify."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of hash.js.\n\nIn hash.js:\n```\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "hashing-barangay"
+  },
+  {
+    "id": "sec-hashing-barangay-5",
+    "index": 125,
+    "task": "You check if a password matches the stored value using timingSafeEqual. This stops attackers from guessing passwords by timing how long it takes. The code below does this. Run the checker and paste its report.\n\nIn hash.js:\n```\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"type\": \"module\"\n}\n",
+      "README.txt": "Barangay Office security project.\nEvery user, password, and secret here is fake practice data.\n",
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\n"
+    },
+    "tests": [
+      {
+        "id": "correct",
+        "label": "The right password checks as true",
+        "kind": "local-node-prints",
+        "file": "hash.js",
+        "args": [
+          "barangay-hall-9"
+        ],
+        "value": "Correct: true"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "timingSafeEqual compares passwords without leaking timing info. It's like comparing two things without saying how long it took."
+      },
+      {
+        "level": 2,
+        "text": "Add the code at the end of hash.js.\n\nIn hash.js:\n```\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "hash.js": "import { randomBytes, scryptSync, timingSafeEqual } from \"node:crypto\";\nconsole.log(\"Password tool\");\nconst password = process.argv[2] ?? \"\";\nconsole.log(`Length: ${password.length}`);\nconst salt = randomBytes(16).toString(\"hex\");\nconsole.log(`Salt length: ${salt.length}`);\nconst hash = scryptSync(password, salt, 32).toString(\"hex\");\nconsole.log(`Hash: ${hash}`);\nconst stored = `${salt}:${hash}`;\nconsole.log(`Stored parts: ${stored.split(\":\").length}`);\nconst verify = (attempt, saved) => { const [s, h] = saved.split(\":\"); return timingSafeEqual(Buffer.from(h, \"hex\"), scryptSync(attempt, s, 32)); };\nconsole.log(`Correct: ${verify(password, stored)}`);\n"
+    },
+    "estimatedMinutes": 5,
+    "projectId": "hashing-barangay"
+  }
+] satisfies typeof authSecurityCourse.steps));
