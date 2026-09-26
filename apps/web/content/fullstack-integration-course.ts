@@ -6871,3 +6871,278 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "api-carinderia"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: api-carinderia.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-api-carinderia-6",
+    "index": 116,
+    "task": "Add an error state to show when loading fails. Use the code below. This helps users know when something went wrong. Run the checker to confirm the app shows errors in an alert. The app still builds.\n\nIn src/App.jsx:\n```\n  const [error, setError] = useState(\"\");\n    fetch(\"/api/items\").then((response) => response.json()).then((data) => { setItems(data); setLoading(false); }).catch(() => { setError(\"Could not load items\"); setLoading(false); });\n      {error && <p role=\"alert\">{error}</p>}\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "import { useEffect, useState } from \"react\";\nexport default function App() {\n  const [items, setItems] = useState([]);\n  return (\n    <main>\n      <h1>Carinderia</h1>\n      <ul>{items.map((item) => <li key={item.name}>{item.name}</li>)}</ul>\n    </main>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "alert",
+        "label": "App shows errors in an alert",
+        "kind": "local-file-contains",
+        "path": "src/App.jsx",
+        "value": "<p role=\"alert\">{error}</p>"
+      },
+      {
+        "id": "build",
+        "label": "The app still builds",
+        "kind": "local-npm-script",
+        "script": "build"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "If loading fails, show a message to the user."
+      },
+      {
+        "level": 2,
+        "text": "Add the code after the fetch request in src/App.jsx.\n\nIn src/App.jsx:\n```\n  const [error, setError] = useState(\"\");\n    fetch(\"/api/items\").then((response) => response.json()).then((data) => { setItems(data); setLoading(false); }).catch(() => { setError(\"Could not load items\"); setLoading(false); });\n      {error && <p role=\"alert\">{error}</p>}\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "import { useEffect, useState } from \"react\";\nexport default function App() {\n  const [items, setItems] = useState([]);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(\"\");\n  useEffect(() => {\n    fetch(\"/api/items\").then((response) => response.json()).then((data) => { setItems(data); setLoading(false); }).catch(() => { setError(\"Could not load items\"); setLoading(false); });\n  }, []);\n  return (\n    <main>\n      <h1>Carinderia</h1>\n      {loading && <p>Loading items…</p>}\n      {error && <p role=\"alert\">{error}</p>}\n      <ul>{items.map((item) => <li key={item.name}>{item.name}</li>)}</ul>\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "api-carinderia"
+  },
+  {
+    "id": "fs-api-carinderia-7",
+    "index": 117,
+    "task": "Add a line to show the total price. Use the code below. This helps users see how much they're spending. Run the checker to confirm the app shows Total: 0 pesos before loading.\n\nIn src/App.jsx:\n```\n      <p>Total: {items.reduce((sum, item) => sum + item.price, 0)} pesos</p>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "import { useEffect, useState } from \"react\";\nexport default function App() {\n  const [items, setItems] = useState([]);\n  return (\n    <main>\n      <h1>Carinderia</h1>\n      <ul>{items.map((item) => <li key={item.name}>{item.name}</li>)}</ul>\n    </main>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "total",
+        "label": "Before loading, App shows Total: 0 pesos",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "Total: 0 pesos"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the total line after the error line in src/App.jsx."
+      },
+      {
+        "level": 2,
+        "text": "Use the reduce function to add up all item prices.\n\nIn src/App.jsx:\n```\n      <p>Total: {items.reduce((sum, item) => sum + item.price, 0)} pesos</p>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "import { useEffect, useState } from \"react\";\nexport default function App() {\n  const [items, setItems] = useState([]);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(\"\");\n  useEffect(() => {\n    fetch(\"/api/items\").then((response) => response.json()).then((data) => { setItems(data); setLoading(false); }).catch(() => { setError(\"Could not load items\"); setLoading(false); });\n  }, []);\n  return (\n    <main>\n      <h1>Carinderia</h1>\n      {loading && <p>Loading items…</p>}\n      {error && <p role=\"alert\">{error}</p>}\n      <ul>{items.map((item) => <li key={item.name}>{item.name}</li>)}</ul>\n      <p>Total: {items.reduce((sum, item) => sum + item.price, 0)} pesos</p>\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "api-carinderia"
+  },
+  {
+    "id": "fs-api-carinderia-8",
+    "index": 118,
+    "task": "Add a route to answer /api/summary. Use the code below. This lets the app show how many items and how much they cost. Run the checker to confirm GET /api/summary answers count 3 and total 155.\n\nIn server.js:\n```\n  if (req.url === \"/api/summary\") return send(res, 200, { count: items.length, total: items.reduce((sum, item) => sum + item.price, 0) });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "import { useEffect, useState } from \"react\";\nexport default function App() {\n  const [items, setItems] = useState([]);\n  return (\n    <main>\n      <h1>Carinderia</h1>\n      <ul>{items.map((item) => <li key={item.name}>{item.name}</li>)}</ul>\n    </main>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "summary",
+        "label": "GET /api/summary answers count 3 and total 155",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/api/summary"
+          }
+        ],
+        "bodyContains": "{\"count\":3,\"total\":155}"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add this route after the POST route in server.js."
+      },
+      {
+        "level": 2,
+        "text": "Use items.length and items.reduce to calculate count and total.\n\nIn server.js:\n```\n  if (req.url === \"/api/summary\") return send(res, 200, { count: items.length, total: items.reduce((sum, item) => sum + item.price, 0) });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nconst items = [{ id: 1, name: \"Adobo\", price: 80 }, { id: 2, name: \"Pancit\", price: 60 }, { id: 3, name: \"Lumpia\", price: 15 }];\nasync function createItem(req, res) {\n  const data = JSON.parse(await readBody(req));\n  if (typeof data.name !== \"string\" || !data.name.trim() || !Number.isFinite(data.price)) return send(res, 422, { error: \"Send a name and a number price\" });\n  const item = { id: items.length + 1, name: data.name, price: data.price };\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/api/summary\") return send(res, 200, { count: items.length, total: items.reduce((sum, item) => sum + item.price, 0) });\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "api-carinderia"
+  },
+  {
+    "id": "fs-api-carinderia-9",
+    "index": 119,
+    "task": "Add a route to answer unknown /api/ paths with a JSON 404. Use the code below. This stops the app from showing the wrong page. Run the checker to confirm GET /api/nope answers a JSON 404.\n\nIn server.js:\n```\n  if (req.url.startsWith(\"/api/\")) return send(res, 404, { error: \"No such API route\" });\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "import { useEffect, useState } from \"react\";\nexport default function App() {\n  const [items, setItems] = useState([]);\n  return (\n    <main>\n      <h1>Carinderia</h1>\n      <ul>{items.map((item) => <li key={item.name}>{item.name}</li>)}</ul>\n    </main>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "api404",
+        "label": "GET /api/nope answers a JSON 404",
+        "kind": "local-http",
+        "file": "server.js",
+        "requests": [
+          {
+            "method": "GET",
+            "path": "/api/nope"
+          }
+        ],
+        "status": 404,
+        "bodyContains": "No such API route"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add this check after the summary route in server.js."
+      },
+      {
+        "level": 2,
+        "text": "Use req.url.startsWith to check if the path starts with /api/.\n\nIn server.js:\n```\n  if (req.url.startsWith(\"/api/\")) return send(res, 404, { error: \"No such API route\" });\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nconst items = [{ id: 1, name: \"Adobo\", price: 80 }, { id: 2, name: \"Pancit\", price: 60 }, { id: 3, name: \"Lumpia\", price: 15 }];\nasync function createItem(req, res) {\n  const data = JSON.parse(await readBody(req));\n  if (typeof data.name !== \"string\" || !data.name.trim() || !Number.isFinite(data.price)) return send(res, 422, { error: \"Send a name and a number price\" });\n  const item = { id: items.length + 1, name: data.name, price: data.price };\n  items.push(item);\n  return send(res, 201, item);\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"GET\") return send(res, 200, items);\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/api/summary\") return send(res, 200, { count: items.length, total: items.reduce((sum, item) => sum + item.price, 0) });\n  if (req.url.startsWith(\"/api/\")) return send(res, 404, { error: \"No such API route\" });\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "api-carinderia"
+  },
+  {
+    "id": "fs-api-carinderia-10",
+    "index": 120,
+    "task": "Change the list to use each item's id as its key. Use the code below. This helps React keep track of each item. Run the checker to confirm the list uses item.id as the key.\n\nIn src/App.jsx:\n```\n      <ul>{items.map((item) => <li key={item.id}>{item.name}</li>)}</ul>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "import { useEffect, useState } from \"react\";\nexport default function App() {\n  const [items, setItems] = useState([]);\n  return (\n    <main>\n      <h1>Carinderia</h1>\n      <ul>{items.map((item) => <li key={item.name}>{item.name}</li>)}</ul>\n    </main>\n  );\n}\n",
+      "server.js": "import http from \"node:http\";\nimport { readFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nfunction send(res, status, data) {\n  res.statusCode = status;\n  res.setHeader(\"Content-Type\", \"application/json\");\n  res.end(JSON.stringify(data));\n}\nasync function readBody(req) { let text = \"\"; for await (const chunk of req) text += chunk; return text; }\nconst types = { \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\" };\nasync function createItem(req, res) {\n  return send(res, 501, { error: \"Not built yet\" });\n}\nconst port = Number(process.env.PORT ?? 3000);\nconst server = http.createServer(async (req, res) => {\n  res.setHeader(\"X-Content-Type-Options\", \"nosniff\");\n  if (req.url === \"/health\") return send(res, 200, { ok: true });\n  if (req.url === \"/api/items\" && req.method === \"POST\") return createItem(req, res);\n  if (req.url === \"/\") { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); res.setHeader(\"Cache-Control\", \"no-cache\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  if (req.url.startsWith(\"/assets/\")) { const file = path.join(\"dist\", req.url); try { const body = await readFile(file); res.setHeader(\"Content-Type\", types[path.extname(file)] ?? \"application/octet-stream\"); res.setHeader(\"Cache-Control\", \"public, max-age=31536000, immutable\"); return res.end(body); } catch { res.statusCode = 404; return res.end(\"Missing file\"); } }\n  if (req.method === \"GET\" && !req.url.startsWith(\"/api/\")) { res.setHeader(\"Content-Type\", \"text/html; charset=utf-8\"); return res.end(await readFile(path.join(\"dist\", \"index.html\"))); }\n  res.statusCode = 404; res.end(\"Not found\");\n});\nserver.listen(port);\n"
+    },
+    "tests": [
+      {
+        "id": "key",
+        "label": "The list uses item.id as the key",
+        "kind": "local-file-contains",
+        "path": "src/App.jsx",
+        "value": "key={item.id}"
+      },
+      {
+        "id": "build",
+        "label": "The app still builds",
+        "kind": "local-npm-script",
+        "script": "build"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Replace the list line in src/App.jsx with the new code."
+      },
+      {
+        "level": 2,
+        "text": "Use key={item.id} to set the key for each item.\n\nIn src/App.jsx:\n```\n      <ul>{items.map((item) => <li key={item.id}>{item.name}</li>)}</ul>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "import { useEffect, useState } from \"react\";\nexport default function App() {\n  const [items, setItems] = useState([]);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(\"\");\n  useEffect(() => {\n    fetch(\"/api/items\").then((response) => response.json()).then((data) => { setItems(data); setLoading(false); }).catch(() => { setError(\"Could not load items\"); setLoading(false); });\n  }, []);\n  return (\n    <main>\n      <h1>Carinderia</h1>\n      {loading && <p>Loading items…</p>}\n      {error && <p role=\"alert\">{error}</p>}\n      <ul>{items.map((item) => <li key={item.id}>{item.name}</li>)}</ul>\n      <p>Total: {items.reduce((sum, item) => sum + item.price, 0)} pesos</p>\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 2,
+    "projectId": "api-carinderia"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
