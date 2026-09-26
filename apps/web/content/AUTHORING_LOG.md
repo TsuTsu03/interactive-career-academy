@@ -4073,3 +4073,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-25: Local Qwen wrote the lesson text for fullstack-integration/setup-sari-sari, steps 1-5; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
 
 - 2026-09-25: Local Qwen wrote the lesson text for fullstack-integration/setup-sari-sari, steps 6-10; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-26: Local Qwen wrote the lesson text for fullstack-integration/props-sari-sari, steps 11-15; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
