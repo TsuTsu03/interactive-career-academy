@@ -4876,3 +4876,243 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "deploy-sari-sari"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: setup-carinderia.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-setup-carinderia-1",
+    "index": 81,
+    "task": "You run the command to install the packages. This makes sure your app has all the tools it needs. The checker confirms the package-lock.json file was made. Run the checker to see the result.\n\nType this command in your terminal:\n`npm install`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "lock",
+        "label": "npm install made package-lock.json",
+        "kind": "local-file-exists",
+        "path": "package-lock.json"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The command installs everything listed in package.json."
+      },
+      {
+        "level": 2,
+        "text": "Type the command in the terminal inside the project folder. The command is: `npm install`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "npm install"
+    },
+    "localFiles": {},
+    "estimatedMinutes": 2,
+    "projectId": "setup-carinderia"
+  },
+  {
+    "id": "fs-setup-carinderia-2",
+    "index": 82,
+    "task": "You change the heading in the App file. This tells visitors what your carinderia is called. The checker confirms the heading shows up. Run the checker to see the result.\n\nIn src/App.jsx:\n```\n      <h1>Carinderia</h1>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "heading",
+        "label": "App shows the heading Carinderia",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "<h1>Carinderia</h1>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Look for the h1 tag in src/App.jsx and change its text."
+      },
+      {
+        "level": 2,
+        "text": "The code below shows what to type in that file.\n\nIn src/App.jsx:\n```\n      <h1>Carinderia</h1>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "setup-carinderia"
+  },
+  {
+    "id": "fs-setup-carinderia-3",
+    "index": 83,
+    "task": "You run the build command. This prepares your app for the web. It writes files to the dist folder. The checker confirms the dist/index.html file exists. Run the checker to see the result.\n\nType this command in your terminal:\n`npm run build`",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "dist",
+        "label": "dist/index.html exists",
+        "kind": "local-file-exists",
+        "path": "dist/index.html"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "The build command prepares your app for the browser."
+      },
+      {
+        "level": 2,
+        "text": "Type the command in the terminal inside the project folder. The command is: `npm run build`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "npm run build"
+    },
+    "localFiles": {},
+    "estimatedMinutes": 4,
+    "projectId": "setup-carinderia"
+  },
+  {
+    "id": "fs-setup-carinderia-4",
+    "index": 84,
+    "task": "You change the title in the index.html file. This is what appears in the browser tab. The checker confirms the title is now Carinderia. Run the checker to see the result.\n\nIn index.html:\n```\n    <title>Carinderia</title>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "title",
+        "label": "index.html has the title Carinderia",
+        "kind": "local-file-contains",
+        "path": "index.html",
+        "value": "<title>Carinderia</title>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Look for the <title> tag in index.html and change its text."
+      },
+      {
+        "level": 2,
+        "text": "The code below shows what to type in that file.\n\nIn index.html:\n```\n    <title>Carinderia</title>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Carinderia</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "setup-carinderia"
+  },
+  {
+    "id": "fs-setup-carinderia-5",
+    "index": 85,
+    "task": "You add a line under the heading. This shows the opening hours. The checker confirms the hours appear. Run the checker to see the result.\n\nIn src/App.jsx:\n```\n      <p>Open 7 AM to 7 PM</p>\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>Practice</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "Carinderia full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Hello</h1>\n    </main>\n  );\n}\n"
+    },
+    "tests": [
+      {
+        "id": "hours",
+        "label": "App shows the opening hours",
+        "kind": "local-react-render",
+        "file": "src/App.jsx",
+        "props": {},
+        "contains": "<p>Open 7 AM to 7 PM</p>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the line after the h1 tag in src/App.jsx."
+      },
+      {
+        "level": 2,
+        "text": "The code below shows what to type in that file.\n\nIn src/App.jsx:\n```\n      <p>Open 7 AM to 7 PM</p>\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>Carinderia</h1>\n      <p>Open 7 AM to 7 PM</p>\n    </main>\n  );\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "setup-carinderia"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
