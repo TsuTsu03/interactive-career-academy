@@ -4209,3 +4209,5 @@ older content; its complete browser harness was not repeated in this session.
 - 2026-09-26: Local Qwen wrote the lesson text for auth-security/hashing-tricycle, steps 246-250; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
 
 - 2026-09-26: Local Qwen wrote the lesson text for auth-security/signup-login-tricycle, steps 251-255; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
+
+- 2026-09-26: Local Qwen wrote the lesson text for auth-security/signup-login-tricycle, steps 256-260; code, commands, and checks come from the course plan and were replayed by check:content before acceptance.
