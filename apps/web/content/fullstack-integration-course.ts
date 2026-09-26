@@ -16144,3 +16144,286 @@ fullstackIntegrationCourse.steps.push(...([
     "projectId": "api-school-club"
   }
 ] satisfies typeof fullstackIntegrationCourse.steps));
+
+// Validated local authoring batch: states-school-club.
+fullstackIntegrationCourse.steps.push(...([
+  {
+    "id": "fs-states-school-club-1",
+    "index": 281,
+    "task": "Add this line before the return in src/ItemsView.jsx. This shows a message while the app loads. Run `npm install` to get the needed tools. The checker renders your component to check if the loading message appears.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>School Club</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "School Club full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>School Club</h1>\n    </main>\n  );\n}\n",
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  return <section>{status}</section>;\n}\n"
+    },
+    "tests": [
+      {
+        "id": "loading",
+        "label": "status loading shows Loading items…",
+        "kind": "local-react-render",
+        "file": "src/ItemsView.jsx",
+        "props": {
+          "status": "loading"
+        },
+        "contains": "Loading items…"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Put the loading message before the return so it shows first."
+      },
+      {
+        "level": 2,
+        "text": "Add the line in src/ItemsView.jsx, right before the return.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n``` The command is: `npm install`"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": "npm install"
+    },
+    "localFiles": {
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n  return <section>{status}</section>;\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "states-school-club"
+  },
+  {
+    "id": "fs-states-school-club-2",
+    "index": 282,
+    "task": "Add this line after the loading message. It shows an error or a general message if something goes wrong. The checker renders your component to check if the error message appears.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"}</p>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>School Club</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "School Club full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>School Club</h1>\n    </main>\n  );\n}\n",
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  return <section>{status}</section>;\n}\n"
+    },
+    "tests": [
+      {
+        "id": "error",
+        "label": "status error shows the error message",
+        "kind": "local-react-render",
+        "file": "src/ItemsView.jsx",
+        "props": {
+          "status": "error",
+          "error": "Server is down"
+        },
+        "contains": "<p role=\"alert\">Server is down</p>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Put the error message after the loading one, so it shows when there's a problem."
+      },
+      {
+        "level": 2,
+        "text": "Add the line in src/ItemsView.jsx, right after the loading message.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"}</p>;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"}</p>;\n  return <section>{status}</section>;\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "states-school-club"
+  },
+  {
+    "id": "fs-states-school-club-3",
+    "index": 283,
+    "task": "Add this line after the error message. It invites the user to add the first item if the list is empty. The checker renders your component to check if the empty message appears.\n\nIn src/ItemsView.jsx:\n```\n  if (items.length === 0) return <p>No items yet. Add the first one.</p>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>School Club</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "School Club full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>School Club</h1>\n    </main>\n  );\n}\n",
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  return <section>{status}</section>;\n}\n"
+    },
+    "tests": [
+      {
+        "id": "empty",
+        "label": "An empty list shows an inviting message",
+        "kind": "local-react-render",
+        "file": "src/ItemsView.jsx",
+        "props": {
+          "status": "ready",
+          "items": []
+        },
+        "contains": "No items yet. Add the first one."
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Put the empty message after the error one, so it shows when there's nothing to see."
+      },
+      {
+        "level": 2,
+        "text": "Add the line in src/ItemsView.jsx, right after the error message.\n\nIn src/ItemsView.jsx:\n```\n  if (items.length === 0) return <p>No items yet. Add the first one.</p>;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"}</p>;\n  if (items.length === 0) return <p>No items yet. Add the first one.</p>;\n  return <section>{status}</section>;\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "states-school-club"
+  },
+  {
+    "id": "fs-states-school-club-4",
+    "index": 284,
+    "task": "Change the return line to show the items as a list. The checker renders your component to check if the list appears with the item 'Shirt'.\n\nIn src/ItemsView.jsx:\n```\n  return <ul>{items.map((item) => <li key={item.id}>{item.name}</li>)}</ul>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>School Club</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "School Club full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>School Club</h1>\n    </main>\n  );\n}\n",
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  return <section>{status}</section>;\n}\n"
+    },
+    "tests": [
+      {
+        "id": "list",
+        "label": "A ready list shows Shirt",
+        "kind": "local-react-render",
+        "file": "src/ItemsView.jsx",
+        "props": {
+          "status": "ready",
+          "items": [
+            {
+              "id": 1,
+              "name": "Shirt",
+              "price": 250
+            },
+            {
+              "id": 2,
+              "name": "Pin",
+              "price": 30
+            },
+            {
+              "id": 3,
+              "name": "Badge",
+              "price": 45
+            }
+          ]
+        },
+        "contains": "<li>Shirt</li>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Replace the return line with the code that shows the items in a list."
+      },
+      {
+        "level": 2,
+        "text": "Put the list code in src/ItemsView.jsx, replacing the old return.\n\nIn src/ItemsView.jsx:\n```\n  return <ul>{items.map((item) => <li key={item.id}>{item.name}</li>)}</ul>;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"}</p>;\n  if (items.length === 0) return <p>No items yet. Add the first one.</p>;\n  return <ul>{items.map((item) => <li key={item.id}>{item.name}</li>)}</ul>;\n}\n"
+    },
+    "estimatedMinutes": 4,
+    "projectId": "states-school-club"
+  },
+  {
+    "id": "fs-states-school-club-5",
+    "index": 285,
+    "task": "Change the error line to add a 'Try again' button. The checker renders your component to check if the button appears with the error message.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"} <button type=\"button\">Try again</button></p>;\n```",
+    "kind": "local",
+    "inputMode": "free",
+    "files": {
+      "report.txt": ""
+    },
+    "activeFile": "report.txt",
+    "localSeed": {
+      "package.json": "{\n  \"name\": \"fullstack-practice\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": { \"build\": \"vite build\", \"dev\": \"vite\" },\n  \"dependencies\": { \"react\": \"19.3.0\", \"react-dom\": \"19.3.0\" },\n  \"devDependencies\": { \"vite\": \"8.3.1\", \"@vitejs/plugin-react\": \"6.1.1\" }\n}\n",
+      "vite.config.js": "import { defineConfig } from \"vite\";\nimport react from \"@vitejs/plugin-react\";\nexport default defineConfig({\n  plugins: [react()],\n  build: { rollupOptions: { output: { entryFileNames: \"assets/app.js\", assetFileNames: \"assets/[name][extname]\" } } },\n});\n",
+      "index.html": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <title>School Club</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+      "src/main.jsx": "import { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\nimport \"./app.css\";\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n",
+      "src/app.css": "body { font-family: system-ui, sans-serif; margin: 2rem; }\n",
+      "README.txt": "School Club full-stack project.\nRun npm install once, then follow the CodeDaddy steps.\n",
+      "src/App.jsx": "export default function App() {\n  return (\n    <main>\n      <h1>School Club</h1>\n    </main>\n  );\n}\n",
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  return <section>{status}</section>;\n}\n"
+    },
+    "tests": [
+      {
+        "id": "retry",
+        "label": "The error state has a Try again button",
+        "kind": "local-react-render",
+        "file": "src/ItemsView.jsx",
+        "props": {
+          "status": "error"
+        },
+        "contains": "Try again</button>"
+      }
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "text": "Add the button to the error message so users can retry."
+      },
+      {
+        "level": 2,
+        "text": "Edit the error line in src/ItemsView.jsx, adding the button after the message.\n\nIn src/ItemsView.jsx:\n```\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"} <button type=\"button\">Try again</button></p>;\n```"
+      }
+    ],
+    "xp": 10,
+    "solution": {
+      "commands.txt": ""
+    },
+    "localFiles": {
+      "src/ItemsView.jsx": "export default function ItemsView({ status, items = [], error = \"\", updatedAt }) {\n  if (status === \"loading\") return <p role=\"status\">Loading items…</p>;\n  if (status === \"error\") return <p role=\"alert\">{error || \"Something went wrong\"} <button type=\"button\">Try again</button></p>;\n  if (items.length === 0) return <p>No items yet. Add the first one.</p>;\n  return <ul>{items.map((item) => <li key={item.id}>{item.name}</li>)}</ul>;\n}\n"
+    },
+    "estimatedMinutes": 3,
+    "projectId": "states-school-club"
+  }
+] satisfies typeof fullstackIntegrationCourse.steps));
