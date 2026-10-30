@@ -1,16 +1,24 @@
 import { NextResponse } from "next/server";
 import { capstoneIds } from "@/content/capstones";
 import { validateSecureLiveUrl, validateSecureRepositoryUrl } from "@/lib/submission";
-import { authenticatedUser, noStoreHeaders, restRequest } from "@/lib/supabase-server";
+import { authenticatedUser, noStoreHeaders } from "@/lib/auth-server";
+import { database, type SubmissionDoc } from "@/lib/mongo";
 
 export const dynamic = "force-dynamic";
+
+const PUBLIC_FIELDS = { _id: 0, project_id: 1, repository_url: 1, live_url: 1, verification_status: 1, updated_at: 1 } as const;
 
 export async function GET() {
   const auth = await authenticatedUser();
   if (!auth) return NextResponse.json({ error: "Sign in to load submissions." }, { status: 401, headers: noStoreHeaders() });
-  const response = await restRequest("project_submissions?select=project_id,repository_url,live_url,verification_status,updated_at", {}, auth.accessToken);
-  if (!response?.ok) return NextResponse.json({ error: "Submissions could not be loaded." }, { status: 502, headers: noStoreHeaders() });
-  return NextResponse.json({ submissions: await response.json() }, { headers: noStoreHeaders() });
+  try {
+    const submissions = await (await database())!.collection<SubmissionDoc>("project_submissions")
+      .find({ user_id: auth.user.id }, { projection: PUBLIC_FIELDS })
+      .toArray();
+    return NextResponse.json({ submissions }, { headers: noStoreHeaders() });
+  } catch {
+    return NextResponse.json({ error: "Submissions could not be loaded." }, { status: 502, headers: noStoreHeaders() });
+  }
 }
 
 export async function PUT(request: Request) {
@@ -22,11 +30,18 @@ export async function PUT(request: Request) {
   const liveUrl = typeof body?.liveUrl === "string" ? body.liveUrl.trim() : "";
   if (!capstoneIds.includes(projectId)) return NextResponse.json({ error: "Choose a valid capstone." }, { status: 400, headers: noStoreHeaders() });
   if (validateSecureRepositoryUrl(repositoryUrl) || validateSecureLiveUrl(liveUrl)) return NextResponse.json({ error: "Use one GitHub repository link and one full HTTPS live-project link." }, { status: 400, headers: noStoreHeaders() });
-  const response = await restRequest("project_submissions?on_conflict=user_id,project_id", {
-    method: "POST",
-    headers: { Prefer: "resolution=merge-duplicates,return=representation" },
-    body: JSON.stringify({ user_id: auth.user.id, project_id: projectId, repository_url: repositoryUrl, live_url: liveUrl, verification_status: "recorded" }),
-  }, auth.accessToken);
-  if (!response?.ok) return NextResponse.json({ error: "Project links could not be saved." }, { status: 502, headers: noStoreHeaders() });
-  return NextResponse.json({ submission: (await response.json())[0] }, { headers: noStoreHeaders() });
+  try {
+    const now = new Date();
+    const submission = await (await database())!.collection<SubmissionDoc>("project_submissions").findOneAndUpdate(
+      { user_id: auth.user.id, project_id: projectId },
+      {
+        $set: { repository_url: repositoryUrl, live_url: liveUrl, verification_status: "recorded", updated_at: now },
+        $setOnInsert: { created_at: now },
+      },
+      { upsert: true, returnDocument: "after", projection: PUBLIC_FIELDS },
+    );
+    return NextResponse.json({ submission }, { headers: noStoreHeaders() });
+  } catch {
+    return NextResponse.json({ error: "Project links could not be saved." }, { status: 502, headers: noStoreHeaders() });
+  }
 }

@@ -147,31 +147,57 @@ then publishes a GitHub release. A tag that fails verification publishes nothing
 
 Deployment itself is the host's Git integration rather than a workflow, so no
 deploy credentials live in this repository. On Vercel, connect the repo, set the
-root directory to `apps/web`, and set four environment variables:
+root directory to `apps/web`, and set these environment variables:
 
 | Variable | Value |
 |---|---|
-| `SUPABASE_URL` | The project API URL |
-| `SUPABASE_PUBLISHABLE_KEY` | The `sb_publishable_...` key |
-| `SUPABASE_SECRET_KEY` | The `sb_secret_...` key, server-only |
+| `MONGODB_URI` | The Atlas connection string, server-only (it contains the database password) |
+| `MONGODB_DB` | Optional database name, default `codedaddy` |
+| `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` | The GitHub OAuth App credentials |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | The Google OAuth client credentials |
+| `RESEND_API_KEY`, `AUTH_EMAIL_FROM` | Resend key and a sender on a verified domain, for email sign-in links |
 | `SITE_URL` | The production origin, with no trailing slash |
 
-`SITE_URL` drives canonical URLs, the sitemap, the share card, and the auth
-redirects at once. Setting it wrong is the single most likely deployment
-mistake. The same origin must also be the Supabase Site URL, and
-`<origin>/**` must be in the Supabase redirect allow-list.
+`SITE_URL` drives canonical URLs, the sitemap, the share card, and the sign-in
+callback URLs at once. Setting it wrong is the single most likely deployment
+mistake. The GitHub and Google callback URLs must use the same origin.
 
-## Supabase setup
+## Backend setup (MongoDB Atlas)
 
-The backend integration uses Supabase Auth and REST directly through server routes. It adds no browser SDK or npm package.
+Accounts, sessions, progress, project links, certificates, feedback, and rate
+limits live in MongoDB Atlas, reached only from server routes through the
+official `mongodb` driver (PLAN.md decision 47). Nothing database-related ships
+to the browser. Collections and their indexes are created on the first request,
+so there is no migration step.
 
-1. Create a Supabase project and run `supabase/migrations/202608290001_frontend_learning_backend.sql` in its SQL editor or migration pipeline.
-2. Copy `.env.example` to `.env.local` and set `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`, and `SITE_URL`. The secret key is server-only and must never use a `NEXT_PUBLIC_` prefix.
-3. In Supabase Auth, set the site URL and allow `${SITE_URL}/auth/callback` as a redirect URL.
-4. Enable GitHub OAuth and configure its provider credentials in Supabase.
-5. For email links, use the callback URL with the token hash: `{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=email`.
+1. Create a free Atlas cluster, a database user, and allow the deployment's
+   addresses under Network Access. Vercel's addresses change, so a Vercel
+   deployment needs `0.0.0.0/0`; the database password is then the protection.
+2. Copy `.env.example` to `.env.local` and set `MONGODB_URI` and `SITE_URL`.
+   Never give `MONGODB_URI` a `NEXT_PUBLIC_` prefix.
+3. GitHub: create an OAuth App with the callback URL
+   `${SITE_URL}/auth/callback/github`, then set `GITHUB_CLIENT_ID` and
+   `GITHUB_CLIENT_SECRET`. A GitHub OAuth App holds one callback URL, so local
+   development needs its own app.
+4. Google: create a Web OAuth client with the authorized redirect URI
+   `${SITE_URL}/auth/callback/google`, then set `GOOGLE_CLIENT_ID` and
+   `GOOGLE_CLIENT_SECRET`.
+5. Email links: set `RESEND_API_KEY` and `AUTH_EMAIL_FROM`. Resend's shared
+   `onboarding@resend.dev` sender only delivers to the Resend account owner,
+   so learners only receive links from an address on a verified domain.
 
-The migration enables row-level security. Learners can read and update only their own profile, progress, and project-link records. Authenticated clients can only read their own certificate; certificate creation requires the server-only secret.
+Each sign-in method switches on only when its values are present. A missing
+provider sends the learner back to the account page instead of to a provider
+error. Sessions are random tokens in an `httpOnly` cookie; only their SHA-256
+digest is stored. An email link works once, for 15 minutes, and only in the
+browser that requested it.
+
+If Node reports `querySrv ECONNREFUSED` on a development machine, its local DNS
+resolver is refusing SRV lookups. Set `MONGODB_DNS_SERVERS=1.1.1.1,8.8.8.8` in
+`.env.local`. Leave it unset on the deployment.
+
+`tools/import-supabase-export.mjs` is the one-time import that moved the old
+Supabase rows across with their original ids. It is idempotent.
 
 ## Verification
 
@@ -190,17 +216,23 @@ node tools/practice-browser-audit.mjs
 node tools/capstone-browser-audit.mjs
 node tools/pending-qa-browser-audit.mjs
 node tools/backend-browser-audit.mjs
-node tools/backend-integration-audit.mjs
+node --env-file=.env.local tools/backend-integration-audit.mjs
 ```
 
 The browser scripts use `http://localhost:3000` and a temporary report folder by default. Set `CODEDADDY_URL`, `CODEDADDY_QA_OUTPUT`, `CODEDADDY_CDP_PORT`, or `CHROME_PATH` when those defaults do not fit the environment.
 
 `backend-browser-audit.mjs` checks the honest **disconnected** account,
 certificate, and submission states, so it needs a server started without
-Supabase credentials. Against a configured server it exits early and says so
-rather than timing out.
+`MONGODB_URI`. Against a configured server it exits early and says so rather
+than timing out.
 
-`backend-integration-audit.mjs` runs the built app against a local Supabase-compatible mock. It verifies the server contract, PKCE flow, authenticated persistence, submission recording, certificate gates, and public record without using real provider credentials. A live Supabase deployment still needs a separate provider round-trip.
+`backend-integration-audit.mjs` needs a running server and the same
+`MONGODB_URI`, so run it as `node --env-file=.env.local tools/backend-integration-audit.mjs`.
+It creates one throwaway account and session directly in the database, then
+checks profile, progress sync, project links, certificate gates and single
+issuance, the public record, feedback and its throttle, the sign-in redirects,
+and sign-out, and deletes everything it wrote. Provider round-trips still need
+one manual sign-in per provider.
 
 The Program C database authoring campaign runs from the repository root with
 `start-qwen-v2-campaign.ps1`. It resumes from committed SQL and NoSQL project

@@ -50,7 +50,6 @@ apps/web/components/  Learning workspace and learner-facing screens
 apps/web/lib/         Lesson model, grading, sandbox runners, and persistence
 apps/web/tools/       Browser audits and runtime build tools
 design/               Design system and source design references
-supabase/             Optional authentication and persistence migration
 ```
 
 ## Design and safety boundaries
@@ -58,7 +57,7 @@ supabase/             Optional authentication and persistence migration
 - Learning progress remains useful without an account; signed-in sync is explicit.
 - Learner code runs in purpose-specific sandboxed frames. Do not combine `allow-scripts` with `allow-same-origin` on an iframe.
 - The free learning path does not include a paid tier or checkout.
-- Optional account, progress-sync, submission, and certificate flows require a configured Supabase project. Follow [apps/web/README.md](apps/web/README.md) for those environment and provider steps.
+- Optional account, progress-sync, submission, and certificate flows require a MongoDB Atlas cluster and OAuth credentials. Follow [apps/web/README.md](apps/web/README.md) for those environment and provider steps.
 
 ## Further reading
 

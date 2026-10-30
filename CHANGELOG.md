@@ -9,6 +9,33 @@ the release workflow, which re-runs the full verification gates before publishin
 Work since the 1.0.0-rc.1 entry was written. Note that no `v*` tag exists on
 this repository yet, so nothing has actually been released.
 
+### Backend: Supabase to MongoDB
+
+- **The backend moved from Supabase to MongoDB Atlas** (PLAN.md decision 47).
+  Every account route, progress sync, project links, certificates, feedback,
+  and the rate limits now read and write a free Atlas cluster through the
+  official `mongodb` driver, the second approved dependency exception. The
+  JSON each route returns kept its shape, so no browser code changed beyond
+  the "Account setup pending" wording.
+- Sign-in no longer goes through Supabase Auth. GitHub and Google OAuth run
+  from the app's own routes with PKCE and a state check, and the email link is
+  sent through Resend, works once for 15 minutes, and only in the browser that
+  asked for it. Sessions are random cookie tokens stored as SHA-256 digests.
+  New variables: `MONGODB_URI`, `GITHUB_CLIENT_ID`/`SECRET`,
+  `GOOGLE_CLIENT_ID`/`SECRET`, `AUTH_EMAIL_FROM`, and the optional
+  `MONGODB_DB` and `MONGODB_DNS_SERVERS`. The `SUPABASE_*` variables are no
+  longer read.
+- `tools/import-supabase-export.mjs`, which carried the existing account, its
+  GitHub and Google identities, its profile, and the feedback row across with
+  their original ids.
+- `tools/backend-integration-audit.mjs` now runs against the real database
+  instead of a Supabase mock: 34 checks, using a throwaway account it deletes.
+
+### Removed
+
+- `supabase/migrations/` and `lib/supabase-server.ts`. They remain in Git
+  history for reference.
+
 ### Added
 
 - The donation prompt's GCash QR (`apps/web/public/gcash-qr.png`), cropped to

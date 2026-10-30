@@ -10,11 +10,11 @@ const outputDir = process.env.CODEDADDY_QA_OUTPUT ?? join(tmpdir(), "codedaddy-b
 const port = Number(process.env.CODEDADDY_CDP_PORT ?? 9345);
 
 // This audit asserts the honest disconnected state, so it only means anything
-// against a server with no Supabase credentials. Check that before launching
+// against a server with no database connection string. Check that before launching
 // Chrome, otherwise the run dies on a timeout for text that can never appear.
 const authConfig = await fetch(`${baseUrl}/api/auth/config`).then((response) => response.json()).catch(() => null);
 if (authConfig?.configured) {
-  console.error("The app under test is connected to Supabase. This audit checks the disconnected account, certificate, and submission states, so run it against a server started without SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY - for example with apps/web/.env.local temporarily renamed.");
+  console.error("The app under test is connected to MongoDB. This audit checks the disconnected account, certificate, and submission states, so run it against a server started without MONGODB_URI - for example with apps/web/.env.local temporarily renamed.");
   process.exit(1);
 }
 const profileDir = await mkdtemp(join(tmpdir(), "codedaddy-backend-chrome-"));
@@ -54,8 +54,8 @@ try {
   await send("Page.enable"); await send("Runtime.enable");
 
   await navigate("/account");
-  await waitFor(`document.body.textContent?.includes("Supabase setup pending")`);
-  const account = await evaluate(`({ pending: document.body.textContent?.includes("Supabase setup pending"), githubDisabled: ![...document.querySelectorAll("a")].find((node) => node.textContent?.includes("Continue with GitHub"))?.getAttribute("href"), emailDisabled: document.querySelector("#account-email")?.disabled, overflow: document.body.scrollWidth > innerWidth })`);
+  await waitFor(`document.body.textContent?.includes("Account setup pending")`);
+  const account = await evaluate(`({ pending: document.body.textContent?.includes("Account setup pending"), githubDisabled: ![...document.querySelectorAll("a")].find((node) => node.textContent?.includes("Continue with GitHub"))?.getAttribute("href"), emailDisabled: document.querySelector("#account-email")?.disabled, overflow: document.body.scrollWidth > innerWidth })`);
   await screenshot("account-provider-pending-375.png");
 
   await navigate("/certificate");

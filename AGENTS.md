@@ -147,9 +147,11 @@ Before adding anything, it must clear all four:
 
 A syntax highlighter, an editor component, an animation library, a state manager, a date library, and a UI kit have all already been considered and rejected. Do not add them.
 
-**One approved exception exists, and it is the only one.** PLAN.md decision 42 permits **SQLite compiled to WebAssembly**, for the two database courses in Program C, approved by the owner on 2026-09-08. It fails test 3 above — 332 KB gzipped, measured, fetched once and cached, and only on database lessons — and was approved anyway because the alternative was making every learner install PostgreSQL, which walls out phone-only learners entirely and still cannot grade a query by its results. It loads only on database lessons, never on the rest of the app, and runs in the `lib/sql-runner.ts` frame under rule 1.1's ordinary terms.
+**Two approved exceptions exist, and they are the only ones.** PLAN.md decision 42 permits **SQLite compiled to WebAssembly**, for the two database courses in Program C, approved by the owner on 2026-09-08. It fails test 3 above — 332 KB gzipped, measured, fetched once and cached, and only on database lessons — and was approved anyway because the alternative was making every learner install PostgreSQL, which walls out phone-only learners entirely and still cannot grade a query by its results. It loads only on database lessons, never on the rest of the app, and runs in the `lib/sql-runner.ts` frame under rule 1.1's ordinary terms.
 
-This exception does not generalise. It is not precedent for a second package, and "decision 42 added one" is not an argument. The four tests above still apply to everything else.
+**A second exception, `mongodb`, was approved by the owner on 2026-10-30 (PLAN.md decision 47)** when the backend moved from Supabase to MongoDB Atlas. It is the official server-side driver, pinned to an exact version, and it is imported only by `lib/mongo.ts`, server routes, and `tools/`. It must never be imported from a client component: the connection string carries a password and the driver has no place in the learner's browser.
+
+Neither exception generalises. They are not precedent for a third package, and "decisions 42 and 47 added one" is not an argument. The four tests above still apply to everything else.
 
 ---
 

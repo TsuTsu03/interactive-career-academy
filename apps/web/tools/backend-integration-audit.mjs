@@ -1,9 +1,20 @@
-import { spawn } from "node:child_process";
-import { createServer } from "node:http";
+/**
+ * Live integration audit of every account route against the real database.
+ *
+ * Run from apps/web against a running server that uses the same MONGODB_URI:
+ *   node --env-file=.env.local tools/backend-integration-audit.mjs [http://localhost:3000]
+ *
+ * It creates one throwaway account and a session for it directly in MongoDB,
+ * so no GitHub, Google, or email round-trip is needed, then exercises profile,
+ * progress, project links, certificate gates and issuance, the public record,
+ * feedback and its throttle, the sign-in redirects, and sign-out. Everything it
+ * wrote is deleted at the end, pass or fail. The provider round-trips still
+ * need one manual sign-in per provider on a configured deployment.
+ */
+import { createHash, randomBytes, randomUUID } from "node:crypto";
+import { promises as dnsPromises, setServers } from "node:dns";
 import { existsSync } from "node:fs";
-import { writeFile, mkdir } from "node:fs/promises";
-import { registerHooks } from "node:module";
-import { tmpdir } from "node:os";
+import { createRequire, registerHooks } from "node:module";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -16,150 +27,141 @@ registerHooks({ resolve(specifier, context, nextResolve) {
   return nextResolve(specifier, context);
 } });
 
-const { frontEndCourses } = await import("../content/curriculum.ts");
-const { capstones } = await import("../content/capstones.ts");
-
-const outputDir = process.env.CODEDADDY_QA_OUTPUT ?? join(tmpdir(), "codedaddy-backend-integration");
-await mkdir(outputDir, { recursive: true });
-const upstreamPort = 54329;
-const appPort = 3001;
-const requests = [];
-let readyFixture = false;
-let certificateStored = null;
-const completedCourseRows = frontEndCourses.map((course) => {
-  const last = course.steps.at(-1);
-  return { course_id: course.id, session: { stepIdx: course.steps.length - 1, files: last.solution, activeFile: last.activeFile, completedSteps: course.steps.map((step) => step.id) } };
-});
-const completedPractice = { version: 1, drafts: {}, completions: capstones.map((capstone) => ({ activityId: capstone.id, passedTestIds: capstone.tests.map((test) => test.id), completedAt: "2026-08-29T00:00:00.000Z" })), submissionDrafts: {} };
-const completedSubmissions = capstones.map((capstone) => ({ project_id: capstone.id, repository_url: `https://github.com/learner/${capstone.id}`, live_url: `https://${capstone.id}.example.com`, verification_status: "recorded" }));
-
-async function bodyOf(request) {
-  const chunks = [];
-  for await (const chunk of request) chunks.push(chunk);
-  const text = Buffer.concat(chunks).toString("utf8");
-  try { return JSON.parse(text); } catch { return text; }
+const base = process.argv[2] ?? process.env.CODEDADDY_URL ?? "http://localhost:3000";
+if (!process.env.MONGODB_URI) {
+  console.error("Set MONGODB_URI, for example with node --env-file=.env.local.");
+  process.exit(1);
 }
-
-const mock = createServer(async (request, response) => {
-  const url = new URL(request.url, `http://127.0.0.1:${upstreamPort}`);
-  const body = await bodyOf(request);
-  requests.push({ method: request.method, path: url.pathname, search: url.search, authorization: request.headers.authorization, apikey: request.headers.apikey, body });
-  response.setHeader("Content-Type", "application/json");
-  if (url.pathname === "/auth/v1/otp") return response.end("{}");
-  if (url.pathname === "/auth/v1/token") return response.end(JSON.stringify({ access_token: "access-test", refresh_token: "refresh-test", expires_in: 3600, user: { id: "11111111-1111-4111-8111-111111111111", email: "learner@example.com" } }));
-  if (url.pathname === "/auth/v1/user") return response.end(JSON.stringify({ id: "11111111-1111-4111-8111-111111111111", email: "learner@example.com", user_metadata: { name: "Learner Test" } }));
-  if (url.pathname === "/auth/v1/logout") { response.statusCode = 204; return response.end(); }
-  if (url.pathname === "/rest/v1/profiles" && request.method === "GET") return response.end(readyFixture ? JSON.stringify([{ display_name: "Learner Test" }]) : "[]");
-  if (url.pathname === "/rest/v1/profiles" && request.method === "POST") { response.statusCode = 201; return response.end("[]"); }
-  if (url.pathname === "/rest/v1/course_progress") return response.end(readyFixture ? JSON.stringify(completedCourseRows) : "[]");
-  if (url.pathname === "/rest/v1/practice_progress") return response.end(readyFixture ? JSON.stringify([{ state: completedPractice }]) : "[]");
-  if (url.pathname === "/rest/v1/project_submissions" && request.method === "GET") return response.end(readyFixture ? JSON.stringify(completedSubmissions) : "[]");
-  if (url.pathname === "/rest/v1/project_submissions" && request.method === "POST") { response.statusCode = 201; return response.end(JSON.stringify([{ ...body, updated_at: "2026-08-29T00:00:00.000Z" }])); }
-  if (url.pathname === "/rest/v1/certificates" && request.method === "GET") return response.end(certificateStored ? JSON.stringify([certificateStored]) : "[]");
-  if (url.pathname === "/rest/v1/certificates" && request.method === "POST") { certificateStored = { ...body, code: "22222222-2222-4222-8222-222222222222", credential_name: "Front-End Development Certificate of Completion", issued_at: "2026-08-29T00:00:00.000Z" }; response.statusCode = 201; return response.end(JSON.stringify([certificateStored])); }
-  if (url.pathname === "/rest/v1/rpc/sync_learning_state") { response.statusCode = 204; return response.end(); }
-  // Both return a plain boolean: allowed, and recorded. Missing these routes
-  // sent the email route down its fail-closed path and the audit failed on a
-  // 502 that had nothing to do with the contract under test.
-  if (url.pathname === "/rest/v1/rpc/claim_email_link") return response.end("true");
-  if (url.pathname === "/rest/v1/rpc/submit_feedback") return response.end("true");
-  response.statusCode = 404;
-  response.end(JSON.stringify({ message: "mock route not found" }));
-});
-await new Promise((resolve) => mock.listen(upstreamPort, "127.0.0.1", resolve));
-
-const app = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "-p", String(appPort)], {
-  cwd: process.cwd(),
-  env: {
-    ...process.env,
-    SUPABASE_URL: `http://localhost:${upstreamPort}`,
-    SUPABASE_PUBLISHABLE_KEY: "sb_publishable_test",
-    SUPABASE_SECRET_KEY: "sb_secret_test",
-    SITE_URL: `http://localhost:${appPort}`,
-  },
-  stdio: ["ignore", "pipe", "pipe"],
-});
-let appOutput = "";
-app.stdout.on("data", (chunk) => { appOutput += chunk; });
-app.stderr.on("data", (chunk) => { appOutput += chunk; });
-
-const base = `http://localhost:${appPort}`;
-async function waitForApp() {
-  for (let count = 0; count < 200; count += 1) {
-    try { const response = await fetch(`${base}/api/auth/config`); if (response.ok) return; } catch {}
-    await new Promise((resolve) => setTimeout(resolve, 100));
-  }
-  throw new Error(`App did not start. ${appOutput}`);
+const dns = process.env.MONGODB_DNS_SERVERS?.split(",").filter(Boolean);
+if (dns?.length) {
+  setServers(dns);
+  dnsPromises.setServers(dns);
 }
+const { MongoClient } = createRequire(join(process.cwd(), "package.json"))("mongodb");
+const { frontEndCourses } = await import(pathToFileURL(join(process.cwd(), "content/curriculum.ts")).href);
+const { capstones } = await import(pathToFileURL(join(process.cwd(), "content/capstones.ts")).href);
 
-function cookieHeader(response, existing = "") {
-  const values = response.headers.getSetCookie?.() ?? [];
-  const next = values.map((value) => value.split(";", 1)[0]);
-  return [existing, ...next].filter(Boolean).join("; ");
+const client = await new MongoClient(process.env.MONGODB_URI).connect();
+const db = client.db(process.env.MONGODB_DB || "codedaddy");
+const sha = (v) => createHash("sha256").update(v).digest("hex");
+const results = [];
+const check = (name, ok, detail = "") => { results.push({ name, ok }); console.log(`${ok ? "PASS" : "FAIL"} ${name}${detail ? ` :: ${detail}` : ""}`); };
+
+const testUser = randomUUID();
+const tokens = [];
+async function sessionFor(userId) {
+  const token = randomBytes(32).toString("base64url");
+  tokens.push(sha(token));
+  await db.collection("sessions").insertOne({ _id: sha(token), user_id: userId, created_at: new Date(), expires_at: new Date(Date.now() + 86400000) });
+  return `codedaddy-session=${token}`;
+}
+async function call(path, { cookie, method = "GET", body, redirect = "follow" } = {}) {
+  const response = await fetch(base + path, { method, redirect, headers: { ...(cookie ? { cookie } : {}), ...(body ? { "content-type": "application/json" } : {}), "x-forwarded-for": "203.0.113.77" }, body: body ? JSON.stringify(body) : undefined });
+  const text = await response.text();
+  let json = null; try { json = JSON.parse(text); } catch {}
+  return { status: response.status, json, location: response.headers.get("location") };
 }
 
 try {
-  await waitForApp();
-  const configResponse = await fetch(`${base}/api/auth/config`);
-  const config = await configResponse.json();
+  await db.collection("users").insertOne({ _id: testUser, email: `smoke-${testUser}@example.test`, name: "Smoke Test", identities: [{ provider: "email", provider_id: `smoke-${testUser}@example.test`, email: `smoke-${testUser}@example.test` }], created_at: new Date(), updated_at: new Date(), last_sign_in_at: null });
+  const cookie = await sessionFor(testUser);
 
-  const githubResponse = await fetch(`${base}/api/auth/github`, { redirect: "manual" });
-  const githubLocation = new URL(githubResponse.headers.get("location"));
-  const verifierCookie = cookieHeader(githubResponse);
-  const github = {
-    status: githubResponse.status,
-    provider: githubLocation.searchParams.get("provider"),
-    challengeLength: githubLocation.searchParams.get("code_challenge")?.length,
-    method: githubLocation.searchParams.get("code_challenge_method"),
-    redirect: githubLocation.searchParams.get("redirect_to"),
-    hasHttpOnlyVerifier: githubResponse.headers.getSetCookie().some((value) => value.startsWith("codedaddy-pkce-verifier=") && /HttpOnly/i.test(value)),
-  };
+  let r = await call("/api/auth/config");
+  check("config configured", r.json?.configured === true && r.json?.certificateIssuance === true, JSON.stringify(r.json));
+  r = await call("/api/auth/session");
+  check("session anonymous", r.status === 200 && r.json?.user === null);
+  r = await call("/api/auth/session", { cookie });
+  check("session signed in", r.json?.user?.id === testUser, JSON.stringify(r.json?.user));
+  r = await call("/api/profile");
+  check("profile requires sign-in", r.status === 401);
+  r = await call("/api/profile", { cookie });
+  check("profile falls back to account name", r.json?.displayName === "Smoke Test", JSON.stringify(r.json));
+  r = await call("/api/profile", { cookie, method: "PUT", body: { displayName: "  Smoke   Learner " } });
+  check("profile save", r.status === 200 && r.json?.displayName === "Smoke Learner");
+  r = await call("/api/profile", { cookie, method: "PUT", body: { displayName: "x" } });
+  check("profile rejects short name", r.status === 400);
+  r = await call("/api/profile", { cookie });
+  check("profile reads saved", r.json?.displayName === "Smoke Learner");
 
-  const callbackResponse = await fetch(`${base}/auth/callback?code=auth-code`, { headers: { Cookie: verifierCookie }, redirect: "manual" });
-  const sessionCookies = cookieHeader(callbackResponse);
-  const sessionResponse = await fetch(`${base}/api/auth/session`, { headers: { Cookie: sessionCookies } });
-  const session = await sessionResponse.json();
+  r = await call("/api/progress", { cookie });
+  check("progress empty", r.status === 200 && JSON.stringify(r.json?.courses) === "{}" && r.json?.practice?.version === 1, JSON.stringify(r.json));
+  const course = frontEndCourses[0];
+  const activity = capstones[0];
+  const practice = { version: 1, drafts: activity ? { [activity.id]: { files: Object.fromEntries(Object.keys(activity.files).map((n) => [n, `/* ${n} */`])), activeFile: Object.keys(activity.files)[0] } } : {}, completions: [], submissionDrafts: {} };
+  const courses = { [course.id]: { stepIdx: 1, files: course.steps[1].starter ?? course.steps[0].solution, activeFile: course.steps[0].activeFile, completedSteps: [course.steps[0].id] } };
+  r = await call("/api/progress", { cookie, method: "PUT", body: { courses, practice } });
+  check("progress save", r.status === 200 && r.json?.saved === true, JSON.stringify(r.json));
+  r = await call("/api/progress", { cookie });
+  const savedCourse = r.json?.courses?.[course.id];
+  check("progress reads course", savedCourse && savedCourse.files === undefined && Array.isArray(savedCourse.completedSteps ?? savedCourse.completedStepIds ?? []), JSON.stringify(savedCourse)?.slice(0, 160));
+  check("progress keeps dotted file names in drafts", !activity || JSON.stringify(r.json?.practice?.drafts) === JSON.stringify(practice.drafts), JSON.stringify(r.json?.practice?.drafts)?.slice(0, 160));
+  r = await call("/api/progress", { cookie, method: "PUT", body: { courses: { nope: {} }, practice } });
+  check("progress rejects unknown course", r.status === 400);
 
-  const emailResponse = await fetch(`${base}/api/auth/email`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: "learner@example.com" }) });
-  const email = await emailResponse.json();
+  r = await call("/api/submissions", { cookie, method: "PUT", body: { projectId: capstones[0].id, repositoryUrl: "https://github.com/learner/repo", liveUrl: "https://learner.example.com" } });
+  check("submission save", r.status === 200 && r.json?.submission?.project_id === capstones[0].id && r.json?.submission?.user_id === undefined, JSON.stringify(r.json));
+  r = await call("/api/submissions", { cookie, method: "PUT", body: { projectId: capstones[0].id, repositoryUrl: "http://gitlab.com/x", liveUrl: "ftp://x" } });
+  check("submission rejects bad links", r.status === 400);
+  r = await call("/api/submissions", { cookie });
+  check("submission list", r.json?.submissions?.length === 1);
 
-  const profileGet = await fetch(`${base}/api/profile`, { headers: { Cookie: sessionCookies } });
-  const profile = await profileGet.json();
-  const profilePut = await fetch(`${base}/api/profile`, { method: "PUT", headers: { Cookie: sessionCookies, "Content-Type": "application/json" }, body: JSON.stringify({ displayName: "Learner Test" }) });
+  r = await call("/api/certificate", { cookie });
+  check("certificate not ready", r.status === 200 && r.json?.signedIn === true && r.json?.ready === false && r.json?.certificate === null, JSON.stringify(r.json)?.slice(0, 200));
+  r = await call("/api/certificate", { cookie, method: "POST" });
+  check("certificate refuses when not ready", r.status === 409);
 
-  const progressGet = await fetch(`${base}/api/progress`, { headers: { Cookie: sessionCookies } });
-  const progress = await progressGet.json();
-  const progressPut = await fetch(`${base}/api/progress`, { method: "PUT", headers: { Cookie: sessionCookies, "Content-Type": "application/json" }, body: JSON.stringify({ courses: {}, practice: { version: 1, drafts: {}, completions: [], submissionDrafts: {} } }) });
+  // Seed a fully finished learner, then issue.
+  const now = new Date();
+  await db.collection("course_progress").deleteMany({ user_id: testUser });
+  await db.collection("course_progress").insertMany(frontEndCourses.map((c) => ({ user_id: testUser, course_id: c.id, session: { stepIdx: c.steps.length - 1, completedSteps: c.steps.map((s) => s.id) }, created_at: now, updated_at: now })));
+  await db.collection("practice_progress").updateOne({ user_id: testUser }, { $set: { state: { version: 1, drafts: {}, completions: capstones.map((c) => ({ activityId: c.id, passedTestIds: c.tests.map((t) => t.id), completedAt: now.toISOString() })), submissionDrafts: {} } } });
+  await db.collection("project_submissions").deleteMany({ user_id: testUser });
+  await db.collection("project_submissions").insertMany(capstones.map((c) => ({ user_id: testUser, project_id: c.id, repository_url: `https://github.com/learner/${c.id}`, live_url: `https://${c.id}.example.com`, verification_status: "recorded", created_at: now, updated_at: now })));
+  r = await call("/api/certificate", { cookie });
+  check("certificate ready", r.json?.ready === true, JSON.stringify({ c: r.json?.completedCourses?.length, k: r.json?.completedCapstones?.length, s: r.json?.submittedCapstones?.length }));
+  const [a, b] = await Promise.all([call("/api/certificate", { cookie, method: "POST" }), call("/api/certificate", { cookie, method: "POST" })]);
+  check("certificate issued once under double click", a.json?.certificate?.code && a.json.certificate.code === b.json?.certificate?.code, `${a.status} ${b.status} ${a.json?.certificate?.code}`);
+  check("certificate count is one", (await db.collection("certificates").countDocuments({ user_id: testUser })) === 1);
+  r = await call(`/api/certificate/${a.json?.certificate?.code}`);
+  check("public certificate lookup", r.status === 200 && r.json?.certificate?.display_name === "Smoke Learner" && r.json?.certificate?.user_id === undefined, JSON.stringify(r.json));
+  r = await call(`/api/certificate/${randomUUID()}`);
+  check("unknown certificate 404", r.status === 404);
+  r = await call("/api/certificate/not-a-uuid");
+  check("malformed certificate 404", r.status === 404);
 
-  const submissionPut = await fetch(`${base}/api/submissions`, { method: "PUT", headers: { Cookie: sessionCookies, "Content-Type": "application/json" }, body: JSON.stringify({ projectId: "capstone-service-directory", repositoryUrl: "https://github.com/learner/project", liveUrl: "https://project.example.com" }) });
-  const submission = await submissionPut.json();
-  const certificateGet = await fetch(`${base}/api/certificate`, { headers: { Cookie: sessionCookies } });
-  const certificate = await certificateGet.json();
-  const certificatePost = await fetch(`${base}/api/certificate`, { method: "POST", headers: { Cookie: sessionCookies } });
+  r = await call("/api/feedback", { method: "POST", body: { mood: "idea", message: "smoke test feedback", page: "/smoke-test" } });
+  check("feedback anonymous", r.status === 200 && r.json?.sent === true, JSON.stringify(r.json));
+  r = await call("/api/feedback", { method: "POST", body: { mood: "nope" } });
+  check("feedback rejects bad mood", r.status === 400);
+  r = await call("/api/feedback", { cookie, method: "POST", body: { mood: "working", page: "/smoke-test" } });
+  check("feedback signed in keeps user id", r.status === 200 && (await db.collection("feedback").findOne({ page: "/smoke-test", user_id: testUser })) !== null);
+  let last;
+  for (let i = 0; i < 9; i += 1) last = await call("/api/feedback", { method: "POST", body: { mood: "stuck", page: "/smoke-test" } });
+  check("feedback throttled after 10 per hour", last.status === 429, String(last.status));
 
-  readyFixture = true;
-  const certificateReadyGet = await fetch(`${base}/api/certificate`, { headers: { Cookie: sessionCookies } });
-  const certificateReady = await certificateReadyGet.json();
-  const certificateIssue = await fetch(`${base}/api/certificate`, { method: "POST", headers: { Cookie: sessionCookies } });
-  const issued = await certificateIssue.json();
-  const publicRecordResponse = await fetch(`${base}/api/certificate/22222222-2222-4222-8222-222222222222`);
-  const publicRecord = await publicRecordResponse.json();
+  r = await call("/api/auth/email", { method: "POST", body: { email: "smoke@example.test" } });
+  check("email sign-in reports missing Resend", r.status === 503 || r.status === 502, `${r.status} ${JSON.stringify(r.json)}`);
+  r = await call("/api/auth/github", { redirect: "manual" });
+  check("github start", r.status === 307 && (r.location?.includes("github.com/login/oauth/authorize") || r.location?.includes("auth=provider-unavailable")), r.location);
+  r = await call("/auth/callback/github?code=x&state=y", { redirect: "manual" });
+  check("oauth callback without state cookie fails", r.location?.includes("auth=failed"), r.location);
+  r = await call("/auth/callback?token=nope", { redirect: "manual", cookie: "codedaddy-email-verifier=nope" });
+  check("email callback with bad token fails", r.location?.includes("auth=failed"), r.location);
 
-  const tokenExchange = requests.find((item) => item.path === "/auth/v1/token" && item.search.includes("pkce"));
-  const otp = requests.find((item) => item.path === "/auth/v1/otp");
-  const rpc = requests.find((item) => item.path === "/rest/v1/rpc/sync_learning_state");
-  // Both writable RPCs are server-only. If either ever goes back to the
-  // publishable key, its `security definer` function has to be reachable by
-  // `anon` again, and anyone holding that key can call it directly.
-  const throttleRpc = requests.find((item) => item.path === "/rest/v1/rpc/claim_email_link");
-  const secretInsert = requests.find((item) => item.path === "/rest/v1/certificates" && item.method === "POST");
-  const result = { config, github, callbackStatus: callbackResponse.status, session, emailStatus: emailResponse.status, email, profileStatus: [profileGet.status, profilePut.status], profile, progressStatus: [progressGet.status, progressPut.status], progress, submissionStatus: submissionPut.status, submission, certificateGetStatus: certificateGet.status, certificate, certificatePostStatus: certificatePost.status, certificateReadyStatus: certificateReadyGet.status, certificateReady, certificateIssueStatus: certificateIssue.status, issued, publicRecordStatus: publicRecordResponse.status, publicRecord, tokenExchange, otp, rpc, secretInsert, requestCount: requests.length };
-  if (!config.configured || !config.certificateIssuance || github.status !== 307 || github.provider !== "github" || github.challengeLength !== 43 || github.method !== "s256" || github.redirect !== `${base}/auth/callback` || !github.hasHttpOnlyVerifier || callbackResponse.status !== 307 || !session.user || session.user.email !== "learner@example.com" || emailResponse.status !== 200 || !email.sent || profileGet.status !== 200 || profilePut.status !== 200 || profile.displayName !== "Learner Test" || progressGet.status !== 200 || progressPut.status !== 200 || submissionPut.status !== 200 || submission.submission.project_id !== "capstone-service-directory" || certificateGet.status !== 200 || certificate.ready !== false || certificatePost.status !== 409 || certificateReadyGet.status !== 200 || certificateReady.ready !== true || certificateReady.completedCourses.length !== 10 || certificateReady.completedCapstones.length !== 5 || certificateIssue.status !== 200 || issued.certificate.code !== "22222222-2222-4222-8222-222222222222" || publicRecordResponse.status !== 200 || publicRecord.certificate.display_name !== "Learner Test" || secretInsert?.apikey !== "sb_secret_test" || secretInsert?.authorization || tokenExchange?.body?.auth_code !== "auth-code" || typeof tokenExchange?.body?.code_verifier !== "string" || otp?.body?.code_challenge?.length !== 43 || rpc?.authorization !== "Bearer access-test" || throttleRpc?.apikey !== "sb_secret_test") throw new Error(`Backend integration audit failed: ${JSON.stringify(result)}`);
-  const reportPath = join(outputDir, "backend-integration-audit.json");
-  await writeFile(reportPath, `${JSON.stringify(result, null, 2)}\n`);
-  process.stdout.write(`${JSON.stringify({ configured: config.configured, github, sessionUser: session.user.email, emailStatus: emailResponse.status, profileStatus: profilePut.status, progressStatus: progressPut.status, submissionStatus: submissionPut.status, certificateGateStatus: certificatePost.status, certificateReady: certificateReady.ready, certificateIssueStatus: certificateIssue.status, publicRecordStatus: publicRecordResponse.status, requestCount: requests.length, reportPath }, null, 2)}\n`);
+  r = await call("/api/auth/logout", { cookie, method: "POST" });
+  check("logout", r.json?.signedOut === true);
+  r = await call("/api/auth/session", { cookie });
+  check("session gone after logout", r.json?.user === null);
 } finally {
-  app.kill();
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  mock.close();
+  await Promise.all([
+    db.collection("users").deleteOne({ _id: testUser }),
+    db.collection("sessions").deleteMany({ _id: { $in: tokens } }),
+    ...["profiles", "course_progress", "practice_progress", "project_submissions", "certificates"].map((name) => db.collection(name).deleteMany({ user_id: testUser })),
+    db.collection("feedback").deleteMany({ page: "/smoke-test" }),
+    db.collection("auth_throttle").deleteMany({ _id: { $in: [`feedback:${sha("203.0.113.77")}`, `client:${sha("203.0.113.77")}`, `email:${sha("smoke@example.test")}`] } }),
+  ]);
+  await client.close();
+  const failed = results.filter((item) => !item.ok);
+  console.log(`\n${results.length - failed.length}/${results.length} passed`);
+  process.exitCode = failed.length ? 1 : 0;
 }

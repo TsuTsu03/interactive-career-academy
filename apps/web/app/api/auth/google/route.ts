@@ -1,4 +1,4 @@
-import { startOAuth } from "@/lib/oauth-start";
+import { startOAuth } from "@/lib/oauth";
 
 export const dynamic = "force-dynamic";
 

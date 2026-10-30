@@ -1,7 +1,8 @@
-import { createHash } from "node:crypto";
+import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { notifyFeedback } from "@/lib/feedback-email";
-import { noStoreHeaders, restRequest } from "@/lib/supabase-server";
+import { authenticatedUser, clientAddress, noStoreHeaders, sha256 } from "@/lib/auth-server";
+import { claimThrottle, database, type FeedbackDoc } from "@/lib/mongo";
 
 export const dynamic = "force-dynamic";
 
@@ -10,12 +11,11 @@ const MOODS = new Set(["working", "unsure", "stuck", "idea"]);
 /**
  * Records one piece of learner feedback.
  *
- * Anonymous is the normal case, but the route is not: it runs on the server, so
- * it calls the insert-only function with the secret key rather than leaving the
- * function reachable by `anon`. Anyone holding the publishable key could
- * otherwise post straight to the RPC and put arbitrary text in the maintainer's
- * inbox. The client address is hashed before it leaves this process; the
- * throttle needs to tell senders apart, not know who they are.
+ * Anonymous is the normal case. Only this server route can write the feedback
+ * collection; the browser never holds database credentials, so nothing can skip
+ * the validation and the throttle below. The client address is hashed before it
+ * is stored; the throttle needs to tell senders apart, not know who they are.
+ * A signed-in sender's account id is kept with the row, as before.
  */
 export async function POST(request: Request) {
   const body = (await request.json().catch(() => null)) as {
@@ -40,32 +40,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "That email address does not look right." }, { status: 400, headers: noStoreHeaders() });
   }
 
-  const clientAddress =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    request.headers.get("x-real-ip") ||
-    "unknown";
-
-  const response = await restRequest(
-    "rpc/submit_feedback",
-    {
-      method: "POST",
-      body: JSON.stringify({
-        p_mood: mood,
-        p_message: message || null,
-        p_page: page || null,
-        p_contact: contact || null,
-        p_client_hash: createHash("sha256").update(clientAddress).digest("hex"),
-      }),
-    },
-    undefined,
-    true,
-  );
-
-  if (!response?.ok) {
+  try {
+    const db = await database();
+    if (!db) throw new Error("not configured");
+    // Reuses the auth_throttle buckets so one open form cannot fill the database.
+    if (!(await claimThrottle(db, `feedback:${sha256(clientAddress(request))}`, 10))) {
+      return NextResponse.json({ error: "That is a lot of feedback in one hour. Try again later." }, { status: 429, headers: noStoreHeaders() });
+    }
+    const auth = await authenticatedUser();
+    await db.collection<FeedbackDoc>("feedback").insertOne({
+      _id: randomUUID(),
+      created_at: new Date(),
+      mood,
+      message: message || null,
+      page: page || null,
+      contact: contact || null,
+      user_id: auth?.user.id ?? null,
+    });
+  } catch {
     return NextResponse.json({ error: "Feedback could not be sent right now." }, { status: 502, headers: noStoreHeaders() });
-  }
-  if ((await response.json()) !== true) {
-    return NextResponse.json({ error: "That is a lot of feedback in one hour. Try again later." }, { status: 429, headers: noStoreHeaders() });
   }
   // The row is already saved. A mail outage costs a notification, never the
   // feedback, so the result of this is not allowed to change the answer.

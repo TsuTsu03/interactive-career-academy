@@ -4,7 +4,7 @@
  * The row is written first and this runs afterwards, so a mail outage costs a
  * notification and never the feedback itself. Everything here is optional
  * configuration: with no API key the app still records feedback, and the
- * Supabase table remains the record of what people said.
+ * feedback collection remains the record of what people said.
  *
  * `onboarding@resend.dev` is Resend's own sender. It needs no verified domain,
  * and it can only deliver to the address that owns the Resend account, which is
